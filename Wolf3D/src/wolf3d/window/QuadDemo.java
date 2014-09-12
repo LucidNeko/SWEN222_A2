@@ -53,7 +53,7 @@ public class QuadDemo extends GamePanel {
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		texID = ResourceLoader.loadTexture(gl, "flipped.png", false);
+		texID = ResourceLoader.loadTexture(gl, "alpha1024.png", true);
 		log.trace(texID);
 		
 		verts = Buffers.newDirectFloatBuffer(new float[] {
