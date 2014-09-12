@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * A collection of Math functions that take and return floats. javas Math class which returns doubles.
+ * A collection of Math functions that that deal with floats. As opposed to javas Math class which deals in doubles.
  * @author Hamish Rae-Hodgson
  *
  */
