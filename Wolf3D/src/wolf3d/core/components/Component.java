@@ -13,8 +13,8 @@ public class Component extends Observable {
 	
 	/**
 	 * Sets the ComponentContainer that contains this component<br>
-	 * INVERIENT: Must be contained in the provided owner AND must no longer be contained in the old owner.<br>
-	 * INVERIENT: <br>a=oldOwner:null b=newOwner:nul c1=containedInOldOwner c2=containedInNewOwner<br>
+	 * INVARIANT: Must be contained in the provided owner AND must no longer be contained in the old owner.<br>
+	 * INVARIANT: <br>a=oldOwner:null b=newOwner:nul c1=containedInOldOwner c2=containedInNewOwner<br>
 	 * (~a -> ~c1)(~b -> c2)<br>
 	 * Throws RuntimeException if: (~a^c1)v(~b^~c2)
 	 * @param owner The owner of this Component
