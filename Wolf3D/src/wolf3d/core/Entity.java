@@ -9,47 +9,62 @@ import wolf3d.core.components.Component;
 import wolf3d.core.components.ComponentContainer;
 
 /**
- * The Entity class is a container for Components
+ * The Entity class is a container for Components.
  * @author Hamish Rae-Hodgson
  *
  */
 public class Entity implements ComponentContainer {
 	
-	//HashSet in order of additions
+	//HashSet in the order Components were added
 	private final Set<Component> components = new LinkedHashSet<Component>();
 	
-	private final String name;
+	/** A unique ID in the system. */
+	private final int uniqueID;
 	
-	public Entity(String name) {
-		this.name = name;
+	/**
+	 * Creates a new empty Entity with the given unique ID.
+	 * @param uniqueID A unique ID to define this Entity.
+	 */
+	public Entity(int uniqueID) {
+		this.uniqueID = uniqueID;
 	}
 	
-	public Entity(String name, Component... components) {
-		this.name = name;
+	/**
+	 * Creates a new Entity with the given unique ID and all the provided Components.
+	 * @param uniqueID A unique ID to define this Entity.
+	 * @param components The components to give this Entity.
+	 */
+	public Entity(int uniqueID, Component... components) {
+		this.uniqueID = uniqueID;
 		for(Component component : components) {
 			attachComponent(component);
 		}
 	}
 	
+	/**
+	 * Creates a new Entity with the given unique ID and new instances of the provided Components.
+	 * @param uniqueID A unique ID to define this Entity.
+	 * @param components The classes of the components you are giving to this Entity.
+	 */
 	@SafeVarargs
-	public Entity(String name, Class<? extends Component>... components) {
-		this.name = name;
+	public Entity(int uniqueID, Class<? extends Component>... components) {
+		this.uniqueID = uniqueID;
 		for(Class<? extends Component> type : components) {
 			attachComponent(type);
 		}
 	}
 	
-	public String getName() {
-		return name;
+	/** Get the unique ID bound to this Entity */
+	public int getID() {
+		return uniqueID;
 	}
-	
 	
 	@Override
 	public <E extends Component> E attachComponent(E component) {
 		if(component == null) 
 			throw new NullPointerException();
 		if(component.getOwner() != null)
-			throw new RuntimeException("Component is already attached to something");
+			throw new IllegalStateException("Component is already attached to something");
 		this.components.add(component);
 		component.setOwner(this);
 		return component;
@@ -95,10 +110,11 @@ public class Entity implements ComponentContainer {
 	@Override
 	public <E extends Component> boolean contains(E component) {
 		return components.contains(component);
-	}	
+	}
 
+	@Override
 	public String toString() {
-		return name;
+		return "Entity [id=" + uniqueID + "]";
 	}	
 	
 }

@@ -8,6 +8,7 @@ import java.util.Observable;
  */
 public class Component extends Observable {
 	
+	/** The Container that this Component is in - null if not in anything */
 	private ComponentContainer owner;
 	
 	/**
@@ -28,6 +29,10 @@ public class Component extends Observable {
 		}
 	}
 	
+	/** 
+	 * Gets the Container this Component is in.
+	 * @return Returns the Container that contains this Component - or null if not attached to anything.
+	 */
 	public ComponentContainer getOwner() {
 		return owner;
 	}
