@@ -128,6 +128,10 @@ public class Transform extends Component {
 		return new ImmutableVec3(look);
 	}
 
+	/**
+	 * Applies the transformation to the MODELVIEW MATRIX that this Transform specifies.
+	 * @param gl The OpenGL context.
+	 */
 	public void applyTransform(GL2 gl) {
 		//Get the modelview matrix
 		FloatBuffer buffer = FloatBuffer.allocate(16);
