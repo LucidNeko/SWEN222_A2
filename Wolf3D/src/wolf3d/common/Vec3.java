@@ -11,8 +11,8 @@ public class Vec3 {
 	public static final ImmutableVec3 RIGHT = new ImmutableVec3( 1,  0,  0);
 	public static final ImmutableVec3 DOWN  = new ImmutableVec3( 0, -1,  0);
 	public static final ImmutableVec3 UP    = new ImmutableVec3( 0,  1,  0);
-	public static final ImmutableVec3 IN    = new ImmutableVec3( 0,  0, -1);
-	public static final ImmutableVec3 OUT   = new ImmutableVec3( 0,  0,  1);
+	public static final ImmutableVec3 BACK    = new ImmutableVec3( 0,  0, -1);
+	public static final ImmutableVec3 FORWARD   = new ImmutableVec3( 0,  0,  1);
 	
 	private float x;
 	private float y;
