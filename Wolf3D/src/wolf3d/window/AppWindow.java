@@ -12,6 +12,8 @@ import javax.swing.WindowConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import wolf3d.core.Keyboard;
+
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -39,6 +41,9 @@ public class AppWindow extends JFrame {
 				confirmExit();
 			}
 		});
+		
+		Keyboard.register(this);
+		
 		GLProfile glProfile = GLProfile.getDefault();
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
 		gamePanel = new EntityDemo(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
