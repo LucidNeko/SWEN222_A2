@@ -1,5 +1,12 @@
 package wolf3d.core.components;
 
+import java.nio.FloatBuffer;
+
+import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL2.*;
+
+import javax.media.opengl.GL2;
+
 import wolf3d.common.ImmutableVec3;
 import wolf3d.common.Mathf;
 import wolf3d.common.Vec3;
@@ -53,6 +60,8 @@ public class Transform extends Component {
 		up.mulLocal(Mathf.cos(theta)).subLocal(along.mul(Mathf.sin(theta)));
 		up.normalize();
 		along.set(Vec3.cross(look, up));
+		along.negateLocal();
+//		log.trace("along={}", along);
 	}
 	
 	/**
@@ -63,7 +72,7 @@ public class Transform extends Component {
 		look.mulLocal(Mathf.cos(theta)).addLocal(up.mul(Mathf.sin(theta)));
 		look.normalize();
 		up.set(Vec3.cross(look, along));
-		up.negateLocal();
+//		log.trace("up={}", up);
 	}
 	
 	/**
@@ -74,7 +83,7 @@ public class Transform extends Component {
 		along.mulLocal(Mathf.cos(theta)).addLocal(look.mul(Mathf.sin(theta)));
 		along.normalize();
 		look.set(Vec3.cross(along, up));
-		look.negateLocal();
+//		log.trace("look={}", look);
 	}
 	
 	/**
@@ -117,6 +126,46 @@ public class Transform extends Component {
 	 */
 	public ImmutableVec3 getLook() {
 		return new ImmutableVec3(look);
+	}
+
+	public void applyTransform(GL2 gl) {
+		//Get the modelview matrix
+		FloatBuffer buffer = FloatBuffer.allocate(16);
+		gl.glGetFloatv(GL_MODELVIEW_MATRIX, buffer);
+		float[] modelviewMatrix = buffer.array();
+		
+		//Build the transformation matrix this Transform specifies
+		float[] transformationMatrix = new float[] {
+				//Column 1
+				along.x(),
+				up.x(),
+				look.x(),
+				0,
+				
+				//Column 2
+				along.y(),
+				up.y(),
+				look.y(),
+				0,
+				
+				//Column 3
+				along.z(),
+				up.z(),
+				look.z(),
+				0,
+				
+				//Column 4
+				position.x(),
+				position.y(),
+				position.z(),
+				1
+		};
+		
+		//Multiply modelview x transformation
+		float[] m = Mathf.multiplyMatrix(modelviewMatrix, transformationMatrix);
+		
+		//Load the matrix into OpenGL
+		gl.glLoadMatrixf(m, 0);
 	}
 
 }
