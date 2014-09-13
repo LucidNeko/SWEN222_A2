@@ -14,7 +14,7 @@ import wolf3d.core.components.Component;
  * @author Hamish Rae-Hodgson
  *
  */
-public class TextureRenderer extends Component implements Renderer {
+public class TextureRenderer extends Renderer {
 	
 	/** The ID of the texture in video memory */
 	private int texID;
