@@ -41,7 +41,7 @@ public class AppWindow extends JFrame {
 		});
 		GLProfile glProfile = GLProfile.getDefault();
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
-		gamePanel = new QuadDemo(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
+		gamePanel = new EntityDemo(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
 		animator = new FPSAnimator(gamePanel, 60);
 		animator.start();
 		this.getContentPane().add(gamePanel);
