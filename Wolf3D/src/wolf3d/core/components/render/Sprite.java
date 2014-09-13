@@ -20,7 +20,7 @@ public class Sprite extends Component {
 	//					| |
 	//					0-1
 	
-	private FloatBuffer verticies;
+	private FloatBuffer vertices;
 	private FloatBuffer texcoords;
 	
 	/**
@@ -32,16 +32,16 @@ public class Sprite extends Component {
 		float hw = width/2f;  //half width
 		float hh = height/2f; //half height
 		
-		verticies = Buffers.newDirectFloatBuffer(3 * 3 * 2); //3components, 3verticies, 2triangles 
+		vertices = Buffers.newDirectFloatBuffer(3 * 3 * 2); //3components, 3verticies, 2triangles 
 		{
-			verticies.put(-hw); verticies.put(-hh); verticies.put(0); //0:(x, y, z)
-			verticies.put( hw); verticies.put(-hh); verticies.put(0); //1:(x, y, z)
-			verticies.put(-hw); verticies.put( hh); verticies.put(0); //3:(x, y, z)
+			vertices.put(-hw); vertices.put(-hh); vertices.put(0); //0:(x, y, z)
+			vertices.put( hw); vertices.put(-hh); vertices.put(0); //1:(x, y, z)
+			vertices.put(-hw); vertices.put( hh); vertices.put(0); //3:(x, y, z)
 			
-			verticies.put(-hw); verticies.put( hh); verticies.put(0); //3:(x, y, z)
-			verticies.put( hw); verticies.put(-hh); verticies.put(0); //1:(x, y, z)
-			verticies.put( hw); verticies.put( hh); verticies.put(0); //2:(x, y, z)
-			verticies.flip();
+			vertices.put(-hw); vertices.put( hh); vertices.put(0); //3:(x, y, z)
+			vertices.put( hw); vertices.put(-hh); vertices.put(0); //1:(x, y, z)
+			vertices.put( hw); vertices.put( hh); vertices.put(0); //2:(x, y, z)
+			vertices.flip();
 		}
 		
 		texcoords = Buffers.newDirectFloatBuffer(2 * 3 * 2); //2components, 3verticies, 2triangles
@@ -61,8 +61,8 @@ public class Sprite extends Component {
 	 * Get the (x,y,z) vertex buffer that contains the vertex information.
 	 * @return The Vertex Buffer.
 	 */
-	public FloatBuffer getVerticies() {
-		return verticies;
+	public FloatBuffer getVertices() {
+		return vertices;
 	}
 	
 	/**
@@ -78,8 +78,16 @@ public class Sprite extends Component {
 	 * GL_TRIANGLES or GL_QUADS ..etc
 	 * @return Returns the mode.
 	 */
-	public int getRenderMethod() {
+	public int getMode() {
 		return GL_TRIANGLES;
+	}
+	
+	/**
+	 * Returns the number of vertices 
+	 * @return
+	 */
+	public int getNumVertices() {
+		return 6;
 	}
 	
 }
