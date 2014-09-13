@@ -2,7 +2,6 @@ package wolf3d.core.components;
 
 import java.nio.FloatBuffer;
 
-import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 
 import javax.media.opengl.GL2;
@@ -18,15 +17,31 @@ import wolf3d.common.Vec3;
  */
 public class Transform extends Component {
 	
-	private final Vec3 position = new Vec3();
-	private final Vec3 up = new Vec3(Vec3.UP);
-	private final Vec3 along = new Vec3(Vec3.RIGHT);
-	private final Vec3 look = new Vec3(Vec3.OUT);
+	private final Vec3 position;
+	private final Vec3 up;
+	private final Vec3 along;
+	private final Vec3 look;
 	
 	/**
 	 * Create a new Transform with position=(0,0,0) and zero rotation.
 	 */
-	public Transform() { }
+	public Transform() { 
+		position = new Vec3();
+		up = new Vec3();
+		along = new Vec3();
+		look = new Vec3();
+		reset(); //sets up vectors correctly
+	}
+	
+	/**
+	 * Resets this transform to (0,0,0) and zero rotation
+	 */
+	public void reset() {
+		position.setZero();
+		up.set(Vec3.UP);
+		along.set(Vec3.RIGHT);
+		look.set(Vec3.FORWARD);
+	}
 	
 	/**
 	 * Strafe this transform. i.e left<->right movement.
@@ -57,11 +72,9 @@ public class Transform extends Component {
 	 * @param theta Rotation amount in radians.
 	 */
 	public void roll(float theta) {
-		up.mulLocal(Mathf.cos(theta)).subLocal(along.mul(Mathf.sin(theta)));
+		up.mulLocal(Mathf.cos(theta)).addLocal(along.mul(Mathf.sin(theta)));
 		up.normalize();
-		along.set(Vec3.cross(look, up));
-		along.negateLocal();
-//		log.trace("along={}", along);
+		along.set(Vec3.cross(up, look));
 	}
 	
 	/**
@@ -72,7 +85,6 @@ public class Transform extends Component {
 		look.mulLocal(Mathf.cos(theta)).addLocal(up.mul(Mathf.sin(theta)));
 		look.normalize();
 		up.set(Vec3.cross(look, along));
-//		log.trace("up={}", up);
 	}
 	
 	/**
@@ -81,9 +93,8 @@ public class Transform extends Component {
 	 */
 	public void yaw(float theta) {
 		along.mulLocal(Mathf.cos(theta)).addLocal(look.mul(Mathf.sin(theta)));
-		along.normalize();
+		along.normalize();		
 		look.set(Vec3.cross(along, up));
-//		log.trace("look={}", look);
 	}
 	
 	/**
@@ -143,25 +154,28 @@ public class Transform extends Component {
 				//Column 1
 				along.x(),
 				up.x(),
-				look.x(),
+				-look.x(),
 				0,
 				
 				//Column 2
 				along.y(),
 				up.y(),
-				look.y(),
+				-look.y(),
 				0,
 				
 				//Column 3
 				along.z(),
 				up.z(),
-				look.z(),
+				-look.z(),
 				0,
 				
 				//Column 4
 				position.x(),
 				position.y(),
 				position.z(),
+//				Vec3.dot(along, position), //camera movement
+//				Vec3.dot(up, position),
+//				Vec3.dot(look, position),
 				1
 		};
 		
@@ -172,4 +186,10 @@ public class Transform extends Component {
 		gl.glLoadMatrixf(m, 0);
 	}
 
+	@Override
+	public String toString() {
+		return "Transform [position=" + position + ", up=" + up + ", along="
+				+ along + ", look=" + look + "]";
+	}
+	
 }
