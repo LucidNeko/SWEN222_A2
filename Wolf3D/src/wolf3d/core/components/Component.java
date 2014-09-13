@@ -2,11 +2,15 @@ package wolf3d.core.components;
 
 import java.util.Observable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * A Component is put inside a ComponentContainer. A Component can only be in one container at a time.
  * @author Hamish Rae-Hodgson
  */
 public class Component extends Observable {
+	protected static final Logger log = LogManager.getLogger();
 	
 	/** The Container that this Component is in - null if not in anything */
 	private ComponentContainer owner;
