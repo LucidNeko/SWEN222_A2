@@ -42,6 +42,7 @@ public class AppWindow extends JFrame {
 			}
 		});
 		
+		this.setFocusable(true);
 		Keyboard.register(this);
 		
 		GLProfile glProfile = GLProfile.getDefault();
