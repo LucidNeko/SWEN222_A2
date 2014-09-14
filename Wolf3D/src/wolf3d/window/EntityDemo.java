@@ -6,12 +6,16 @@ import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
+import wolf3d.common.Mathf;
+import wolf3d.core.Camera;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.components.Transform;
@@ -24,11 +28,14 @@ public class EntityDemo extends GamePanel {
 	private static final long serialVersionUID = -5693253200279106797L;
 	
 	//Used in gluPerspective
-	private static final float FIELD_OF_VIEW = 45f;
+	private static final float FIELD_OF_VIEW = 45;
 	private static final float ZNEAR = 0.1f;
 	private static final float ZFAR = 100;
 	
+	Camera camera = new Camera();
+	
 	Entity door;
+	List<Entity> walls = new ArrayList<Entity>();
 
 	public EntityDemo(GLCapabilities glCapabilities, int width, int height) {
 		super(glCapabilities, width, height);
@@ -56,19 +63,71 @@ public class EntityDemo extends GamePanel {
 		
 		//add transform
 		Transform t = door.attachComponent(Transform.class); //if constructor takes 0 arguments can attach this way.
+		t.translate(0, 0, -10);
 		
 		//Add a sprite
 		Sprite sprite = new Sprite(2, 2);
 		door.attachComponent(sprite);
 		
 		//Add a renderer
-		int texID = ResourceLoader.loadTexture(gl, "1024x1024_64x64.png", true);
+		int texID = ResourceLoader.loadTexture(gl, "1.png", true);
 		if(texID == -1) {
 			log.error("Failed importing resource. Aborting Renderer creation.");
 			return;
 		}
 		Renderer renderer = new TextureRenderer(texID);
 		door.attachComponent(renderer);
+		
+		int wallID = ResourceLoader.loadTexture(gl, "debug_wall.png", true);
+		int floorID = ResourceLoader.loadTexture(gl, "debug_floor.png", true);
+		//walls
+		for(int i = 0; i < 20; i++) {
+			//left wall
+			{
+				Entity wall = new Entity(1+i, Transform.class);
+				wall.getComponent(Transform.class).translate(-1, 0, -i*2);
+				wall.getComponent(Transform.class).yaw(Mathf.degToRad(-90));
+			
+				wall.attachComponent(new Sprite(2, 2));
+			
+				//Add a renderer
+				if(texID != -1) {
+					wall.attachComponent(new TextureRenderer(wallID));
+				}
+				
+				walls.add(wall);
+			}
+			//right wall
+			{
+				Entity wall = new Entity(1+i, Transform.class);
+				wall.getComponent(Transform.class).translate(1, 0, -i*2);
+				wall.getComponent(Transform.class).yaw(Mathf.degToRad(90));
+			
+				wall.attachComponent(new Sprite(2, 2));
+			
+				//Add a renderer
+				if(texID != -1) {
+					wall.attachComponent(new TextureRenderer(wallID));
+				}
+				
+				walls.add(wall);
+			}
+			//floor
+			{
+				Entity wall = new Entity(1+i, Transform.class);
+				wall.getComponent(Transform.class).translate(0, -1, -i*2);
+				wall.getComponent(Transform.class).pitch(Mathf.degToRad(90));
+			
+				wall.attachComponent(new Sprite(2, 2));
+			
+				//Add a renderer
+				if(texID != -1) {
+					wall.attachComponent(new TextureRenderer(floorID));
+				}
+				
+				walls.add(wall);
+			}
+		}
 	}
 
 	@Override
@@ -82,65 +141,46 @@ public class EntityDemo extends GamePanel {
 		
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		//get the Transform component and walk it backwards a bit each frame
-//		door.getComponent(Transform.class).translate(0, 0, -0.01f);
-		
-		//roll pitch and yaw it by 0.01f radians
-		if(Keyboard.isKeyDown(KeyEvent.VK_Q))
-			door.getComponent(Transform.class).roll(-0.01f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_R))
-			door.getComponent(Transform.class).roll(0.01f);
+		//camera movemend WASD and J/L for yaw
 		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-			door.getComponent(Transform.class).pitch(0.01f);
+			camera.walk(0.1f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-			door.getComponent(Transform.class).pitch(-0.01f);
+			camera.walk(-0.1f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-			door.getComponent(Transform.class).yaw(-0.01f);
+			camera.strafe(-0.1f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-			door.getComponent(Transform.class).yaw(0.01f);
+			camera.strafe(0.1f);
 		
-		if(Keyboard.isKeyDown(KeyEvent.VK_U))
-			door.getComponent(Transform.class).walk(0.01f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_J))
-			door.getComponent(Transform.class).walk(-0.01f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_I))
-			door.getComponent(Transform.class).fly(0.01f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_K))
-			door.getComponent(Transform.class).fly(-0.01f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_O))
-			door.getComponent(Transform.class).strafe(0.01f);
+			camera.yaw(0.05f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_L))
-			door.getComponent(Transform.class).strafe(-0.01f);
+			camera.yaw(-0.05f);
 		
-		log.trace(door.getComponent(Transform.class));
-		
-		gl.glColor3f(0, 1, 0);
-		gl.glBegin(GL_QUADS);
-			gl.glVertex3f(-1, -1, 0);
-			gl.glVertex3f(-1, -1, -50);
-			gl.glVertex3f(-1, 1, -50);
-			gl.glVertex3f(-1, 1, 0);
-			
-			gl.glVertex3f(1, -1, -50);
-			gl.glVertex3f(1, -1, 0);
-			gl.glVertex3f(1, 1, 0);
-			gl.glVertex3f(1, 1, -50);
-		gl.glEnd();
+//		log.trace(door.getComponent(Transform.class));
 		
 		gl.glPushMatrix();
-			//apply the transform to the gl context
-			door.getComponent(Transform.class).applyTransform(gl);
+			camera.applyTransform(gl);
 			
-			//renderer all available renderer components on the entity
-			for(Renderer r : door.getComponents(Renderer.class)) {
-				r.render(gl);
+			for(Entity wall : walls) {
 				gl.glPushMatrix();
-				
-				//draw flipside image (hacky test)
-//				gl.glRotatef(180, 0, 1, 0);
-//				r.render(gl);
-//				gl.glPopMatrix();
+					wall.getComponent(Transform.class).applyTransform(gl);
+					wall.getComponent(Renderer.class).render(gl);
+				gl.glPopMatrix();
 			}
+			
+			gl.glPushMatrix();
+				//apply the transform to the gl context
+				door.getComponent(Transform.class).applyTransform(gl);
+				
+				//renderer all available renderer components on the entity
+				for(Renderer r : door.getComponents(Renderer.class)) {
+					r.render(gl);
+					gl.glPushMatrix();
+					gl.glRotated(180, 0, 1, 0);
+					r.render(gl);
+					gl.glPopMatrix();
+				}
+			gl.glPopMatrix();
 		gl.glPopMatrix();
 		
 	}
