@@ -1,6 +1,8 @@
-package wolf3d.core.components;
+package wolf3d.core;
 
 import java.util.List;
+
+import wolf3d.components.Component;
 
 /**
  * The ComponentContainer class.<br>

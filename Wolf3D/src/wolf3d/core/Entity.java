@@ -5,8 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import wolf3d.core.components.Component;
-import wolf3d.core.components.ComponentContainer;
+import wolf3d.components.Component;
 
 /**
  * The Entity class is a container for Components.

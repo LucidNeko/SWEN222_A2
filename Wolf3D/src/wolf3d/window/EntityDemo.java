@@ -15,14 +15,14 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
 import wolf3d.common.Mathf;
+import wolf3d.components.Renderer;
+import wolf3d.components.Sprite;
+import wolf3d.components.TextureRenderer;
+import wolf3d.components.Transform;
 import wolf3d.core.Camera;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
-import wolf3d.core.components.Transform;
-import wolf3d.core.components.render.Renderer;
-import wolf3d.core.components.render.Sprite;
-import wolf3d.core.components.render.TextureRenderer;
 import wolf3d.util.ResourceLoader;
 
 public class EntityDemo extends GamePanel {

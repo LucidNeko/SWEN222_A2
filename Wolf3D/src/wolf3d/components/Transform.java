@@ -1,4 +1,4 @@
-package wolf3d.core.components;
+package wolf3d.components;
 
 import java.nio.FloatBuffer;
 

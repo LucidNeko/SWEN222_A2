@@ -1,12 +1,10 @@
-package wolf3d.core.components.render;
+package wolf3d.components;
 
 import java.nio.FloatBuffer;
 
 import static javax.media.opengl.GL2.GL_TRIANGLES;
 
 import com.jogamp.common.nio.Buffers;
-
-import wolf3d.core.components.Component;
 
 /**
  * A Class defining sets of verticies and uv coords to render a texture to screen

@@ -1,9 +1,11 @@
-package wolf3d.core.components;
+package wolf3d.components;
 
 import java.util.Observable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import wolf3d.core.ComponentContainer;
 
 /**
  * A Component is put inside a ComponentContainer. A Component can only be in one container at a time.

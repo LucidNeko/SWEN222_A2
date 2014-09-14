@@ -1,8 +1,6 @@
-package wolf3d.core.components.render;
+package wolf3d.components;
 
 import javax.media.opengl.GL2;
-
-import wolf3d.core.components.Component;
 
 /**
  * An interface that all renderable components must implement

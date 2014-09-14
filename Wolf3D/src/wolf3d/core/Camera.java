@@ -9,8 +9,8 @@ import javax.media.opengl.GL2;
 import wolf3d.common.ImmutableVec3;
 import wolf3d.common.Mathf;
 import wolf3d.common.Vec3;
-import wolf3d.core.components.Component;
-import wolf3d.core.components.Transform;
+import wolf3d.components.Component;
+import wolf3d.components.Transform;
 
 /**
  * The Camera is a camera in 3D space used as the inital transformation when rendering a scene.

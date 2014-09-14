@@ -1,4 +1,4 @@
-package wolf3d.core.components.render;
+package wolf3d.components;
 
 //GL Constants
 import static javax.media.opengl.GL.*;
@@ -6,8 +6,6 @@ import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 
 import javax.media.opengl.GL2;
-
-import wolf3d.core.components.Component;
 
 /**
  * TextureRenderer grabs the Sprite object attached to the same Entity and renders the texture onto it.
