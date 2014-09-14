@@ -19,6 +19,8 @@ import wolf3d.components.Transform;
  */
 public class Camera extends Component {
 	
+	//TODO: link in with owners Transform.
+	
 	private final Vec3 position;
 	private final Vec3 up;
 	private final Vec3 along;
