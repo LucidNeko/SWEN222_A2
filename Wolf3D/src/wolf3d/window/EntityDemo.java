@@ -5,12 +5,15 @@ import static javax.media.opengl.GL2.*;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
+import java.awt.event.KeyEvent;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
 import wolf3d.core.Entity;
+import wolf3d.core.Keyboard;
 import wolf3d.core.components.Transform;
 import wolf3d.core.components.render.Renderer;
 import wolf3d.core.components.render.Sprite;
@@ -59,7 +62,7 @@ public class EntityDemo extends GamePanel {
 		door.attachComponent(sprite);
 		
 		//Add a renderer
-		int texID = ResourceLoader.loadTexture(gl, "1.png", true);
+		int texID = ResourceLoader.loadTexture(gl, "1024x1024_64x64.png", true);
 		if(texID == -1) {
 			log.error("Failed importing resource. Aborting Renderer creation.");
 			return;
@@ -80,12 +83,49 @@ public class EntityDemo extends GamePanel {
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		//get the Transform component and walk it backwards a bit each frame
-		door.getComponent(Transform.class).translate(0, 0, -0.01f);
+//		door.getComponent(Transform.class).translate(0, 0, -0.01f);
 		
 		//roll pitch and yaw it by 0.01f radians
-		door.getComponent(Transform.class).roll(0.01f);
-		door.getComponent(Transform.class).pitch(0.01f);
-		door.getComponent(Transform.class).yaw(0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_Q))
+			door.getComponent(Transform.class).roll(-0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_R))
+			door.getComponent(Transform.class).roll(0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_W))
+			door.getComponent(Transform.class).pitch(0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_S))
+			door.getComponent(Transform.class).pitch(-0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_A))
+			door.getComponent(Transform.class).yaw(-0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_D))
+			door.getComponent(Transform.class).yaw(0.01f);
+		
+		if(Keyboard.isKeyDown(KeyEvent.VK_U))
+			door.getComponent(Transform.class).walk(0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_J))
+			door.getComponent(Transform.class).walk(-0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_I))
+			door.getComponent(Transform.class).fly(0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_K))
+			door.getComponent(Transform.class).fly(-0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_O))
+			door.getComponent(Transform.class).strafe(0.01f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_L))
+			door.getComponent(Transform.class).strafe(-0.01f);
+		
+		log.trace(door.getComponent(Transform.class));
+		
+		gl.glColor3f(0, 1, 0);
+		gl.glBegin(GL_QUADS);
+			gl.glVertex3f(-1, -1, 0);
+			gl.glVertex3f(-1, -1, -50);
+			gl.glVertex3f(-1, 1, -50);
+			gl.glVertex3f(-1, 1, 0);
+			
+			gl.glVertex3f(1, -1, -50);
+			gl.glVertex3f(1, -1, 0);
+			gl.glVertex3f(1, 1, 0);
+			gl.glVertex3f(1, 1, -50);
+		gl.glEnd();
 		
 		gl.glPushMatrix();
 			//apply the transform to the gl context
@@ -97,9 +137,9 @@ public class EntityDemo extends GamePanel {
 				gl.glPushMatrix();
 				
 				//draw flipside image (hacky test)
-				gl.glRotatef(180, 0, 1, 0);
-				r.render(gl);
-				gl.glPopMatrix();
+//				gl.glRotatef(180, 0, 1, 0);
+//				r.render(gl);
+//				gl.glPopMatrix();
 			}
 		gl.glPopMatrix();
 		
