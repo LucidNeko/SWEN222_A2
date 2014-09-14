@@ -18,6 +18,7 @@ import wolf3d.common.Mathf;
 import wolf3d.core.Camera;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
+import wolf3d.core.Mouse;
 import wolf3d.core.components.Transform;
 import wolf3d.core.components.render.Renderer;
 import wolf3d.core.components.render.Sprite;
@@ -32,8 +33,7 @@ public class EntityDemo extends GamePanel {
 	private static final float ZNEAR = 0.1f;
 	private static final float ZFAR = 100;
 	
-	Camera camera = new Camera();
-	
+	Entity player;
 	Entity door;
 	List<Entity> walls = new ArrayList<Entity>();
 
@@ -58,6 +58,10 @@ public class EntityDemo extends GamePanel {
 	}
 	
 	public void initEntities(GL2 gl) {
+		//Create player
+		player = new Entity(100, Transform.class);
+		player.attachComponent(Camera.class);
+		
 		//Create entity
 		door = new Entity(0);
 		
@@ -85,7 +89,7 @@ public class EntityDemo extends GamePanel {
 			//left wall
 			{
 				Entity wall = new Entity(1+i, Transform.class);
-				wall.getComponent(Transform.class).translate(-1, 0, -i*2);
+				wall.getComponent(Transform.class).translate(-2, 0, -i*2);
 				wall.getComponent(Transform.class).yaw(Mathf.degToRad(-90));
 			
 				wall.attachComponent(new Sprite(2, 2));
@@ -100,7 +104,7 @@ public class EntityDemo extends GamePanel {
 			//right wall
 			{
 				Entity wall = new Entity(1+i, Transform.class);
-				wall.getComponent(Transform.class).translate(1, 0, -i*2);
+				wall.getComponent(Transform.class).translate(2, 0, -i*2);
 				wall.getComponent(Transform.class).yaw(Mathf.degToRad(90));
 			
 				wall.attachComponent(new Sprite(2, 2));
@@ -118,7 +122,7 @@ public class EntityDemo extends GamePanel {
 				wall.getComponent(Transform.class).translate(0, -1, -i*2);
 				wall.getComponent(Transform.class).pitch(Mathf.degToRad(90));
 			
-				wall.attachComponent(new Sprite(2, 2));
+				wall.attachComponent(new Sprite(4, 2));
 			
 				//Add a renderer
 				if(texID != -1) {
@@ -141,25 +145,61 @@ public class EntityDemo extends GamePanel {
 		
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		//camera movemend WASD and J/L for yaw
+		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE))
+			System.exit(0);
+		
+		//camera movement WASD and J/L for yaw
+		Camera camera = player.getComponent(Camera.class);
 		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-			camera.walk(0.1f);
+			camera.walk(0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-			camera.walk(-0.1f);
+			camera.walk(-0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-			camera.strafe(-0.1f);
+			camera.strafe(-0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-			camera.strafe(0.1f);
+			camera.strafe(0.075f);
 		
 		if(Keyboard.isKeyDown(KeyEvent.VK_J))
-			camera.yaw(0.05f);
+			camera.yaw(0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_L))
-			camera.yaw(-0.05f);
+			camera.yaw(-0.03f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_I))
+			camera.pitch(-0.03f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_K))
+			camera.pitch(0.03f);
 		
+//		Transform t = player.getComponent(Transform.class);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_W))
+//			t.walk(0.1f);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_S))
+//			t.walk(-0.1f);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_A))
+//			t.strafe(0.1f);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_D))
+//			t.strafe(-0.1f);
+//		
+//		if(Keyboard.isKeyDown(KeyEvent.VK_J))
+//			t.yaw(0.05f);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_L))
+//			t.yaw(-0.05f);
+			
 //		log.trace(door.getComponent(Transform.class));
+		float dx = Mouse.getDX();
+		float dy = Mouse.getDY();
+		if(Mathf.abs(dx) < 0.04f) dx = 0;
+		if(Mathf.abs(dy) < 0.04f) dy = 0;
+		Mouse.lock();
+		
+		log.trace("({}, {})", dx, dy);
+		
+//		camera.pitch(Mathf.degToRad(dy));
+		camera.yaw(Mathf.degToRad(-dx));
+		
 		
 		gl.glPushMatrix();
-			camera.applyTransform(gl);
+//			t.applyTransform(gl);
+			player.getComponent(Camera.class).setActive(gl);
+			
 			
 			for(Entity wall : walls) {
 				gl.glPushMatrix();

@@ -1,6 +1,12 @@
 package wolf3d.window;
 
+import java.awt.AWTException;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
+import java.awt.image.BufferedImage;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -13,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.core.Keyboard;
+import wolf3d.core.Mouse;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -42,17 +49,38 @@ public class AppWindow extends JFrame {
 			}
 		});
 		
+		
+		//Hide mouse cursor.
+//		Toolkit toolkit = Toolkit.getDefaultToolkit();
+//	    Point hotSpot = new Point(0,0);
+//	    BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT); 
+//	    Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, hotSpot, "InvisibleCursor");        
+//	    setCursor(invisibleCursor);
+		
+		//Register input devices.
 		this.setFocusable(true);
 		Keyboard.register(this);
+		Mouse.register(this);
 		
+		//Build OpenGL panel.
 		GLProfile glProfile = GLProfile.getDefault();
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
 		gamePanel = new EntityDemo(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
 		animator = new FPSAnimator(gamePanel, 60);
 		animator.start();
 		this.getContentPane().add(gamePanel);
+		
 		this.pack();
 		this.setVisible(true);
+		
+		//Set pos where mouse will reset to.
+		Point p = gamePanel.getLocationOnScreen();
+		p.x += DEFAULT_GL_WIDTH/2;
+		p.y += DEFAULT_GL_HEIGHT/2;
+		Mouse.lockPos(p.x, p.y);
+		
+		log.trace(gamePanel.getLocationOnScreen());
+		log.trace(p);
 	}
 	
 	private void confirmExit() {

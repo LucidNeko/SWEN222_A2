@@ -77,6 +77,7 @@ public class Camera extends Component {
 		up.mulLocal(Mathf.cos(theta)).addLocal(along.mul(Mathf.sin(theta)));
 		up.normalize();
 		along.set(Vec3.cross(up, look));
+		along.negateLocal();
 	}
 	
 	/**
