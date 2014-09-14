@@ -138,6 +138,44 @@ public class Transform extends Component {
 	public ImmutableVec3 getLook() {
 		return new ImmutableVec3(look);
 	}
+	
+	/**
+	 * Gets this Transformation represented as a 4x4 column order matrix.
+	 * @return The transformation matrix that this Transform represents.
+	 */
+	public float[] getMatrix() {
+		return new float[] {				
+				//Column 1
+				along.x(),
+				along.y(),
+				along.z(),
+//				-along.z(), //camera
+				0,
+				
+				//Column 2
+				up.x(),
+				up.y(),
+				up.z(),
+//				-up.z(), //camera
+				0,
+				
+				//Column 3
+				look.x(),
+				look.y(),
+				look.z(),
+//				-look.z(), //camera
+				0,
+				
+				//Column 4
+				position.x(),
+				position.y(),
+				position.z(),
+//				Vec3.dot(along, position), //camera movement. virtual coords
+//				Vec3.dot(up, position),
+//				Vec3.dot(look, position),
+				1
+		};
+	}
 
 	/**
 	 * Applies the transformation to the MODELVIEW MATRIX that this Transform specifies.
@@ -150,34 +188,7 @@ public class Transform extends Component {
 		float[] modelviewMatrix = buffer.array();
 		
 		//Build the transformation matrix this Transform specifies
-		float[] transformationMatrix = new float[] {
-				//Column 1
-				along.x(),
-				up.x(),
-				-look.x(),
-				0,
-				
-				//Column 2
-				along.y(),
-				up.y(),
-				-look.y(),
-				0,
-				
-				//Column 3
-				along.z(),
-				up.z(),
-				-look.z(),
-				0,
-				
-				//Column 4
-				position.x(),
-				position.y(),
-				position.z(),
-//				Vec3.dot(along, position), //camera movement
-//				Vec3.dot(up, position),
-//				Vec3.dot(look, position),
-				1
-		};
+		float[] transformationMatrix = getMatrix();
 		
 		//Multiply modelview x transformation
 		float[] m = Mathf.multiplyMatrix(modelviewMatrix, transformationMatrix);
