@@ -9,13 +9,15 @@ import javax.media.opengl.GL2;
 import wolf3d.common.ImmutableVec3;
 import wolf3d.common.Mathf;
 import wolf3d.common.Vec3;
+import wolf3d.core.components.Component;
+import wolf3d.core.components.Transform;
 
 /**
  * The Camera is a camera in 3D space used as the inital transformation when rendering a scene.
  * @author Hamish Rae-Hodgson
  *
  */
-public class Camera {
+public class Camera extends Component {
 	
 	private final Vec3 position;
 	private final Vec3 up;
@@ -176,7 +178,7 @@ public class Camera {
 	 * Applies the transformation to the MODELVIEW MATRIX that this Transform specifies.
 	 * @param gl The OpenGL context.
 	 */
-	public void applyTransform(GL2 gl) {
+	public void setActive(GL2 gl) {	
 		//Get the modelview matrix
 		FloatBuffer buffer = FloatBuffer.allocate(16);
 		gl.glGetFloatv(GL_MODELVIEW_MATRIX, buffer);
