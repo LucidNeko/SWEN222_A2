@@ -28,7 +28,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	public static final int MIDDLE_BUTTON = MouseEvent.BUTTON2;
 	public static final int RIGHT_BUTTON = MouseEvent.BUTTON3;
 	
-	private static float MOUSE_SENSITIVITY = 1f;
+	private static float MOUSE_SENSITIVITY = 0.5f;
 	
 	/** Singleton instance of Mouse */
 	private static final Mouse instance = new Mouse();
