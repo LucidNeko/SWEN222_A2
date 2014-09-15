@@ -49,17 +49,11 @@ public class AppWindow extends JFrame {
 			}
 		});
 		
-		//Sets the mouse to be a white crosshair
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-	    Point hotSpot = new Point(2,2);
-	    BufferedImage cursorImage = new BufferedImage(5, 5, BufferedImage.TRANSLUCENT); 
-	    Graphics2D graphics = cursorImage.createGraphics();
-	    graphics.setColor(Color.WHITE);
-	    graphics.drawLine(0, 2, 4, 2); //leftright line
-	    graphics.drawLine(2, 0, 2, 4); //updown line
-	    graphics.dispose();
-	    Cursor crosshair = toolkit.createCustomCursor(cursorImage, hotSpot, "Crosshair");        
-	    setCursor(crosshair);
+		//Sets the mouse to be a crosshair     
+	    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+	    
+	    //Sets the mouse to be a hand
+//	    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		//Register input devices.
 		this.setFocusable(true);
