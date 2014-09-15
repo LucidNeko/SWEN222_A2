@@ -164,9 +164,9 @@ public class EntityDemo extends GamePanel {
 			camera.strafe(0.075f);
 		
 		if(Keyboard.isKeyDown(KeyEvent.VK_J))
-			camera.yaw(0.03f);
+			camera.rotateY(0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_L))
-			camera.yaw(-0.03f);
+			camera.rotateY(-0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_I))
 			camera.pitch(-0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_K))
@@ -175,11 +175,10 @@ public class EntityDemo extends GamePanel {
 		float dx = Mouse.getDX();
 		float dy = Mouse.getDY();
 		
-		log.trace("({}, {})", dx, dy);
+//		log.trace("({}, {})", dx, dy);
 		
-//		camera.pitch(Mathf.degToRad(dy));
-		camera.yaw(Mathf.degToRad(-dx));
-		
+		camera.pitch(Mathf.degToRad(dy));
+		camera.rotateY(Mathf.degToRad(-dx));
 		
 		gl.glPushMatrix();
 			player.getComponent(Camera.class).setActive(gl);
