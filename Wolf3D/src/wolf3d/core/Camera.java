@@ -22,8 +22,8 @@ public class Camera extends Component {
 	//TODO: link in with owners Transform.
 	
 	private final Vec3 position;
-	private final Vec3 up;
 	private final Vec3 along;
+	private final Vec3 up;
 	private final Vec3 look;
 	
 	/**
@@ -102,6 +102,21 @@ public class Camera extends Component {
 		along.normalize();		
 		look.set(Vec3.cross(along, up));
 		look.negateLocal();
+	}
+	
+	/**
+	 * Rotates the camera about the world up vector.
+	 * @param theta Rotation amount in radians.
+	 */
+	public void rotateY(float theta) {
+		//derived from the standard y axis rotation matrix.
+		float cos = Mathf.cos(theta);
+		float sin = Mathf.sin(theta);
+		
+		//perform the matrix-vector multiplication
+		along.set(cos*along.x() + sin*along.z(), along.y(), -sin*along.x() + cos*along.z());
+		up.set(cos*up.x() + sin*up.z(), up.y(), -sin*up.x() + cos*up.z());
+		look.set(cos*look.x() + sin*look.z(), look.y(),  -sin*look.x() + cos*look.z());
 	}
 	
 	/**
