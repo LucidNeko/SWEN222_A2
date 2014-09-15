@@ -1,9 +1,9 @@
 package wolf3d.window;
 
-import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
@@ -49,13 +49,17 @@ public class AppWindow extends JFrame {
 			}
 		});
 		
-		
-		//Hide mouse cursor.
-//		Toolkit toolkit = Toolkit.getDefaultToolkit();
-//	    Point hotSpot = new Point(0,0);
-//	    BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT); 
-//	    Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, hotSpot, "InvisibleCursor");        
-//	    setCursor(invisibleCursor);
+		//Sets the mouse to be a white crosshair
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+	    Point hotSpot = new Point(2,2);
+	    BufferedImage cursorImage = new BufferedImage(5, 5, BufferedImage.TRANSLUCENT); 
+	    Graphics2D graphics = cursorImage.createGraphics();
+	    graphics.setColor(Color.WHITE);
+	    graphics.drawLine(0, 2, 4, 2); //leftright line
+	    graphics.drawLine(2, 0, 2, 4); //updown line
+	    graphics.dispose();
+	    Cursor crosshair = toolkit.createCustomCursor(cursorImage, hotSpot, "Crosshair");        
+	    setCursor(crosshair);
 		
 		//Register input devices.
 		this.setFocusable(true);
@@ -73,14 +77,8 @@ public class AppWindow extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		
-		//Set pos where mouse will reset to.
-		Point p = gamePanel.getLocationOnScreen();
-		p.x += DEFAULT_GL_WIDTH/2;
-		p.y += DEFAULT_GL_HEIGHT/2;
-		Mouse.lockPos(p.x, p.y);
-		
-		log.trace(gamePanel.getLocationOnScreen());
-		log.trace(p);
+		// Must grab after component is visable on screen
+		Mouse.setGrabbed(true);
 	}
 	
 	private void confirmExit() {
