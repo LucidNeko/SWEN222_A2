@@ -148,6 +148,10 @@ public class EntityDemo extends GamePanel {
 		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE))
 			System.exit(0);
 		
+		if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))
+			Mouse.setGrabbed(false);
+		else Mouse.setGrabbed(true);
+		
 		//camera movement WASD and J/L for yaw
 		Camera camera = player.getComponent(Camera.class);
 		if(Keyboard.isKeyDown(KeyEvent.VK_W))
@@ -167,28 +171,9 @@ public class EntityDemo extends GamePanel {
 			camera.pitch(-0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_K))
 			camera.pitch(0.03f);
-		
-//		Transform t = player.getComponent(Transform.class);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-//			t.walk(0.1f);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-//			t.walk(-0.1f);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-//			t.strafe(0.1f);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-//			t.strafe(-0.1f);
-//		
-//		if(Keyboard.isKeyDown(KeyEvent.VK_J))
-//			t.yaw(0.05f);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_L))
-//			t.yaw(-0.05f);
 			
-//		log.trace(door.getComponent(Transform.class));
 		float dx = Mouse.getDX();
 		float dy = Mouse.getDY();
-		if(Mathf.abs(dx) < 0.04f) dx = 0;
-		if(Mathf.abs(dy) < 0.04f) dy = 0;
-		Mouse.lock();
 		
 		log.trace("({}, {})", dx, dy);
 		
@@ -197,9 +182,7 @@ public class EntityDemo extends GamePanel {
 		
 		
 		gl.glPushMatrix();
-//			t.applyTransform(gl);
 			player.getComponent(Camera.class).setActive(gl);
-			
 			
 			for(Entity wall : walls) {
 				gl.glPushMatrix();
@@ -234,6 +217,8 @@ public class EntityDemo extends GamePanel {
 		GLU.createGLU(gl).gluPerspective(FIELD_OF_VIEW, width/height, ZNEAR, ZFAR);
 		gl.glMatrixMode(GL_MODELVIEW);
 		gl.glLoadIdentity();
+		
+		gl.glViewport(0, 0, width, height);
 	}
 
 }
