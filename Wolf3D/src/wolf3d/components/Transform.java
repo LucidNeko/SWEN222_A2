@@ -192,30 +192,24 @@ public class Transform extends Component {
 				along.x(),
 				along.y(),
 				along.z(),
-//				-along.z(), //camera
 				0,
 				
 				//Column 2
 				up.x(),
 				up.y(),
 				up.z(),
-//				-up.z(), //camera
 				0,
 				
 				//Column 3
 				look.x(),
 				look.y(),
 				look.z(),
-//				-look.z(), //camera
 				0,
 				
 				//Column 4
 				position.x(),
 				position.y(),
 				position.z(),
-//				Vec3.dot(along, position), //camera movement. virtual coords
-//				Vec3.dot(up, position),
-//				Vec3.dot(look, position),
 				1
 		};
 	}
