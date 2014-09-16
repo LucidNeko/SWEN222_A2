@@ -17,6 +17,7 @@ import wolf3d.components.renderers.Triangle3DRenderer;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
+import wolf3d.window.EntityGameDemo;
 import wolf3d.window.GameDemo;
 import wolf3d.window.WorldView;
 import wolf3d.world.World;
@@ -54,10 +55,6 @@ public class App extends JFrame {
 		
 		//Create the World
 		final World world = new World();
-		//Create test entity.
-		Entity tri = new Entity(0, Transform.class, Triangle3DRenderer.class);
-		tri.getTransform().translate(0, 0, -10);
-		world.register(tri);
 		
 		//Build OpenGL panel.
 		GLProfile glProfile = GLProfile.getDefault();
@@ -70,7 +67,7 @@ public class App extends JFrame {
 		this.setVisible(true);
 		
 		//the game. This is a thread. You need to start it.
-		GameDemo game = new GameDemo(world);
+		EntityGameDemo game = new EntityGameDemo(world);
 		game.setView(view); // give it rhe view so it can call it's display method appropriately.
 		game.start();
 	}
