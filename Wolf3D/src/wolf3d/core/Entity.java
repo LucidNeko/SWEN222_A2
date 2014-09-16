@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import wolf3d.components.Component;
+import wolf3d.components.Transform;
 
 /**
  * The Entity class is a container for Components.
@@ -109,6 +110,18 @@ public class Entity implements ComponentContainer {
 	@Override
 	public <E extends Component> boolean contains(E component) {
 		return components.contains(component);
+	}
+	
+	//
+	// Convenience Methods
+	//
+	
+	/**
+	 * Get the Transform attached to this entity. Identical in function to getComponent(Transform.class);
+	 * @return Return the Transform, or null if there is no Transform attached.
+	 */
+	public Transform getTransform() {
+		return getComponent(Transform.class);
 	}
 
 	@Override
