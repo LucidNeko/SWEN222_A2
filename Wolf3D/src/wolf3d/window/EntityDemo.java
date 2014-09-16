@@ -175,7 +175,11 @@ public class EntityDemo extends GamePanel {
 			camera.roll(-0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_O))
 			camera.roll(0.03f);
-
+		
+		if(Keyboard.isKeyDown(KeyEvent.VK_R))
+			camera.flyVertical(0.03f);
+		if(Keyboard.isKeyDown(KeyEvent.VK_F))
+			camera.flyVertical(-0.03f);
 		float dx = Mouse.getDX();
 		float dy = Mouse.getDY();
 
