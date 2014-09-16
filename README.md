@@ -1,6 +1,8 @@
 Wolf3D
 ==========
 
+Note: Need system to generate unique IDs for Entities.
+
 Key concepts:
 
   The X axis is left:-1 and right:1
