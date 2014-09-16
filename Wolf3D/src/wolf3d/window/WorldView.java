@@ -18,6 +18,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
+import wolf3d.components.ICamera;
 import wolf3d.components.renderers.Renderer;
 import wolf3d.core.Camera;
 import wolf3d.core.Entity;
@@ -34,7 +35,7 @@ public class WorldView extends GamePanel {
 	private static final float ZFAR = 100;
 	
 	private World world = null;
-	private Camera camera = null;
+	private ICamera camera = null;
 	
 	public WorldView(GLCapabilities glCapabilities, World world, int width, int height) {
 		super(glCapabilities, width, height);
@@ -52,7 +53,7 @@ public class WorldView extends GamePanel {
 	/** Sets the active Camera that we View the World through.
 	 * @param camera The camera.
 	 */
-	public void setCamera(Camera camera) {
+	public void setCamera(ICamera camera) {
 		this.camera = camera;
 	}
 

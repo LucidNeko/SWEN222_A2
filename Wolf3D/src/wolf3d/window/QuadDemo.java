@@ -11,6 +11,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
+import wolf3d.components.ICamera;
 import wolf3d.util.ResourceLoader;
 
 import com.jogamp.common.nio.Buffers;
@@ -40,7 +41,7 @@ public class QuadDemo extends GamePanel {
 		super(glCapabilities, width, height);
 	}
 	
-	public void setCamera(wolf3d.core.Camera camera) {
+	public void setCamera(ICamera camera) {
 		//do nothing
 	}
 

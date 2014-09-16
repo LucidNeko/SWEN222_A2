@@ -15,6 +15,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
 import wolf3d.common.Mathf;
+import wolf3d.components.ICamera;
 import wolf3d.components.Sprite;
 import wolf3d.components.Transform;
 import wolf3d.components.renderers.Renderer;
@@ -41,7 +42,7 @@ public class EntityDemo extends GamePanel {
 		super(glCapabilities, width, height);
 	}
 	
-	public void setCamera(wolf3d.core.Camera camera) {
+	public void setCamera(ICamera camera) {
 		//do nothing
 	}
 
@@ -159,13 +160,13 @@ public class EntityDemo extends GamePanel {
 		//camera movement WASD and J/L for yaw
 		Camera camera = player.getComponent(Camera.class);
 		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-			camera.walkXZ(0.075f);
+			camera.walkFlat(0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-			camera.walkXZ(-0.075f);
+			camera.walkFlat(-0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-			camera.strafeXZ(-0.075f);
+			camera.strafeFlat(-0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-			camera.strafeXZ(0.075f);
+			camera.strafeFlat(0.075f);
 
 		if(Keyboard.isKeyDown(KeyEvent.VK_J))
 			camera.rotateY(0.03f);
