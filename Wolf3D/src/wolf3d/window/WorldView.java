@@ -107,7 +107,7 @@ public class WorldView extends GamePanel {
 		if(this.world == null) return; //no world to render
 		
 		gl.glPushMatrix();
-			camera.setActive(gl);
+			if(camera != null) camera.setActive(gl);
 			for(Entity entity : world.getEntities()) {
 				for(Renderer renderer : entity.getComponents(Renderer.class)) {
 					renderer.render(gl);
