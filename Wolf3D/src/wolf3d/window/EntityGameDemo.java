@@ -6,11 +6,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.common.Mathf;
+import wolf3d.components.Camera;
+import wolf3d.components.ICamera;
 import wolf3d.components.Sprite;
 import wolf3d.components.Transform;
 import wolf3d.components.renderers.TextureRenderer;
-import wolf3d.components.renderers.Triangle3DRenderer;
-import wolf3d.core.Camera;
+import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
 import wolf3d.core.Keyboard;
@@ -43,8 +44,9 @@ public class EntityGameDemo extends GameLoop {
 	private void createEntities() {
 		//Create player
 		player = new Entity(0, Transform.class);
+		player.attachComponent(PyramidRenderer.class);
+		player.getTransform().translate(0, 0, -10);
 		camera = player.attachComponent(Camera.class);
-		player.attachComponent(Triangle3DRenderer.class); //TODO make camera follow properly.
 		world.register(player);		
 
 		int texID = 2;
@@ -98,39 +100,41 @@ public class EntityGameDemo extends GameLoop {
 			Mouse.setGrabbed(false);
 		else Mouse.setGrabbed(true);
 
+		
+		Transform transform = player.getTransform();
 		//camera movement WASD and J/L for yaw
 		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-			camera.walkXZ(0.075f);
+			transform.walkFlat(0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-			camera.walkXZ(-0.075f);
+			transform.walkFlat(-0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-			camera.strafeXZ(-0.075f);
+			transform.strafeFlat(0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-			camera.strafeXZ(0.075f);
+			transform.strafeFlat(-0.075f);
 
 		if(Keyboard.isKeyDown(KeyEvent.VK_J))
-			camera.rotateY(0.03f);
+			transform.rotateY(0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_L))
-			camera.rotateY(-0.03f);
+			transform.rotateY(-0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_I))
-			camera.pitch(-0.03f);
+			transform.pitch(-0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_K))
-			camera.pitch(0.03f);
+			transform.pitch(0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_U))
-			camera.roll(-0.03f);
+			transform.roll(-0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_O))
-			camera.roll(0.03f);
+			transform.roll(0.03f);
 		
 		if(Keyboard.isKeyDown(KeyEvent.VK_R))
-			camera.flyVertical(0.03f);
+			transform.flyVertical(0.03f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_F))
-			camera.flyVertical(-0.03f);
+			transform.flyVertical(-0.03f);
 		
 		//Mouse-look
 		float dx = Mouse.getDX();
 		float dy = Mouse.getDY();
-		camera.pitch(Mathf.degToRad(dy));
-		camera.rotateY(Mathf.degToRad(-dx));
+		transform.pitch(Mathf.degToRad(dy));
+		transform.rotateY(Mathf.degToRad(dx)); 
 	}
 
 	@Override
