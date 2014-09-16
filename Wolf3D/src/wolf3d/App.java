@@ -1,50 +1,42 @@
-package wolf3d.window;
+package wolf3d;
 
-import java.awt.Color;
+
 import java.awt.Cursor;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
-import java.awt.image.BufferedImage;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
-import javax.media.opengl.awt.GLJPanel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.components.Transform;
-import wolf3d.components.renderers.TriangleRenderer;
+import wolf3d.components.renderers.Triangle3DRenderer;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
+import wolf3d.window.GameDemo;
+import wolf3d.window.WorldView;
 import wolf3d.world.World;
 
-import com.jogamp.opengl.util.FPSAnimator;
-
 /**
- * The root JFrame for the application. It contains the GLJPanel.
+ * The entry point into the system.
  * @author Hamish Rae-Hodgson
  *
  */
-public class AppWindow extends JFrame {
+public class App extends JFrame {
+	
 	private static final long serialVersionUID = 3938139405286328585L;
 	private static final Logger log = LogManager.getLogger();
 	
 	private static final String DEFAULT_TITLE = "Wolf3D";
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 600;
-	
-	/** the panel where OpenGl renderering occurs */
-	private GLJPanel gamePanel;
-	private FPSAnimator animator;
 
-	public AppWindow() {
+	public App() {
 		super(DEFAULT_TITLE);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {			
@@ -55,9 +47,6 @@ public class AppWindow extends JFrame {
 		
 		//Sets the mouse to be a crosshair     
 	    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-	    
-	    //Sets the mouse to be a hand
-//	    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		//Register input devices.
 		this.setFocusable(true);
@@ -65,38 +54,45 @@ public class AppWindow extends JFrame {
 		Mouse.register(this);
 		
 		//Create the World
-		World world = new World();
+		final World world = new World();
 		//Create test entity.
-		Entity tri = new Entity(0);
-		tri.attachComponent(Transform.class).walk(-5);
-		tri.attachComponent(new TriangleRenderer(1, 1, 1, 0, 0));
+		Entity tri = new Entity(0, Transform.class, Triangle3DRenderer.class);
+		tri.getTransform().translate(0, 0, -10);
 		world.register(tri);
 		
 		//Build OpenGL panel.
 		GLProfile glProfile = GLProfile.getDefault();
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
-//		gamePanel = new EntityDemo(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
-		WorldView view = new WorldView(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
-		view.setWorld(world);
-		animator = new FPSAnimator(view, 60);
-		animator.start();
+		final WorldView view = new WorldView(glCapabilities, world, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
 		this.getContentPane().add(view);
 		
+		//Pack and display window.
 		this.pack();
 		this.setVisible(true);
 		
-		// Must grab after component is visable on screen
-//		Mouse.setGrabbed(true);
+		//the game. This is a thread. You need to start it.
+		GameDemo game = new GameDemo(world);
+		game.setView(view); // give it rhe view so it can call it's display method appropriately.
+		game.start();
 	}
 	
+	/** Exits after confirming with the user if they really want to exit */
 	private void confirmExit() {
 //		if(JOptionPane.showConfirmDialog(AppWindow.this, 
 //				"Are you sure you want to Exit?", 
 //				"Are you sure you want to Exit?", 
 //				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-			if(animator.isStarted()) animator.stop();
 			System.exit(0);
 //		}
 	}
 	
+	/** Create a new instance of App */
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new App();
+			}
+		});
+	}
+
 }
