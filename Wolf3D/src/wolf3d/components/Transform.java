@@ -108,6 +108,34 @@ public class Transform extends Component {
 	}
 	
 	/**
+	 * Walks forwards along the X/Z plane.
+	 * @param delta Amount of movement.
+	 */
+	public void walkFlat(float delta) {
+		Vec3 direction = new Vec3(look.x(), 0, look.z());
+		direction.normalize(); //must normalize otherwise we don't end up with a unit vector.
+		position.addLocal(direction.mulLocal(delta));
+	}
+	
+	/**
+	 * Strafes along the X/Z plane
+	 * @param delta Amount of movement.
+	 */
+	public void strafeFlat(float delta) {
+		Vec3 direction = new Vec3(along.x(), 0, along.z());
+		direction.normalize(); //must normalize otherwise we don't end up with a unit vector.
+		position.addLocal(direction.mulLocal(delta));
+	}
+	
+	/**
+	 * Flys up the world up vector.
+	 * @param delta Amount of movement.
+	 */
+	public void flyVertical(float delta) {
+		position.addLocal(Vec3.UP.mul(delta));
+	}
+	
+	/**
 	 * Get a Vec3 containing the Transforms current location. It's just a snapshot - so it's Immutable.
 	 * @return An Immutable Vec3 representing the Transforms current position.
 	 */
