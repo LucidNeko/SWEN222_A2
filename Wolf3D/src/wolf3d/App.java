@@ -1,6 +1,5 @@
 package wolf3d;
 
-
 import java.awt.Cursor;
 import java.awt.event.WindowAdapter;
 
