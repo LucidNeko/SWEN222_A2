@@ -28,6 +28,16 @@ public class World {
 	}
 	
 	/**
+	 * Registers the given Entity with the world.
+	 * @param entity The entity to add.
+	 * @return True if the entity was added to the world succesfully.
+	 * @author Hamish Rae-Hodgson
+	 */
+	public boolean register(Entity entity) {
+		return players.add(entity);
+	}
+	
+	/**
 	 * Returns an unmodifiable List of all the Entities in the World.
 	 * @return An unmodifyable list of all the entities in the world.
 	 * @author Hamish Rae-Hodgson
