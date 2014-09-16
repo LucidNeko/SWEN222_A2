@@ -45,4 +45,17 @@ public class World {
 	public List<Entity> getEntities() {
 		return Collections.unmodifiableList(players);
 	}
+	
+	/**
+	 * Return the Entity in the World with the given id.
+	 * @param id The id of the entity you want.
+	 * @return The Entity, or null if not present.
+	 * @author Hamish Rae-Hodgson
+	 */
+	public Entity getEntity(int id) {
+		for(Entity entity : players)
+			if(entity.getID() == id)
+				return entity;
+		return null;
+	}
 }
