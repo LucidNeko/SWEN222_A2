@@ -36,17 +36,21 @@ public class TextureRenderer extends Renderer {
 			return;
 		}
 		
-		gl.glColor3f(1,1,1); //texture colored as it is on disk.
-		gl.glEnable(GL_TEXTURE_2D);
-		gl.glBindTexture(GL_TEXTURE_2D,  texID);
-		gl.glEnableClientState(GL_VERTEX_ARRAY);
-		gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		gl.glVertexPointer(3, GL_FLOAT, 0, sprite.getVertices()); //set vertex buffer
-		gl.glTexCoordPointer(2, GL_FLOAT, 0, sprite.getTexCoords()); //set texcoord buffer
-		gl.glDrawArrays(sprite.getMode(), 0, sprite.getNumVertices()); //actually draw the buffers.
-		gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		gl.glDisableClientState(GL_VERTEX_ARRAY);
-		gl.glDisable(GL_TEXTURE_2D);
+		gl.glPushMatrix();
+			getOwner().getTransform().applyTransform(gl);
+		
+			gl.glColor3f(1,1,1); //texture colored as it is on disk.
+			gl.glEnable(GL_TEXTURE_2D);
+			gl.glBindTexture(GL_TEXTURE_2D,  texID);
+			gl.glEnableClientState(GL_VERTEX_ARRAY);
+			gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			gl.glVertexPointer(3, GL_FLOAT, 0, sprite.getVertices()); //set vertex buffer
+			gl.glTexCoordPointer(2, GL_FLOAT, 0, sprite.getTexCoords()); //set texcoord buffer
+			gl.glDrawArrays(sprite.getMode(), 0, sprite.getNumVertices()); //actually draw the buffers.
+			gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			gl.glDisableClientState(GL_VERTEX_ARRAY);
+			gl.glDisable(GL_TEXTURE_2D);
+		gl.glPopMatrix();
 	}
 
 }
