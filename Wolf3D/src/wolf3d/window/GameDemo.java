@@ -9,8 +9,8 @@ import wolf3d.world.World;
 
 public class GameDemo extends GameLoop {
 
-	private static final int FPS = 60;
-	private static final int FUPS = 50;
+	private static final int FPS = 60; //frames per second/regular updates per second.
+	private static final int FUPS = 50; //fixed updates per second.
 	
 	private World world;
 	private View view;
@@ -81,10 +81,7 @@ public class GameDemo extends GameLoop {
 	}
 
 	@Override
-	protected void fixedTick(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void fixedTick(float delta) { }
 
 	@Override
 	protected void render() {
