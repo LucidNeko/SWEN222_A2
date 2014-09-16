@@ -19,8 +19,10 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
 import wolf3d.components.renderers.Renderer;
+import wolf3d.core.Camera;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
+import wolf3d.util.ResourceLoader;
 import wolf3d.world.World;
 
 public class WorldView extends GamePanel {
@@ -32,14 +34,26 @@ public class WorldView extends GamePanel {
 	private static final float ZFAR = 100;
 	
 	private World world = null;
-
+	private Camera camera = null;
+	
 	public WorldView(GLCapabilities glCapabilities, World world, int width, int height) {
 		super(glCapabilities, width, height);
 		setWorld(world);
 	}
 	
+	/**
+	 * Set the World that this View renders.
+	 * @param world The world.
+	 */
 	public void setWorld(World world) {
 		this.world = world;
+	}
+	
+	/** Sets the active Camera that we View the World through.
+	 * @param camera The camera.
+	 */
+	public void setActiveCamera(Camera camera) {
+		this.camera = camera;
 	}
 
 	@Override
@@ -54,6 +68,11 @@ public class WorldView extends GamePanel {
 
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		//TODO: ResourceLoader better.
+		int texID = ResourceLoader.loadTexture(gl, "1.png", true);
+		int wallID = ResourceLoader.loadTexture(gl, "debug_wall.png", true);
+		int floorID = ResourceLoader.loadTexture(gl, "debug_floor.png", true);
 	}
 	
 	@Override
@@ -87,11 +106,14 @@ public class WorldView extends GamePanel {
 	private void renderWorld(GL2 gl) {
 		if(this.world == null) return; //no world to render
 		
-		for(Entity entity : world.getEntities()) {
-			for(Renderer renderer : entity.getComponents(Renderer.class)) {
-				renderer.render(gl);
+		gl.glPushMatrix();
+			camera.setActive(gl);
+			for(Entity entity : world.getEntities()) {
+				for(Renderer renderer : entity.getComponents(Renderer.class)) {
+					renderer.render(gl);
+				}
 			}
-		}
+		gl.glPopMatrix();
 	}
 	
 	private void renderHUD(GL2 gl) {
