@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.core.ComponentContainer;
+import wolf3d.core.Entity;
 
 /**
  * A Component is put inside a ComponentContainer. A Component can only be in one container at a time.
@@ -15,7 +16,7 @@ public class Component extends Observable {
 	protected static final Logger log = LogManager.getLogger();
 	
 	/** The Container that this Component is in - null if not in anything */
-	private ComponentContainer owner;
+	private Entity owner;
 	
 	/**
 	 * Sets the ComponentContainer that contains this component<br>
@@ -25,7 +26,7 @@ public class Component extends Observable {
 	 * Throws RuntimeException if: (~a^c1)v(~b^~c2)
 	 * @param owner The owner of this Component
 	 */
-	public void setOwner(ComponentContainer owner) {
+	public void setOwner(Entity owner) {
 		if(this.owner != owner) {
 			if((this.owner != null && this.owner.contains(this)) || (owner != null &&  !owner.contains(this)))
 				throw new RuntimeException("This component should only be in the new owner at this point");
@@ -39,7 +40,7 @@ public class Component extends Observable {
 	 * Gets the Container this Component is in.
 	 * @return Returns the Container that contains this Component - or null if not attached to anything.
 	 */
-	public ComponentContainer getOwner() {
+	public Entity getOwner() {
 		return owner;
 	}
 	
