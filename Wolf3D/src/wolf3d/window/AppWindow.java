@@ -18,8 +18,12 @@ import javax.swing.WindowConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import wolf3d.components.Transform;
+import wolf3d.components.renderers.TriangleRenderer;
+import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
+import wolf3d.world.World;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -60,19 +64,29 @@ public class AppWindow extends JFrame {
 		Keyboard.register(this);
 		Mouse.register(this);
 		
+		//Create the World
+		World world = new World();
+		//Create test entity.
+		Entity tri = new Entity(0);
+		tri.attachComponent(Transform.class).walk(-5);
+		tri.attachComponent(new TriangleRenderer(1, 1, 1, 0, 0));
+		world.register(tri);
+		
 		//Build OpenGL panel.
 		GLProfile glProfile = GLProfile.getDefault();
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
-		gamePanel = new EntityDemo(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
-		animator = new FPSAnimator(gamePanel, 60);
+//		gamePanel = new EntityDemo(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
+		WorldView view = new WorldView(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
+		view.setWorld(world);
+		animator = new FPSAnimator(view, 60);
 		animator.start();
-		this.getContentPane().add(gamePanel);
+		this.getContentPane().add(view);
 		
 		this.pack();
 		this.setVisible(true);
 		
 		// Must grab after component is visable on screen
-		Mouse.setGrabbed(true);
+//		Mouse.setGrabbed(true);
 	}
 	
 	private void confirmExit() {
