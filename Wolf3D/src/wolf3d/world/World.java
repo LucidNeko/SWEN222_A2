@@ -1,6 +1,7 @@
 package wolf3d.world;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import wolf3d.components.Transform;
@@ -24,5 +25,14 @@ public class World {
 		Entity player = new Entity(id, Transform.class);
 		player.attachComponent(Camera.class);
 		players.add(player);
+	}
+	
+	/**
+	 * Returns an unmodifiable List of all the Entities in the World.
+	 * @return An unmodifyable list of all the entities in the world.
+	 * @author Hamish Rae-Hodgson
+	 */
+	public List<Entity> getEntities() {
+		return Collections.unmodifiableList(players);
 	}
 }
