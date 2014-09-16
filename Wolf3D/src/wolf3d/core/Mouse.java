@@ -46,6 +46,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	private static float y = 0;
 	private static float dx = 0;
 	private static float dy = 0;
+	private static float dwheel = 0;
 
 	/** If this is true the mouse should be considered as grabbed. */
 	private static boolean isGrabbed = false;
@@ -121,6 +122,15 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		return out;
 	}
 	
+	/** returns the direction of wheel scroll.
+	 * @return 0 when no scroll pending. -1 when down scroll, 1 when up scroll.
+	 */
+	public static float getDWheel() {
+		float out = dwheel;
+		dwheel = 0;
+		return out;
+	}
+	
 	/**
 	 * Grab the Mouse causing it to remain locked in the center of the frame.
 	 * @param grabbed boolean state of grabbed. true to grab, false to not grab.
@@ -144,7 +154,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		
+		dwheel = e.getWheelRotation() < 0 ? e.getWheelRotation() : e.getWheelRotation();
 	}
 
 	@Override
