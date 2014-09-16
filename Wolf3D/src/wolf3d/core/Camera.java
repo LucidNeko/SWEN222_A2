@@ -18,25 +18,25 @@ import wolf3d.components.Transform;
  *
  */
 public class Camera extends Component {
-	
+
 	//TODO: link in with owners Transform.
-	
+
 	private final Vec3 position;
 	private final Vec3 along;
 	private final Vec3 up;
 	private final Vec3 look;
-	
+
 	/**
 	 * Create a new Transform with position=(0,0,0) and zero rotation.
 	 */
-	public Camera() { 
+	public Camera() {
 		position = new Vec3();
 		up = new Vec3();
 		along = new Vec3();
 		look = new Vec3();
 		reset(); //sets up vectors correctly
 	}
-	
+
 	/**
 	 * Resets this transform to (0,0,0) and zero rotation
 	 */
@@ -46,7 +46,7 @@ public class Camera extends Component {
 		along.set(Vec3.RIGHT);
 		look.set(Vec3.BACK); //changed from forward
 	}
-	
+
 	/**
 	 * Strafe this transform. i.e left<->right movement.
 	 * @param delta Amount to move.
@@ -54,7 +54,7 @@ public class Camera extends Component {
 	public void strafe(float delta) {
 		position.addLocal(along.mul(delta));
 	}
-	
+
 	/**
 	 * Fly this transform. i.e up<->down movement.
 	 * @param delta Amount to move.
@@ -62,7 +62,7 @@ public class Camera extends Component {
 	public void fly(float delta) {
 		position.addLocal(up.mul(delta));
 	}
-	
+
 	/**
 	 * Walk this transform. i.e in<->out movement.<br>
 	 * @param delta Amount to move.
@@ -70,7 +70,7 @@ public class Camera extends Component {
 	public void walk(float delta) {
 		position.addLocal(look.mul(delta));
 	}
-	
+
 	/**
 	 * Rotates around the look vector (facing direction).
 	 * @param theta Rotation amount in radians.
@@ -81,7 +81,7 @@ public class Camera extends Component {
 		along.set(Vec3.cross(up, look));
 		along.negateLocal();
 	}
-	
+
 	/**
 	 * Rotates around the along vector (left<->right).
 	 * @param theta Rotation amount in radians.
@@ -92,18 +92,18 @@ public class Camera extends Component {
 		up.set(Vec3.cross(look, along));
 		up.negateLocal();
 	}
-	
+
 	/**
 	 * Rotates around the up vector (up<->down)
 	 * @param theta Rotation amount in radians.
 	 */
 	public void yaw(float theta) {
 		along.mulLocal(Mathf.cos(theta)).addLocal(look.mul(Mathf.sin(theta)));
-		along.normalize();		
+		along.normalize();
 		look.set(Vec3.cross(along, up));
 		look.negateLocal();
 	}
-	
+
 	/**
 	 * Rotates the camera about the world up vector.
 	 * @param theta Rotation amount in radians.
@@ -112,13 +112,29 @@ public class Camera extends Component {
 		//derived from the standard y axis rotation matrix.
 		float cos = Mathf.cos(theta);
 		float sin = Mathf.sin(theta);
-		
+
 		//perform the matrix-vector multiplication
 		along.set(cos*along.x() + sin*along.z(), along.y(), -sin*along.x() + cos*along.z());
 		up.set(cos*up.x() + sin*up.z(), up.y(), -sin*up.x() + cos*up.z());
 		look.set(cos*look.x() + sin*look.z(), look.y(),  -sin*look.x() + cos*look.z());
 	}
-	
+
+	/**
+	 * Walks forwards along the X/Z plane.
+	 * @param delta Amount of movement.
+	 */
+	public void walkXZ(float delta) {
+		position.addLocal(look.x()*delta, 0, look.z()*delta);
+	}
+
+	/**
+	 * Strafes along the X/Z plane
+	 * @param delta Amount of movement.
+	 */
+	public void strafeXZ(float delta) {
+		position.addLocal(along.x()*delta, 0, along.z()*delta);
+	}
+
 	/**
 	 * Translate the position of this transform by (dx, dy, dz).
 	 * @param dx The x translation.
@@ -128,7 +144,7 @@ public class Camera extends Component {
 	public void translate(float dx, float dy, float dz) {
 		position.addLocal(dx, dy, dz);
 	}
-	
+
 	/**
 	 * Get a Vec3 containing the Transforms current location. It's just a snapshot - so it's Immutable.
 	 * @return An Immutable Vec3 representing the Transforms current position.
@@ -136,15 +152,15 @@ public class Camera extends Component {
 	public ImmutableVec3 getPosition() {
 		return new ImmutableVec3(position);
 	}
-	
-	/** 
+
+	/**
 	 * Get a Vec3 containing the Transforms current up vector. It's just a snapshot - so it's Immutable.
 	 * @return An Immutable Vec3 representing the Transforms current up direction.
 	 */
 	public ImmutableVec3 getUp() {
 		return new ImmutableVec3(up);
 	}
-	
+
 	/**
 	 * Get a Vec3 containing the Transforms current along vector. It's just a snapshot - so it's Immutable.
 	 * @return An Immutable Vec3 representing the Transforms current along direction.
@@ -152,7 +168,7 @@ public class Camera extends Component {
 	public ImmutableVec3 getAlong() {
 		return new ImmutableVec3(along);
 	}
-	
+
 	/**
 	 * Get a Vec3 containing the Transforms current look vector. It's just a snapshot - so it's Immutable.
 	 * @return An Immutable Vec3 representing the Transforms current look direction.
@@ -160,7 +176,7 @@ public class Camera extends Component {
 	public ImmutableVec3 getLook() {
 		return new ImmutableVec3(look);
 	}
-	
+
 	/**
 	 * Gets this Transformation represented as a 4x4 column order matrix.
 	 * @return The transformation matrix that this Transform represents.
@@ -171,19 +187,19 @@ public class Camera extends Component {
 				up.x(),
 				-look.x(),
 				0,
-				
+
 				//Column 2
 				along.y(),
 				up.y(),
 				-look.y(),
 				0,
-				
+
 				//Column 3
 				along.z(),
 				up.z(),
 				-look.z(),
 				0,
-				
+
 				//Column 4
 				-Vec3.dot(along, position),
 				-Vec3.dot(up, position),
@@ -196,18 +212,18 @@ public class Camera extends Component {
 	 * Applies the transformation to the MODELVIEW MATRIX that this Transform specifies.
 	 * @param gl The OpenGL context.
 	 */
-	public void setActive(GL2 gl) {	
+	public void setActive(GL2 gl) {
 		//Get the modelview matrix
 		FloatBuffer buffer = FloatBuffer.allocate(16);
 		gl.glGetFloatv(GL_MODELVIEW_MATRIX, buffer);
 		float[] modelviewMatrix = buffer.array();
-		
+
 		//Build the transformation matrix this Transform specifies
 		float[] transformationMatrix = getMatrix();
-		
+
 		//Multiply modelview x transformation
 		float[] m = Mathf.multiplyMatrix(modelviewMatrix, transformationMatrix);
-		
+
 		//Load the matrix into OpenGL
 		gl.glLoadMatrixf(m, 0);
 	}
