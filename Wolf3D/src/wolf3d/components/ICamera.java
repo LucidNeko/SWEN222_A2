@@ -2,6 +2,11 @@ package wolf3d.components;
 
 import javax.media.opengl.GL2;
 
+/**
+ * ICamera is a class that all Cameras should implement. 
+ * @author Hamish Rae-Hodgson
+ *
+ */
 public interface ICamera {
 
 	/**
