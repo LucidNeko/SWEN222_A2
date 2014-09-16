@@ -30,6 +30,8 @@ public class GameDemo extends GameLoop {
 	private Camera camera;
 	private Entity player;
 	
+	private float cameraBackDistance = 0;
+	
 	public GameDemo(World world) {
 		super(FPS, FUPS);
 		this.world = world;
@@ -135,6 +137,13 @@ public class GameDemo extends GameLoop {
 		float dy = Mouse.getDY();
 		transform.pitch(Mathf.degToRad(dy));
 		transform.rotateY(Mathf.degToRad(dx)); 
+		
+		//camera
+		float dw = Mouse.getDWheel();
+		if(dw != 0) {
+			cameraBackDistance += dw*0.5f;
+			player.getComponent(Camera.class).setDistanceBehind(cameraBackDistance);
+		}
 	}
 
 	@Override
