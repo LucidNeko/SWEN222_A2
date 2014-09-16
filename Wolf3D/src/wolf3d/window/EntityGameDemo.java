@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.common.Mathf;
 import wolf3d.components.Sprite;
 import wolf3d.components.Transform;
-import wolf3d.components.renderers.Renderer;
 import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.renderers.Triangle3DRenderer;
 import wolf3d.core.Camera;
@@ -16,7 +15,6 @@ import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
-import wolf3d.util.ResourceLoader;
 import wolf3d.world.World;
 
 public class EntityGameDemo extends GameLoop {
