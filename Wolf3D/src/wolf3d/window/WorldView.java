@@ -33,8 +33,9 @@ public class WorldView extends GamePanel {
 	
 	private World world = null;
 
-	public WorldView(GLCapabilities glCapabilities, int width, int height) {
+	public WorldView(GLCapabilities glCapabilities, World world, int width, int height) {
 		super(glCapabilities, width, height);
+		setWorld(world);
 	}
 	
 	public void setWorld(World world) {
@@ -75,9 +76,6 @@ public class WorldView extends GamePanel {
 		bugFix(gl);
 
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE))
-			System.exit(0);
 		
 		renderWorld(gl);
 		renderHUD(gl);
