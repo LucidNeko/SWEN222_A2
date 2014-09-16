@@ -124,7 +124,9 @@ public class Camera extends Component {
 	 * @param delta Amount of movement.
 	 */
 	public void walkXZ(float delta) {
-		position.addLocal(look.x()*delta, 0, look.z()*delta);
+		Vec3 v = new Vec3(look.x(), 0, look.z());
+		v.normalize();
+		position.addLocal(v.mul(delta));
 	}
 
 	/**
@@ -132,7 +134,10 @@ public class Camera extends Component {
 	 * @param delta Amount of movement.
 	 */
 	public void strafeXZ(float delta) {
-		position.addLocal(along.x()*delta, 0, along.z()*delta);
+		Vec3 v = new Vec3(along.x(), 0, along.z());
+		v.normalize();
+		position.addLocal(v.mul(delta));
+
 	}
 
 	/**
