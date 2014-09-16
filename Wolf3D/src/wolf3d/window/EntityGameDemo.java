@@ -36,9 +36,8 @@ public class EntityGameDemo extends GameLoop {
 	}
 	
 	public void setView(View view) {
+		view.setCamera(camera);
 		this.view = view;
-		if(view instanceof WorldView)
-			((WorldView)view).setActiveCamera(camera);
 	}
 	
 	private void createEntities() {

@@ -52,7 +52,7 @@ public class WorldView extends GamePanel {
 	/** Sets the active Camera that we View the World through.
 	 * @param camera The camera.
 	 */
-	public void setActiveCamera(Camera camera) {
+	public void setCamera(Camera camera) {
 		this.camera = camera;
 	}
 

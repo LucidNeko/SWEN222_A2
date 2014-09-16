@@ -39,6 +39,10 @@ public class QuadDemo extends GamePanel {
 	public QuadDemo(GLCapabilities glCapabilities, int width, int height) {
 		super(glCapabilities, width, height);
 	}
+	
+	public void setCamera(wolf3d.core.Camera camera) {
+		//do nothing
+	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {

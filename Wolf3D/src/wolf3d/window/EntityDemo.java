@@ -40,6 +40,10 @@ public class EntityDemo extends GamePanel {
 	public EntityDemo(GLCapabilities glCapabilities, int width, int height) {
 		super(glCapabilities, width, height);
 	}
+	
+	public void setCamera(wolf3d.core.Camera camera) {
+		//do nothing
+	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
