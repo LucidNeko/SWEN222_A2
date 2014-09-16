@@ -36,6 +36,14 @@ public class Camera extends Component implements ICamera{
 		this.distanceBehind = distanceBehind;
 	}
 	
+	/** 
+	 * Sets the distance behind the entity this camera should be.
+	 * @param distanceBehind The distance.
+	 */
+	public void setDistanceBehind(float distanceBehind) {
+		this.distanceBehind = distanceBehind;
+	}
+	
 	/**
 	 * Build the matrix that represents the view from this entity.
 	 * @return The matrix.
