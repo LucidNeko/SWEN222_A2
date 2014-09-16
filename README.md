@@ -14,3 +14,18 @@ Key concepts:
     (an empty shell that holds components) and then add all the functionality
     you need to this Entity in the form of Components. As opposed to bunging
     all that functionality haphazardly into a 'Player' spaghetti class.
+
+Entry into the program:
+
+App contains a main method which instantiates itself:
+ - Creating a JFrame (itself).
+ - Registers the Input classes Mouse and Keyboard.
+ - Creates a new World.
+ - Adds a test entity to the world.
+ - Creates the WorldView - passing in the World.
+ - packs and sets itself to be visible.
+ - Creates a GameDemo - passing in the World.
+ - Sets the View of the GameDemo to be the WorldView we created before.
+ - Starts the game running.
+
+GameLoop is a thread that can be extended allowing you to create a class such as GameDemo easily.
