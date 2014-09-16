@@ -136,6 +136,21 @@ public class Transform extends Component {
 	}
 	
 	/**
+	 * Rotates the Transform about the world up vector.
+	 * @param theta Rotation amount in radians.
+	 */
+	public void rotateY(float theta) {
+		//derived from the standard y axis rotation matrix.
+		float cos = Mathf.cos(theta);
+		float sin = Mathf.sin(theta);
+
+		//perform the matrix-vector multiplication
+		along.set(cos*along.x() - sin*along.z(), along.y(), sin*along.x() + cos*along.z());
+		up.set(cos*up.x() - sin*up.z(), up.y(), sin*up.x() + cos*up.z());
+		look.set(cos*look.x() - sin*look.z(), look.y(),  sin*look.x() + cos*look.z());
+	}
+	
+	/**
 	 * Get a Vec3 containing the Transforms current location. It's just a snapshot - so it's Immutable.
 	 * @return An Immutable Vec3 representing the Transforms current position.
 	 */
