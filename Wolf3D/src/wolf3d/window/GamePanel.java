@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
  * Base class for all OpenGl renderable components
  * @author Hamish Rae-Hodgson
  */
-public abstract class GamePanel extends GLJPanel implements GLEventListener {
+public abstract class GamePanel extends GLJPanel implements GLEventListener, View {
 	private static final long serialVersionUID = 2122462715974304566L;
 	
 	protected static final Logger log = LogManager.getLogger();
