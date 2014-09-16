@@ -139,6 +139,14 @@ public class Camera extends Component {
 		position.addLocal(v.mul(delta));
 
 	}
+	
+	/**
+	 * Flys up the world y axis.
+	 * @param delta Amount of movement.
+	 */
+	public void flyVertical(float delta) {
+		position.addLocal(Vec3.UP.mul(delta));
+	}
 
 	/**
 	 * Translate the position of this transform by (dx, dy, dz).
