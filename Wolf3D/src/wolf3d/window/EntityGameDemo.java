@@ -10,6 +10,7 @@ import wolf3d.components.Sprite;
 import wolf3d.components.Transform;
 import wolf3d.components.renderers.Renderer;
 import wolf3d.components.renderers.TextureRenderer;
+import wolf3d.components.renderers.Triangle3DRenderer;
 import wolf3d.core.Camera;
 import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
@@ -30,7 +31,6 @@ public class EntityGameDemo extends GameLoop {
 	private Camera camera;
 	private Entity player;
 	
-	
 	public EntityGameDemo(World world) {
 		super(FPS, FUPS);
 		this.world = world;
@@ -47,6 +47,7 @@ public class EntityGameDemo extends GameLoop {
 		//Create player
 		player = new Entity(0, Transform.class);
 		camera = player.attachComponent(Camera.class);
+		player.attachComponent(Triangle3DRenderer.class); //TODO make camera follow properly.
 		world.register(player);		
 
 		int texID = 2;
