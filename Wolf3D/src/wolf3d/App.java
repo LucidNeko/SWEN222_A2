@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.components.Transform;
-import wolf3d.components.renderers.Triangle3DRenderer;
+import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import wolf3d.components.Camera;
 import wolf3d.components.Transform;
-import wolf3d.core.Camera;
 import wolf3d.core.Entity;
 
 /**
