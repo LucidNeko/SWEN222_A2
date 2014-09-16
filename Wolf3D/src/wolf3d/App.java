@@ -17,7 +17,6 @@ import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
-import wolf3d.window.EntityGameDemo;
 import wolf3d.window.GameDemo;
 import wolf3d.window.WorldView;
 import wolf3d.world.World;
@@ -67,7 +66,7 @@ public class App extends JFrame {
 		this.setVisible(true);
 		
 		//the game. This is a thread. You need to start it.
-		EntityGameDemo game = new EntityGameDemo(world);
+		GameDemo game = new GameDemo(world);
 		game.setView(view); // give it rhe view so it can call it's display method appropriately.
 		game.start();
 	}
