@@ -1,6 +1,6 @@
 package wolf3d.window;
 
-import wolf3d.core.Camera;
+import wolf3d.components.ICamera;
 
 /**
  * The View is an interface for a View that is to be displayed at a regular interval from a gameloop.
@@ -12,6 +12,6 @@ public interface View {
 	public void display();
 	
 	/** Sets the camera this view should use to render the world */
-	public void setCamera(Camera camera);
+	public void setCamera(ICamera camera);
 
 }
