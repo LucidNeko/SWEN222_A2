@@ -98,7 +98,7 @@ public class WorldView extends GamePanel {
 	public void display(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		
-		bugFix(gl);
+		bugFix(gl); //Maybe only required for GLJPanel not GLCanvas.
 
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
