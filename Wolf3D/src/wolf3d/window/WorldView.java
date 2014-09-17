@@ -11,8 +11,6 @@ import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
-import java.awt.event.KeyEvent;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -21,10 +19,14 @@ import javax.media.opengl.glu.GLU;
 import wolf3d.components.ICamera;
 import wolf3d.components.renderers.Renderer;
 import wolf3d.core.Entity;
-import wolf3d.core.Keyboard;
 import wolf3d.util.ResourceLoader;
 import wolf3d.world.World;
 
+/**
+ * The WorldView class is a View that renders a World as seen from the given Camera.
+ * @author Hamish Rae-Hodgson
+ *
+ */
 public class WorldView extends GamePanel {
 	private static final long serialVersionUID = -3162253973028786392L;
 	
