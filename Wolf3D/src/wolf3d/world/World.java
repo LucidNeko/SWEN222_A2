@@ -39,7 +39,7 @@ public class World {
 	
 	/**
 	 * Returns an unmodifiable List of all the Entities in the World.
-	 * @return An unmodifyable list of all the entities in the world.
+	 * @return An unmodifiable list of all the entities in the world.
 	 * @author Hamish Rae-Hodgson
 	 */
 	public List<Entity> getEntities() {
