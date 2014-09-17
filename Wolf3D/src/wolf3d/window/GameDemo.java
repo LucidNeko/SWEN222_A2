@@ -116,6 +116,16 @@ public class GameDemo extends GameLoop {
 			transform.strafeFlat(0.075f);
 		if(Keyboard.isKeyDown(KeyEvent.VK_D))
 			transform.strafeFlat(-0.075f);
+		
+		//flying
+//		if(Keyboard.isKeyDown(KeyEvent.VK_W))
+//			transform.walk(0.075f);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_S))
+//			transform.walk(-0.075f);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_A))
+//			transform.strafe(0.075f);
+//		if(Keyboard.isKeyDown(KeyEvent.VK_D))
+//			transform.strafe(-0.075f);
 
 		if(Keyboard.isKeyDown(KeyEvent.VK_J))
 			transform.rotateY(0.03f);
