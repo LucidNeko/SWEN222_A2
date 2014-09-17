@@ -19,7 +19,7 @@ Key concepts:
 
 Entry into the program:
 
-App contains a main method which instantiates itself:
+wolf3d.Wolf3D contains a main method which instantiates itself:
  - Creating a JFrame (itself).
  - Registers the Input classes Mouse and Keyboard.
  - Creates a new World.
