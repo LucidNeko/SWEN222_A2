@@ -31,10 +31,16 @@ public class TextureRenderer extends Renderer {
 	private int numVerticies = 6;
 
 	/**
-	 * Creates a new TextureRenderer using the texture at texID.
+	 * Creates a new TextureRenderer from the given parameters.
 	 * @param texID The ID of the texture this Renderer will render.
+	 * @param leftX The left x coordinate of the texture in relation to the entity.
+	 * @param bottomY The bottom y coordinate of the texture in relation to the entity.
+	 * @param rightX The right x coordinate of the texture in relation to the entity.
+	 * @param topY The top y coordinate of the texture in relation to the entity.
+	 * @param tileX Texture coordinate. Number of the textures to tile across the primitive.
+	 * @param tileY Texture coordinate. Number of the textures to tile up the primitive.
 	 */
-	public TextureRenderer(int texID, float leftX, float bottomY, float rightX, float topY, float uvX, float uvY) {
+	public TextureRenderer(int texID, float leftX, float bottomY, float rightX, float topY, float tileX, float tileY) {
 		this.texID = texID;
 		
 		vertices = Buffers.newDirectFloatBuffer(3 * 3 * 2); //3components, 3verticies, 2triangles 
@@ -52,12 +58,12 @@ public class TextureRenderer extends Renderer {
 		texcoords = Buffers.newDirectFloatBuffer(2 * 3 * 2); //2components, 3verticies, 2triangles
 		{
 			texcoords.put(0); texcoords.put(0); //0:(u, v)
-			texcoords.put(uvX); texcoords.put(0); //1:(u, v)
-			texcoords.put(0); texcoords.put(uvY); //3:(u, v)
+			texcoords.put(tileX); texcoords.put(0); //1:(u, v)
+			texcoords.put(0); texcoords.put(tileY); //3:(u, v)
 			
-			texcoords.put(0); texcoords.put(uvY); //3:(u, v)
-			texcoords.put(uvX); texcoords.put(0); //1:(u, v)
-			texcoords.put(uvX); texcoords.put(uvY); //2:(u, v)
+			texcoords.put(0); texcoords.put(tileY); //3:(u, v)
+			texcoords.put(tileX); texcoords.put(0); //1:(u, v)
+			texcoords.put(tileX); texcoords.put(tileY); //2:(u, v)
 			texcoords.flip();
 		}
 	}
