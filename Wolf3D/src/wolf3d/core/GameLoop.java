@@ -2,6 +2,9 @@ package wolf3d.core;
 
 import java.util.concurrent.locks.LockSupport;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * The GameLoop class provides abstract methods for you to implement and <br>
  * then calls these methods at regular intervals
@@ -9,6 +12,7 @@ import java.util.concurrent.locks.LockSupport;
  *
  */
 public abstract class GameLoop extends Thread {
+	private static final Logger log = LogManager.getLogger();
 	
 	private boolean running = true;
 	
@@ -95,7 +99,11 @@ public abstract class GameLoop extends Thread {
 	 * @param nanos Desired sleep duration in nanoseconds.
 	 */
 	private void sleepforabit(long nanos) {
-		if(nanos > 0) LockSupport.parkNanos(nanos);
+		if(nanos > 0)  {
+			LockSupport.parkNanos(nanos);
+		} else {
+			log.trace("Running slow - Can't keep up!!");
+		}
 	}
 	
 }
