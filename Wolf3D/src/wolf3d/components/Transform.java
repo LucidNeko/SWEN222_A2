@@ -44,6 +44,16 @@ public class Transform extends Component {
 	}
 	
 	/**
+	 * Sets the position of this Transform
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void setPosition(float x, float y, float z) {
+		this.position.set(x, y, z);
+	}
+	
+	/**
 	 * Strafe this transform. i.e left<->right movement.
 	 * @param delta Amount to move.
 	 */
