@@ -12,9 +12,6 @@ import javax.swing.WindowConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import wolf3d.components.Transform;
-import wolf3d.components.renderers.PyramidRenderer;
-import wolf3d.core.Entity;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
 import wolf3d.window.GameDemo;
@@ -26,7 +23,7 @@ import wolf3d.world.World;
  * @author Hamish Rae-Hodgson
  *
  */
-public class App extends JFrame {
+public class Wolf3D extends JFrame {
 	
 	private static final long serialVersionUID = 3938139405286328585L;
 	private static final Logger log = LogManager.getLogger();
@@ -35,7 +32,7 @@ public class App extends JFrame {
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 600;
 
-	public App() {
+	public Wolf3D() {
 		super(DEFAULT_TITLE);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {			
@@ -85,7 +82,7 @@ public class App extends JFrame {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new App();
+				new Wolf3D();
 			}
 		});
 	}
