@@ -73,11 +73,11 @@ public abstract class GamePanel extends GLJPanel implements GLEventListener, Vie
 	 * @param width
 	 * @param height
 	 */
-	protected void enter2DMode(GL2 gl, int width, int height) {
+	protected void enter2DMode(GL2 gl, float left, float right, float bottom, float top) {
 		gl.glMatrixMode(GL_PROJECTION);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
-		GLU.createGLU(gl).gluOrtho2D(0, width, 0, height);
+		GLU.createGLU(gl).gluOrtho2D(left, right, bottom, top);
 		gl.glMatrixMode(GL_MODELVIEW);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
