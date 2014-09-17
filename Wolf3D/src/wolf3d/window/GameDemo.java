@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import wolf3d.common.Mathf;
 import wolf3d.components.Camera;
-import wolf3d.components.Sprite;
 import wolf3d.components.Transform;
 import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
@@ -51,43 +50,37 @@ public class GameDemo extends GameLoop {
 		int texID = 2;
 		int wallID = 3;
 		int floorID = 4;
-		//walls
-		for(int i = 0; i < 20; i++) {
-			Entity entity;
-			//left wall
-			entity = buildSurface(1+i, wallID);
-			entity.getTransform().translate(-1, 0, -i*2);
-			entity.getTransform().yaw(Mathf.degToRad(-90));
-			world.register(entity);
-			//right wall
-			entity = buildSurface(21+i, wallID);
-			entity.getTransform().translate(1, 0, -i*2);
-			entity.getTransform().yaw(Mathf.degToRad(90));
-			world.register(entity);
-			//floor
-			entity = buildSurface(41+i, floorID);
-			entity.getTransform().translate(0, -1, -i*2);
-			entity.getTransform().pitch(Mathf.degToRad(90));
-			world.register(entity);
-		}
 		
+		Entity entity;
+		//left wall
+		entity = new Entity(1, Transform.class);
+		entity.getTransform().translate(-1, 0, 0);
+		entity.getTransform().yaw(Mathf.degToRad(-90));
+		entity.attachComponent(new TextureRenderer(wallID, 0, -1, 20, 1, 10, 1));
+		world.register(entity);
+		//right wall		
+		entity = new Entity(2, Transform.class);
+		entity.getTransform().translate(1, 0, 0);
+		entity.getTransform().yaw(Mathf.degToRad(90));
+		entity.attachComponent(new TextureRenderer(wallID, -20, -1, 0, 1, 10, 1));
+		world.register(entity);
+		//floor		
+		entity = new Entity(3, Transform.class);
+		entity.getTransform().translate(0, -1, 0);
+		entity.getTransform().pitch(Mathf.degToRad(90));
+		entity.attachComponent(new TextureRenderer(floorID, -1, 0, 1, 20, 1, 10));
+		world.register(entity);
 		//door
-		Entity door;
-		door = buildSurface(61, texID);
-		door.getTransform().translate(0, 0, -10);
-		world.register(door);
+		entity = new Entity(4, Transform.class);
+		entity.getTransform().translate(0, 0, -10);
+		entity.attachComponent(new TextureRenderer(texID, -1, -1, 1, 1, 1, 1));
+		world.register(entity);
 		//reverse door
-		door = buildSurface(61, texID);
-		door.getTransform().translate(0, 0, -10);
-		door.getTransform().yaw(Mathf.degToRad(180));
-		world.register(door);
-	}
-	
-	private Entity buildSurface(int id, int texID) {
-		Entity entity = new Entity(id, Transform.class);
-		entity.attachComponent(new Sprite(2,2));
-		entity.attachComponent(new TextureRenderer(texID));
-		return entity;
+		entity = new Entity(5, Transform.class);
+		entity.getTransform().translate(0, 0, -10);
+		entity.getTransform().yaw(Mathf.degToRad(180));
+		entity.attachComponent(new TextureRenderer(texID, -1, -1, 1, 1, 2, 1));
+		world.register(entity);
 	}
 
 	@Override
