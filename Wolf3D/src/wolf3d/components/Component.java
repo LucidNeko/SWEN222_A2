@@ -8,17 +8,17 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.core.Entity;
 
 /**
- * A Component is put inside a ComponentContainer. A Component can only be in one container at a time.
+ * A Component is put inside an Entity. A Component can only be in one Entity at a time.
  * @author Hamish Rae-Hodgson
  */
 public class Component extends Observable {
 	protected static final Logger log = LogManager.getLogger();
 	
-	/** The Container that this Component is in - null if not in anything */
+	/** The Entity that this component is attached to - null if not attached to anything */
 	private Entity owner;
 	
 	/**
-	 * Sets the ComponentContainer that contains this component<br>
+	 * Sets the Entity that contains this component<br>
 	 * INVARIANT: Must be contained in the provided owner AND must no longer be contained in the old owner.<br>
 	 * INVARIANT: <br>a=oldOwner:null b=newOwner:nul c1=containedInOldOwner c2=containedInNewOwner<br>
 	 * (~a -> ~c1)(~b -> c2)<br>
@@ -36,8 +36,8 @@ public class Component extends Observable {
 	}
 	
 	/** 
-	 * Gets the Container this Component is in.
-	 * @return Returns the Container that contains this Component - or null if not attached to anything.
+	 * Gets the Entity this Component is attached to.
+	 * @return Returns the Entity that owns this Component - or null if not attached to anything.
 	 */
 	public Entity getOwner() {
 		return owner;
