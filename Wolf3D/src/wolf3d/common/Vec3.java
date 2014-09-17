@@ -7,11 +7,22 @@ package wolf3d.common;
  */
 public class Vec3 {
 	
+	/** The world left vector */
 	public static final ImmutableVec3 LEFT  = new ImmutableVec3(-1,  0,  0);
+	
+	/** The world right vector */
 	public static final ImmutableVec3 RIGHT = new ImmutableVec3( 1,  0,  0);
+	
+	/** The world down vector */
 	public static final ImmutableVec3 DOWN  = new ImmutableVec3( 0, -1,  0);
+	
+	/** The world up vector */
 	public static final ImmutableVec3 UP    = new ImmutableVec3( 0,  1,  0);
+	
+	/** The world back vector */
 	public static final ImmutableVec3 BACK    = new ImmutableVec3( 0,  0, -1);
+	
+	/** The world forward vector */
 	public static final ImmutableVec3 FORWARD   = new ImmutableVec3( 0,  0,  1);
 	
 	private float x;
@@ -22,16 +33,29 @@ public class Vec3 {
 	// CONSTRUCTORS
 	//
 	
+	/**
+	 * Construct a new vector with (x, y, z) = (0, 0, 0).
+	 */
 	public Vec3() {
 		x = y = z = 0;
 	}
 	
+	/**
+	 * Construct a new vector at (x, y, z).
+	 * @param x The x component of the vector.
+	 * @param y The y component of the vector.
+	 * @param z The z component of the vector.
+	 */
 	public Vec3(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
+	/**
+	 * Construct a new vector such that (x, y, z) = (source.x, source.y, source.z).
+	 * @param source The vector to copy (x, y, z) from.
+	 */
 	public Vec3(Vec3 source) {
 		this.x = source.x;
 		this.y = source.y;
@@ -42,30 +66,71 @@ public class Vec3 {
 	// GET
 	//
 	
+	/**
+	 * Get the x component of this vector.
+	 * @return x.
+	 */
 	public float x() { return x; }
+	
+	/**
+	 * Get the y component of this vector.
+	 * @return y.
+	 */
 	public float y() { return y; }
+	
+	/**
+	 * Get the z component of this vector.
+	 * @return z.
+	 */
 	public float z() { return z; }
 	
+	/**
+	 * Get the x component of this vector.
+	 * @return x.
+	 */
 	public float getX() { return x; }
+	
+	/**
+	 * Get the y component of this vector.
+	 * @return y.
+	 */
 	public float getY() { return y; }
+	
+	/**
+	 * Get the z component of this vector.
+	 * @return z.
+	 */
 	public float getZ() { return z; }
 	
 	//
 	// SET
 	//
 	
+	/**
+	 * Sets this vector such that (x, y, z) = (source.x, source.y, source.z).
+	 * @param source The vector to copy (x, y, z) from.
+	 */
 	public void set(Vec3 source) {
 		this.x = source.x;
 		this.y = source.y;
 		this.z = source.z;
 	}
 	
+	/**
+	 * Sets this vector to be (x, y, z)
+	 * @param x The new x component of the vector.
+	 * @param y The new y component of the vector.
+	 * @param z The new z component of the vector.
+	 */
 	public void set(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
+	/**
+	 * Sets this Vector such that (x, y, z) = (0, 0, 0).
+	 */
 	public void setZero() {
 		x = y = z = 0;
 	}
@@ -74,18 +139,38 @@ public class Vec3 {
 	// ADDITION
 	//
 	
+	/**
+	 * Returns a new vector containing this + other.<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @param other The vector to add
+	 * @return The resulting vector.
+	 */
 	public Vec3 add(Vec3 other) {
 		return new Vec3(this.x + other.x, 
 						this.y + other.y, 
 						this.z + other.z);
 	}
 	
+	/**
+	 * Returns a new vector containing this + (x, y, z).<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return The resulting vector.
+	 */
 	public Vec3 add(float x, float y, float z) {
 		return new Vec3(this.x + x,
 						this.y + y,
 						this.z + z);
 	}
 	
+	/**
+	 * Sets this vector to be this + other.<br>
+	 * MODIFIES LOCALLY.
+	 * @param other The vector to add.
+	 * @return This vector.
+	 */
 	public Vec3 addLocal(Vec3 other) {
 		this.x += other.x;
 		this.y += other.y;
@@ -93,6 +178,14 @@ public class Vec3 {
 		return this;
 	}
 	
+	/**
+	 * Sets this vector to be this + (x, y, z).<br>
+	 * MODIFIES LOCALLY.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return This vewctor.
+	 */
 	public Vec3 addLocal(float x, float y, float z) {
 		this.x += x;
 		this.y += y;
@@ -104,18 +197,38 @@ public class Vec3 {
 	// SUBTRACTION
 	//
 	
+	/**
+	 * Returns a new vector containing this - other.<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @param other The vector to subtract
+	 * @return The resulting vector.
+	 */
 	public Vec3 sub(Vec3 other) {
 		return new Vec3(this.x - other.x, 
 						this.y - other.y, 
 						this.z - other.z);
 	}
 	
+	/**
+	 * Returns a new vector containing this - (x, y, z).<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return The resulting vector.
+	 */
 	public Vec3 sub(float x, float y, float z) {
 		return new Vec3(this.x - x,
 						this.y - y,
 						this.z - z);
 	}
 	
+	/**
+	 * Sets this vector to be this - other.<br>
+	 * MODIFIES LOCALLY.
+	 * @param other The vector to subtract
+	 * @return This vector.
+	 */
 	public Vec3 subLocal(Vec3 other) {
 		this.x -= other.x;
 		this.y -= other.y;
@@ -123,6 +236,14 @@ public class Vec3 {
 		return this;
 	}
 	
+	/**
+	 * Sets this vector to be this - (x, y, z).<br>
+	 * MODIFIES LOCALLY.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return This vector.
+	 */
 	public Vec3 subLocal(float x, float y, float z) {
 		this.x -= x;
 		this.y -= y;
@@ -134,12 +255,24 @@ public class Vec3 {
 	// MULTIPLICATION
 	//
 	
+	/**
+	 * Returns a new vector containing this * factor.<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @param factor The factor to multiply by.
+	 * @return The resulting vector.
+	 */
 	public Vec3 mul(float factor) {
 		return new Vec3(this.x * factor,
 						this.y * factor,
 						this.z * factor);
 	}
 	
+	/**
+	 * Sets this vector to be this * factor.<br>
+	 * MODIFIES LOCALLY
+	 * @param factor The factor to multiply by.
+	 * @return This Vector.
+	 */
 	public Vec3 mulLocal(float factor) {
 		this.x *= factor;
 		this.y *= factor;
@@ -151,6 +284,13 @@ public class Vec3 {
 	// DIVISION
 	//
 	
+	/**
+	 * Returns a new vector containing this / factor.<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @param factor The factor to divide by.
+	 * @throws IllegalArgumentException If factor is 0.
+	 * @return The resulting vector.
+	 */
 	public Vec3 div(float factor) {
 		if(factor == 0) throw new IllegalArgumentException("Cannot divide by zero");
 		float delta = 1/factor;
@@ -159,6 +299,13 @@ public class Vec3 {
 						this.z * delta);
 	}
 	
+	/**
+	 * Sets this vector to be this / factor<br>
+	 * MODIFIES LOCALLY.
+	 * @param factor The factor to divide by.
+	 * @throws IllegalArgumentException If factor is 0.
+	 * @return This vector.
+	 */
 	public Vec3 divLocal(float factor) {
 		if(factor == 0) throw new IllegalArgumentException("Cannot divide by zero");
 		float delta = 1/factor;
@@ -172,10 +319,20 @@ public class Vec3 {
 	// UTIL
 	//
 	
+	/**
+	 * Returns a new vector such that (x, y, z) = (-x, -y, -z).<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @return The resulting vector.
+	 */
 	public Vec3 negate() {
 		return new Vec3(-x, -y, -z);
 	}
 	
+	/**
+	 * Sets this vector such that (x, y, z) = (-x, -y, -z).<br>
+	 * MODIFIES LOCALLY.
+	 * @return This vector.
+	 */
 	public Vec3 negateLocal() {
 		this.x = -this.x;
 		this.y = -this.y;
@@ -183,12 +340,22 @@ public class Vec3 {
 		return this;
 	}
 	
+	/**
+	 * Returns a new vector containing (x, y, z) = (|x|, |y|, |z|).<br>
+	 * DOES NOT MODIFY LOCALLY.
+	 * @return The resulting vector.
+	 */
 	public Vec3 abs() {
 		return new Vec3(x < 0 ? -x : x,
 						y < 0 ? -y : y,
 						z < 0 ? -z : z);
 	}
 	
+	/**
+	 * Sets this vector to be (|x|, |y|, |z|).<br>
+	 * MODIFIES LOCALLY.
+	 * @return This vector.
+	 */
 	public Vec3 absLocal() {
 		this.x = x < 0 ? -x : x;
 		this.y = y < 0 ? -y : y;
@@ -196,17 +363,25 @@ public class Vec3 {
 		return this;
 	}
 	
+	/**
+	 * Returns the magnitude of this vector.
+	 * @return The magnitude.
+	 */
 	public float length() {
 		return (float) Math.sqrt(x*x + y*y+ z*z);
 	}
 	
+	/**
+	 * Return the squared magnitude of this vector.
+	 * @return The magnitude ^2
+	 */
 	public float lengthSquared() {
 		return x*x + y*y + z*z;
 	}	
 	
 	/**
-	 * <b><i>Modifies this Vector.</i></b><br><br>
-	 * Normalizes this Vector and returns it's length before normalization.
+	 * Normalizes this Vector and returns it's length before normalization.<br>
+	 * MODIFIES LOCALLY
 	 * @return length of vector before normalization.
 	 */
 	public float normalize() {
@@ -217,25 +392,29 @@ public class Vec3 {
 		return length;
 	}
 	
+	/**
+	 * Returns the cross product of a x b.<br>
+	 * DOES NOT MODIFY EITHER VECTOR.
+	 * @param a Vector a.
+	 * @param b Vector b.
+	 * @return The resulting vector.
+	 */
 	public static Vec3 cross(Vec3 a, Vec3 b) {
 		return new Vec3(a.y*b.z - a.z*b.y,
 						a.z*b.x - a.x*b.z,
 						a.x*b.y - a.y*b.x);
 	}
 	
+	/**
+	 * Returns the dot product of a . b<br>
+	 * DOES NOT MODIFY EITHER VECTOR.
+	 * @param a Vector a.
+	 * @param b Vector b.
+	 * @return The result.
+	 */
 	public static float dot(Vec3 a, Vec3 b) {
 		return a.x*b.x + a.y*b.y + a.z*b.z;
 	}
-	
-	/** Is this really in radians? */
-	public static float angleInRadians(Vec3 a, Vec3 b) {
-		return dot(a, b) / (a.length() * b.length());
-	}
-	
-	public static float angleInDegrees(Vec3 a, Vec3 b) {
-		return (float) Math.acos(angleInRadians(a, b));
-	}
-	
 	
 	@Override
 	public Vec3 clone() {
@@ -246,6 +425,5 @@ public class Vec3 {
 	public String toString() {
 		return String.format("(%.2f,  %.2f, %.2f)", x, y, z);
 	}
-	
 
 }
