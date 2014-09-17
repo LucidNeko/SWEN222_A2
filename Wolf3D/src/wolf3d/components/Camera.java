@@ -16,32 +16,21 @@ import wolf3d.common.Vec3;
  */
 public class Camera extends Component implements ICamera{
 	
-	private float verticalOffset;
-	private float distanceBehind;
+	/** Camera offset from entity */
+	private final Transform transform = new Transform();
 	
 	/**
-	 * Create a new Camera displaying the world as seen exaclty from this entities Transform.
+	 * Create a new Camera displaying the world as seen from this Entity.
 	 */
-	public Camera() {
-		this(0, 0);
-	}
-
-	/**
-	 * Create a new camera with the given parameters.
-	 * @param verticalOffset How for along the World up to translate the camera.
-	 * @param distanceBehind How far behind the entity should the camera be.
-	 */
-	public Camera(float verticalOffset, float distanceBehind) {
-		this.verticalOffset = verticalOffset;
-		this.distanceBehind = distanceBehind;
-	}
+	public Camera() { }
 	
-	/** 
-	 * Sets the distance behind the entity this camera should be.
-	 * @param distanceBehind The distance.
+	/**
+	 * Get the Transform of this camera (In relation to it's owners Transform).<br>
+	 * Modify this for 3rd person/1st person etc etc..
+	 * @return The transform.
 	 */
-	public void setDistanceBehind(float distanceBehind) {
-		this.distanceBehind = distanceBehind;
+	public Transform getTransform() {
+		return transform;
 	}
 	
 	/**
@@ -60,10 +49,7 @@ public class Camera extends Component implements ICamera{
 		look = look.negate();
 		along = along.negate();
 		
-		position = position.add(Vec3.UP.mul(verticalOffset));
-		position = position.add(look.mul(distanceBehind));
-		
-		return new float[] {
+		float[] m =  new float[] {
 				//Column 1
 				along.x(),
 				up.x(),
@@ -88,6 +74,9 @@ public class Camera extends Component implements ICamera{
 				Vec3.dot(look.negate(), position),
 				1
 		};
+		
+		//Multiply the cameras transformation matrix by the generated matrix.
+		return Mathf.multiplyMatrix(transform.getMatrix(), m);
 	}
 
 	@Override
@@ -97,11 +86,11 @@ public class Camera extends Component implements ICamera{
 		gl.glGetFloatv(GL_MODELVIEW_MATRIX, buffer);
 		float[] modelviewMatrix = buffer.array();
 
-		//Build the transformation matrix this Transform specifies
-		float[] transformationMatrix = buildMatrix();
+		//Build the transformation matrix this Camera specifies
+		float[] cameraMatrix = buildMatrix();
 
 		//Multiply modelview x transformation
-		float[] m = Mathf.multiplyMatrix(modelviewMatrix, transformationMatrix);
+		float[] m = Mathf.multiplyMatrix(modelviewMatrix, cameraMatrix);
 
 		//Load the matrix into OpenGL
 		gl.glLoadMatrixf(m, 0);

@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import wolf3d.common.Mathf;
 import wolf3d.components.Camera;
-import wolf3d.components.ICamera;
 import wolf3d.components.Sprite;
 import wolf3d.components.Transform;
 import wolf3d.components.renderers.TextureRenderer;
@@ -29,8 +28,6 @@ public class GameDemo extends GameLoop {
 	
 	private Camera camera;
 	private Entity player;
-	
-	private float cameraBackDistance = 0;
 	
 	public GameDemo(World world) {
 		super(FPS, FUPS);
@@ -141,8 +138,7 @@ public class GameDemo extends GameLoop {
 		//camera
 		float dw = Mouse.getDWheel();
 		if(dw != 0) {
-			cameraBackDistance += dw*0.5f;
-			player.getComponent(Camera.class).setDistanceBehind(cameraBackDistance);
+			player.getComponent(Camera.class).getTransform().walk(-dw);
 		}
 	}
 
