@@ -117,7 +117,17 @@ public class WorldView extends GamePanel {
 	}
 	
 	private void renderHUD(GL2 gl) {
+		enter2DMode(gl, this.getWidth(), this.getHeight());
 		
+		gl.glColor4f(0.5f, 0.5f, 1, 0.75f);
+		gl.glBegin(GL2.GL_QUADS);
+			gl.glVertex2f(0, 0);
+			gl.glVertex2f(this.getWidth(), 0);
+			gl.glVertex2f(this.getWidth(), this.getHeight()/10);
+			gl.glVertex2f(0, this.getHeight()/10);
+		gl.glEnd();
+		
+		exit2DMode(gl);
 	}
 
 }
