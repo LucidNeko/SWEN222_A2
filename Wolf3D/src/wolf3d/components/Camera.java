@@ -81,6 +81,8 @@ public class Camera extends Component implements ICamera{
 
 	@Override
 	public void setActive(GL2 gl) {
+		requires(Transform.class);
+		
 		//Get the modelview matrix
 		FloatBuffer buffer = FloatBuffer.allocate(16);
 		gl.glGetFloatv(GL_MODELVIEW_MATRIX, buffer);

@@ -42,5 +42,26 @@ public class Component extends Observable {
 	public Entity getOwner() {
 		return owner;
 	}
+
+	/**
+	 * Tests whether the Entity that owns this Component also owns an instance each of the provided Component Classes.
+	 * @param components The components you need on this Components owner Entity.
+	 */
+	@SafeVarargs
+	protected final <E extends Component> boolean requires(Class<? extends E>... components) {
+		boolean result = true;
+		if(owner != null) {
+			for(Class<? extends E> type : components) {
+				if(owner.getComponent(type) == null) {
+					log.error(this.getClass().getSimpleName() + " requires a " + type.getSimpleName() + " component to also be attached!");
+					result = false;
+				}
+			}
+		} else {
+			log.error("Should " + this.getClass().getSimpleName() + " really not have an owner?");
+			result = false;
+		}
+		return result;
+	}
 	
 }

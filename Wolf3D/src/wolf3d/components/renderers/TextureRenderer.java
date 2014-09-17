@@ -9,6 +9,8 @@ import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL2;
 
+import wolf3d.components.Transform;
+
 import com.jogamp.common.nio.Buffers;
 
 /**
@@ -70,6 +72,8 @@ public class TextureRenderer extends Renderer {
 
 	@Override
 	public void render(GL2 gl) {
+		requires(Transform.class);
+		
 		gl.glPushMatrix();
 			getOwner().getTransform().applyTransform(gl);
 		

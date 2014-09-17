@@ -12,9 +12,10 @@ import wolf3d.components.Transform;
 public class PyramidRenderer extends Renderer {
 
 	public void render(GL2 gl) {
-		Transform t = getOwner().getComponent(Transform.class);
+		requires(Transform.class);
+		
 		gl.glPushMatrix();
-			t.applyTransform(gl);
+			getOwner().getComponent(Transform.class).applyTransform(gl);
 			
 			gl.glBegin(GL2.GL_TRIANGLES);
 				gl.glColor3f(1, 0, 0);
