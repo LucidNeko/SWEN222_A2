@@ -5,7 +5,6 @@ import java.util.Observable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import wolf3d.core.ComponentContainer;
 import wolf3d.core.Entity;
 
 /**

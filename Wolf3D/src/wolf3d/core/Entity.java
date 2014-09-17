@@ -13,7 +13,7 @@ import wolf3d.components.Transform;
  * @author Hamish Rae-Hodgson
  *
  */
-public class Entity implements ComponentContainer {
+public class Entity  {
 	
 	//HashSet in the order Components were added
 	private final Set<Component> components = new LinkedHashSet<Component>();
@@ -59,7 +59,14 @@ public class Entity implements ComponentContainer {
 		return uniqueID;
 	}
 	
-	@Override
+	/**
+	 * Attach the given component to this Entity.<br>
+	 * Respectively sets the owner of the component to be this Entity.
+	 * @throws NullPointerException If param is null.
+	 * @throws IllegalStateException If the Component is already attached to an Entity
+	 * @param component The component to add to this Entity.
+	 * @return The attached Component.
+	 */
 	public <E extends Component> E attachComponent(E component) {
 		if(component == null) 
 			throw new NullPointerException();
@@ -70,7 +77,14 @@ public class Entity implements ComponentContainer {
 		return component;
 	}
 
-	@Override
+	/**
+	 * Attach a new instance of the given component to this Entity.<br>
+	 * Respectively sets the owner of the component to be this Entity.
+	 * @throws NullPointerException If param is null.
+	 * @throws IllegalStateException If the Component is already attached to an Entity
+	 * @param type The Class of the Component you wish to instantiate and add to this Entity.
+	 * @return The attached Component.
+	 */
 	public <E extends Component> E attachComponent(Class<E> type) {
 		try {
 			return attachComponent((E)(type.newInstance()));
@@ -80,8 +94,13 @@ public class Entity implements ComponentContainer {
 		}
 	}
 
+	
+	/**
+	 * Returns the first Component that matches type.
+	 * @param type Class of the Component you are looking for.
+	 * @return The matching component - or null if not found.
+	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public <E extends Component> E getComponent(Class<E> type) {
 		for(Component component : components)
 			if(type.isAssignableFrom(component.getClass()))
@@ -89,8 +108,12 @@ public class Entity implements ComponentContainer {
 		return null;
 	}
 
+	/**
+	 * Returns a List containing all the Components that match the provided type.
+	 * @param type Class of the Components you are looking for.
+	 * @return The List of matching components - or an empty list if none were found.
+	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public <E extends Component> List<E> getComponents(Class<E> type) {
 		List<E> out = new LinkedList<E>();
 		for(Component component : components)
@@ -99,7 +122,13 @@ public class Entity implements ComponentContainer {
 		return out;
 	}
 	
-	@Override
+	/**
+	 * Detaches the specified component from this Entity.<br>
+	 * If the component was present, the components Owner gets set to null.<br>
+	 * Then the component can be freely attached to other Entities.
+	 * @param component The component to remove.
+	 * @return true if the component was present and successfully detached - otherwise false.
+	 */
 	public <E extends Component> boolean detachComponent(E component) {
 		if(this.components.remove(component)) {
 			component.setOwner(null);
@@ -107,7 +136,11 @@ public class Entity implements ComponentContainer {
 		} else return false;
 	}
 	
-	@Override
+	/**
+	 * Checks if the component is attached to this Entity.
+	 * @param component The component to check for.
+	 * @return Returns true if the component was present - false otherwise.
+	 */
 	public <E extends Component> boolean contains(E component) {
 		return components.contains(component);
 	}
