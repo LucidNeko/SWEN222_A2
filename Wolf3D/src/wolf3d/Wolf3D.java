@@ -44,11 +44,6 @@ public class Wolf3D extends JFrame {
 		//Sets the mouse to be a crosshair     
 	    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		
-		//Register input devices.
-		this.setFocusable(true);
-		Keyboard.register(this);
-		Mouse.register(this);
-		
 		//Create the World
 		final World world = new World();
 		
@@ -57,6 +52,11 @@ public class Wolf3D extends JFrame {
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
 		final WorldView view = new WorldView(glCapabilities, world, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
 		this.getContentPane().add(view);
+		
+		//Register input devices. If GLCanvas have to register to canvas.
+  		view.setFocusable(true);
+  		Keyboard.register(view);
+  		Mouse.register(view);
 		
 		//Pack and display window.
 		this.pack();

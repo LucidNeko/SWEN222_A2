@@ -60,9 +60,9 @@ public class GameDemo extends GameLoop {
 		camera = player.attachComponent(Camera.class);
 		world.register(player);		
 
-		int texID = 2;
-		int wallID = 3;
-		int floorID = 4;
+		int texID = 1;
+		int wallID = 2;
+		int floorID = 3;
 		
 		Entity entity;
 		//left wall

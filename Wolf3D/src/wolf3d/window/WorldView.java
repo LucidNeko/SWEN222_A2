@@ -75,6 +75,10 @@ public class WorldView extends GamePanel {
 		int texID = ResourceLoader.loadTexture(gl, "1.png", true);
 		int wallID = ResourceLoader.loadTexture(gl, "debug_wall.png", true);
 		int floorID = ResourceLoader.loadTexture(gl, "debug_floor.png", true);
+		
+		log.trace("texID={}", texID);
+		log.trace("wallID={}", wallID);
+		log.trace("floorID={}", floorID);
 	}
 	
 	@Override

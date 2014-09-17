@@ -2,7 +2,6 @@ package wolf3d.window;
 
 import java.awt.Dimension;
 
-
 import static javax.media.opengl.GL.GL_DEPTH_TEST;
 //GL Constants
 import static javax.media.opengl.GL2.*;
@@ -11,7 +10,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.awt.GLJPanel;
+import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +20,7 @@ import org.apache.logging.log4j.Logger;
  * Base class for all OpenGl renderable components
  * @author Hamish Rae-Hodgson
  */
-public abstract class GamePanel extends GLJPanel implements GLEventListener, View {
+public abstract class GamePanel extends GLCanvas implements GLEventListener, View {
 	private static final long serialVersionUID = 2122462715974304566L;
 	
 	protected static final Logger log = LogManager.getLogger();
