@@ -16,6 +16,11 @@ import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
 import wolf3d.world.World;
 
+/**
+ * GameDemo is a demo game that shows off the GameLoop class and the Entity/Component system.
+ * @author Hamish Rae-Hodgson
+ *
+ */
 public class GameDemo extends GameLoop {
 	private static final Logger log = LogManager.getLogger();
 
@@ -28,12 +33,20 @@ public class GameDemo extends GameLoop {
 	private Camera camera;
 	private Entity player;
 	
+	/**
+	 * Create a new GameDemo with the given world as it's world.
+	 * @param world The world.
+	 */
 	public GameDemo(World world) {
 		super(FPS, FUPS);
 		this.world = world;
 		createEntities();
 	}
 	
+	/**
+	 * Set the View that is the renderer of the world. So we can call display() as required.
+	 * @param view The View.
+	 */
 	public void setView(View view) {
 		view.setCamera(camera);
 		this.view = view;
