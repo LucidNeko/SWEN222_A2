@@ -8,10 +8,11 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.common.Mathf;
 import wolf3d.components.Camera;
 import wolf3d.components.Transform;
+import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.Behaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.MouseLookController;
-import wolf3d.components.behaviours.WASDController;
+import wolf3d.components.behaviours.WASDFlying;
 import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.core.Entity;
@@ -59,12 +60,17 @@ public class GameDemo extends GameLoop {
 	private void createEntities() {
 		//Create player
 		player = new Entity(0, Transform.class,   Camera.class, PyramidRenderer.class, 
-							   WASDController.class, MouseLookController.class, 
+							   WASDFlying.class, MouseLookController.class, 
 							   CameraScrollBackController.class);
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(0, 0, -10);
 		world.register(player);		
 
+		//Create enemy.
+		Entity enemy = new Entity(6, Transform.class, PyramidRenderer.class, AILookAtController.class);
+		enemy.getComponent(AILookAtController.class).setTarget(player);
+		world.register(enemy);
+		
 		int texID = 1;
 		int wallID = 2;
 		int floorID = 3;
