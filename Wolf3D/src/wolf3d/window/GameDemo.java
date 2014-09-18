@@ -12,7 +12,6 @@ import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.components.updateables.Updateable;
-import wolf3d.components.updateables.animations.MoveUpAnimation;
 import wolf3d.components.updateables.behaviours.AILookAtController;
 import wolf3d.components.updateables.behaviours.AddAnimation;
 import wolf3d.components.updateables.behaviours.AddChaseBehaviour;
