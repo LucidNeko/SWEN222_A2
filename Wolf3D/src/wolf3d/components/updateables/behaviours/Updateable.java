@@ -1,4 +1,4 @@
-package wolf3d.components.behaviours;
+package wolf3d.components.updateables.behaviours;
 
 import wolf3d.components.Component;
 
@@ -10,7 +10,7 @@ import wolf3d.components.Component;
  * @author Hamish Rae-Hodgson
  *
  */
-public abstract class Behaviour extends Component {
+public abstract class Updateable extends Component {
 
 	/**
 	 * Update this behaviour. Should be called every tick with the delta time.

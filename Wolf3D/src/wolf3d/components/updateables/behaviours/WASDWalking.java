@@ -1,4 +1,4 @@
-package wolf3d.components.behaviours;
+package wolf3d.components.updateables.behaviours;
 
 import java.awt.event.KeyEvent;
 
@@ -6,11 +6,12 @@ import wolf3d.components.Transform;
 import wolf3d.core.Keyboard;
 
 /**
- * The WASDFlying class when added to an entity adds flying movement based on WASD.
+ * The WASDWalking class when added to an entity adds movement based on WASD.<br>
+ * Walking and strafing along the XZ plane.
  * @author Hamish Rae-Hodgson
  *
  */
-public class WASDFlying extends Behaviour {
+public class WASDWalking extends Updateable {
 	
 	/** Units per Second that this controller defaults to */
 	public static final float DEFAULT_MOVESPEED = 10;
@@ -33,13 +34,13 @@ public class WASDFlying extends Behaviour {
 		Transform t = getOwner().getComponent(Transform.class);
 		
 		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-			t.strafe(moveSpeed*delta);
+			t.strafeFlat(moveSpeed*delta);
 		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-			t.strafe(-moveSpeed*delta);
+			t.strafeFlat(-moveSpeed*delta);
 		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-			t.walk(moveSpeed*delta);
+			t.walkFlat(moveSpeed*delta);
 		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-			t.walk(-moveSpeed*delta);
+			t.walkFlat(-moveSpeed*delta);
 	}
 
 }

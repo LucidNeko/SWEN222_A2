@@ -1,4 +1,4 @@
-package wolf3d.components.behaviours;
+package wolf3d.components.updateables.behaviours;
 
 import wolf3d.components.Transform;
 import wolf3d.core.Entity;
@@ -8,7 +8,7 @@ import wolf3d.core.Entity;
  * @author Hamish Rae-Hodgson
  *
  */
-public class AILookAtController extends Behaviour {
+public class AILookAtController extends Updateable {
 	
 	/** The target to look at */
 	private Entity target = null;

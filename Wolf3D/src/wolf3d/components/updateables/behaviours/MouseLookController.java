@@ -1,4 +1,4 @@
-package wolf3d.components.behaviours;
+package wolf3d.components.updateables.behaviours;
 
 import wolf3d.common.Mathf;
 import wolf3d.components.Transform;
@@ -9,7 +9,7 @@ import wolf3d.core.Mouse;
  * @author Hamish Rae-Hodgson
  *
  */
-public class MouseLookController extends Behaviour {
+public class MouseLookController extends Updateable {
 
 	/** speed of looking around. Units per second. Low number for low dpi. */
 	private float speed = 40;

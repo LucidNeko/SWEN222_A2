@@ -1,4 +1,4 @@
-package wolf3d.components.behaviours;
+package wolf3d.components.updateables.behaviours;
 
 import wolf3d.components.Camera;
 import wolf3d.core.Mouse;
@@ -9,7 +9,7 @@ import wolf3d.core.Mouse;
  * @author Hamish Rae-Hodgson
  *
  */
-public class CameraScrollBackController extends Behaviour {
+public class CameraScrollBackController extends Updateable {
 	
 	private float speed = 1;
 	

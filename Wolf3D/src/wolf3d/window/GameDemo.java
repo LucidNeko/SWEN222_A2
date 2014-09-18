@@ -8,13 +8,13 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.common.Mathf;
 import wolf3d.components.Camera;
 import wolf3d.components.Transform;
-import wolf3d.components.behaviours.AILookAtController;
-import wolf3d.components.behaviours.Behaviour;
-import wolf3d.components.behaviours.CameraScrollBackController;
-import wolf3d.components.behaviours.MouseLookController;
-import wolf3d.components.behaviours.WASDFlying;
 import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
+import wolf3d.components.updateables.behaviours.AILookAtController;
+import wolf3d.components.updateables.behaviours.CameraScrollBackController;
+import wolf3d.components.updateables.behaviours.MouseLookController;
+import wolf3d.components.updateables.behaviours.Updateable;
+import wolf3d.components.updateables.behaviours.WASDFlying;
 import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
 import wolf3d.core.Keyboard;
@@ -120,7 +120,7 @@ public class GameDemo extends GameLoop {
 		
 		//Update all the behaviours attached to the entities.
 		for(Entity entity : world.getEntities()) {
-			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
+			for(Updateable behaviour : entity.getComponents(Updateable.class)) {
 				behaviour.update(delta);
 			}
 		}
