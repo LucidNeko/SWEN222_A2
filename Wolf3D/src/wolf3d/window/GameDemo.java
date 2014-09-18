@@ -8,6 +8,10 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.common.Mathf;
 import wolf3d.components.Camera;
 import wolf3d.components.Transform;
+import wolf3d.components.behaviours.Behaviour;
+import wolf3d.components.behaviours.CameraScrollBackController;
+import wolf3d.components.behaviours.MouseLookController;
+import wolf3d.components.behaviours.WASDController;
 import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.core.Entity;
@@ -54,10 +58,11 @@ public class GameDemo extends GameLoop {
 	
 	private void createEntities() {
 		//Create player
-		player = new Entity(0, Transform.class);
-		player.attachComponent(PyramidRenderer.class);
+		player = new Entity(0, Transform.class,   Camera.class, PyramidRenderer.class, 
+							   WASDController.class, MouseLookController.class, 
+							   CameraScrollBackController.class);
+		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(0, 0, -10);
-		camera = player.attachComponent(Camera.class);
 		world.register(player);		
 
 		int texID = 1;
@@ -98,63 +103,20 @@ public class GameDemo extends GameLoop {
 
 	@Override
 	protected void tick(float delta) {
+		//escape closes the game.
 		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE))
 			System.exit(0);
 
+		//if control is held down frees the mouse.
 		if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(false);
 		else Mouse.setGrabbed(true);
-
 		
-		Transform transform = player.getTransform();
-		//camera movement WASD and J/L for yaw
-		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-			transform.walkFlat(0.075f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-			transform.walkFlat(-0.075f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-			transform.strafeFlat(0.075f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-			transform.strafeFlat(-0.075f);
-		
-		//flying
-//		if(Keyboard.isKeyDown(KeyEvent.VK_W))
-//			transform.walk(0.075f);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_S))
-//			transform.walk(-0.075f);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_A))
-//			transform.strafe(0.075f);
-//		if(Keyboard.isKeyDown(KeyEvent.VK_D))
-//			transform.strafe(-0.075f);
-
-		if(Keyboard.isKeyDown(KeyEvent.VK_J))
-			transform.rotateY(0.03f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_L))
-			transform.rotateY(-0.03f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_I))
-			transform.pitch(-0.03f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_K))
-			transform.pitch(0.03f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_U))
-			transform.roll(-0.03f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_O))
-			transform.roll(0.03f);
-		
-		if(Keyboard.isKeyDown(KeyEvent.VK_R))
-			transform.flyVertical(0.03f);
-		if(Keyboard.isKeyDown(KeyEvent.VK_F))
-			transform.flyVertical(-0.03f);
-		
-		//Mouse-look
-		float dx = Mouse.getDX();
-		float dy = Mouse.getDY();
-		transform.pitch(Mathf.degToRad(dy));
-		transform.rotateY(Mathf.degToRad(dx)); 
-		
-		//camera
-		float dw = Mouse.getDWheel();
-		if(dw != 0) {
-			player.getComponent(Camera.class).getTransform().walk(-dw);
+		//Update all the behaviours attached to the entities.
+		for(Entity entity : world.getEntities()) {
+			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
+				behaviour.update(delta);
+			}
 		}
 	}
 
