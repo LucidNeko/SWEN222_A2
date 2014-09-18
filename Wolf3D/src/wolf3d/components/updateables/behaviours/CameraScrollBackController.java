@@ -1,6 +1,7 @@
 package wolf3d.components.updateables.behaviours;
 
 import wolf3d.components.Camera;
+import wolf3d.components.updateables.Updateable;
 import wolf3d.core.Mouse;
 
 /**

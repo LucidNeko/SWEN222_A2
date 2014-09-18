@@ -3,6 +3,7 @@ package wolf3d.components.updateables.behaviours;
 import java.awt.event.KeyEvent;
 
 import wolf3d.components.Transform;
+import wolf3d.components.updateables.Updateable;
 import wolf3d.core.Keyboard;
 
 /**

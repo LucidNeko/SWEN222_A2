@@ -1,4 +1,4 @@
-package wolf3d.components.updateables.behaviours;
+package wolf3d.components.updateables;
 
 import wolf3d.components.Component;
 
