@@ -43,6 +43,20 @@ public class Transform extends Component {
 		look.set(Vec3.FORWARD);
 	}
 	
+//	/**
+//	 * Sets this transform. Ensure that along up and look are all cross products of each other
+//	 * @param position
+//	 * @param along
+//	 * @param up
+//	 * @param look
+//	 */
+//	public void set(Vec3 position, Vec3 along, Vec3 up, Vec3 look) {
+//		this.position.set(position);
+//		this.along.set(along);
+//		this.up.set(up);
+//		this.look.set(look);
+//	}
+	
 	/**
 	 * Sets the position of this Transform
 	 * @param x
@@ -138,14 +152,6 @@ public class Transform extends Component {
 	}
 	
 	/**
-	 * Flys up the world up vector.
-	 * @param delta Amount of movement.
-	 */
-	public void flyVertical(float delta) {
-		position.addLocal(Vec3.UP.mul(delta));
-	}
-	
-	/**
 	 * Rotates the Transform about the world up vector.
 	 * @param theta Rotation amount in radians.
 	 */
@@ -158,6 +164,37 @@ public class Transform extends Component {
 		along.set(cos*along.x() - sin*along.z(), along.y(), sin*along.x() + cos*along.z());
 		up.set(cos*up.x() - sin*up.z(), up.y(), sin*up.x() + cos*up.z());
 		look.set(cos*look.x() - sin*look.z(), look.y(),  sin*look.x() + cos*look.z());
+	}
+	
+	/**
+	 * Rotates the transform so that it's look vector points at the targets position.
+	 * @param target Transform to point towards.
+	 */
+	public void lookAt(Transform target) {
+		lookAt(target.getPosition());
+	}
+	
+	/**
+	 * Rotates the transform so that it's look vector points at the target point.
+	 * @param Target Point to look at.
+	 */
+	public void lookAt(Vec3 target) {
+		lookAt(target, Vec3.UP);
+	}
+	
+	/**
+	 * Rotates the transform so that it's look vector points at the target point.<br>
+	 * Then rotate the transform so the up vector points at worldUp.
+	 * @param Target Point to look at.
+	 * @param worldUp Vector specifying upwards direction.
+	 */
+	public void lookAt(Vec3 target, Vec3 worldUp) {
+		Vec3 eye = target.sub(position);
+		if(eye.equals(Vec3.ZERO)) return; //(0,0,0) so get out.
+		eye.normalize(); //eye is a unit vector pointing at the target.
+		yaw(Vec3.dot(Vec3.cross(up, eye), look));
+		pitch(Vec3.dot(Vec3.cross(along,  eye), look));
+		roll(Vec3.dot(Vec3.cross(worldUp, up), eye));
 	}
 	
 	/**
