@@ -122,4 +122,17 @@ public class Mathf {
 				a[3]*b[12] + a[7]*b[13] + a[11]*b[14] + a[15]*b[15]
 		};
 	}
+	
+	/**
+	 * Multiply the vector through the matrix. <br>
+	 * DOES NOT MODIFY THE VECTOR.
+	 * @param m The matrix.
+	 * @param v The vector.
+	 * @return The resulting vector.
+	 */
+	public static Vec3 mulMatrix(float[] m, Vec3 v) {
+		return new Vec3(m[0]*v.x() + m[4]*v.y() + m[8]*v.z() + m[12]*1,
+				 		m[1]*v.x() + m[5]*v.y() + m[9]*v.z() + m[13]*1,
+				 		m[2]*v.x() + m[6]*v.y() + m[10]*v.z() + m[14]*1);
+	}
 }
