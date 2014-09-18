@@ -8,22 +8,25 @@ package wolf3d.common;
 public class Vec3 {
 	
 	/** The world left vector */
-	public static final ImmutableVec3 LEFT  = new ImmutableVec3(-1,  0,  0);
+	public static final ImmutableVec3 LEFT    = new ImmutableVec3(-1,  0,  0);
 	
 	/** The world right vector */
-	public static final ImmutableVec3 RIGHT = new ImmutableVec3( 1,  0,  0);
+	public static final ImmutableVec3 RIGHT   = new ImmutableVec3( 1,  0,  0);
 	
 	/** The world down vector */
-	public static final ImmutableVec3 DOWN  = new ImmutableVec3( 0, -1,  0);
+	public static final ImmutableVec3 DOWN    = new ImmutableVec3( 0, -1,  0);
 	
 	/** The world up vector */
-	public static final ImmutableVec3 UP    = new ImmutableVec3( 0,  1,  0);
+	public static final ImmutableVec3 UP      = new ImmutableVec3( 0,  1,  0);
 	
 	/** The world back vector */
 	public static final ImmutableVec3 BACK    = new ImmutableVec3( 0,  0, -1);
 	
 	/** The world forward vector */
-	public static final ImmutableVec3 FORWARD   = new ImmutableVec3( 0,  0,  1);
+	public static final ImmutableVec3 FORWARD = new ImmutableVec3( 0,  0,  1);
+	
+	/** The zero vector */
+	public static final ImmutableVec3 ZERO    = new ImmutableVec3( 0,  0,  0);
 	
 	private float x;
 	private float y;
