@@ -44,7 +44,7 @@ public class Component extends Observable {
 	}
 
 	/**
-	 * Tests whether the Entity that owns this Component also owns an instance each of the provided Component Classes.
+	 * Tests whether the Entity that owns this Component also owns an instance of each of the provided Component Classes.
 	 * @param components The components you need on this Components owner Entity.
 	 */
 	@SafeVarargs
