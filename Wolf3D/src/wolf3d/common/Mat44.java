@@ -214,7 +214,7 @@ public class Mat44 {
 	 * @author Hamish Rae-Hodgson
 	 *
 	 */
-	private class Vec4 {
+	private static class Vec4 {
 		public float x;
 		public float y;
 		public float z;
