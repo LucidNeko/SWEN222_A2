@@ -6,12 +6,12 @@ import wolf3d.components.Transform;
 import wolf3d.core.Keyboard;
 
 /**
- * The WASDController when added to an entity adds movement based on WASD.<br>
+ * The WASDWalking class when added to an entity adds movement based on WASD.<br>
  * Walking and strafing along the XZ plane.
  * @author Hamish Rae-Hodgson
  *
  */
-public class WASDController extends Behaviour {
+public class WASDWalking extends Behaviour {
 	
 	/** Units per Second that this controller defaults to */
 	public static final float DEFAULT_MOVESPEED = 10;
