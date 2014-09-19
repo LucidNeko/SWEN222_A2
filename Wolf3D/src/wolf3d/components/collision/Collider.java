@@ -1,6 +1,6 @@
 package wolf3d.components.collision;
 
-import wolf3d.components.AABB;
+import wolf3d.common.AABB;
 import wolf3d.components.Component;
 
 /** 

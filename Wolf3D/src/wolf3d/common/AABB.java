@@ -1,4 +1,4 @@
-package wolf3d.components;
+package wolf3d.common;
 
 /**
  * The AABB class represents an Axis-Aligned Bounding Box.
