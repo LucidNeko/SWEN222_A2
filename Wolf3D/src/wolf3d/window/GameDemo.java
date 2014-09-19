@@ -17,6 +17,7 @@ import wolf3d.components.updateables.behaviours.AddAnimation;
 import wolf3d.components.updateables.behaviours.AddChaseBehaviour;
 import wolf3d.components.updateables.behaviours.CameraScrollBackController;
 import wolf3d.components.updateables.behaviours.MouseLookController;
+import wolf3d.components.updateables.behaviours.WASDConditionalWalking;
 import wolf3d.components.updateables.behaviours.WASDFlying;
 import wolf3d.components.updateables.behaviours.WASDWalking;
 import wolf3d.core.Entity;
@@ -64,7 +65,7 @@ public class GameDemo extends GameLoop {
 	private void createEntities() {
 		//Create player
 		player = new Entity(0, Transform.class,   Camera.class, PyramidRenderer.class, 
-							   WASDWalking.class, MouseLookController.class, 
+							   WASDConditionalWalking.class, MouseLookController.class, 
 							   CameraScrollBackController.class);
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(0, 0, -10);
