@@ -287,4 +287,14 @@ public class Transform extends Component {
 				+ along + ", look=" + look + "]";
 	}
 	
+	@Override
+	public Transform clone() {
+		Transform t = new Transform();
+		t.along.set(this.along);
+		t.up.set(this.up);
+		t.look.set(this.look);
+		t.position.set(this.position);
+		return t;
+	}
+	
 }
