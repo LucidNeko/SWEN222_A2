@@ -72,6 +72,19 @@ public class Mathf {
 		if(t < 0 || t > 1) throw new IllegalArgumentException("t must be (0 >= t <= 1)");
 		return (1-t)*a + t*b;
 	}
+	
+	/**
+	 * Lerp from a to b. When t is 0 it's 100% a. When t is 1 it is 100% b.
+	 * @param a Starting position.
+	 * @param b Destination position.
+	 * @param t A percentage specified as 0..1 inclusive.
+	 * @throws IllegalArgumentException When t is not 0..1 inclusive.
+	 * @return Returns the lerped position.
+	 */
+	public static Vec3 lerp(Vec3 a, Vec3 b, float t) {
+		if(t < 0 || t > 1) throw new IllegalArgumentException("t must be (0 >= t <= 1)");
+		return new Vec3((1-t)*a.x() + t*b.x(), (1-t)*a.y() + t*b.y(), (1-t)*a.z() + t*b.z());
+	}
 
 	public static float random() {
 		return (float)Math.random();
