@@ -198,6 +198,16 @@ public class Transform extends Component {
 	}
 	
 	/**
+	 * Lerp from start -> dest by t.
+	 * @param start Start position.
+	 * @param dest End position.
+	 * @param t A percentage specified as 0..1 inclusive.
+	 */
+	public void lerp(Vec3 start, Vec3 dest, float t) {
+		this.position.set(Mathf.lerp(start, dest, t));
+	}
+	
+	/**
 	 * Get a Vec3 containing the Transforms current location. It's just a snapshot - so it's Immutable.
 	 * @return An Immutable Vec3 representing the Transforms current position.
 	 */
