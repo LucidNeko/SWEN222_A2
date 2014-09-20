@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.common.Mathf;
+import wolf3d.common.Vec3;
 import wolf3d.components.Camera;
 import wolf3d.components.Transform;
 import wolf3d.components.renderers.TextureRenderer;
@@ -17,6 +18,7 @@ import wolf3d.components.updateables.behaviours.AddAnimation;
 import wolf3d.components.updateables.behaviours.AddChaseBehaviour;
 import wolf3d.components.updateables.behaviours.CameraScrollBackController;
 import wolf3d.components.updateables.behaviours.MouseLookController;
+import wolf3d.components.updateables.behaviours.Translate;
 import wolf3d.components.updateables.behaviours.WASDConditionalWalking;
 import wolf3d.components.updateables.behaviours.WASDFlying;
 import wolf3d.components.updateables.behaviours.WASDWalking;
@@ -65,7 +67,7 @@ public class GameDemo extends GameLoop {
 	private void createEntities() {
 		//Create player
 		player = new Entity(0, Transform.class,   Camera.class, PyramidRenderer.class, 
-							   WASDConditionalWalking.class, MouseLookController.class, 
+							   WASDFlying.class, MouseLookController.class, 
 							   CameraScrollBackController.class);
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(0, 0, -10);
@@ -73,10 +75,12 @@ public class GameDemo extends GameLoop {
 
 		//Create enemy.
 		Entity enemy = new Entity(6, Transform.class, PyramidRenderer.class, AILookAtController.class, 
-									 ProximitySensor.class, AddChaseBehaviour.class);
+									 ProximitySensor.class);//, AddChaseBehaviour.class);
+		
 		enemy.getComponent(AILookAtController.class).setTarget(player);
 		enemy.getComponent(ProximitySensor.class).setTarget(player);
-		enemy.getTransform().translate(0, 0, -4);
+		enemy.getTransform().translate(0, 0, -10);
+		enemy.attachComponent(new Translate(enemy.getTransform().getPosition(), new Vec3(0, 0, -20), 1));
 		enemy.getTransform().yaw(Mathf.degToRad(180));
 		world.register(enemy);
 		
