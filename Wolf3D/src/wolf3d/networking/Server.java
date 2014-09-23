@@ -34,19 +34,28 @@ public class Server extends Thread{
 				sock = ss.accept();
 				System.out.println("Accepted a connection from " + sock.getInetAddress() + "...");
 				connections[index] = new ServerConnection(sock);
-				connections[index++].start();
-				if(index>=capacity){
+				connections[index].start();
+				if(index==(capacity-1)){
 					listening = false;
 				}
 
 				byte[] ms = new byte[5];
-				ms[0] = (byte) 200;
-				connections[index-1].pushToClient(ms);
+				//Just test code, send byte to client.
+				ms[0] = (byte) 1;
+				connections[index].pushToClient(ms);
+				
+				index++;
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		try {
+			ss.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

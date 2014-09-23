@@ -3,7 +3,6 @@ package wolf3d.networking;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerConnection extends Thread{
@@ -13,14 +12,19 @@ public class ServerConnection extends Thread{
 	
 	public ServerConnection(Socket socket){
 		soc=socket;
+		try {
+			out = new DataOutputStream(soc.getOutputStream());
+			in = new DataInputStream(soc.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void run(){
 		try{
 			try{
 
-			out = new DataOutputStream(soc.getOutputStream());
-			in = new DataInputStream(soc.getInputStream());
 			
 			while(true){
 				if(in.available()>0){
@@ -48,7 +52,7 @@ public class ServerConnection extends Thread{
 	public void pushToClient(byte[] message){
 		try {
 			int length = message.length;
-
+			out.toString();
 			out.writeInt(length);
 			if (length > 0) {
 				out.write(message);
