@@ -16,7 +16,7 @@ import wolf3d.core.Entity;
  */
 public class World {
 
-	private List<Entity> players = new ArrayList<Entity>();
+	private List<Entity> entities = new ArrayList<Entity>();
 	
 	/**
 	 * Adds a new player to the game with given id
@@ -24,7 +24,7 @@ public class World {
 	public void createPlayer(int id){
 		Entity player = new Entity(id, Transform.class);
 		player.attachComponent(Camera.class);
-		players.add(player);
+		entities.add(player);
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class World {
 	 * @author Hamish Rae-Hodgson
 	 */
 	public boolean register(Entity entity) {
-		return players.add(entity);
+		return entities.add(entity);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class World {
 	 * @author Hamish Rae-Hodgson
 	 */
 	public List<Entity> getEntities() {
-		return Collections.unmodifiableList(players);
+		return Collections.unmodifiableList(entities);
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class World {
 	 * @author Hamish Rae-Hodgson
 	 */
 	public Entity getEntity(int id) {
-		for(Entity entity : players)
+		for(Entity entity : entities)
 			if(entity.getID() == id)
 				return entity;
 		return null;
