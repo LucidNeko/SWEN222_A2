@@ -12,7 +12,9 @@ public class ClientProtocol extends Thread implements Observer{
 	
 	public ClientProtocol(Socket sock, Observable ob){
 		connection = new Client(sock);
-		ob.addObserver(this);
+		if(ob!=null){
+			ob.addObserver(this);
+		}
 	}
 	
 	public void sendMessage(byte[] message){
