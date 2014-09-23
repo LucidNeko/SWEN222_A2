@@ -18,7 +18,7 @@ import wolf3d.core.Entity;
  */
 public class World {
 
-	private List<Entity> players = new ArrayList<Entity>();
+//	private List<Entity> players = new ArrayList<Entity>();
 	private Map<Integer, Entity> entities = new HashMap<Integer, Entity>();
 	
 
@@ -30,7 +30,8 @@ public class World {
 	 * or null if there was no mapping for key.
 	 * @author Sameer Magan
 	 */
-	public Entity register(int id, Entity entity){
+	public Entity register(Entity entity){
+		int id = entity.getID();
 		return entities.put(id, entity);
 	}
 	
@@ -41,8 +42,19 @@ public class World {
 	 * @return The entity, or null if does not exist
 	 * @author Sameer Magan
 	 */
-	public Entity getEntity1(int id){
+	public Entity getEntity(int id){
 		return entities.get(id);
+	}
+	
+	/**
+	 * Returns an unmodifiable List of all the Entities in the World.
+	 * @return An unmodifiable list of all the entities in the world.
+	 * @author Sameer Magan
+	 */
+	public List<Entity> getEntities() {
+		ArrayList<Entity> en = new ArrayList<Entity>();
+		en.addAll(entities.values());
+		return Collections.unmodifiableList(en);
 	}
 	
 	/**
@@ -51,18 +63,18 @@ public class World {
 	 * @return True if the entity was added to the world succesfully.
 	 * @author Hamish Rae-Hodgson
 	 */
-	public boolean register(Entity entity) {
-		return players.add(entity);
-	}
+//	public boolean register(Entity entity) {
+//		return players.add(entity);
+//	}
 	
 	/**
 	 * Returns an unmodifiable List of all the Entities in the World.
 	 * @return An unmodifyable list of all the entities in the world.
 	 * @author Hamish Rae-Hodgson
 	 */
-	public List<Entity> getEntities() {
-		return Collections.unmodifiableList(players);
-	}
+//	public List<Entity> getEntities() {
+//		return Collections.unmodifiableList(players);
+//	}
 	
 	/**
 	 * Return the Entity in the World with the given id.
@@ -70,10 +82,10 @@ public class World {
 	 * @return The Entity, or null if not present.
 	 * @author Hamish Rae-Hodgson
 	 */
-	public Entity getEntity(int id) {
-		for(Entity entity : players)
-			if(entity.getID() == id)
-				return entity;
-		return null;
-	}
+//	public Entity getEntity(int id) {
+//		for(Entity entity : players)
+//			if(entity.getID() == id)
+//				return entity;
+//		return null;
+//	}
 }
