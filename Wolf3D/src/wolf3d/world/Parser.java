@@ -16,14 +16,14 @@ import wolf3d.core.World;
 
 /**
  * This is responsible for turning the text file containing all the walls for
- * the world into objects
+ * the world into objects and creating a 2D array which can be used for
+ * collision detection
  *
  * @author magansame
  *
  */
 public class Parser {
 
-	private File file;
 	private String filePath;
 
 	private int[][] walls;
@@ -31,6 +31,8 @@ public class Parser {
 	private short eastMask = 4;
 	private short southMask = 2;
 	private short westMask = 1;
+	
+	private int width, height;
 
 	private int leftX = -1;
 	private int rightX = 1;
@@ -47,14 +49,14 @@ public class Parser {
 	 * passes file into 2d array of ints
 	 */
 	public void passFileToArray() {
-		file = new File(filePath);
+		File file = new File(filePath);
 
 		try {
 			Scanner sc = new Scanner(file);
 			int total;
 
-			int width = sc.nextInt();
-			int height = sc.nextInt();
+			width = sc.nextInt();
+			height = sc.nextInt();
 			int cur=0;
 			walls = new int[height][width];
 			int col = 0;
@@ -70,6 +72,7 @@ public class Parser {
 					walls[col][i] = Integer.decode("0x" + row[i]);
 				}
 				col++;
+				sc.close();
 			}
 
 		} catch (IOException e) {
@@ -85,7 +88,7 @@ public class Parser {
 		Entity floor = world.createEntity("floor");
 
 		//TODO need to fix this
-		floor.attachComponent(new TextureRenderer(3, leftX, bottomY, rightX, topY, tileX, tileY));
+		floor.attachComponent(new TextureRenderer(3, width, height, width, height, tileX, tileY));
 		floor.getTransform().translate(0, bottomY, 0);
 		floor.getTransform().pitch(Mathf.degToRad(90));
 	}
