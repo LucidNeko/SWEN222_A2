@@ -2,7 +2,12 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -44,11 +49,24 @@ public class DatabaseTests {
 	}
 
 	@Test
-	// Test a world saves without crashing
-	public void testSaveWorld() {
+	// Tests Gson parsing a world's entity collection
+	public void testParseEntities() {
 		Gson gson = new Gson();
 		World world = createDummyWorld();
-		DataManagement.saveWorld("testWorld01", world);
+		Collection<Entity> entities = world.getEntities();
+		String es;
+
+		for (Entity entity : entities) {
+			// get each component
+		}
+	}
+
+	@Test
+	// Test a world saves without crashing
+	public void testSaveWorld() {
+//		Gson gson = new Gson();
+//		World world = createDummyWorld();
+//		DataManagement.saveWorld("testWorld01", world);
 	}
 
 	//============================================================================
