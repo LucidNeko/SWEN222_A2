@@ -9,8 +9,8 @@ import wolf3d.common.Mathf;
 import wolf3d.common.Vec3;
 import wolf3d.components.Camera;
 import wolf3d.components.Transform;
-import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
+import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.components.updateables.Updateable;
 import wolf3d.components.updateables.behaviours.AILookAtController;
@@ -20,13 +20,11 @@ import wolf3d.components.updateables.behaviours.CameraScrollBackController;
 import wolf3d.components.updateables.behaviours.MouseLookController;
 import wolf3d.components.updateables.behaviours.Translate;
 import wolf3d.components.updateables.behaviours.WASDConditionalWalking;
-import wolf3d.components.updateables.behaviours.WASDFlying;
-import wolf3d.components.updateables.behaviours.WASDWalking;
 import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
-import wolf3d.world.World;
+import wolf3d.core.World;
 
 /**
  * GameDemo is a demo game that shows off the GameLoop class and the Entity/Component system.
@@ -66,23 +64,27 @@ public class GameDemo extends GameLoop {
 
 	private void createEntities() {
 		//Create player
-		player = new Entity(0, Transform.class,   Camera.class, PyramidRenderer.class,
-							   WASDConditionalWalking.class, MouseLookController.class,
-							   CameraScrollBackController.class);
+		player = world.createEntity("Player");
+		player.attachComponent(Camera.class);
+		player.attachComponent(PyramidRenderer.class);
+		player.attachComponent(WASDConditionalWalking.class);
+		player.attachComponent(MouseLookController.class);
+		player.attachComponent(CameraScrollBackController.class);
+
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(0, 0, -10);
-		world.register(player);
 
 		//Create enemy.
-		Entity enemy = new Entity(6, Transform.class, PyramidRenderer.class, AILookAtController.class,
-									 ProximitySensor.class);//, AddChaseBehaviour.class);
-
+		Entity enemy = world.createEntity("Enemy");
+		enemy.attachComponent(PyramidRenderer.class);
+		enemy.attachComponent(AILookAtController.class);
+		enemy.attachComponent(ProximitySensor.class);
+		enemy.attachComponent(AddChaseBehaviour.class);
 		enemy.getComponent(AILookAtController.class).setTarget(player);
 		enemy.getComponent(ProximitySensor.class).setTarget(player);
 		enemy.getTransform().translate(0, 0, -10);
 		enemy.attachComponent(new Translate(enemy.getTransform().getPosition(), new Vec3(0, 0, -20), 1));
 		enemy.getTransform().yaw(Mathf.degToRad(180));
-		world.register(enemy);
 
 		int texID = 1;
 		int wallID = 2;
@@ -90,36 +92,35 @@ public class GameDemo extends GameLoop {
 
 		Entity entity;
 		//left wall
-		entity = new Entity(1, Transform.class);
+		entity = world.createEntity("wall");
 		entity.getTransform().translate(-1, 0, 0);
 		entity.getTransform().yaw(Mathf.degToRad(-90));
 		entity.attachComponent(new TextureRenderer(wallID, 0, -1, 20, 1, 10, 1));
-		world.register(entity);
 		//right wall
-		entity = new Entity(2, Transform.class);
+		entity = world.createEntity("wall");
 		entity.getTransform().translate(1, 0, 0);
 		entity.getTransform().yaw(Mathf.degToRad(90));
 		entity.attachComponent(new TextureRenderer(wallID, -20, -1, 0, 1, 10, 1));
-		world.register(entity);
 		//floor
-		entity = new Entity(3, Transform.class);
+		entity = world.createEntity("wall");
 		entity.getTransform().translate(0, -1, 0);
 		entity.getTransform().pitch(Mathf.degToRad(90));
 		entity.attachComponent(new TextureRenderer(floorID, -1, 0, 1, 20, 1, 10));
-		world.register(entity);
 		//door
-		entity = new Entity(4, Transform.class, ProximitySensor.class, AddAnimation.class);
+		entity = world.createEntity("door");
+		entity.attachComponent(ProximitySensor.class);
+		entity.attachComponent(AddAnimation.class);
 		entity.getComponent(ProximitySensor.class).setTarget(player);
 		entity.getTransform().translate(0, 0, -5);
 		entity.attachComponent(new TextureRenderer(texID, -1, -1, 1, 1, 1, 1));
-		world.register(entity);
 		//reverse door
-		entity = new Entity(5, Transform.class, ProximitySensor.class, AddAnimation.class);
+		entity = world.createEntity("door");
+		entity.attachComponent(ProximitySensor.class);
+		entity.attachComponent(AddAnimation.class);
 		entity.getComponent(ProximitySensor.class).setTarget(player);
 		entity.getTransform().translate(0, 0, -5);
 		entity.getTransform().yaw(Mathf.degToRad(180));
 		entity.attachComponent(new TextureRenderer(texID, -1, -1, 1, 1, 2, 1));
-		world.register(entity);
 	}
 
 	@Override
