@@ -38,13 +38,13 @@ public class GameDemo extends GameLoop {
 
 	private static final int FPS = 60; //frames per second/regular updates per second.
 	private static final int FUPS = 50; //fixed updates per second.
-	
+
 	private World world;
 	private View view;
-	
+
 	private Camera camera;
 	private Entity player;
-	
+
 	/**
 	 * Create a new GameDemo with the given world as it's world.
 	 * @param world The world.
@@ -54,7 +54,7 @@ public class GameDemo extends GameLoop {
 		this.world = world;
 		createEntities();
 	}
-	
+
 	/**
 	 * Set the View that is the renderer of the world. So we can call display() as required.
 	 * @param view The View.
@@ -63,31 +63,31 @@ public class GameDemo extends GameLoop {
 		view.setCamera(camera);
 		this.view = view;
 	}
-	
+
 	private void createEntities() {
 		//Create player
-		player = new Entity(0, Transform.class,   Camera.class, PyramidRenderer.class, 
-							   WASDFlying.class, MouseLookController.class, 
+		player = new Entity(0, Transform.class,   Camera.class, PyramidRenderer.class,
+							   WASDConditionalWalking.class, MouseLookController.class,
 							   CameraScrollBackController.class);
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(0, 0, -10);
-		world.register(player);		
+		world.register(player);
 
 		//Create enemy.
-		Entity enemy = new Entity(6, Transform.class, PyramidRenderer.class, AILookAtController.class, 
+		Entity enemy = new Entity(6, Transform.class, PyramidRenderer.class, AILookAtController.class,
 									 ProximitySensor.class);//, AddChaseBehaviour.class);
-		
+
 		enemy.getComponent(AILookAtController.class).setTarget(player);
 		enemy.getComponent(ProximitySensor.class).setTarget(player);
 		enemy.getTransform().translate(0, 0, -10);
 		enemy.attachComponent(new Translate(enemy.getTransform().getPosition(), new Vec3(0, 0, -20), 1));
 		enemy.getTransform().yaw(Mathf.degToRad(180));
 		world.register(enemy);
-		
+
 		int texID = 1;
 		int wallID = 2;
 		int floorID = 3;
-		
+
 		Entity entity;
 		//left wall
 		entity = new Entity(1, Transform.class);
@@ -95,13 +95,13 @@ public class GameDemo extends GameLoop {
 		entity.getTransform().yaw(Mathf.degToRad(-90));
 		entity.attachComponent(new TextureRenderer(wallID, 0, -1, 20, 1, 10, 1));
 		world.register(entity);
-		//right wall		
+		//right wall
 		entity = new Entity(2, Transform.class);
 		entity.getTransform().translate(1, 0, 0);
 		entity.getTransform().yaw(Mathf.degToRad(90));
 		entity.attachComponent(new TextureRenderer(wallID, -20, -1, 0, 1, 10, 1));
 		world.register(entity);
-		//floor		
+		//floor
 		entity = new Entity(3, Transform.class);
 		entity.getTransform().translate(0, -1, 0);
 		entity.getTransform().pitch(Mathf.degToRad(90));
@@ -132,7 +132,7 @@ public class GameDemo extends GameLoop {
 		if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(false);
 		else Mouse.setGrabbed(true);
-		
+
 		//Update all the behaviours attached to the entities.
 		for(Entity entity : world.getEntities()) {
 			for(Updateable behaviour : entity.getComponents(Updateable.class)) {
@@ -144,12 +144,12 @@ public class GameDemo extends GameLoop {
 	@Override
 	protected void fixedTick(float delta) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void render() {
 		if(view != null) view.display();
 	}
-	
+
 }
