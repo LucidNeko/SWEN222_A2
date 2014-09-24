@@ -1,8 +1,11 @@
 package wolf3d.core;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import wolf3d.components.Component;
@@ -10,55 +13,33 @@ import wolf3d.components.Transform;
 
 /**
  * The Entity class is a container for Components.
- * @author Hamish Rae-Hodgson
+ * @author Hamish
  *
  */
-public class Entity  {
-	
+public class Entity implements Observer {
+
 	//HashSet in the order Components were added
 	private final Set<Component> components = new LinkedHashSet<Component>();
-	
+
+	/** This is a set of components that have had their state changed since the last pull */
+	private final Set<Component> componentsChangedSinceLastPull = new HashSet<Component>();
+
 	/** A unique ID in the system. */
 	private final int uniqueID;
-	
+
+	/** The name of this Entity */
+	private String name;
+
 	/**
-	 * Creates a new empty Entity with the given unique ID.
+	 * Creates a new empty Entity with the given unique ID.<br>
+	 * Package-private constructor.
 	 * @param uniqueID A unique ID to define this Entity.
 	 */
-	public Entity(int uniqueID) {
+	Entity(int uniqueID, String name) {
 		this.uniqueID = uniqueID;
+		this.name = name;
 	}
-	
-	/**
-	 * Creates a new Entity with the given unique ID and all the provided Components.
-	 * @param uniqueID A unique ID to define this Entity.
-	 * @param components The components to give this Entity.
-	 */
-	public Entity(int uniqueID, Component... components) {
-		this.uniqueID = uniqueID;
-		for(Component component : components) {
-			attachComponent(component);
-		}
-	}
-	
-	/**
-	 * Creates a new Entity with the given unique ID and new instances of the provided Components.
-	 * @param uniqueID A unique ID to define this Entity.
-	 * @param components The classes of the components you are giving to this Entity.
-	 */
-	@SafeVarargs
-	public Entity(int uniqueID, Class<? extends Component>... components) {
-		this.uniqueID = uniqueID;
-		for(Class<? extends Component> type : components) {
-			attachComponent(type);
-		}
-	}
-	
-	/** Get the unique ID bound to this Entity */
-	public int getID() {
-		return uniqueID;
-	}
-	
+
 	/**
 	 * Attach the given component to this Entity.<br>
 	 * Respectively sets the owner of the component to be this Entity.
@@ -68,12 +49,13 @@ public class Entity  {
 	 * @return The attached Component.
 	 */
 	public <E extends Component> E attachComponent(E component) {
-		if(component == null) 
+		if(component == null)
 			throw new NullPointerException();
 		if(component.getOwner() != null)
 			throw new IllegalStateException("Component is already attached to something");
 		this.components.add(component);
 		component.setOwner(this);
+		component.addObserver(this);
 		return component;
 	}
 
@@ -94,7 +76,7 @@ public class Entity  {
 		}
 	}
 
-	
+
 	/**
 	 * Returns the first Component that matches type.
 	 * @param type Class of the Component you are looking for.
@@ -121,7 +103,22 @@ public class Entity  {
 				out.add((E)component);
 		return out;
 	}
-	
+
+	/**
+	 * Get all the Components that have had their state modified since the last call to this method.
+	 * @return The Components.
+	 */
+	public Set<Component> getComponentsChangedSinceLastPull() {
+		//make sure our set contains all the modified components. TODO: notify elsewhere?
+		for(Component component : components)
+			if(component.hasChanged())
+				component.notifyObservers();
+		//Get the components into a new set, and clear the modified components store.
+		Set<Component> out = new HashSet<Component>(componentsChangedSinceLastPull);
+		componentsChangedSinceLastPull.clear();
+		return out;
+	}
+
 	/**
 	 * Detaches the specified component from this Entity.<br>
 	 * If the component was present, the components Owner gets set to null.<br>
@@ -132,10 +129,11 @@ public class Entity  {
 	public <E extends Component> boolean detachComponent(E component) {
 		if(this.components.remove(component)) {
 			component.setOwner(null);
+			component.deleteObserver(this);
 			return true;
 		} else return false;
 	}
-	
+
 	/**
 	 * Checks if the component is attached to this Entity.
 	 * @param component The component to check for.
@@ -144,11 +142,45 @@ public class Entity  {
 	public <E extends Component> boolean contains(E component) {
 		return components.contains(component);
 	}
-	
+
+	/**
+	 * Returns true if this Entity has at least one instance of a component of the type specified.
+	 * @param type The type of Component to enquire about.
+	 * @return True if this Entity has an instance of the Component. False if it doesn't.
+	 */
+	public <E extends Component> boolean hasComponent(Class<E> type) {
+		return getComponent(type) != null;
+	}
+
+	/** Get the unique ID bound to this Entity */
+	public int getID() {
+		return uniqueID;
+	}
+
+	/** Get the name of this Entity */
+	public String getName() {
+		return name;
+	}
+
+	/** Set the name of this Entity */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	//
+	// Observer Method
+	//
+
+	@Override
+	public void update(Observable object, Object args) {
+		if(Component.class.isAssignableFrom(object.getClass()))
+			componentsChangedSinceLastPull.add((Component)object);
+	}
+
 	//
 	// Convenience Methods
 	//
-	
+
 	/**
 	 * Get the Transform attached to this entity. Identical in function to getComponent(Transform.class);
 	 * @return Return the Transform, or null if there is no Transform attached.
@@ -159,7 +191,7 @@ public class Entity  {
 
 	@Override
 	public String toString() {
-		return "Entity [id=" + uniqueID + "]";
-	}	
-	
+		return "Entity [id=" + uniqueID + ", name=" + name + "]";
+	}
+
 }
