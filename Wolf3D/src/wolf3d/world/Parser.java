@@ -2,7 +2,11 @@ package wolf3d.world;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import wolf3d.core.Entity;
 
 /**
  * This is responsible for turning the text file containing all the walls for
@@ -58,6 +62,22 @@ public class Parser {
 		} catch (IOException e) {
 			System.out.println("Something went wrong with the scanner!!!");
 		}
+	}
+
+	public List<Entity> createWalls(){
+		List<Entity> wallEntities = new ArrayList<Entity>();
+		for(int i=0; i<walls.length; i++){
+			for(int j=0; j<walls[i].length; j++){
+				if(hasNorth(walls[i][j])){
+					wallEntities.add(new Entity(1) );
+				}
+				if(hasEast(walls[i][j])){
+
+				}
+
+			}
+		}
+		return null;
 	}
 
 	public boolean hasNorth(int x){
