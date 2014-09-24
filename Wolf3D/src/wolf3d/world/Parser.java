@@ -29,7 +29,7 @@ public class Parser {
 	/**
 	 * passes file into 2d array of ints
 	 */
-	public void passFile() {
+	public void passFileToArray() {
 		file = new File(filePath);
 
 		try {
@@ -38,22 +38,21 @@ public class Parser {
 
 			int width = sc.nextInt();
 			int height = sc.nextInt();
-			int x=2*height;
+			int cur=0;
 			walls = new int[height][width];
 			int col = 0;
 			while (sc.hasNext()) {
+				if(2*height==col*2){
+					total=sc.nextInt();
+					break;
+				}
 				String line = sc.next();
 				char[] row = line.toCharArray();
 				int rowCheck = sc.nextInt();
 				for (int i = 0; i < row.length; i++) {
 					walls[col][i] = Integer.decode("0x" + row[i]);
 				}
-				if(2*height==x-1){
-					total=sc.nextInt();
-				}
 				col++;
-				System.out.println(walls);
-
 			}
 
 		} catch (IOException e) {
@@ -61,8 +60,28 @@ public class Parser {
 		}
 	}
 
+	public boolean hasNorth(int x){
+		if((x&northMask)==northMask)return true;
+		return false;
+	}
+
+	public boolean hasEast(int x){
+		if((x&eastMask)==eastMask)return true;
+		return false;
+	}
+
+	public boolean hasSouth(int x){
+		if((x&southMask)==southMask)return true;
+		return false;
+	}
+
+	public boolean hasWest(int x){
+		if((x&westMask)==westMask)return true;
+		return false;
+	}
+
 	public static void main(String[] args) {
 		Parser p = new Parser("Map.txt");
-		p.passFile();
+		p.passFileToArray();
 	}
 }
