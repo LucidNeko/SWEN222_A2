@@ -86,7 +86,7 @@ public class Parser {
 
 		//TODO need to fix this
 		floor.attachComponent(new TextureRenderer(3, leftX, bottomY, rightX, topY, tileX, tileY));
-		floor.getTransform().translate(0, -1, 0);
+		floor.getTransform().translate(0, bottomY, 0);
 		floor.getTransform().pitch(Mathf.degToRad(90));
 	}
 
