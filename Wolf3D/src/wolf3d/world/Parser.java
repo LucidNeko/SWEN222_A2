@@ -140,21 +140,41 @@ public class Parser {
 		}
 	}
 
+	/**
+	 * checks if given x contains a north wall
+	 * @param x the integer that you want to check
+	 * @return true if it does contain north wall else false
+	 */
 	public boolean hasNorth(int x){
 		if((x&northMask)==northMask)return true;
 		return false;
 	}
 
+	/**
+	 * checks if given x contains a East wall
+	 * @param x the integer that you want to check
+	 * @return true if it does contain East wall else false
+	 */
 	public boolean hasEast(int x){
 		if((x&eastMask)==eastMask)return true;
 		return false;
 	}
 
+	/**
+	 * checks if given x contains a South wall
+	 * @param x the integer that you want to check
+	 * @return true if it does contain South wall else false
+	 */
 	public boolean hasSouth(int x){
 		if((x&southMask)==southMask)return true;
 		return false;
 	}
 
+	/**
+	 * checks if given x contains a South wall
+	 * @param x the integer that you want to check
+	 * @return true if it does contain South wall else false
+	 */
 	public boolean hasWest(int x){
 		if((x&westMask)==westMask)return true;
 		return false;
