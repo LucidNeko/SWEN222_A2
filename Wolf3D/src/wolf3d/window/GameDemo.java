@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.common.Mathf;
 import wolf3d.common.Vec3;
 import wolf3d.components.Camera;
-import wolf3d.components.Transform;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.components.sensors.ProximitySensor;
@@ -20,11 +19,13 @@ import wolf3d.components.updateables.behaviours.CameraScrollBackController;
 import wolf3d.components.updateables.behaviours.MouseLookController;
 import wolf3d.components.updateables.behaviours.Translate;
 import wolf3d.components.updateables.behaviours.WASDConditionalWalking;
+import wolf3d.components.updateables.behaviours.WASDWalking;
 import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
 import wolf3d.core.Keyboard;
 import wolf3d.core.Mouse;
 import wolf3d.core.World;
+import wolf3d.world.Parser;
 
 /**
  * GameDemo is a demo game that shows off the GameLoop class and the Entity/Component system.
@@ -67,7 +68,7 @@ public class GameDemo extends GameLoop {
 		player = world.createEntity("Player");
 		player.attachComponent(Camera.class);
 		player.attachComponent(PyramidRenderer.class);
-		player.attachComponent(WASDConditionalWalking.class);
+		player.attachComponent(WASDWalking.class);
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
 
@@ -121,6 +122,10 @@ public class GameDemo extends GameLoop {
 		entity.getTransform().translate(0, 0, -5);
 		entity.getTransform().yaw(Mathf.degToRad(180));
 		entity.attachComponent(new TextureRenderer(texID, -1, -1, 1, 1, 2, 1));
+
+		Parser parser = new Parser("Map.txt");
+		parser.passFileToArray();
+		parser.createWalls(world);
 	}
 
 	@Override

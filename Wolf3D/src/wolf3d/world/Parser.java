@@ -6,7 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.media.opengl.GL2;
+
+import wolf3d.common.Mathf;
+import wolf3d.components.renderers.Renderer;
+import wolf3d.components.renderers.TextureRenderer;
 import wolf3d.core.Entity;
+import wolf3d.core.World;
 
 /**
  * This is responsible for turning the text file containing all the walls for
@@ -25,6 +31,13 @@ public class Parser {
 	private short eastMask = 4;
 	private short southMask = 2;
 	private short westMask = 1;
+
+	private int leftX = -1;
+	private int rightX = 1;
+	private int bottomY = -1;
+	private int topY = 1;
+	private int tileX = 1;
+	private int tileY = 1;
 
 	public Parser(String filePath) {
 		this.filePath = filePath;
@@ -64,20 +77,64 @@ public class Parser {
 		}
 	}
 
-	public List<Entity> createWalls(){
-		List<Entity> wallEntities = new ArrayList<Entity>();
+	/**
+	 * Creates the floor for the given world
+	 * @param world the world that the floor will be added to
+	 */
+	public void createFloor(World world){
+		Entity floor = world.createEntity("floor");
+
+		//TODO need to fix this
+		floor.attachComponent(new TextureRenderer(3, leftX, bottomY, rightX, topY, tileX, tileY));
+		floor.getTransform().translate(0, -1, 0);
+		floor.getTransform().pitch(Mathf.degToRad(90));
+	}
+
+	/**
+	 * Creates all the walls in the given world
+	 * @param world the world that the walls will be added to
+	 */
+	public void createWalls(World world){
 		for(int i=0; i<walls.length; i++){
 			for(int j=0; j<walls[i].length; j++){
 				if(hasNorth(walls[i][j])){
-					wallEntities.add(new Entity(1) );
+					Entity wall = world.createEntity("wall");
+					//TODO fix the magic 2 number to match texture
+					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.getTransform().strafe(j+rightX*(j+1));
+					wall.getTransform().walk(i+rightX*(i));
 				}
 				if(hasEast(walls[i][j])){
+					Entity wall = world.createEntity("wall");
+					//TODO fix the magic 2 number to match texture
+					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.getTransform().yaw(Mathf.degToRad(90));
+
+					wall.getTransform().strafe(i+rightX*(i+1));
+					wall.getTransform().walk(-(j+rightX*(j+2)));
 
 				}
+				if(hasWest(walls[i][j])){
+					Entity wall = world.createEntity("wall");
+					//TODO fix the magic 2 number to match texture
+					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.getTransform().yaw(Mathf.degToRad(-90));
 
+					wall.getTransform().strafe(-(i+rightX*(i+1)));
+					wall.getTransform().walk(j+rightX*(j*0.5f));
+
+				}
+				if(hasSouth(walls[i][j])){
+					Entity wall = world.createEntity("wall");
+					//TODO fix the magic 2 number to match texture
+					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.getTransform().yaw(Mathf.degToRad(180));
+
+					wall.getTransform().strafe(-(j+rightX*(j+1)));
+					wall.getTransform().walk(-(i+rightX*(i+2)));
+				}
 			}
 		}
-		return null;
 	}
 
 	public boolean hasNorth(int x){
