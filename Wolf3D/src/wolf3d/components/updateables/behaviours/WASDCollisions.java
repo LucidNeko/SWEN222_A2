@@ -13,6 +13,8 @@ public class WASDCollisions extends Updateable {
 	/** Units per Second that this controller defaults to */
 	public static final float DEFAULT_MOVESPEED = 10;
 
+	private static final int wallSize = 2;
+
 	/** Units moved per second */
 	private float moveSpeed = DEFAULT_MOVESPEED;
 	private float playerWidth = 0;
@@ -49,11 +51,38 @@ public class WASDCollisions extends Updateable {
 		if (Keyboard.isKeyDown(KeyEvent.VK_S))
 			dy -= 1;
 
+		// old position and cell
+		Vec3 oldPos = t.getPosition();
+		int oldCol = (int) (oldPos.getX() / wallSize);
+		int oldRow = (int) (oldPos.getZ() / wallSize);
+		Cell oldCell = walls[oldRow][oldCol];
+
 		t.strafeFlat(moveSpeed * dx * delta);
 		t.walkFlat(moveSpeed * dy * delta);
 
+		// new Position and cell
 		Vec3 newPos = t.getPosition();
+		int col = (int) (newPos.getX() / wallSize);
+		int row = (int) (newPos.getZ() / wallSize);
 
+		//check if inbounds of the cell
+		if(row<0 || row >= walls.length*wallSize || col < 0 || col >= walls[0].length*wallSize){
+			//move back
+			t.strafeFlat(-moveSpeed*dx*delta);
+			t.walkFlat(-moveSpeed*dy*delta);
+			return;
+		}
+
+		Cell cell = walls[row][col];
+
+		if (oldCell == cell) {
+			return;
+		} else {
+			//we know were in a diiferent cell from where we started.
+			if (cell.hasNorth()) {
+
+			}
+		}
 
 	}
 

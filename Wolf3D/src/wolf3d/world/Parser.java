@@ -136,6 +136,11 @@ public class Parser {
 			}
 		}
 	}
+
+	/**
+	 * Returns a WASDCollion object with the walls array initialised
+	 * @return Returns a WASDCollion object with the walls array initialised
+	 */
 	public WASDCollisions getWallCollisionComponent(){
 		return new WASDCollisions(walls);
 	}
