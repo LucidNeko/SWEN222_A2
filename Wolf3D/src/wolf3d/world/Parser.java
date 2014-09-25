@@ -97,44 +97,51 @@ public class Parser {
 	 * Creates all the walls in the given world
 	 * @param world the world that the walls will be added to
 	 */
-	public void createWalls(World world){
-		for(int i=0; i<walls.length; i++){
-			for(int j=0; j<walls[i].length; j++){
-				if(hasNorth(walls[i][j])){
+	public void createWalls(World world) {
+		//+x-->
+		//z
+		//|
+		//V
+		float width = 2;
+		float height = 2;
+		for(int row=0; row<walls.length; row++){
+			for(int col=0; col<walls[row].length; col++){
+				float x = col*width;
+				float z = row*height;
+				float halfWidth = width/2;
+				float halfHeight = height/2;
+				x += width/2;
+				z += height/2;
+				if(hasNorth(walls[row][col])){
+					z -= halfHeight;
 					Entity wall = world.createEntity("wall");
-					//TODO fix the magic 2 number to match texture
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
-					wall.getTransform().strafe(j+rightX*(j+1));
-					wall.getTransform().walk(i+rightX*(i));
+					wall.getTransform().translate(x, 0, z);
+					z += halfHeight;
 				}
-				if(hasEast(walls[i][j])){
+				if(hasEast(walls[row][col])) {
+					x += halfWidth;
 					Entity wall = world.createEntity("wall");
-					//TODO fix the magic 2 number to match texture
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
-					wall.getTransform().yaw(Mathf.degToRad(90));
-
-					wall.getTransform().strafe(i+rightX*(i+1));
-					wall.getTransform().walk(-(j+rightX*(j+2)));
-
+					wall.getTransform().translate(x, 0, z);
+					wall.getTransform().rotateY(Mathf.degToRad(90));
+					x -= halfWidth;
 				}
-				if(hasWest(walls[i][j])){
+				if(hasSouth(walls[row][col])){
+					z += halfHeight;
 					Entity wall = world.createEntity("wall");
-					//TODO fix the magic 2 number to match texture
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
-					wall.getTransform().yaw(Mathf.degToRad(-90));
-
-					wall.getTransform().strafe(-(i+rightX*(i+1)));
-					wall.getTransform().walk(j+rightX*(j*0.5f));
-
+					wall.getTransform().translate(x, 0, z);
+					wall.getTransform().rotateY(Mathf.degToRad(180));
+					z-= halfHeight;
 				}
-				if(hasSouth(walls[i][j])){
+				if(hasWest(walls[row][col])){
+					x -= halfWidth;
 					Entity wall = world.createEntity("wall");
-					//TODO fix the magic 2 number to match texture
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
-					wall.getTransform().yaw(Mathf.degToRad(180));
-
-					wall.getTransform().strafe(-(j+rightX*(j+1)));
-					wall.getTransform().walk(-(i+rightX*(i+2)));
+					wall.getTransform().translate(x, 0, z);
+					wall.getTransform().rotateY(Mathf.degToRad(-90));
+					x += halfWidth;
 				}
 			}
 		}
@@ -179,9 +186,9 @@ public class Parser {
 		if((x&westMask)==westMask)return true;
 		return false;
 	}
-
-	public static void main(String[] args) {
-		Parser p = new Parser("Map.txt");
-		p.passFileToArray();
-	}
+//
+//	public static void main(String[] args) {
+//		Parser p = new Parser("Map.txt");
+//		p.passFileToArray();
+//	}
 }
