@@ -16,9 +16,9 @@ import wolf3d.components.updateables.behaviours.AILookAtController;
 import wolf3d.components.updateables.behaviours.AddAnimation;
 import wolf3d.components.updateables.behaviours.AddChaseBehaviour;
 import wolf3d.components.updateables.behaviours.CameraScrollBackController;
+import wolf3d.components.updateables.behaviours.Health;
 import wolf3d.components.updateables.behaviours.MouseLookController;
 import wolf3d.components.updateables.behaviours.Translate;
-import wolf3d.components.updateables.behaviours.WASDCollisions;
 import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
 import wolf3d.core.Keyboard;
@@ -75,6 +75,7 @@ public class GameDemo extends GameLoop {
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
+		player.attachComponent(Health.class);
 
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
