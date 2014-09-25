@@ -32,6 +32,10 @@ public class Parser {
 	private int topY = 1;
 	private int tileX = 1;
 	private int tileY = 1;
+	
+	//These need to be changed to 4, 5 if running on MAC OS
+	private int wallTexture = 2;
+	private int floorTexture = 3;
 
 	public Parser(String filePath) {
 		this.filePath = filePath;
@@ -78,7 +82,7 @@ public class Parser {
 	 */
 	public void createFloor(World world){
 		Entity floor = world.createEntity("floor");
-		floor.attachComponent(new TextureRenderer(3, -width, -height, width, height, width, height));
+		floor.attachComponent(new TextureRenderer(floorTexture, -width, -height, width, height, width, height));
 		floor.getTransform().translate(width, bottomY, height);
 		floor.getTransform().pitch(Mathf.degToRad(90));
 	}
@@ -105,14 +109,14 @@ public class Parser {
 				if(walls[row][col].hasNorth()){
 					z -= halfHeight;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					z += halfHeight;
 				}
 				if(walls[row][col].hasEast()) {
 					x += halfWidth;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(90));
 					x -= halfWidth;
@@ -120,7 +124,7 @@ public class Parser {
 				if(walls[row][col].hasSouth()){
 					z += halfHeight;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(180));
 					z-= halfHeight;
@@ -128,7 +132,7 @@ public class Parser {
 				if(walls[row][col].hasWest()){
 					x -= halfWidth;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(-90));
 					x += halfWidth;
