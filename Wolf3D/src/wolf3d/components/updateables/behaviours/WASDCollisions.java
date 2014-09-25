@@ -74,12 +74,19 @@ public class WASDCollisions extends Updateable {
 		}
 
 		Cell cell = walls[row][col];
-
+		//no collision
 		if (oldCell == cell) {
 			return;
 		} else {
 			//we know were in a diiferent cell from where we started.
-			if (cell.hasNorth()) {
+			if (col>oldCol) {
+				if(cell.hasEast()){
+					//move back
+					t.strafeFlat(-moveSpeed*dx*delta);
+					t.walkFlat(-moveSpeed*dy*delta);
+				}
+			}
+			if(col < oldCol){
 
 			}
 		}
