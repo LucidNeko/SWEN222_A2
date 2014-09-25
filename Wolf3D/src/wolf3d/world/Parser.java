@@ -2,6 +2,7 @@ package wolf3d.world;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 import wolf3d.components.behaviours.WASDCollisions;
@@ -56,10 +57,12 @@ public class Parser {
 	 * passes file into 2d array of ints
 	 */
 	public void passFileToArray() {
-		File file = new File(filePath);
+//		File file = new File(filePath);
+		InputStream in = Resources.getInputStream(filePath);
 
-		try {
-			Scanner sc = new Scanner(file);
+//		try {
+//			Scanner sc = new Scanner(file);
+			Scanner sc = new Scanner(in);
 			int total;
 
 			width = sc.nextInt();
@@ -82,9 +85,9 @@ public class Parser {
 				col++;
 			}
 			sc.close();
-		} catch (IOException e) {
-			System.out.println("Something went wrong with the scanner!!!");
-		}
+//		} catch (IOException e) {
+//			System.out.println("Something went wrong with the scanner!!!");
+//		}
 	}
 
 	/**
