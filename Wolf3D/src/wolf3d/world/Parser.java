@@ -31,7 +31,7 @@ public class Parser {
 	private short eastMask = 4;
 	private short southMask = 2;
 	private short westMask = 1;
-	
+
 	private int width, height;
 
 	private int leftX = -1;
@@ -72,9 +72,9 @@ public class Parser {
 					walls[col][i] = Integer.decode("0x" + row[i]);
 				}
 				col++;
-				sc.close();
 			}
 
+			sc.close();
 		} catch (IOException e) {
 			System.out.println("Something went wrong with the scanner!!!");
 		}
