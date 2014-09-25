@@ -1,5 +1,12 @@
 package wolf3d.world;
 
+/**
+ * This class holds an int value between 0 and 15 and contains masks and
+ * methods for decoding the int so that we know what walls the int
+ * represents
+ * @author Sameer Magan
+ *
+ */
 public class Cell {
 	//masks for each directional wall
 	private short northMask = 8;
