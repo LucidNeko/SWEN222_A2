@@ -4,11 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import wolf3d.common.Mathf;
-import wolf3d.components.renderers.TextureRenderer;
-import wolf3d.components.updateables.behaviours.WASDCollisions;
-import wolf3d.core.Entity;
-import wolf3d.core.World;
+import wolf3d.components.behaviours.WASDCollisions;
+
+import com.jogamp.opengl.util.awt.TextureRenderer;
+
+import engine.common.Color;
+import engine.common.Mathf;
+import engine.components.MeshFilter;
+import engine.components.MeshRenderer;
+import engine.core.Entity;
+import engine.core.World;
+import engine.texturing.Material;
+import engine.texturing.Mesh;
+import engine.texturing.Texture;
+import engine.util.Resources;
 
 /**
  * This is responsible for turning the text file containing all the walls for
@@ -35,6 +44,7 @@ public class Parser {
 	
 	//These need to be changed to 4, 5 if running on MAC OS
 	//Otherwise should be 2, 3
+	//^v^v^v^v^lol^v^v^v^v^
 	private int wallTexture = 4;
 	private int floorTexture = 5;
 
@@ -82,8 +92,13 @@ public class Parser {
 	 * @param world the world that the floor will be added to
 	 */
 	public void createFloor(World world){
+		Texture floorTex = Resources.getTexture("debug_floor.png", true);
+		Mesh mesh = Resources.getMesh("wall.obj");
 		Entity floor = world.createEntity("floor");
-		floor.attachComponent(new TextureRenderer(floorTexture, -width, -height, width, height, width, height));
+		floor.attachComponent(MeshFilter.class).setMesh(mesh);
+		floor.attachComponent(MeshRenderer.class).setMaterial(new Material(floorTex)); 
+		//TODO: Need to make a Mesh creator that can make a basic Mesh from (width, Height) 
+//		floor.attachComponent(new TextureRenderer(floorTexture, -width, -height, width, height, width, height));
 		floor.getTransform().translate(width, bottomY, height);
 		floor.getTransform().pitch(Mathf.degToRad(90));
 	}
@@ -97,6 +112,11 @@ public class Parser {
 		//z
 		//|
 		//V
+		
+		Texture wallTex = Resources.getTexture("debug_wall.png", true);
+		Mesh mesh = Resources.getMesh("wall.obj");
+		Material material = new Material(wallTex, Color.WHITE);
+		
 		float width = 2;
 		float height = 2;
 		for(int row=0; row<walls.length; row++){
@@ -110,14 +130,18 @@ public class Parser {
 				if(walls[row][col].hasNorth()){
 					z -= halfHeight;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(MeshFilter.class).setMesh(mesh);
+					wall.attachComponent(MeshRenderer.class).setMaterial(material);
+//					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					z += halfHeight;
 				}
 				if(walls[row][col].hasEast()) {
 					x += halfWidth;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(MeshFilter.class).setMesh(mesh);
+					wall.attachComponent(MeshRenderer.class).setMaterial(material);
+//					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(90));
 					x -= halfWidth;
@@ -125,7 +149,9 @@ public class Parser {
 				if(walls[row][col].hasSouth()){
 					z += halfHeight;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(MeshFilter.class).setMesh(mesh);
+					wall.attachComponent(MeshRenderer.class).setMaterial(material);
+//					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(180));
 					z-= halfHeight;
@@ -133,7 +159,9 @@ public class Parser {
 				if(walls[row][col].hasWest()){
 					x -= halfWidth;
 					Entity wall = world.createEntity("wall");
-					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
+					wall.attachComponent(MeshFilter.class).setMesh(mesh);
+					wall.attachComponent(MeshRenderer.class).setMaterial(material);
+//					wall.attachComponent(new TextureRenderer(wallTexture, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(-90));
 					x += halfWidth;

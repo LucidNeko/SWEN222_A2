@@ -12,11 +12,9 @@ import javax.swing.WindowConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import wolf3d.core.Keyboard;
-import wolf3d.core.Mouse;
-import wolf3d.core.World;
-import wolf3d.window.GameDemo;
-import wolf3d.window.WorldView;
+import engine.core.World;
+import engine.input.Keyboard;
+import engine.input.Mouse;
 
 /**
  * The entry point into the system.
@@ -50,7 +48,7 @@ public class Wolf3D extends JFrame {
 		//Build OpenGL panel.
 		GLProfile glProfile = GLProfile.getDefault();
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
-		final WorldView view = new WorldView(glCapabilities, world, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
+		final WorldView view = new WorldView(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT, world);
 		this.getContentPane().add(view);
 
 		//Register input devices. If GLCanvas have to register to canvas.

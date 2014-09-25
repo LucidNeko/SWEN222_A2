@@ -1,7 +1,8 @@
 package wolf3d.components.sensors;
 
-import wolf3d.components.Transform;
-import wolf3d.core.Entity;
+import engine.components.Sensor;
+import engine.components.Transform;
+import engine.core.Entity;
 
 public class ProximitySensor extends Sensor {
 

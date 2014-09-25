@@ -2,7 +2,8 @@ package wolf3d.components.renderers;
 
 import javax.media.opengl.GL2;
 
-import wolf3d.components.Transform;
+import engine.components.Renderer;
+import engine.components.Transform;
 
 /**
  * Renderer for a pyramid. For debug purposes.
