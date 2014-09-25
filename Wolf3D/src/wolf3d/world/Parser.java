@@ -88,8 +88,8 @@ public class Parser {
 		Entity floor = world.createEntity("floor");
 
 		//TODO need to fix this
-		floor.attachComponent(new TextureRenderer(3, width, height, width, height, tileX, tileY));
-		floor.getTransform().translate(0, bottomY, 0);
+		floor.attachComponent(new TextureRenderer(3, -width, -height, width, height, width, height));
+		floor.getTransform().translate(width, bottomY, height);
 		floor.getTransform().pitch(Mathf.degToRad(90));
 	}
 

@@ -126,6 +126,7 @@ public class GameDemo extends GameLoop {
 		Parser parser = new Parser("Map.txt");
 		parser.passFileToArray();
 		parser.createWalls(world);
+		parser.createFloor(world);
 	}
 
 	@Override
