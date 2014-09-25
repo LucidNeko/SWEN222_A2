@@ -18,8 +18,7 @@ import wolf3d.components.updateables.behaviours.AddChaseBehaviour;
 import wolf3d.components.updateables.behaviours.CameraScrollBackController;
 import wolf3d.components.updateables.behaviours.MouseLookController;
 import wolf3d.components.updateables.behaviours.Translate;
-import wolf3d.components.updateables.behaviours.WASDConditionalWalking;
-import wolf3d.components.updateables.behaviours.WASDWalking;
+import wolf3d.components.updateables.behaviours.WASDCollisions;
 import wolf3d.core.Entity;
 import wolf3d.core.GameLoop;
 import wolf3d.core.Keyboard;
@@ -64,16 +63,21 @@ public class GameDemo extends GameLoop {
 	}
 
 	private void createEntities() {
+		Parser parser = new Parser("Map.txt");
+		parser.passFileToArray();
+		parser.createWalls(world);
+		parser.createFloor(world);
+		
 		//Create player
 		player = world.createEntity("Player");
 		player.attachComponent(Camera.class);
 		player.attachComponent(PyramidRenderer.class);
-		player.attachComponent(WASDWalking.class);
+		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
 
 		camera = player.getComponent(Camera.class);
-		player.getTransform().translate(0, 0, -10);
+		player.getTransform().translate(1, 0, 1);
 
 		//Create enemy.
 		Entity enemy = world.createEntity("Enemy");
@@ -122,11 +126,6 @@ public class GameDemo extends GameLoop {
 		entity.getTransform().translate(0, 0, -5);
 		entity.getTransform().yaw(Mathf.degToRad(180));
 		entity.attachComponent(new TextureRenderer(texID, -1, -1, 1, 1, 2, 1));
-
-		Parser parser = new Parser("Map.txt");
-		parser.passFileToArray();
-		parser.createWalls(world);
-		parser.createFloor(world);
 	}
 
 	@Override
