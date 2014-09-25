@@ -17,7 +17,7 @@ public class WASDCollisions extends Updateable {
 
 	/** Units moved per second */
 	private float moveSpeed = DEFAULT_MOVESPEED;
-	private float playerWidth = 0;
+	private float playerWidth = 0.25f;
 
 	private Cell[][] walls;
 
@@ -63,8 +63,8 @@ public class WASDCollisions extends Updateable {
 
 		// old position and cell
 		Vec3 oldPos = t.getPosition();
-		int oldCol = (int) (oldPos.getX() / wallSize);
-		int oldRow = (int) (oldPos.getZ() / wallSize);
+		int oldCol = (int) ((oldPos.getX()) / wallSize);
+		int oldRow = (int) ((oldPos.getZ()) / wallSize);
 		Cell oldCell = walls[oldRow][oldCol];
 
 		//move foward 
@@ -73,8 +73,8 @@ public class WASDCollisions extends Updateable {
 
 		// new Position and cell
 		Vec3 newPos = t.getPosition();
-		int col = (int) (newPos.getX() / wallSize);
-		int row = (int) (newPos.getZ() / wallSize);
+		int col = (int) ((newPos.getX()) / wallSize);
+		int row = (int) ((newPos.getZ())/ wallSize);
 
 		//check if inbounds of the cell
 		if(row<0 || row >= walls.length || col < 0 || col >= walls[0].length){
