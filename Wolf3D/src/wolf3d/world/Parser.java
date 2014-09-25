@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import wolf3d.components.behaviours.WASDCollisions;
-
-import com.jogamp.opengl.util.awt.TextureRenderer;
-
 import engine.common.Color;
 import engine.common.Mathf;
 import engine.components.MeshFilter;
