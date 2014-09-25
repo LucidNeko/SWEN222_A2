@@ -34,6 +34,7 @@ public class Parser {
 	private int tileY = 1;
 	
 	//These need to be changed to 4, 5 if running on MAC OS
+	//Otherwise should be 2, 3
 	private int wallTexture = 4;
 	private int floorTexture = 5;
 
