@@ -34,6 +34,18 @@ public class WASDCollisions extends Updateable {
 	public void setMoveSpeed(float moveSpeed) {
 		this.moveSpeed = moveSpeed;
 	}
+	
+	/**
+	 * Moves the player back to starting position
+	 * @param dy
+	 * @param dx
+	 * @param delta
+	 * @param t the transform component attached to the player
+	 */
+	public void moveBack(float dy, float dx, float delta, Transform t){
+		t.strafeFlat(-moveSpeed*dx*delta);
+		t.walkFlat(-moveSpeed*dy*delta);
+	}
 
 	@Override
 	public void update(float delta) {
@@ -67,9 +79,7 @@ public class WASDCollisions extends Updateable {
 
 		//check if inbounds of the cell
 		if(row<0 || row >= walls.length*wallSize || col < 0 || col >= walls[0].length*wallSize){
-			//move back
-			t.strafeFlat(-moveSpeed*dx*delta);
-			t.walkFlat(-moveSpeed*dy*delta);
+			moveBack(dy, dx, delta, t);
 			return;
 		}
 
@@ -78,16 +88,31 @@ public class WASDCollisions extends Updateable {
 		if (oldCell == cell) {
 			return;
 		} else {
-			//we know were in a diiferent cell from where we started.
+			//we know were in a different cell from where we started.
 			if (col>oldCol) {
-				if(cell.hasEast()){
-					//move back
-					t.strafeFlat(-moveSpeed*dx*delta);
-					t.walkFlat(-moveSpeed*dy*delta);
+				if(oldCell.hasEast()){
+					moveBack(dy, dx, delta, t);
+					return;
 				}
 			}
 			if(col < oldCol){
-
+				if(oldCell.hasWest()){
+					//move back
+					moveBack(dy, dx, delta, t);
+					return;
+				}
+			}
+			if(row>oldRow){
+				if(oldCell.hasSouth()){
+					moveBack(dy, dx, delta, t);
+					return;
+				}
+			}
+			if(row<oldRow){
+				if(oldCell.hasNorth()){
+					moveBack(dy, dx, delta, t);
+					return;
+				}
 			}
 		}
 
