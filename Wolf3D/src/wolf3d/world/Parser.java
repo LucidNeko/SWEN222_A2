@@ -2,15 +2,11 @@ package wolf3d.world;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import javax.media.opengl.GL2;
-
 import wolf3d.common.Mathf;
-import wolf3d.components.renderers.Renderer;
 import wolf3d.components.renderers.TextureRenderer;
+import wolf3d.components.updateables.behaviours.WASDCollisions;
 import wolf3d.core.Entity;
 import wolf3d.core.World;
 
@@ -26,11 +22,7 @@ public class Parser {
 
 	private String filePath;
 
-	private int[][] walls;
-	private short northMask = 8;
-	private short eastMask = 4;
-	private short southMask = 2;
-	private short westMask = 1;
+	private Cell[][] walls;
 
 	private int width, height;
 
@@ -58,7 +50,7 @@ public class Parser {
 			width = sc.nextInt();
 			height = sc.nextInt();
 			int cur=0;
-			walls = new int[height][width];
+			walls = new Cell[height][width];
 			int col = 0;
 			while (sc.hasNext()) {
 				if(2*height==col*2){
@@ -69,11 +61,11 @@ public class Parser {
 				char[] row = line.toCharArray();
 				int rowCheck = sc.nextInt();
 				for (int i = 0; i < row.length; i++) {
-					walls[col][i] = Integer.decode("0x" + row[i]);
+					int temp = Integer.decode("0x" + row[i]);
+					walls[col][i] = new Cell(temp);
 				}
 				col++;
 			}
-
 			sc.close();
 		} catch (IOException e) {
 			System.out.println("Something went wrong with the scanner!!!");
@@ -86,8 +78,6 @@ public class Parser {
 	 */
 	public void createFloor(World world){
 		Entity floor = world.createEntity("floor");
-
-		//TODO need to fix this
 		floor.attachComponent(new TextureRenderer(3, -width, -height, width, height, width, height));
 		floor.getTransform().translate(width, bottomY, height);
 		floor.getTransform().pitch(Mathf.degToRad(90));
@@ -112,14 +102,14 @@ public class Parser {
 				float halfHeight = height/2;
 				x += width/2;
 				z += height/2;
-				if(hasNorth(walls[row][col])){
+				if(walls[row][col].hasNorth()){
 					z -= halfHeight;
 					Entity wall = world.createEntity("wall");
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
 					wall.getTransform().translate(x, 0, z);
 					z += halfHeight;
 				}
-				if(hasEast(walls[row][col])) {
+				if(walls[row][col].hasEast()) {
 					x += halfWidth;
 					Entity wall = world.createEntity("wall");
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
@@ -127,7 +117,7 @@ public class Parser {
 					wall.getTransform().rotateY(Mathf.degToRad(90));
 					x -= halfWidth;
 				}
-				if(hasSouth(walls[row][col])){
+				if(walls[row][col].hasSouth()){
 					z += halfHeight;
 					Entity wall = world.createEntity("wall");
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
@@ -135,7 +125,7 @@ public class Parser {
 					wall.getTransform().rotateY(Mathf.degToRad(180));
 					z-= halfHeight;
 				}
-				if(hasWest(walls[row][col])){
+				if(walls[row][col].hasWest()){
 					x -= halfWidth;
 					Entity wall = world.createEntity("wall");
 					wall.attachComponent(new TextureRenderer(2, leftX, bottomY, rightX, topY, tileX, tileY));
@@ -146,49 +136,7 @@ public class Parser {
 			}
 		}
 	}
-
-	/**
-	 * checks if given x contains a north wall
-	 * @param x the integer that you want to check
-	 * @return true if it does contain north wall else false
-	 */
-	public boolean hasNorth(int x){
-		if((x&northMask)==northMask)return true;
-		return false;
+	public WASDCollisions getWallCollisionComponent(){
+		return new WASDCollisions(walls);
 	}
-
-	/**
-	 * checks if given x contains a East wall
-	 * @param x the integer that you want to check
-	 * @return true if it does contain East wall else false
-	 */
-	public boolean hasEast(int x){
-		if((x&eastMask)==eastMask)return true;
-		return false;
-	}
-
-	/**
-	 * checks if given x contains a South wall
-	 * @param x the integer that you want to check
-	 * @return true if it does contain South wall else false
-	 */
-	public boolean hasSouth(int x){
-		if((x&southMask)==southMask)return true;
-		return false;
-	}
-
-	/**
-	 * checks if given x contains a South wall
-	 * @param x the integer that you want to check
-	 * @return true if it does contain South wall else false
-	 */
-	public boolean hasWest(int x){
-		if((x&westMask)==westMask)return true;
-		return false;
-	}
-//
-//	public static void main(String[] args) {
-//		Parser p = new Parser("Map.txt");
-//		p.passFileToArray();
-//	}
 }
