@@ -78,7 +78,7 @@ public class WASDCollisions extends Updateable {
 		int row = (int) (newPos.getZ() / wallSize);
 
 		//check if inbounds of the cell
-		if(row<0 || row >= walls.length*wallSize || col < 0 || col >= walls[0].length*wallSize){
+		if(row<0 || row >= walls.length || col < 0 || col >= walls[0].length){
 			moveBack(dy, dx, delta, t);
 			return;
 		}
