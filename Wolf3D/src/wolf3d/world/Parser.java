@@ -15,7 +15,7 @@ import wolf3d.core.World;
  * the world into objects and creating a 2D array which can be used for
  * collision detection
  *
- * @author magansame
+ * @author Sameer Magan
  *
  */
 public class Parser {
