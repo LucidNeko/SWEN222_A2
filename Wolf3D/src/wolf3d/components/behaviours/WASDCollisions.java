@@ -73,10 +73,18 @@ public class WASDCollisions extends Behaviour {
 
 		// new Position and cell
 		Vec3 newPos = t.getPosition();
-		int col = (int) ((newPos.getX()) / wallSize);
+		int col = (int) ((newPos.getX())/ wallSize);
 		int row = (int) ((newPos.getZ())/ wallSize);
+		
+		//checks the special case of position being negative,
+		//this should detect collisions for the border north and
+		//west wall
+		if(newPos.getX() < 0 || newPos.getZ() < 0){
+			moveBack(dy, dx, delta, t);
+			return;
+		}
 
-		//check if inbounds of the cell
+		//check if inbounds of the walls array
 		if(row<0 || row >= walls.length || col < 0 || col >= walls[0].length){
 			moveBack(dy, dx, delta, t);
 			return;
