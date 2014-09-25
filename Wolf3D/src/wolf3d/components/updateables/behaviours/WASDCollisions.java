@@ -27,9 +27,7 @@ public class WASDCollisions extends Updateable {
 
 	/**
 	 * Sets the movement speed of this controller.
-	 *
-	 * @param moveSpeed
-	 *            The new move speed in units per second.
+	 * @param moveSpeed The new move speed in units per second.
 	 */
 	public void setMoveSpeed(float moveSpeed) {
 		this.moveSpeed = moveSpeed;
@@ -69,6 +67,7 @@ public class WASDCollisions extends Updateable {
 		int oldRow = (int) (oldPos.getZ() / wallSize);
 		Cell oldCell = walls[oldRow][oldCol];
 
+		//move foward 
 		t.strafeFlat(moveSpeed * dx * delta);
 		t.walkFlat(moveSpeed * dy * delta);
 

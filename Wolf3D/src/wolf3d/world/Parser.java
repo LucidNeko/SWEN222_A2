@@ -34,8 +34,8 @@ public class Parser {
 	private int tileY = 1;
 	
 	//These need to be changed to 4, 5 if running on MAC OS
-	private int wallTexture = 2;
-	private int floorTexture = 3;
+	private int wallTexture = 4;
+	private int floorTexture = 5;
 
 	public Parser(String filePath) {
 		this.filePath = filePath;
