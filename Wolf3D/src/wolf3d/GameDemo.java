@@ -84,37 +84,42 @@ public class GameDemo extends GameLoop {
 		parser.createWalls(world);
 		parser.createFloor(world);
 		
+
+		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
+		Texture linkTex = Resources.getTexture("link/young_link.png", true);
+		
 		//Create player
 		player = world.createEntity("Player");
 		player.attachComponent(Camera.class);
-		player.attachComponent(PyramidRenderer.class);
+//		player.attachComponent(PyramidRenderer.class);
+		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 		player.attachComponent(parser.getWallCollisionComponent());
 //		player.attachComponent(WASDWalking.class);
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
 		player.attachComponent(Health.class);
-		player.attachComponent(new Renderer() {
-
-			@Override
-			public void render(GL2 gl) {
-				Vec3 pos = getOwner().getTransform().getPosition();
-				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {pos.x(), pos.y(), pos.z(), 1}, 0); //1 signifies positional light
-			}
-			
-		});
+//		player.attachComponent(new Renderer() {
+//
+//			@Override
+//			public void render(GL2 gl) {
+//				Vec3 pos = getOwner().getTransform().getPosition();
+//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {pos.x(), pos.y(), pos.z(), 1}, 0); //1 signifies positional light
+//			}
+//			
+//		});
 
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 		
 		//teddy
-//		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
-//		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
-		Mesh teddyMesh = Resources.getMesh("link/young_link.obj");
-		Texture teddyTex = Resources.getTexture("link/young_link.png", true);
 		Entity teddy = world.createEntity("Teddy");
-		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
-		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
+		teddy.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 		teddy.getTransform().translate(1, 0, 5);
+		
+		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
+		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 		
 		teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
@@ -124,6 +129,7 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
+
 		
 		//Create enemy.
 		Entity enemy = world.createEntity("Enemy");

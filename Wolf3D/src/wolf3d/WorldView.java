@@ -54,11 +54,11 @@ public class WorldView extends GameCanvas implements View{
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		gl.glEnable(GL_LIGHTING);
-		gl.glEnable(GL_LIGHT0);
-		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.2f);
-		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1f);
-		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.05f);
+//		gl.glEnable(GL_LIGHTING);
+//		gl.glEnable(GL_LIGHT0);
+//		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.2f);
+//		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1f);
+//		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.05f);
 	}
 
 	@Override
