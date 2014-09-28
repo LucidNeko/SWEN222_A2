@@ -107,8 +107,10 @@ public class GameDemo extends GameLoop {
 		player.getTransform().translate(1, 0, 1);
 		
 		//teddy
-		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
-		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
+//		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
+//		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
+		Mesh teddyMesh = Resources.getMesh("link/young_link.obj");
+		Texture teddyTex = Resources.getTexture("link/young_link.png", true);
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
