@@ -6,7 +6,7 @@ import engine.components.Transform;
 
 public class AddChaseBehaviour extends Behaviour {
 
-	private float speed = 5;
+	private float speed = 1;
 	
 	@Override
 	public void update(float delta) {

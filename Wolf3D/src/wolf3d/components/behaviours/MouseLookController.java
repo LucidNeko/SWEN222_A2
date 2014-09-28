@@ -13,7 +13,7 @@ import engine.input.Mouse;
 public class MouseLookController extends Behaviour {
 
 	/** speed of looking around. Units per second. Low number for low dpi. */
-	private float speed = 40;
+	private float speed = 10;
 	
 	/**
 	 * Set the speed that you look around at.

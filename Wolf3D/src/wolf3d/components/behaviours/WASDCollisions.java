@@ -11,7 +11,7 @@ import engine.input.Keyboard;
 public class WASDCollisions extends Behaviour {
 
 	/** Units per Second that this controller defaults to */
-	public static final float DEFAULT_MOVESPEED = 10;
+	public static final float DEFAULT_MOVESPEED = 3;
 
 	private static final int wallSize = 2;
 
