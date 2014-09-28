@@ -13,7 +13,7 @@ import engine.input.Keyboard;
  */
 public class Health extends Behaviour {
 
-	private static int health = 100;
+	private int health = 100;
 
 	private int damageAmt = 10;
 
