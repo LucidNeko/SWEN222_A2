@@ -27,22 +27,26 @@ public class WASDCollisions extends Behaviour {
 
 	/**
 	 * Sets the movement speed of this controller.
-	 * @param moveSpeed The new move speed in units per second.
+	 *
+	 * @param moveSpeed
+	 *            The new move speed in units per second.
 	 */
 	public void setMoveSpeed(float moveSpeed) {
 		this.moveSpeed = moveSpeed;
 	}
-	
+
 	/**
 	 * Moves the player back to starting position
+	 *
 	 * @param dy
 	 * @param dx
 	 * @param delta
-	 * @param t the transform component attached to the player
+	 * @param t
+	 *            the transform component attached to the player
 	 */
-	public void moveBack(float dy, float dx, float delta, Transform t){
-		t.strafeFlat(-moveSpeed*dx*delta);
-		t.walkFlat(-moveSpeed*dy*delta);
+	public void moveBack(float dy, float dx, float delta, Transform t) {
+		t.strafeFlat(-moveSpeed * dx * delta);
+		t.walkFlat(-moveSpeed * dy * delta);
 	}
 
 	@Override
@@ -67,56 +71,68 @@ public class WASDCollisions extends Behaviour {
 		int oldRow = (int) ((oldPos.getZ()) / wallSize);
 		Cell oldCell = walls[oldRow][oldCol];
 
-		//move foward 
+		// move foward
 		t.strafeFlat(moveSpeed * dx * delta);
 		t.walkFlat(moveSpeed * dy * delta);
 
 		// new Position and cell
 		Vec3 newPos = t.getPosition();
-		int col = (int) ((newPos.getX())/ wallSize);
-		int row = (int) ((newPos.getZ())/ wallSize);
-		
-		//checks the special case of position being negative,
-		//this should detect collisions for the border north and
-		//west wall
-		if(newPos.getX() < 0 || newPos.getZ() < 0){
+		int col;
+		int row;
+		//this tests the players position +- the width of the player, so that 
+		//you can no longer look through walls
+		if(oldPos.getX()> newPos.getX()){
+			col = (int) ((newPos.getX() - playerWidth) / wallSize);
+		}
+		else{
+			col = (int) ((newPos.getX() + playerWidth) / wallSize);
+		}
+		if (oldPos.getZ() > newPos.getZ()) {
+			row = (int) ((newPos.getZ() - playerWidth) / wallSize);
+		} else {
+			row = (int) ((newPos.getZ() + playerWidth) / wallSize);
+		}
+		// checks the special case of position being negative,
+		// this should detect collisions for the border north and
+		// west wall
+		if (newPos.getX() - playerWidth < 0 || newPos.getZ() - playerWidth < 0) {
 			moveBack(dy, dx, delta, t);
 			return;
 		}
 
-		//check if inbounds of the walls array
-		if(row<0 || row >= walls.length || col < 0 || col >= walls[0].length){
+		// check if inbounds of the walls array
+		if (row < 0 || row >= walls.length || col < 0 || col >= walls[0].length) {
 			moveBack(dy, dx, delta, t);
 			return;
 		}
 
 		Cell cell = walls[row][col];
-		//no collision
+		// no collision
 		if (oldCell == cell) {
 			return;
 		} else {
-			//we know were in a different cell from where we started.
-			if (col>oldCol) {
-				if(oldCell.hasEast()){
+			// we know were in a different cell from where we started.
+			if (col > oldCol) {
+				if (oldCell.hasEast()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
-			if(col < oldCol){
-				if(oldCell.hasWest()){
-					//move back
+			if (col < oldCol) {
+				if (oldCell.hasWest()) {
+					// move back
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
-			if(row>oldRow){
-				if(oldCell.hasSouth()){
+			if (row > oldRow) {
+				if (oldCell.hasSouth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
-			if(row<oldRow){
-				if(oldCell.hasNorth()){
+			if (row < oldRow) {
+				if (oldCell.hasNorth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
@@ -124,5 +140,4 @@ public class WASDCollisions extends Behaviour {
 		}
 
 	}
-
 }
