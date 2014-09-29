@@ -11,10 +11,11 @@ import javax.swing.JPanel;
 import engine.util.Resources;
 
 /**
- * @author brannisimo
+ * @author Simon Brannigan
  *BackgroundText pic taken straight from http://ezwallpapers.com/wallpapersdownload2014/flames-wallpaper-wolfenstein-background-wallpapers-ps3-black.jpg
  *I added the text but otherwise that's it.
  */
+
 public class WolfCanvas extends JPanel{
 
 	private static final int height = 600;
