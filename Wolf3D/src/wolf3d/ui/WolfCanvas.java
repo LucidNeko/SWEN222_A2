@@ -20,19 +20,21 @@ public class WolfCanvas extends JPanel{
 
 	private static final int height = 600;
 	private static final int width = 800;
+	private static BufferedImage background;
 
 	public WolfCanvas(){
+		try {
+			background = Resources.getImage("BackgroundText.png");
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.repaint();
 	}
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		try {
-			BufferedImage background = Resources.getImage("BackgroundText.png");
-			g.drawImage(background, 0, 0, width, height, this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		g.drawImage(background, 0, 0, width, height, this);
 	}
 }
