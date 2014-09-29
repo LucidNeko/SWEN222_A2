@@ -9,11 +9,11 @@ import javax.media.opengl.GL2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import wolf3d.components.Health;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
-import wolf3d.components.behaviours.Health;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDFlying;
