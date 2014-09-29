@@ -36,11 +36,10 @@ public class WolfFrame implements MouseListener{
 
 
 	/**
-	 * brannisimo
-	 * Change the new game area if statement to avoid
-	 *
+	 * @author brannisimo
+	 * Takes the x and y and checks if they are near a selection.
 	 */
-	private void getTask(int x, int y){
+	private void hitBox(int x, int y){
 		// TODO
 		/* Make the numbers not hard coded and tweak the pic till I can
 		 * have a basic hit box algorithm*/
@@ -64,12 +63,12 @@ public class WolfFrame implements MouseListener{
 			System.out.println("Exit selected");
 			System.exit(0);
 		}
-		System.out.println("Almost a selection");
+		else{ System.out.println("Almost a selection");}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e){
-		getTask(e.getX(), e.getY());
+		hitBox(e.getX(), e.getY());
 	}
 	/*Will tidy these up if I get the chance but given that they're
 	 * unnecessary I probably won't touch them*/
