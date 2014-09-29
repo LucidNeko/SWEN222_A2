@@ -83,7 +83,7 @@ public class GameDemo extends GameLoop {
 		parser.passFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
-
+//ghfix for sameer
 
 		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
