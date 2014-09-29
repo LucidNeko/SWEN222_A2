@@ -83,11 +83,11 @@ public class GameDemo extends GameLoop {
 		parser.passFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
-		
+
 
 		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
-		
+
 		//Create player
 		player = world.createEntity("Player");
 		player.attachComponent(Camera.class);
@@ -99,28 +99,28 @@ public class GameDemo extends GameLoop {
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
 		player.attachComponent(Health.class);
-//		player.attachComponent(new Renderer() {
-//
-//			@Override
-//			public void render(GL2 gl) {
-//				Vec3 pos = getOwner().getTransform().getPosition();
-//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {pos.x(), pos.y(), pos.z(), 1}, 0); //1 signifies positional light
-//			}
-//			
-//		});
+		player.attachComponent(new Renderer() {
+
+			@Override
+			public void render(GL2 gl) {
+				Vec3 pos = getOwner().getTransform().getPosition();
+				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {pos.x(), pos.y(), pos.z(), 1}, 0); //1 signifies positional light
+			}
+
+		});
 
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
-		
+
 		//teddy
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(linkMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 		teddy.getTransform().translate(1, 0, 5);
-		
+
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
-		
+
 		teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
@@ -130,7 +130,7 @@ public class GameDemo extends GameLoop {
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
-		
+
 		//Create enemy.
 		Entity enemy = world.createEntity("Enemy");
 		enemy.attachComponent(PyramidRenderer.class);
@@ -147,8 +147,8 @@ public class GameDemo extends GameLoop {
 		Texture floorTex = Resources.getTexture("debug_floor.png", true);
 		Texture doorTex = Resources.getTexture("1.png", true);
 		Mesh mesh = Resources.getMesh("wall.obj");
-		
-		
+
+
 
 		Entity entity;
 		for(int i = 0; i < 20; i+=2) {
@@ -193,8 +193,9 @@ public class GameDemo extends GameLoop {
 	@Override
 	protected void tick(float delta) {
 		//escape closes the game.
-		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE))
+		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
 			System.exit(0);
+		}
 
 		//if control is held down frees the mouse.
 		if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))
