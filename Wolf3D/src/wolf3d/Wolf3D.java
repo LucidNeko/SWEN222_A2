@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
-import wolf3d.startup.*;
+import wolf3d.ui.*;
 
 /**
  * The entry point into the system.
