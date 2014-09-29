@@ -1,4 +1,4 @@
-package wolf3d.startup;
+package wolf3d.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
