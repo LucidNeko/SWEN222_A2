@@ -1,29 +1,26 @@
 package wolf3d;
 
-import java.awt.event.KeyEvent;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
 
-import static javax.media.opengl.GL2.*;
+import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import wolf3d.components.Health;
+import wolf3d.components.PickUp;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.Translate;
-import wolf3d.components.behaviours.WASDFlying;
-import wolf3d.components.behaviours.WASDWalking;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.world.Parser;
-
-import com.jogamp.opengl.util.awt.TextureRenderer;
-
 import engine.common.Mathf;
 import engine.common.Vec3;
 import engine.components.Behaviour;
@@ -98,7 +95,8 @@ public class GameDemo extends GameLoop {
 //		player.attachComponent(WASDWalking.class);
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
-		player.attachComponent(Health.class);
+		//Testing pickup behavior
+		player.attachComponent(new PickUp(world));
 		player.attachComponent(new Renderer() {
 
 			@Override
@@ -113,7 +111,7 @@ public class GameDemo extends GameLoop {
 		player.getTransform().translate(1, 0, 1);
 
 		//teddy
-		Entity teddy = world.createEntity("Teddy");
+		Entity teddy = world.createEntity("Link");
 		teddy.attachComponent(MeshFilter.class).setMesh(linkMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 		teddy.getTransform().translate(1, 0, 5);
@@ -129,6 +127,11 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
+
+		//testing pickup
+//		List<Entity> links = world.getEntity("Link");
+//		int id = links.get(0).getID();
+//		player.getComponent(PickUp.class).pickUpItem(id);
 
 
 		//Create enemy.
