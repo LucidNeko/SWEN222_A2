@@ -113,11 +113,9 @@ public class GameDemo extends GameLoop {
 		player.getTransform().translate(1, 0, 1);
 
 		//teddy
-		engine.texturing.Mesh lm = new engine.util.OBJBuilder(Resources.getInputStream("link/young_link_s.obj")).getMesh();
-		
 		Entity link = world.createEntity("Link");
-		link.attachComponent(engine.components.MeshFilter.class).setMesh(lm);
-		link.attachComponent(engine.components.MeshRenderer.class).setMaterial(new Material(linkTex));
+		link.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		link.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 		link.getTransform().translate(1, 0, 5);
 
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
