@@ -4,14 +4,13 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
 
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import wolf3d.components.PickUp;
+import wolf3d.components.Health;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
@@ -95,8 +94,9 @@ public class GameDemo extends GameLoop {
 //		player.attachComponent(WASDWalking.class);
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
+		player.attachComponent(Health.class);
 		//Testing pickup behavior
-		player.attachComponent(new PickUp(world));
+//		player.attachComponent(new PickUp(world));
 		player.attachComponent(new Renderer() {
 
 			@Override
