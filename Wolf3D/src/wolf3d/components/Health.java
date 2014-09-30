@@ -15,6 +15,22 @@ public class Health extends Sensor{
 
 	private int health = 100;
 
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public int getDamageAmt() {
+		return damageAmt;
+	}
+
+	public void setDamageAmt(int damageAmt) {
+		this.damageAmt = damageAmt;
+	}
+
 	private int damageAmt = 10;
 
 	@Override
