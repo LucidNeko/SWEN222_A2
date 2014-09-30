@@ -92,6 +92,8 @@ public class MessageBuilder {
 			String compType = comp.getClass().getSimpleName();
 			switch(compType){
 			
+			//engine.components
+			
 			//wolf3d.components
 			case "Health":
 				Health healthComp = (Health)comp;
@@ -106,10 +108,7 @@ public class MessageBuilder {
 			//wolf3d.components.renderers
 				
 			//wolf3d.components.sensors
-				
-			//engine.components
-				
-				
+					
 			}
 		} catch (IOException e){
 			// TODO Auto-generated catch block
