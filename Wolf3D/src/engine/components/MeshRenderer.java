@@ -37,13 +37,16 @@ public class MeshRenderer extends Renderer {
 		gl.glPushMatrix();
 			getOwner().getTransform().applyTransform(gl);
 			
-			if(material.hasTexture()) {
-				gl.glEnable(GL_TEXTURE_2D);
-				material.getTexture().bind(gl);
-			}
+//			if(material.hasTexture()) {
+//				gl.glEnable(GL_TEXTURE_2D);
+//				material.getTexture().bind(gl);
+//			}
+//			
+//			Color c = material.getColor();
+//			gl.glColor4f(c.r(), c.g(), c.b(), c.a());
 			
-			Color c = material.getColor();
-			gl.glColor4f(c.r(), c.g(), c.b(), c.a());
+			material.bind(gl);
+			
 			gl.glEnableClientState(GL_VERTEX_ARRAY);
 			gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			gl.glEnableClientState(GL_NORMAL_ARRAY);
@@ -55,7 +58,9 @@ public class MeshRenderer extends Renderer {
 			gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 			gl.glDisableClientState(GL_NORMAL_ARRAY);
 	
-			if(material.hasTexture()) gl.glDisable(GL_TEXTURE_2D);
+//			if(material.hasTexture()) gl.glDisable(GL_TEXTURE_2D);
+			
+			material.unbind(gl);
 			
 		gl.glPopMatrix();
 	}

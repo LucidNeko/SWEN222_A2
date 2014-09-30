@@ -8,8 +8,7 @@ import engine.input.Keyboard;
 
 /**
  * This class is responsible for maintaining the heath of the player
- *
- * @author sameermagan
+ * @author Sameer Magan
  *
  */
 public class Health extends Sensor{
@@ -25,6 +24,32 @@ public class Health extends Sensor{
 				health -= damageAmt;
 				System.out.println(health);
 			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Increases health by damageAmt
+	 * @return returns true if increased, false if not
+	 */
+	public boolean increaseHealth(){
+		if (health < 100) {
+			health += damageAmt;
+			System.out.println(health);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Decreases health by damageAmt
+	 * @return returns true if decreased, false if not
+	 */
+	public boolean decreaseHealth(){
+		if (health > 0) {
+			health -= damageAmt;
+			System.out.println(health);
+			return true;
 		}
 		return false;
 	}
