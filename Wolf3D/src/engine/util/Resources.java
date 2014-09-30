@@ -83,7 +83,7 @@ public class Resources {
 	 * @return The Mesh.
 	 */
 	public static Mesh getMesh(String fnameOBJ) {
-		return new OBJBuilder(getInputStream(fnameOBJ)).createMesh();
+		return new OBJBuilder(getInputStream(fnameOBJ)).getMesh();
 	}
 
 	/**
