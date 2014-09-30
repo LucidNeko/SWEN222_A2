@@ -1,14 +1,14 @@
 package wolf3d.components;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import engine.common.Vec3;
 import engine.components.Component;
+import engine.components.Sensor;
+import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
 import engine.input.Keyboard;
@@ -19,7 +19,7 @@ import engine.input.Keyboard;
  * @author Sameer Magan
  *
  */
-public class PickUp extends Component implements KeyListener {
+public class PickUp extends Sensor{
 	Map<Integer, Entity> items = new HashMap<Integer, Entity>();
 	World world;
 
@@ -27,12 +27,26 @@ public class PickUp extends Component implements KeyListener {
 		this.world = world;
 	}
 
+	/**
+	 * picks up the item of the given id
+	 * @param id the id of the entity to be picked up
+	 * @return true if entity exists in world false if not
+	 */
 	public boolean pickUpItem(int id) {
 		items.put(id, world.getEntity(id));
 		return world.destroyEntity(id);
 	}
 
-	public boolean dropItem(int id, Entity item) {
+	/**
+	 * Drops the item of the given id at current position
+	 * @param id the id of the entity to be dropped
+	 * @return true if entity exist in items false if not
+	 */
+	public boolean dropItem(int id) {
+		if(items.get(id) == null){
+			return false;
+		}
+		Entity item = items.get(id);
 		Entity entity = world.createEntity(id, item.getName());
 		List<Component> itemComponents = item.getComponents(Component.class);
 		// attaching components to new entity
@@ -44,27 +58,22 @@ public class PickUp extends Component implements KeyListener {
 		return items.remove(id) != null;
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * @return the items
+	 */
+	public Map<Integer, Entity> getItems() {
+		return items;
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		System.out.println("key Pressed");
-		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_F) {
-			Set<Integer> keys = items.keySet();
-			for (int id : keys) {
-				dropItem(id, items.get(id));
-			}
+	public boolean isTriggered() {
+		if(world == null){
+			return false;
 		}
+		if(Keyboard.isKeyDown(KeyEvent.VK_P) || Keyboard.isKeyDown(KeyEvent.VK_F)){
+			return true;
+		}
+		return false;
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 }
