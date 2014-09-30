@@ -15,6 +15,11 @@ import com.jogamp.common.nio.Buffers;
 import engine.common.Vec2;
 import engine.common.Vec3;
 
+/**
+ * A Mesh contains vertex/uv/normal information of a mesh.
+ * @author Hamish
+ *
+ */
 public class Mesh {
 	
 	/** All the Vertices that make up the mesh */
@@ -108,6 +113,9 @@ public class Mesh {
 		}
 	}
 	
+	/**
+	 * Create the vertex/normal/uv buffers.
+	 */
 	private void createBuffers() {
 		vertexBuffer = Buffers.newDirectFloatBuffer(triangles.length*3);
 		normalBuffer = Buffers.newDirectFloatBuffer(triangles.length*3);
@@ -132,10 +140,17 @@ public class Mesh {
 		uvBuffer.flip();
 	}
 	
+	/**
+	 * Returns true if this mesh has uv coords.
+	 */
 	private boolean isUvMapped() {
 		return uvs != null;
 	}
 	
+	/**
+	 * Bind this Mesh to the OpenGL context.
+	 * @param gl The OpenGL context.
+	 */
 	public void bind(GL2 gl) {
 		gl.glEnableClientState(GL_VERTEX_ARRAY);
 			if(isUvMapped()) gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -145,10 +160,18 @@ public class Mesh {
 		gl.glNormalPointer(GL_FLOAT, 0, normalBuffer);
 	}
 	
+	/**
+	 * Draw this Mesh (Must bind() first).
+	 * @param gl The OpenGL context.
+	 */
 	public void draw(GL2 gl) {
 		gl.glDrawArrays(GL_TRIANGLES, 0, triangles.length/3); //TODO: is it divide by 3?
 	}
 	
+	/**
+	 * Unbind this Mesh from the OpenGL context.
+	 * @param gl The OpenGL context.
+	 */
 	public void unbind(GL2 gl) {
 		gl.glDisableClientState(GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
