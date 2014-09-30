@@ -25,15 +25,11 @@ public class MeshRenderer extends Renderer {
 		Mesh mesh = getOwner().getComponent(MeshFilter.class).getMesh();
 		if(mesh == null) return;
 		
-		gl.glPushMatrix();
-			getOwner().getTransform().applyTransform(gl);
-	
-			material.bind(gl);
-			mesh.bind(gl);
-			mesh.draw(gl);
-			mesh.unbind(gl);
-			material.unbind(gl);
-		gl.glPopMatrix();
+		material.bind(gl);
+		mesh.bind(gl);
+		mesh.draw(gl);
+		mesh.unbind(gl);
+		material.unbind(gl);
 	}
 
 }

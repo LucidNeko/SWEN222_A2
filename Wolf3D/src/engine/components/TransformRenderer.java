@@ -28,16 +28,11 @@ public class TransformRenderer extends Renderer {
 	
 	@Override
 	public void render(GL2 gl) {
-		Transform t = getOwner().getTransform();
-		gl.glPushMatrix();
-			t.applyTransform(gl);
-
-			renderCylinder(gl, 0, 1, 0);
-			gl.glRotatef(90, 1, 0, 0);
-			renderCylinder(gl, 0, 0, 1);
-			gl.glRotatef(-90, 0, 0, 1);
-			renderCylinder(gl, 1, 0, 0);
-		gl.glPopMatrix();
+		renderCylinder(gl, 0, 1, 0);
+		gl.glRotatef(90, 1, 0, 0);
+		renderCylinder(gl, 0, 0, 1);
+		gl.glRotatef(-90, 0, 0, 1);
+		renderCylinder(gl, 1, 0, 0);
 	}
 
 	/**

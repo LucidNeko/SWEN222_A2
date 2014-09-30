@@ -101,8 +101,8 @@ public class GameDemo extends GameLoop {
 
 			@Override
 			public void render(GL2 gl) {
-				Vec3 pos = getOwner().getTransform().getPosition();
-				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {pos.x(), pos.y(), pos.z(), 1}, 0); //1 signifies positional light
+				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
+				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
 			}
 
 		});
