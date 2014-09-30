@@ -2,6 +2,8 @@ package wolf3d;
 
 import static javax.media.opengl.GL2.*;
 
+import java.util.Collection;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -9,6 +11,7 @@ import javax.media.opengl.glu.GLU;
 
 import engine.components.Camera;
 import engine.components.Renderer;
+import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
 import engine.display.GameCanvas;
@@ -96,12 +99,26 @@ public class WorldView extends GameCanvas implements View{
 
 		gl.glPushMatrix();
 			if(camera != null) camera.setActive(gl);
-			for(Entity entity : world.getEntities()) {
+			renderEntities(gl, world.getEntities());
+		gl.glPopMatrix();
+	}
+	
+	private void renderEntities(GL2 gl, Collection<Entity> entities) {
+		for(Entity entity : entities) {
+			Transform t = entity.getTransform();
+			if(t == null) { 
+				log.error("Entity {} doesn't have a Transform!", entity);
+				continue; //next entity.
+			}
+			
+			gl.glPushMatrix();
+				t.applyTransform(gl);
 				for(Renderer renderer : entity.getComponents(Renderer.class)) {
 					renderer.render(gl);
 				}
-			}
-		gl.glPopMatrix();
+//				renderEntities(gl, entity.getChildren()); //recurse through children. Compounding transforms.
+			gl.glPopMatrix();
+		}
 	}
 
 }

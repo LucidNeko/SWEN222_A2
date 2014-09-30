@@ -8,6 +8,8 @@ import javax.media.opengl.GL2;
 import engine.texturing.Mesh;
 import engine.util.OBJBuilder;
 
+
+
 /**
  * TransformRenderer renders the Entities Transform component.
  * @author Hamish
@@ -21,21 +23,16 @@ public class TransformRenderer extends Renderer {
 	/** Mesh of the cylinder */
 	private static final Mesh cylinder;
 	static {
-		cylinder = new OBJBuilder(cylinderObj).createMesh();
+		cylinder = new OBJBuilder(cylinderObj).getMesh();
 	}
 	
 	@Override
 	public void render(GL2 gl) {
-		Transform t = getOwner().getTransform();
-		gl.glPushMatrix();
-			t.applyTransform(gl);
-
-			renderCylinder(gl, 0, 1, 0);
-			gl.glRotatef(90, 1, 0, 0);
-			renderCylinder(gl, 0, 0, 1);
-			gl.glRotatef(-90, 0, 0, 1);
-			renderCylinder(gl, 1, 0, 0);
-		gl.glPopMatrix();
+		renderCylinder(gl, 0, 1, 0);
+		gl.glRotatef(90, 1, 0, 0);
+		renderCylinder(gl, 0, 0, 1);
+		gl.glRotatef(-90, 0, 0, 1);
+		renderCylinder(gl, 1, 0, 0);
 	}
 
 	/**
@@ -47,10 +44,9 @@ public class TransformRenderer extends Renderer {
 	 */
 	private void renderCylinder(GL2 gl, float r, float g, float b) {
 		gl.glColor3f(r, g, b);
-		gl.glEnableClientState(GL_VERTEX_ARRAY);
-		gl.glVertexPointer(3, GL_FLOAT, 0, cylinder.getVertices());
-		gl.glDrawArrays(cylinder.getMode(), 0, cylinder.getNumVerticies());
-		gl.glDisableClientState(GL_VERTEX_ARRAY);
+		cylinder.bind(gl);
+		cylinder.draw(gl);
+		cylinder.unbind(gl);
 	}
 
 

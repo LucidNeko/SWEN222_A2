@@ -1,8 +1,9 @@
 package wolf3d;
 
-import java.awt.event.KeyEvent;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
 
-import static javax.media.opengl.GL2.*;
+import java.awt.event.KeyEvent;
 
 import javax.media.opengl.GL2;
 
@@ -16,14 +17,9 @@ import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.Translate;
-import wolf3d.components.behaviours.WASDFlying;
-import wolf3d.components.behaviours.WASDWalking;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.world.Parser;
-
-import com.jogamp.opengl.util.awt.TextureRenderer;
-
 import engine.common.Mathf;
 import engine.common.Vec3;
 import engine.components.Behaviour;
@@ -99,12 +95,14 @@ public class GameDemo extends GameLoop {
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
 		player.attachComponent(Health.class);
+		//Testing pickup behavior
+//		player.attachComponent(new PickUp(world));
 		player.attachComponent(new Renderer() {
 
 			@Override
 			public void render(GL2 gl) {
-				Vec3 pos = getOwner().getTransform().getPosition();
-				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {pos.x(), pos.y(), pos.z(), 1}, 0); //1 signifies positional light
+				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
+				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
 			}
 
 		});
@@ -113,15 +111,15 @@ public class GameDemo extends GameLoop {
 		player.getTransform().translate(1, 0, 1);
 
 		//teddy
-		Entity teddy = world.createEntity("Teddy");
-		teddy.attachComponent(MeshFilter.class).setMesh(linkMesh);
-		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
-		teddy.getTransform().translate(1, 0, 5);
+		Entity link = world.createEntity("Link");
+		link.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		link.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
+		link.getTransform().translate(1, 0, 5);
 
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 
-		teddy = world.createEntity("Teddy");
+		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
@@ -129,6 +127,11 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
+
+		//testing pickup
+//		List<Entity> links = world.getEntity("Link");
+//		int id = links.get(0).getID();
+//		player.getComponent(PickUp.class).pickUpItem(id);
 
 
 		//Create enemy.

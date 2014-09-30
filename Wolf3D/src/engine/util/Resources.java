@@ -6,6 +6,8 @@ import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -26,6 +28,9 @@ public class Resources {
 
 	/** base asset directory */
 	private static final String ASSETS_DIR = "/wolf3d/assets/";
+	
+	//Maps to reuse objects.
+	private static Map<String, Texture> textureMap = new HashMap<String, Texture>();
 
 	/**
 	 * Gets an InputStream over the file at fname.
@@ -62,6 +67,12 @@ public class Resources {
 	 * @return
 	 */
 	public static Texture getTexture(String fname, boolean flip) {
+		//if the Texture has already been loaded.
+		if(textureMap.containsKey(fname)) {
+			return textureMap.get(fname); 
+		}
+		
+		//Otherwise load in and put in textureMap.
 		try {
 			BufferedImage image = getImage(fname);
 			DataBuffer imageBuffer = image.getRaster().getDataBuffer();
@@ -69,7 +80,8 @@ public class Resources {
 			byte[] pixels = ((DataBufferByte)imageBuffer).getData();
 			convertABGRtoRGBAinPlace(pixels);
 			if(flip) yFlipInPlace(pixels, image.getWidth(), image.getHeight());
-			return new Texture(image.getWidth(), image.getHeight(), pixels);
+			textureMap.put(fname, new Texture(image.getWidth(), image.getHeight(), pixels)); //put in the map.
+			return textureMap.get(fname);
 		} catch(Exception e) {
 			log.error("Failed to load texture: " + e.getMessage());
 			e.printStackTrace();
@@ -83,7 +95,7 @@ public class Resources {
 	 * @return The Mesh.
 	 */
 	public static Mesh getMesh(String fnameOBJ) {
-		return new OBJBuilder(getInputStream(fnameOBJ)).createMesh();
+		return new OBJBuilder(getInputStream(fnameOBJ)).getMesh();
 	}
 
 	/**
