@@ -35,7 +35,7 @@ public class WorldView extends GameCanvas implements View{
 		super(glCapabilities, width, height);
 		this.world = world;
 	}
-	
+
 	@Override
 	public void setCamera(Camera camera) {
 		this.camera = camera;
@@ -53,7 +53,7 @@ public class WorldView extends GameCanvas implements View{
 
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		gl.glEnable(GL_LIGHTING);
 		gl.glEnable(GL_LIGHT0);
 		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.2f);
@@ -83,7 +83,7 @@ public class WorldView extends GameCanvas implements View{
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		renderWorld(gl);
-		
+
 		checkError(gl); //prints out error code if we get an error.
 	}
 

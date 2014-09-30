@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
+import wolf3d.ui.*;
 
 /**
  * The entry point into the system.
@@ -62,25 +64,26 @@ public class Wolf3D extends JFrame {
 
 		//the game. This is a thread. You need to start it.
 		GameDemo game = new GameDemo(world);
-		game.setView(view); // give it rhe view so it can call it's display method appropriately.
+		game.setView(view); // give it the view so it can call it's display method appropriately.
 		game.start();
 	}
 
 	/** Exits after confirming with the user if they really want to exit */
 	private void confirmExit() {
-//		if(JOptionPane.showConfirmDialog(AppWindow.this,
-//				"Are you sure you want to Exit?",
-//				"Are you sure you want to Exit?",
-//				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-			System.exit(0);
-//		}
+		if(JOptionPane.showConfirmDialog(Wolf3D.this,
+				"Are you sure you want to Exit?",
+				"Are you sure you want to Exit?",
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
 	}
 
 	/** Create a new instance of App */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new Wolf3D();
+				/*Starts the GUI frame*/
+				WolfFrame wf = new WolfFrame();
 			}
 		});
 	}

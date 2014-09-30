@@ -9,11 +9,11 @@ import javax.media.opengl.GL2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import wolf3d.components.Health;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
-import wolf3d.components.behaviours.Health;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDFlying;
@@ -83,11 +83,17 @@ public class GameDemo extends GameLoop {
 		parser.passFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
-		
+//ghfix for sameer
+
+		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
+		Texture linkTex = Resources.getTexture("link/young_link.png", true);
+
 		//Create player
 		player = world.createEntity("Player");
 		player.attachComponent(Camera.class);
-		player.attachComponent(PyramidRenderer.class);
+//		player.attachComponent(PyramidRenderer.class);
+		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 		player.attachComponent(parser.getWallCollisionComponent());
 //		player.attachComponent(WASDWalking.class);
 		player.attachComponent(MouseLookController.class);
@@ -100,20 +106,21 @@ public class GameDemo extends GameLoop {
 				Vec3 pos = getOwner().getTransform().getPosition();
 				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {pos.x(), pos.y(), pos.z(), 1}, 0); //1 signifies positional light
 			}
-			
+
 		});
 
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
-		
+
 		//teddy
+		Entity teddy = world.createEntity("Teddy");
+		teddy.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
+		teddy.getTransform().translate(1, 0, 5);
+
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
-		Entity teddy = world.createEntity("Teddy");
-		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
-		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
-		teddy.getTransform().translate(1, 0, 5);
-		
+
 		teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
@@ -122,7 +129,8 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
-		
+
+
 		//Create enemy.
 		Entity enemy = world.createEntity("Enemy");
 		enemy.attachComponent(PyramidRenderer.class);
@@ -139,8 +147,8 @@ public class GameDemo extends GameLoop {
 		Texture floorTex = Resources.getTexture("debug_floor.png", true);
 		Texture doorTex = Resources.getTexture("1.png", true);
 		Mesh mesh = Resources.getMesh("wall.obj");
-		
-		
+
+
 
 		Entity entity;
 		for(int i = 0; i < 20; i+=2) {
@@ -185,8 +193,9 @@ public class GameDemo extends GameLoop {
 	@Override
 	protected void tick(float delta) {
 		//escape closes the game.
-		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE))
+		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
 			System.exit(0);
+		}
 
 		//if control is held down frees the mouse.
 		if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))

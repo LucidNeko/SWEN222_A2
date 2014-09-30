@@ -1,5 +1,9 @@
 package engine.texturing;
 
+import static javax.media.opengl.GL2.GL_TEXTURE_2D;
+
+import javax.media.opengl.GL2;
+
 import engine.common.Color;
 
 /**
@@ -75,6 +79,19 @@ public class Material {
 		this.color = color;
 	}
 	
+	public void bind(GL2 gl) {
+		if(texture != null) {
+			gl.glEnable(GL_TEXTURE_2D);
+			texture.bind(gl);
+		}
+		gl.glColor4f(color.r(), color.g(), color.b(), color.a());
+	}
+	
+	public void unbind(GL2 gl) {
+		if(texture != null) {
+			gl.glDisable(GL_TEXTURE_2D);
+		}
+	}
 	
 
 }

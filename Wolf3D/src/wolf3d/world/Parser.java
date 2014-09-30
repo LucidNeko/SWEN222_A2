@@ -40,7 +40,6 @@ public class Parser {
 	private int tileX = 1;
 	private int tileY = 1;
 
-
 	public Parser(String filePath) {
 		this.filePath = filePath;
 	}
@@ -50,35 +49,35 @@ public class Parser {
 	 */
 	public void passFileToArray() {
 		InputStream in = Resources.getInputStream(filePath);
-		
-			Scanner sc = new Scanner(in);
-			int total;
 
-			width = sc.nextInt();
-			height = sc.nextInt();
-//			int cur = 0;
-			walls = new Cell[height][width];
-			int col = 0;
-			while (sc.hasNext()) {
-				if (2 * height == col * 2) {
-					total = sc.nextInt();
-					break;
-				}
-				String line = sc.next();
-				char[] row = line.toCharArray();
-				int rowCheck = sc.nextInt();
-				for (int i = 0; i < row.length; i++) {
-					int temp = Integer.decode("0x" + row[i]);
-					walls[col][i] = new Cell(temp);
-				}
-				col++;
+		Scanner sc = new Scanner(in);
+		int total;
+
+		width = sc.nextInt();
+		height = sc.nextInt();
+		// int cur = 0;
+		walls = new Cell[height][width];
+		int col = 0;
+		while (sc.hasNext()) {
+			if (2 * height == col * 2) {
+				total = sc.nextInt();
+				break;
 			}
-			sc.close();
+			String line = sc.next();
+			char[] row = line.toCharArray();
+			int rowCheck = sc.nextInt();
+			for (int i = 0; i < row.length; i++) {
+				int temp = Integer.decode("0x" + row[i]);
+				walls[col][i] = new Cell(temp);
+			}
+			col++;
+		}
+		sc.close();
 	}
 
 	/**
 	 * Creates the floor for the given world
-	 * 
+	 *
 	 * @param world
 	 *            the world that the floor will be added to
 	 */
@@ -99,7 +98,7 @@ public class Parser {
 
 	/**
 	 * Creates all the walls in the given world
-	 * 
+	 *
 	 * @param world
 	 *            the world that the walls will be added to
 	 */
@@ -108,11 +107,6 @@ public class Parser {
 		// z
 		// |
 		// V
-
-		Texture wallTex = Resources.getTexture("debug_wall.png", true);
-		Mesh mesh = Resources.getMesh("wall.obj");
-		Material material = new Material(wallTex, Color.WHITE);
-
 		float width = 2;
 		float height = 2;
 		for (int row = 0; row < walls.length; row++) {
@@ -125,43 +119,27 @@ public class Parser {
 				z += height / 2;
 				if (walls[row][col].hasNorth()) {
 					z -= halfHeight;
-					Entity wall = world.createEntity("wall");
-					wall.attachComponent(MeshFilter.class).setMesh(mesh);
-					wall.attachComponent(MeshRenderer.class).setMaterial(
-							material);
-					
+					Entity wall = addWall(world);
 					wall.getTransform().translate(x, 0, z);
 					z += halfHeight;
 				}
 				if (walls[row][col].hasEast()) {
 					x += halfWidth;
-					Entity wall = world.createEntity("wall");
-					wall.attachComponent(MeshFilter.class).setMesh(mesh);
-					wall.attachComponent(MeshRenderer.class).setMaterial(
-							material);
-
+					Entity wall = addWall(world);
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(90));
 					x -= halfWidth;
 				}
 				if (walls[row][col].hasSouth()) {
 					z += halfHeight;
-					Entity wall = world.createEntity("wall");
-					wall.attachComponent(MeshFilter.class).setMesh(mesh);
-					wall.attachComponent(MeshRenderer.class).setMaterial(
-							material);
-
+					Entity wall = addWall(world);
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(180));
 					z -= halfHeight;
 				}
 				if (walls[row][col].hasWest()) {
 					x -= halfWidth;
-					Entity wall = world.createEntity("wall");
-					wall.attachComponent(MeshFilter.class).setMesh(mesh);
-					wall.attachComponent(MeshRenderer.class).setMaterial(
-							material);
-
+					Entity wall = addWall(world);
 					wall.getTransform().translate(x, 0, z);
 					wall.getTransform().rotateY(Mathf.degToRad(-90));
 					x += halfWidth;
@@ -171,8 +149,25 @@ public class Parser {
 	}
 
 	/**
+	 * Adds a Wall to the given world with a Texture, Mesh, and Material
+	 * @param world the world for the wall to be added to
+	 * @return the newly created wall
+	 */
+	public Entity addWall(World world) {
+		//the texture for the wall
+		Texture wallTex = Resources.getTexture("debug_wall.png", true);
+		Mesh mesh = Resources.getMesh("wall.obj");
+		Material material = new Material(wallTex, Color.WHITE);
+
+		Entity wall = world.createEntity("wall");
+		wall.attachComponent(MeshFilter.class).setMesh(mesh);
+		wall.attachComponent(MeshRenderer.class).setMaterial(material);
+		return wall;
+	}
+
+	/**
 	 * Returns a WASDCollion object with the walls array initialised
-	 * 
+	 *
 	 * @return Returns a WASDCollion object with the walls array initialised
 	 */
 	public WASDCollisions getWallCollisionComponent() {

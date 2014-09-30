@@ -21,7 +21,7 @@ public class Texture {
 	private int id = -1; //-1 means not yet registered with OpenGL
 	private int width;
 	private int height;
-	
+
 	private byte[] pixels;
 
 	/**
@@ -42,7 +42,7 @@ public class Texture {
 	 */
 	public void bind(GL2 gl) {
 		if(id == -1) loadImageIntoGL(gl);
-		
+
 		gl.glBindTexture(GL_TEXTURE_2D, id);
 	}
 
@@ -52,8 +52,8 @@ public class Texture {
 	 */
 	private void loadImageIntoGL(GL2 gl) {
 		int[] id = new int[1];
-		log.trace("loadImageIntoGL: id={}", id[0]);
 		gl.glGenTextures(1, id, 0);
+		log.trace("loadImageIntoGL: id={}", id[0]);
 		gl.glBindTexture(GL_TEXTURE_2D, id[0]);
 		gl.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		gl.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
