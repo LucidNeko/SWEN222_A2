@@ -11,6 +11,7 @@ import java.net.Socket;
  * @author Michael Nelson (300276118)
  *
  */
+
 public class Client extends Thread{
 	private Socket soc;
 	private DataOutputStream out;
