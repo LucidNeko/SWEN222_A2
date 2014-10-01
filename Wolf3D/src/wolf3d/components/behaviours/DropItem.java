@@ -15,6 +15,12 @@ import engine.core.TempEntityDef;
 import engine.core.World;
 import engine.input.Keyboard;
 
+/**
+ * This class is responsible for dropping items in the attached players
+ * Inventory into the world and removing that item from the inventory
+ * @author Sameer Magan
+ *
+ */
 public class DropItem extends Behaviour {
 	World world;
 
@@ -22,6 +28,12 @@ public class DropItem extends Behaviour {
 		this.world = world;
 	}
 
+	/**
+	 * Drops the given entity in the world on the player current position
+	 * and removes the given from the attached players inventory
+	 * @param item The Entity to be dropped
+	 * @return true if the player is dropped into the world false if not
+	 */
 	public boolean drop(Entity item) {
 		Entity player = item.getComponent(ProximitySensor.class).getTarget();
 		Inventory inventory = player.getComponent(Inventory.class);
