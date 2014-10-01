@@ -112,8 +112,8 @@ public class GameDemo extends GameLoop {
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 		
-		Mesh testMesh = Resources.getMesh("m9/m9.obj");
-		Texture testTex = Resources.getTexture("m9/m9.png", true);
+		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
+		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
 
 		//teddy
 		Entity test = world.createEntity("Test");
