@@ -16,21 +16,25 @@ import engine.util.Resources;
  *
  */
 public class IGCanvas extends JPanel{
-	private static final int height = 600;
-	private static final int width = 800;
+	private static int height;
+	private static int width;
+	private static BufferedImage options;
 
-	public IGCanvas(){
+	public IGCanvas(int x, int y){
+		this.height=x;
+		this.width=y;
+		try {
+			options = Resources.getImage("InGameMenu.png");
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.repaint();
 	}
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		try {
-			BufferedImage background = Resources.getImage("InGameMenu.png");
-			g.drawImage(background, 0, 0, width, height, this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		g.drawImage(options, 0, 0, width, height, this);
 	}
 }
