@@ -1,5 +1,7 @@
 package wolf3d.components.behaviours;
 
+import java.util.Set;
+
 import wolf3d.components.Inventory;
 import wolf3d.components.sensors.ProximitySensor;
 
@@ -7,8 +9,8 @@ import com.jogamp.newt.event.KeyEvent;
 
 import engine.common.Vec3;
 import engine.components.Behaviour;
+import engine.components.Component;
 import engine.core.Entity;
-import engine.core.EntityDef;
 import engine.core.TempEntityDef;
 import engine.core.World;
 import engine.input.Keyboard;
@@ -30,8 +32,13 @@ public class DropItem extends Behaviour {
 			// creates an EntityDef to use to add back to the world
 			TempEntityDef entDef = new TempEntityDef();
 			entDef.setName(item.getName());
-
-//			entDef.addComponents(item.getAllComponents());
+			//Detach all components from item so they can be attached to the 
+			//newly created entity
+			Set<Component> components = item.getAllComponents();
+			for(Component c: components){
+				item.detachComponent(c);
+			}
+			entDef.addComponents(components);
 			inventory.removeEntity(item);
 			return world.addEntityDef(entDef);
 		}
