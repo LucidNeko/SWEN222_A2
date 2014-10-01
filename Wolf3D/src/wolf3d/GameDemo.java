@@ -201,6 +201,10 @@ public class GameDemo extends GameLoop {
 		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
 			System.exit(0);
 		}
+		
+		if(Keyboard.isKeyDownOnce(KeyEvent.VK_X)) {
+			log.trace("Pressed X");
+		}
 
 		//if control is held down frees the mouse.
 		if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))
