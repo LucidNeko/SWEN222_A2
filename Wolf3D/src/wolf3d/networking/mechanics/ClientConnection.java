@@ -12,7 +12,7 @@ import java.net.Socket;
  *
  */
 
-public class Client extends Thread{
+public class ClientConnection extends Thread{
 	private Socket soc;
 	private DataOutputStream out;
 	private DataInputStream in;
@@ -24,7 +24,7 @@ public class Client extends Thread{
 	 * Create a new client on the given socket.
 	 * @param socket
 	 */
-	public Client(Socket socket){
+	public ClientConnection(Socket socket){
 		soc = socket;
 	}
 

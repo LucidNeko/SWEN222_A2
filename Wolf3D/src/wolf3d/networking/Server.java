@@ -3,14 +3,14 @@ package wolf3d.networking;
 import java.util.Observable;
 import java.util.Observer;
 
-import wolf3d.networking.mechanics.Server;
+import wolf3d.networking.mechanics.ServerConnectionMaster;
 
-public class ServerProtocol implements Observer {
-	private Server theServer;
+public class Server implements Observer {
+	private ServerConnectionMaster theServer;
 
 
-	public ServerProtocol(int port, int capacity, Observable ob){
-		theServer = new Server(port, capacity);
+	public Server(int port, int capacity, Observable ob){
+		theServer = new ServerConnectionMaster(port, capacity);
 		theServer.start();
 		if(ob!=null){
 			ob.addObserver(this);
@@ -22,7 +22,7 @@ public class ServerProtocol implements Observer {
 	 * @param args
 	 */
 	public static void main(String[] args){
-		new ServerProtocol(Integer.parseInt(args[0]),Integer.parseInt(args[1]), null);
+		new Server(Integer.parseInt(args[0]),Integer.parseInt(args[1]), null);
 	}
 
 	@Override

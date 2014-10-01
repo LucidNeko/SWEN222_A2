@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 
-import wolf3d.networking.mechanics.Client;
+import wolf3d.networking.mechanics.ClientConnection;
 
 /**
  * This class is a wrapper for the Client connection that performs logic necessary for the game to run.
@@ -14,8 +14,8 @@ import wolf3d.networking.mechanics.Client;
  * @author Michael Nelson (300276118)
  *
  */
-public class ClientProtocol extends Thread implements Observer{
-	Client connection;
+public class Client extends Thread implements Observer{
+	ClientConnection connection;
 	byte[] msg;
 	
 	/**
@@ -23,8 +23,8 @@ public class ClientProtocol extends Thread implements Observer{
 	 * @param sock
 	 * @param ob
 	 */
-	public ClientProtocol(Socket sock, Observable ob){
-		connection = new Client(sock);
+	public Client(Socket sock, Observable ob){
+		connection = new ClientConnection(sock);
 		if(ob!=null){
 			ob.addObserver(this);
 		}
@@ -61,7 +61,7 @@ public class ClientProtocol extends Thread implements Observer{
 	 */
 	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException{
 		Socket sock = new Socket(args[0],Integer.parseInt(args[1]));
-		ClientProtocol pc = new ClientProtocol(sock, null);
+		Client pc = new Client(sock, null);
 		pc.run();
 	}
 
