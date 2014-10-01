@@ -104,6 +104,13 @@ public class Entity {
 		return components;
 	}
 	
+	/**
+	 * Returns a copy of List containing all the Components.
+	 */
+	public Set<Component> getAllComponentsCopy() {
+		return new LinkedHashSet<Component>(components);
+	}
+	
 	
 	/**
 	 * Detaches the specified component from this Entity.<br>
