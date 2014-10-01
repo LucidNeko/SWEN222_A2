@@ -2,6 +2,7 @@ package engine.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import engine.components.Component;
 
@@ -24,6 +25,17 @@ public class EntityDef {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	//This method is just to make adding all components easier
+	//You can yell at me if u dont like it lol
+	/**
+	 * Adds all components taking in a set of components
+	 * @param components components to be added
+	 * @author Sameer Magan
+	 */
+	public void addComponents(Set<Component> components){
+		components.addAll(components);
 	}
 	
 	public <E extends Component> void addComponents(Class<? extends E>... components) {
