@@ -2,6 +2,7 @@ package wolf3d.networking;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 
 import engine.components.Component;
 import engine.core.Entity;
@@ -26,11 +27,11 @@ public class MessageReader {
 			}
 			else{
 				int id = is.read()<<24 + is.read()<<16 + is.read()<<8 + is.read(); //this just reads the next four bytes as an int.
-				Entity root = world.getEntity(id);
-				if(root==null){
+				Entity ent = world.getEntity(id);
+				if(ent==null){
 					//that entity does not exist, better make it.
 					world.createEntity(id, "");
-					root = world.getEntity(id);
+					ent = world.getEntity(id);
 				}
 				//readEntity(is, root);
 				
@@ -44,8 +45,14 @@ public class MessageReader {
 					typeB[i] = (byte)is.read();
 				}
 				type = new String(typeB);
-				id = is.read()<<24 + is.read()<<16 + is.read()<<8 + is.read(); //this just reads the next four bytes as an int.
+				id = is.read()<<24 + is.read()<<16 + is.read()<<8 + is.read(); 
+				
 				//check this component exists in entity
+				Set<Component> comps = ent.getAllComponents();
+				
+				for(Component comp : comps){
+					
+				}
 				//if not create it
 				//if yes then read it.
 				
@@ -59,21 +66,5 @@ public class MessageReader {
 
 	}
 
-	/**
-	 * This method is probably gonna get delllleted, unless Entities can have entites?
-	 * @param is
-	 * @param ent
-	 */
-	public static void readEntity(InputStream is, Entity ent){
-		try {
-			if(is.read()=='e'){
-				int id = is.read()<<24 + is.read()<<16 + is.read()<<8 + is.read(); //this just reads the next four bytes as an int.
-				Entity e = world.getEntity(id);
-				readEntity(is, e);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 }
