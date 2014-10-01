@@ -29,8 +29,8 @@ public class PickUp extends Behaviour{
 	}
 
 	/**
-	 * picks up the item of the given id
-	 * @param id the id of the entity to be picked up
+	 * Picks up the entity attached to this component and
+	 * adds it to the targeted players Inventory
 	 * @return true if entity exists in world false if not
 	 */
 	public boolean pickUpItem() {
@@ -38,8 +38,7 @@ public class PickUp extends Behaviour{
 		Entity player = item.getComponent(ProximitySensor.class).getTarget();
 		Inventory inventory = player.getComponent(Inventory.class);
 		inventory.addItem(item);
-		world.destroyEntity(item.getID());
-		return false;
+		return world.destroyEntity(item.getID());
 	}
 
 	/**
@@ -76,7 +75,7 @@ public class PickUp extends Behaviour{
 		requires(ProximitySensor.class);
 
 		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
-			if(Keyboard.isKeyDown(KeyEvent.VK_E)){
+			if(Keyboard.isKeyDownOnce(KeyEvent.VK_E)){
 				pickUpItem();
 			}
 		}
