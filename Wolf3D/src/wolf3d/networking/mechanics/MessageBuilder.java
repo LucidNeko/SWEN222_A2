@@ -1,4 +1,4 @@
-package wolf3d.networking;
+package wolf3d.networking.mechanics;
 
 
 import java.io.DataOutputStream;

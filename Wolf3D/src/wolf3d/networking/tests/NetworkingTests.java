@@ -1,4 +1,4 @@
-package wolf3d.networking;
+package wolf3d.networking.tests;
 
 import static org.junit.Assert.*;
 

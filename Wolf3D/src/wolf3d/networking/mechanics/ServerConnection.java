@@ -1,4 +1,4 @@
-package wolf3d.networking;
+package wolf3d.networking.mechanics;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -31,6 +31,8 @@ public class ServerConnection extends Thread{
 					int length = in.readInt();
 					byte[] message = new byte[length];
 					in.readFully(message);
+					String s = new String(message);
+					System.out.println(s);
 				}
 			}
 			

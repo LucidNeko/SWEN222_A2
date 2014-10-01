@@ -1,102 +1,90 @@
 package wolf3d.networking;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Scanner;
+
+import wolf3d.networking.mechanics.ClientConnection;
 
 /**
- * This class represents the client. It's a dumb client class, it can send and receive messages but does absolutely no interpretation.
+ * This class is a wrapper for the Client connection that performs logic necessary for the game to run.
  * 
  * @author Michael Nelson (300276118)
  *
  */
-
-public class Client extends Thread{
-	private Socket soc;
-	private DataOutputStream out;
-	private DataInputStream in;
-	
-	private boolean uncollectedMsg = false;;
-	private byte[] msg;
+public class Client extends Thread implements Observer{
+	ClientConnection connection;
+	byte[] msg;
 
 	/**
-	 * Create a new client on the given socket.
-	 * @param socket
+	 * Construct a new ClientProtocol on the given socket, with an observable (probably removed in future?)
+	 * @param sock
+	 * @param ob
 	 */
-	public Client(Socket socket){
-		soc = socket;
+	public Client(Socket sock, Observable ob){
+		connection = new ClientConnection(sock);
+		connection.start();
+		if(ob!=null){
+			ob.addObserver(this);
+		}
 	}
 
 	/**
-	 * Client thread.
-	 * Listens for incoming messages.
+	 * Dumb message method, will probably be deleted in future.
+	 * @param message
+	 */
+	public void sendMessage(byte[] message){
+		connection.writeToServer(message);
+	}
+
+	/**
+	 * Polls the client to see if we have messages to connect. Then if we do it does something. 
+	 * (NOTE, MAY BE WORTHWILE TO MAKE THIS CLASS OBSERVABLE?)
 	 */
 	public void run(){
-		try{
-			try {
+		while(true){
+			//READ
 
-				out = new DataOutputStream(soc.getOutputStream());
-				in = new DataInputStream(soc.getInputStream());
-
-				//listen
-				while(true){
-					if(in.available()>0){
-						int length = in.readInt();
-						msg = new byte[length];
-						in.readFully(msg);
-						uncollectedMsg = true;
-					}
-				}
+			Scanner input = new Scanner(System.in);
+			while(true){
+				String s = input.nextLine();
+				System.out.println(s);
+				sendMessage(s.getBytes());
 			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			/*
+			if(connection.doWeNeedToCollect()){
+				msg = connection.message();
+				System.out.println(msg.toString());
 			}
-		}
-		finally{
-			try {
-				soc.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			*/
 		}
 	}
 
 	/**
-	 * Boolean that returns true if there's an uncollected message.
-	 * @return
+	 * Test method.
+	 * @param args
+	 * @throws NumberFormatException
+	 * @throws UnknownHostException
+	 * @throws IOException
 	 */
-	public boolean doWeNeedToCollect(){
-		return uncollectedMsg;
+	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException{
+		Socket sock = new Socket(args[0],Integer.parseInt(args[1]));
+		Client pc = new Client(sock, null);
+		pc.start();
+		System.out.println("Reached?");
+		//input.close();
 	}
-	
-	/**
-	 * Returns the message. 
-	 * 
-	 * Note, this method will return old messages.
-	 * @return
-	 */
-	public byte[] message(){
-		uncollectedMsg = false;
-		return msg;
-	}
-	
-	/**
-	 * Write a message to the server
-	 * @param message Message to write
-	 */
-	public void writeToServer(byte[] message){
-		try {
-			int length = message.length;
 
-			out.writeInt(length);
-			if (length > 0) {
-				out.write(message);
-			}} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO
+		//cast O as component and get id
+
+		//cast arg to string and get the message.
+
+		//send to the server.
 	}
 }

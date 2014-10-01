@@ -21,7 +21,6 @@ import engine.input.Keyboard;
  *
  */
 public class PickUp extends Behaviour{
-	Map<Integer, Entity> items = new HashMap<Integer, Entity>();
 	World world;
 
 	public PickUp(World world) {
@@ -29,8 +28,8 @@ public class PickUp extends Behaviour{
 	}
 
 	/**
-	 * picks up the item of the given id
-	 * @param id the id of the entity to be picked up
+	 * Picks up the entity attached to this component and
+	 * adds it to the targeted players Inventory
 	 * @return true if entity exists in world false if not
 	 */
 	public boolean pickUpItem() {
@@ -38,45 +37,16 @@ public class PickUp extends Behaviour{
 		Entity player = item.getComponent(ProximitySensor.class).getTarget();
 		Inventory inventory = player.getComponent(Inventory.class);
 		inventory.addItem(item);
-		world.destroyEntity(item.getID());
-		return false;
+		return world.destroyEntity(item.getID());
 	}
-
-	/**
-	 * Drops the item of the given id at current position
-	 * @param id the id of the entity to be dropped
-	 * @return true if entity exist in items false if not
-	 */
-	public boolean dropItem(int id) {
-		if(items.get(id) == null){
-			return false;
-		}
-		Entity item = items.get(id);
-		Entity entity = world.createEntity(id, item.getName());
-		List<Component> itemComponents = item.getComponents(Component.class);
-		// attaching components to new entity
-		for (Component c : itemComponents) {
-			entity.attachComponent(c);
-		}
-		Vec3 pos = this.getOwner().getTransform().getPosition();
-		entity.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
-		return items.remove(id) != null;
-	}
-
-	/**
-	 * @return the items
-	 */
-	public Map<Integer, Entity> getItems() {
-		return items;
-	}
-
 
 	@Override
 	public void update(float delta) {
 		requires(ProximitySensor.class);
-
+		//Checks if the proximity sensor attached to the owner of this component
+		//is triggered, ie. if the player is close enough to the item to be picked up
 		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
-			if(Keyboard.isKeyDown(KeyEvent.VK_E)){
+			if(Keyboard.isKeyDownOnce(KeyEvent.VK_E)){
 				pickUpItem();
 			}
 		}

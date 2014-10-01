@@ -1,87 +1,39 @@
 package wolf3d.networking;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 
-/**
- * This is a dumb server, i.e. it does no logic.
- * It has multiple connections and methods for sending and receiving messages.
- * @author Michael Nelson (300276118)
- *
- */
-public class Server extends Thread{
-	ServerSocket ss;
-	ServerConnection[] connections;
-	private boolean listening = true;
-	private int index = 0;
-	private int capacity;
+import wolf3d.networking.mechanics.ServerConnectionsMaster;
 
-	/**
-	 * Construct a new server listening on a port and with a capacity.
-	 * @param port
-	 * @param capacity maximum players (game will start at first connection)
-	 */
-	public Server(int port, int capacity) {
-		try {
-			ss = new ServerSocket(port);
-			connections = new ServerConnection[capacity];
-			this.capacity = capacity;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+public class Server implements Observer {
+	private ServerConnectionsMaster theServer;
+
+
+	public Server(int port, int capacity, Observable ob){
+		theServer = new ServerConnectionsMaster(port, capacity);
+		theServer.start();
+		if(ob!=null){
+			ob.addObserver(this);
 		}
 	}
 
 	/**
-	 * Send a message to client number [id]
-	 * @param id The client to send the message to. If id=-1, send to all clients.
-	 * @param msg the message.
+	 * Test method.
+	 * @param args
 	 */
-	public void pushToClient(int id, byte[] msg){
-		if(id==-1){
-			for(ServerConnection sc : connections){
-				sc.pushToClient(msg);
-			}
-		}
-		else{
-			connections[id].pushToClient(msg);
-		}
+	public static void main(String[] args){
+		new Server(Integer.parseInt(args[0]),Integer.parseInt(args[1]), null);
 	}
 
-	/**
-	 * Server run thread, starts up the server and listens for new connections.
-	 */
-	public void run(){
-		System.out.println("Server listening for connections...");
-		while(listening){
-			Socket sock;
-			try {
-				sock = ss.accept();
-				System.out.println("Accepted a connection from " + sock.getInetAddress() + "...");
-				connections[index] = new ServerConnection(sock);
-				connections[index].start();
-				if(index==(capacity-1)){
-					listening = false;
-				}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO
 
-				byte[] ms = new byte[5];
-				//Just test code, send byte to client.
-				ms[0] = (byte) 1;
-				connections[index].pushToClient(ms);
+		//cast O as component and get id
 
-				index++;
+		//cast arg to string and get the message.
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			ss.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//send to the client. (which client? all of them?)
 	}
+
 }
