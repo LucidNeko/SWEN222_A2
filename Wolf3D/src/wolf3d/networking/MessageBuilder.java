@@ -1,7 +1,13 @@
 package wolf3d.networking;
 
+
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+
+
+import engine.components.Component;
+import wolf3d.components.Health;
 
 /**
  * The MessageBuilder class is used by the networking classes to construct messages
@@ -23,7 +29,7 @@ import java.io.IOException;
  *
  */
 public class MessageBuilder {
-	
+
 	/**
 	 * Add an entity to the outputstream
 	 * @param os
@@ -38,7 +44,7 @@ public class MessageBuilder {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Add a named entity to the outputstream
 	 * @param os
@@ -54,26 +60,60 @@ public class MessageBuilder {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Add a component to the outputstream (this is a leaf node, so the message follows)
 	 * @param os
 	 * @param entID
 	 */
-	public static void appendComponent(DataOutputStream os, String compType, int compID){
+	public static void appendComponent(DataOutputStream os, Component comp, int compID){
 		try {
 			os.writeChar('c');
-			os.writeUTF(compType);
+			os.writeUTF(comp.getClass().getSimpleName());
 			os.writeInt(compID);
+			appendMessage(os, comp);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public static void appendMessage(DataOutputStream os, String msg){
-		
+
+	/**
+	 * This method will create the message by getting all fields in the component and adding them to message builder
+	 * This method is going to get quite large, but it will be ordered by pakcage name and then by class alphabetically (eclipse order),
+	 * so it won't be a pain to maintain. 
+	 * @param os
+	 * @param comp
+	 */
+	public static void appendMessage(DataOutputStream os, Component comp){
+		//get 
+		try {
+			String compType = comp.getClass().getSimpleName();
+			switch(compType){
+			
+			//engine.components
+			
+			//wolf3d.components
+			case "Health":
+				Health healthComp = (Health)comp;
+				os.writeInt(healthComp.getHealth());
+				os.writeInt(healthComp.getDamageAmt());
+				break;
+				
+			//wolf3d.components.behaviours
+				
+			//wolf3d.components.behaviours.animations
+				
+			//wolf3d.components.renderers
+				
+			//wolf3d.components.sensors
+					
+			}
+		} catch (IOException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
+
 }

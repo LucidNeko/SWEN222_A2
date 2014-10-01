@@ -13,10 +13,10 @@ import engine.components.Transform;
 public class PyramidRenderer extends Renderer {
 
 	public void render(GL2 gl) {
-		requires(Transform.class);
+//		requires(Transform.class);
 		
-		gl.glPushMatrix();
-			getOwner().getComponent(Transform.class).applyTransform(gl);
+//		gl.glPushMatrix();
+//			getOwner().getComponent(Transform.class).applyTransform(gl);
 			
 			gl.glBegin(GL2.GL_TRIANGLES);
 				gl.glColor3f(1, 0, 0);
@@ -39,7 +39,7 @@ public class PyramidRenderer extends Renderer {
 				gl.glVertex3f(0.25f, -0.25f, -0.5f);
 				gl.glVertex3f(-0.25f, -0.25f, -0.5f);
 			gl.glEnd();
-		gl.glPopMatrix();
+//		gl.glPopMatrix();
 	}
 	
 }

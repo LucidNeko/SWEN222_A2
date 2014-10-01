@@ -6,10 +6,21 @@ import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * This class is a wrapper for the Client connection that performs logic necessary for the game to run.
+ * 
+ * @author Michael Nelson (300276118)
+ *
+ */
 public class ClientProtocol extends Thread implements Observer{
 	Client connection;
 	byte[] msg;
 	
+	/**
+	 * Construct a new ClientProtocol on the given socket, with an observable (probably removed in future?)
+	 * @param sock
+	 * @param ob
+	 */
 	public ClientProtocol(Socket sock, Observable ob){
 		connection = new Client(sock);
 		if(ob!=null){
@@ -17,10 +28,18 @@ public class ClientProtocol extends Thread implements Observer{
 		}
 	}
 	
+	/**
+	 * Dumb message method, will probably be deleted in future.
+	 * @param message
+	 */
 	public void sendMessage(byte[] message){
 		connection.writeToServer(message);
 	}
 	
+	/**
+	 * Polls the client to see if we have messages to connect. Then if we do it does something. 
+	 * (NOTE, MAY BE WORTHWILE TO MAKE THIS CLASS OBSERVABLE?)
+	 */
 	public void run(){
 		while(true){
 			//READ

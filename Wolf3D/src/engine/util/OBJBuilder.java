@@ -17,9 +17,7 @@ import engine.common.Vec3;
 import engine.texturing.Mesh;
 
 /**
- * The OBJBuilder takes an InputStream to the wavefont.obj file, or the data
- * as a single string separated by \n characters at the end of where each line would be.
- * You can get a new Mesh object containing the data by calling the createMesh() method.
+ * OBJBuilder is a class to read in and interpert Wavefont.obj files.
  * @author Hamish
  *
  */
@@ -42,9 +40,11 @@ public class OBJBuilder {
 	private List<Vec3> normals = new ArrayList<Vec3>();
 	private List<Vec2> texCoords = new ArrayList<Vec2>();
 	private List<Face> faces = new ArrayList<Face>();
-
-	private int mode = GL_TRIANGLES;
-
+	
+	/**
+	 * Build from the InputStream
+	 * @param in An InputStream coming from an .obj file.
+	 */
 	public OBJBuilder(InputStream in) {
 		if(in == null)
 			throw new NullPointerException("InputStream cannot be null");
@@ -63,47 +63,42 @@ public class OBJBuilder {
 		}
 	}
 
+	/**
+	 * Builds from a String that is an obj file with each line seperated by /n
+	 * @param obj The obj specification of the object.
+	 */
 	public OBJBuilder(String obj) {
 		this.objFile = obj;
 	}
-
-	public Mesh createMesh() {
-		if(built == false) build();
-
-		float[] verts = new float[faces.size()*3*(mode==GL_TRIANGLES?3:4)]; //numFaces*3components*3vertices
-		float[] norms = new float[faces.size()*3*(mode==GL_TRIANGLES?3:4)]; //numFaces*3components*3vertices
-		float[] uvs =   new float[faces.size()*2*(mode==GL_TRIANGLES?3:4)]; //numFaces*2components*3vertices
-
-		int vertIndex = 0;
-		int normIndex = 0;
-		int uvIndex = 0;
-
+	
+	/**
+	 * Gets the Mesh that the obj file represents.
+	 * @return The Mesh.
+	 */
+	public Mesh getMesh() {
+		if(!built) build();
+		
+		Vec3[] mesh_vertices = vertices.toArray(new Vec3[vertices.size()]);
+		Vec2[] mesh_uvs = new Vec2[faces.size()*3];
+		int uv_idx = 0;
+		int[] triangles = new int[faces.size()*3];
+		int tri_idx = 0;
 		for(Face face : faces) {
-			for(int i = 0; i < face.vertices.size(); i++) {
-				Vec3 vert = vertices.get(face.vertices.get(i)-1);
-				verts[vertIndex++] = vert.x();
-				verts[vertIndex++] = vert.y();
-				verts[vertIndex++] = vert.z();
-			}
-
-			for(int i = 0; i < face.normals.size(); i++) {
-				Vec3 norm = normals.get(face.normals.get(i)-1);
-				norms[normIndex++] = norm.x();
-				norms[normIndex++] = norm.y();
-				norms[normIndex++] = norm.z();
-			}
-
-			for(int i = 0; i < face.texCoords.size(); i++) {
-				Vec2 uv = texCoords.get(face.texCoords.get(i)-1);
-				uvs[uvIndex++] = uv.x();
-				uvs[uvIndex++] = uv.y();
-			}
+			triangles[tri_idx++] = face.vertices.get(0)-1; //-1 because f lines start at 1 not 0
+			triangles[tri_idx++] = face.vertices.get(1)-1; //-1 because f lines start at 1 not 0
+			triangles[tri_idx++] = face.vertices.get(2)-1; //-1 because f lines start at 1 not 0
+			
+			//TODO:
+			mesh_uvs[uv_idx++] = texCoords.get(face.texCoords.get(0)-1).clone();
+			mesh_uvs[uv_idx++] = texCoords.get(face.texCoords.get(1)-1).clone();
+			mesh_uvs[uv_idx++] = texCoords.get(face.texCoords.get(2)-1).clone();
 		}
-
-		return new Mesh(verts, norms, uvs, mode);
+		return new Mesh(mesh_vertices, mesh_uvs, triangles);
 	}
-
-	public void build() {
+	
+	
+	/** Build from the obj file */
+	private void build() {
 		if(built) return;
 
 		for(String line : objFile.split("\n"))
@@ -165,10 +160,6 @@ public class OBJBuilder {
 		if(!tokens[0].equals(OBJ_FACE))
 			throw new IllegalStateException("Expected:" + OBJ_FACE +" Had:" + tokens[0]);
 
-		if(mode == GL_TRIANGLES && tokens.length > 4) {
-			mode = GL_QUADS;
-		}
-
 		// v/vt/vn or v//vn
 		Face face = new Face();
 		for(int i = 1; i < tokens.length; i++) {
@@ -180,10 +171,16 @@ public class OBJBuilder {
 		faces.add(face);
 	}
 
+	/**
+	 * The Face class represents the three sets of 3-Tuples that represent a face.<br>
+	 * v/vt/vn v/vt/vn v/vt/vn
+	 * @author Hamish
+	 *
+	 */
 	private class Face {
-		List<Integer> vertices = new ArrayList<Integer>(4);
-		List<Integer> texCoords = new ArrayList<Integer>(4);
-		List<Integer> normals = new ArrayList<Integer>(4);
+		List<Integer> vertices = new ArrayList<Integer>(3);
+		List<Integer> texCoords = new ArrayList<Integer>(3);
+		List<Integer> normals = new ArrayList<Integer>(3);
 	}
 
 }

@@ -98,6 +98,14 @@ public class Entity {
 	}
 	
 	/**
+	 * Returns a List containing all the Components.
+	 */
+	public Set<Component> getAllComponents() {
+		return components;
+	}
+	
+	
+	/**
 	 * Detaches the specified component from this Entity.<br>
 	 * If the component was present, the components Owner gets set to null.<br>
 	 * Then the component can be freely attached to other Entities.
