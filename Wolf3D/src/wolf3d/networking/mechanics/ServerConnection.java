@@ -31,6 +31,8 @@ public class ServerConnection extends Thread{
 					int length = in.readInt();
 					byte[] message = new byte[length];
 					in.readFully(message);
+					String s = new String(message);
+					System.out.println(s);
 				}
 			}
 			
