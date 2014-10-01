@@ -1,11 +1,11 @@
 package wolf3d.components.behaviours;
 
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import wolf3d.components.Inventory;
 import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Vec3;
 import engine.components.Behaviour;
@@ -34,7 +34,10 @@ public class PickUp extends Behaviour{
 	 * @return true if entity exists in world false if not
 	 */
 	public boolean pickUpItem() {
-		getOwner().getComponent(ProximitySensor.class).getTarget();
+		Entity item = getOwner();
+		Entity player = item.getComponent(ProximitySensor.class).getOwner();
+		Inventory inventory = player.getComponent(Inventory.class);
+		inventory.addItem(item);
 		return false;
 	}
 
