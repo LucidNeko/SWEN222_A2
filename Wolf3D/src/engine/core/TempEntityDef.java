@@ -13,6 +13,14 @@ public class TempEntityDef {
 	public TempEntityDef() {
 
 	}
+	
+	public TempEntityDef(Entity entity) {
+		name = entity.getName();
+		for(Component c: entity.getAllComponentsCopy()){
+			entity.detachComponent(c);
+		}
+		this.components.addAll(entity.getAllComponents());
+	}
 
 	public void setName(String name) {
 		this.name = name;

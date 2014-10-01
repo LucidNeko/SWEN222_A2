@@ -30,15 +30,16 @@ public class DropItem extends Behaviour {
 			// setting item position to the players current position
 			item.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
 			// creates an EntityDef to use to add back to the world
-			TempEntityDef entDef = new TempEntityDef();
-			entDef.setName(item.getName());
+			TempEntityDef entDef = new TempEntityDef(item);
+//			TempEntityDef entDef = new TempEntityDef();
+//			entDef.setName(item.getName());
 			//Detach all components from item so they can be attached to the 
 			//newly created entity
-			Set<Component> components = item.getAllComponents();
-			for(Component c: components){
-				item.detachComponent(c);
-			}
-			entDef.addComponents(components);
+//			Set<Component> components = item.getAllComponents();
+//			for(Component c: components){
+//				item.detachComponent(c);
+//			}
+//			entDef.addComponents(components);
 			inventory.removeEntity(item);
 			return world.addEntityDef(entDef);
 		}
