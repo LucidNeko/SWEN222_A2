@@ -20,6 +20,10 @@ public class Inventory extends Component {
 	public boolean removeEntity(Entity item){
 		return items.remove(item);
 	}
+	
+	public boolean contains(Entity item){
+		return items.contains(item);
+	}
 
 
 }

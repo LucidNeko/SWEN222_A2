@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import engine.core.World;
+
 /**
  * This class represents the client. It's a dumb client class, it can send and receive messages but does absolutely no interpretation.
  * 
@@ -99,4 +101,10 @@ public class ClientConnection extends Thread{
 				e.printStackTrace();
 			}
 	}
+
+	public void giveMeACopyOfTheWorldPlease(World world) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
