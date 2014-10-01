@@ -2,12 +2,12 @@ package engine.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import engine.components.Component;
 import engine.components.Transform;
 
 /**
@@ -89,6 +89,23 @@ public class World {
 	public Collection<Entity> getEntities() {
 //		return Collections.unmodifiableCollection(entities.values());
 		return new LinkedList<Entity>(entities.values());
+	}
+	
+	/**
+	 * Adds an EntityDef to the world
+	 * @param entityDef the EntityDef to be added to the world
+	 * @return false if there was an entity already contained with the same key
+	 * true if it was added successfully
+	 * 
+	 * @author Sameer Magan
+	 */
+	public boolean addEntityDef(EntityDef entityDef){
+		int id = getFreeID();
+		Entity entity = new Entity(id, entityDef.getName());
+		for(Class<? extends Component> com: entityDef.getComponents()){
+			entity.attachComponent(com);
+		}
+		return entities.put(id, entity) == null;
 	}
 
 	/**
