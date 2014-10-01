@@ -26,11 +26,12 @@ public class DropItem extends Behaviour {
 			Vec3 pos = player.getTransform().getPosition();
 			//setting item position to the players current position
 			item.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
+			//creates an EntityDef to use to add back to the world
 			EntityDef entDef = new EntityDef();
 			entDef.setName(item.getName());
 			entDef.addComponents(item.getAllComponents());
 			inventory.removeEntity(item);
-			
+			return world.addEntityDef(entDef);
 		}
 		return false;
 	}
@@ -38,7 +39,10 @@ public class DropItem extends Behaviour {
 	@Override
 	public void update(float delta) {
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_R)){
-			
+			Entity item = getOwner();
+			Entity player = item.getComponent(ProximitySensor.class).getTarget();
+			Inventory inventory = player.getComponent(Inventory.class);
+			drop(inventory.getItems().get(0));
 		}
 
 	}
