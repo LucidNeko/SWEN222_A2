@@ -33,9 +33,9 @@ public class PickUp extends Behaviour{
 	 * @param id the id of the entity to be picked up
 	 * @return true if entity exists in world false if not
 	 */
-	public boolean pickUpItem(int id) {
-		items.put(id, world.getEntity(id));
-		return world.destroyEntity(id);
+	public boolean pickUpItem() {
+		getOwner().getComponent(ProximitySensor.class).getTarget();
+		return false;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class PickUp extends Behaviour{
 
 		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
 			if(Keyboard.isKeyDown(KeyEvent.VK_E)){
-				pickUpItem(id)
+				pickUpItem();
 			}
 		}
 
