@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,11 +83,12 @@ public class World {
 	}
 
 	/**
-	 * Gets all the Entities in the world as an UnmodifiableCollection.
+	 * Gets a snapshot of the entities currently in the world.
 	 * @return The Collection of Entities.
 	 */
 	public Collection<Entity> getEntities() {
-		return Collections.unmodifiableCollection(entities.values());
+//		return Collections.unmodifiableCollection(entities.values());
+		return new LinkedList<Entity>(entities.values());
 	}
 
 	/**
