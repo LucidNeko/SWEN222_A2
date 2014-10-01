@@ -111,18 +111,22 @@ public class GameDemo extends GameLoop {
 
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
+		
+		Mesh testMesh = Resources.getMesh("m9/m9.obj");
+		Texture testTex = Resources.getTexture("m9/m9.png", true);
 
 		//teddy
-		Entity link = world.createEntity("Link");
-		link.attachComponent(MeshFilter.class).setMesh(linkMesh);
-		link.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
-		link.attachComponent(ProximitySensor.class).setTarget(player);
-		link.attachComponent(new PickUp(world));
-		link.getTransform().translate(1, 0, 5);
+		Entity test = world.createEntity("Test");
+		test.attachComponent(MeshFilter.class).setMesh(testMesh);
+		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
+		test.attachComponent(ProximitySensor.class).setTarget(player);
+		test.attachComponent(new PickUp(world));
+		test.getTransform().translate(1, 0, 5);
 
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 
+		
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
