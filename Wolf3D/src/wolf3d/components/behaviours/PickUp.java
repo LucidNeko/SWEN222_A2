@@ -1,14 +1,15 @@
-package wolf3d.components;
+package wolf3d.components.behaviours;
 
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Vec3;
+import engine.components.Behaviour;
 import engine.components.Component;
-import engine.components.Sensor;
-import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
 import engine.input.Keyboard;
@@ -19,7 +20,7 @@ import engine.input.Keyboard;
  * @author Sameer Magan
  *
  */
-public class PickUp extends Sensor{
+public class PickUp extends Behaviour{
 	Map<Integer, Entity> items = new HashMap<Integer, Entity>();
 	World world;
 
@@ -65,15 +66,17 @@ public class PickUp extends Sensor{
 		return items;
 	}
 
+
 	@Override
-	public boolean isTriggered() {
-		if(world == null){
-			return false;
+	public void update(float delta) {
+		requires(ProximitySensor.class);
+
+		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
+			if(Keyboard.isKeyDown(KeyEvent.VK_E)){
+				pickUpItem(id)
+			}
 		}
-		if(Keyboard.isKeyDown(KeyEvent.VK_P) || Keyboard.isKeyDown(KeyEvent.VK_F)){
-			return true;
-		}
-		return false;
+
 	}
 
 }
