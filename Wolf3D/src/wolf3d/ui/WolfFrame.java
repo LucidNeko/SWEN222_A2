@@ -25,7 +25,7 @@ public class WolfFrame implements MouseListener{
 		/*Basic frame setup*/
 		JFrame f = new JFrame();
 		f.setSize(width, height);
-		f.setTitle("Testing");
+		f.setTitle("Ursustein");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false); // may replace this to be resizable but the pic may look weird
 		// or just have two sizes, full screen and 800 by 600
