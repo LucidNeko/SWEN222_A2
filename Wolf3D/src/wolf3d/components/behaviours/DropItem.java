@@ -9,6 +9,7 @@ import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.core.Entity;
 import engine.core.EntityDef;
+import engine.core.TempEntityDef;
 import engine.core.World;
 import engine.input.Keyboard;
 
@@ -27,9 +28,10 @@ public class DropItem extends Behaviour {
 			// setting item position to the players current position
 			item.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
 			// creates an EntityDef to use to add back to the world
-			EntityDef entDef = new EntityDef();
+			TempEntityDef entDef = new TempEntityDef();
 			entDef.setName(item.getName());
-			entDef.addComponents(item.getAllComponents());
+
+//			entDef.addComponents(item.getAllComponents());
 			inventory.removeEntity(item);
 			return world.addEntityDef(entDef);
 		}

@@ -99,10 +99,10 @@ public class World {
 	 * 
 	 * @author Sameer Magan
 	 */
-	public boolean addEntityDef(EntityDef entityDef){
+	public boolean addEntityDef(TempEntityDef entityDef){
 		int id = getFreeID();
 		Entity entity = new Entity(id, entityDef.getName());
-		for(Class<? extends Component> com: entityDef.getComponents()){
+		for(Component com: entityDef.getComponents()){
 			entity.attachComponent(com);
 		}
 		return entities.put(id, entity) == null;
