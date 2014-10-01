@@ -17,7 +17,7 @@ import engine.components.Component;
 public class EntityDef {
 	
 	private String name = "unnamed";
-	private List<Class<?>> components = new ArrayList<Class<?>>();
+	private List<Class<? extends Component>> components = new ArrayList<Class<? extends Component>>();
 	
 	public EntityDef() {
 		
@@ -35,10 +35,10 @@ public class EntityDef {
 	/**
 	 * @return the components
 	 */
-	public List<Class<?>> getComponents() {
+	public List<Class<? extends Component>> getComponents() {
 		return components;
 	}
-
+	
 	//This method is just to make adding all components easier
 	//You can yell at me if u dont like it lol
 	/**
