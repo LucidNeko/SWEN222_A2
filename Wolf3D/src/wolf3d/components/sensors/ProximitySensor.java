@@ -11,13 +11,17 @@ public class ProximitySensor extends Sensor {
 	public void setTarget(Entity target) {
 		this.target = target;
 	}
-	
+
+	public Entity getTarget(){
+		return target;
+	}
+
 	@Override
 	public boolean isTriggered() {
 		requires(Transform.class);
-		
+
 		if(target == null) return false;
-		
+
 		return this.getOwner().getTransform().getPosition().sub(target.getTransform().getPosition()).length() < 2f;
 	}
 
