@@ -3,6 +3,7 @@ package engine.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import engine.components.Component;
 
@@ -16,10 +17,13 @@ public class TempEntityDef {
 	
 	public TempEntityDef(Entity entity) {
 		name = entity.getName();
-		for(Component c: entity.getAllComponentsCopy()){
+		Set<Component> components = entity.getAllComponentsCopy();
+		//need to detach all components so they can be added to new
+		//entity created in world
+		for(Component c: components){
 			entity.detachComponent(c);
 		}
-		this.components.addAll(entity.getAllComponents());
+		this.components.addAll(components);
 	}
 
 	public void setName(String name) {
