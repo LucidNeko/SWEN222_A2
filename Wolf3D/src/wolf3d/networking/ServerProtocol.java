@@ -3,6 +3,8 @@ package wolf3d.networking;
 import java.util.Observable;
 import java.util.Observer;
 
+import wolf3d.networking.mechanics.Server;
+
 public class ServerProtocol implements Observer {
 	private Server theServer;
 

@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 
+import wolf3d.networking.mechanics.Client;
+
 /**
  * This class is a wrapper for the Client connection that performs logic necessary for the game to run.
  * 
