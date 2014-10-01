@@ -29,6 +29,8 @@ public class DropItem extends Behaviour {
 			EntityDef entDef = new EntityDef();
 			entDef.setName(item.getName());
 			entDef.addComponents(item.getAllComponents());
+			inventory.removeEntity(item);
+			
 		}
 		return false;
 	}

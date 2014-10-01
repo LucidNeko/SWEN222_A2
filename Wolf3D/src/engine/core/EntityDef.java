@@ -27,6 +27,18 @@ public class EntityDef {
 		this.name = name;
 	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	
+	/**
+	 * @return the components
+	 */
+	public List<Class<?>> getComponents() {
+		return components;
+	}
+
 	//This method is just to make adding all components easier
 	//You can yell at me if u dont like it lol
 	/**
