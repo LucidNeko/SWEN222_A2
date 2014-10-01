@@ -16,6 +16,7 @@ import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
+import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
@@ -121,6 +122,7 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
 		test.attachComponent(ProximitySensor.class).setTarget(player);
 		test.attachComponent(new PickUp(world));
+		test.attachComponent(new DropItem(world));
 		test.getTransform().translate(1, 0, 5);
 
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
@@ -138,6 +140,7 @@ public class GameDemo extends GameLoop {
 
 		//testing pickup
 		teddy.attachComponent(new PickUp(world));
+		teddy.attachComponent(new DropItem(world));
 
 
 		//Create enemy.

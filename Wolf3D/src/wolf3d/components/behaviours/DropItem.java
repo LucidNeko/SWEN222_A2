@@ -14,19 +14,19 @@ import engine.input.Keyboard;
 
 public class DropItem extends Behaviour {
 	World world;
-	
+
 	public DropItem(World world) {
 		this.world = world;
 	}
-	
-	public boolean drop(Entity item){
+
+	public boolean drop(Entity item) {
 		Entity player = item.getComponent(ProximitySensor.class).getTarget();
 		Inventory inventory = player.getComponent(Inventory.class);
-		if(inventory.contains(item)){
+		if (inventory.contains(item)) {
 			Vec3 pos = player.getTransform().getPosition();
-			//setting item position to the players current position
+			// setting item position to the players current position
 			item.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
-			//creates an EntityDef to use to add back to the world
+			// creates an EntityDef to use to add back to the world
 			EntityDef entDef = new EntityDef();
 			entDef.setName(item.getName());
 			entDef.addComponents(item.getAllComponents());
@@ -35,14 +35,16 @@ public class DropItem extends Behaviour {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void update(float delta) {
-		if(Keyboard.isKeyDownOnce(KeyEvent.VK_R)){
-			Entity item = getOwner();
-			Entity player = item.getComponent(ProximitySensor.class).getTarget();
+		if (Keyboard.isKeyDownOnce(KeyEvent.VK_R)) {
+			Entity player = getOwner().getComponent(ProximitySensor.class)
+					.getTarget();
 			Inventory inventory = player.getComponent(Inventory.class);
-			drop(inventory.getItems().get(0));
+			if (!inventory.getItems().isEmpty()) {
+				drop(inventory.getItems().get(0));
+			}
 		}
 
 	}
