@@ -35,7 +35,7 @@ public class PickUp extends Behaviour{
 	 */
 	public boolean pickUpItem() {
 		Entity item = getOwner();
-		Entity player = item.getComponent(ProximitySensor.class).getOwner();
+		Entity player = item.getComponent(ProximitySensor.class).getTarget();
 		Inventory inventory = player.getComponent(Inventory.class);
 		inventory.addItem(item);
 		world.destroyEntity(item.getID());

@@ -11,11 +11,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.components.Health;
+import wolf3d.components.Inventory;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.MouseLookController;
+import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
@@ -96,7 +98,7 @@ public class GameDemo extends GameLoop {
 		player.attachComponent(CameraScrollBackController.class);
 		player.attachComponent(Health.class);
 		//Testing pickup behavior
-//		player.attachComponent(new PickUp(world));
+		player.attachComponent(Inventory.class);
 		player.attachComponent(new Renderer() {
 
 			@Override
@@ -114,6 +116,8 @@ public class GameDemo extends GameLoop {
 		Entity link = world.createEntity("Link");
 		link.attachComponent(MeshFilter.class).setMesh(linkMesh);
 		link.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
+		link.attachComponent(ProximitySensor.class).setTarget(player);
+		link.attachComponent(new PickUp(world));
 		link.getTransform().translate(1, 0, 5);
 
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
@@ -129,9 +133,7 @@ public class GameDemo extends GameLoop {
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
 		//testing pickup
-//		List<Entity> links = world.getEntity("Link");
-//		int id = links.get(0).getID();
-//		player.getComponent(PickUp.class).pickUpItem(id);
+		teddy.attachComponent(new PickUp(world));
 
 
 		//Create enemy.
