@@ -10,7 +10,7 @@ import java.net.Socket;
  * @author Michael Nelson (300276118)
  *
  */
-public class ServerConnectionMaster extends Thread{
+public class ServerConnectionsMaster extends Thread{
 	ServerSocket ss;
 	ServerConnection[] connections;
 	private boolean listening = true;
@@ -22,7 +22,7 @@ public class ServerConnectionMaster extends Thread{
 	 * @param port
 	 * @param capacity maximum players (game will start at first connection)
 	 */
-	public ServerConnectionMaster(int port, int capacity) {
+	public ServerConnectionsMaster(int port, int capacity) {
 		try {
 			ss = new ServerSocket(port);
 			connections = new ServerConnection[capacity];

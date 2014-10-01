@@ -3,14 +3,14 @@ package wolf3d.networking;
 import java.util.Observable;
 import java.util.Observer;
 
-import wolf3d.networking.mechanics.ServerConnectionMaster;
+import wolf3d.networking.mechanics.ServerConnectionsMaster;
 
 public class Server implements Observer {
-	private ServerConnectionMaster theServer;
+	private ServerConnectionsMaster theServer;
 
 
 	public Server(int port, int capacity, Observable ob){
-		theServer = new ServerConnectionMaster(port, capacity);
+		theServer = new ServerConnectionsMaster(port, capacity);
 		theServer.start();
 		if(ob!=null){
 			ob.addObserver(this);
