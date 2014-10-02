@@ -1,23 +1,15 @@
 package wolf3d;
 
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
-
 import java.awt.event.KeyEvent;
-
-import javax.media.opengl.GL2;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import wolf3d.components.Health;
-import wolf3d.components.Inventory;
+import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
-import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.DropItem;
-import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.renderers.PyramidRenderer;
@@ -29,7 +21,6 @@ import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
-import engine.components.Renderer;
 import engine.core.Entity;
 import engine.core.GameLoop;
 import engine.core.World;
@@ -132,6 +123,7 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
 		test.attachComponent(ProximitySensor.class).setTarget(player);
 		test.attachComponent(new PickUp(world));
+		test.attachComponent(new Weight(100));
 		test.attachComponent(new DropItem(world));
 		test.getTransform().translate(1, 0, 5);
 
@@ -150,6 +142,7 @@ public class GameDemo extends GameLoop {
 
 		//testing pickup
 		teddy.attachComponent(new PickUp(world));
+		teddy.attachComponent(Weight.class);
 		teddy.attachComponent(new DropItem(world));
 
 

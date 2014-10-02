@@ -37,11 +37,15 @@ public class Inventory extends Component {
 	}
 
 	public boolean reduceCarryWeight(int weight){
-		if((carryWeight - weight) > 0){
+		if((carryWeight - weight) >= 0){
 			carryWeight -= weight;
 			return true;
 		}
 		return false;
+	}
+	
+	public void releaseWeight(int weight){
+		carryWeight += weight;
 	}
 	
 

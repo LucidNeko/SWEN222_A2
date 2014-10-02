@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import wolf3d.components.Inventory;
+import wolf3d.components.Weight;
 import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Vec3;
 import engine.components.Behaviour;
@@ -15,12 +16,13 @@ import engine.core.World;
 import engine.input.Keyboard;
 
 /**
- * This Class is a Component to allow players to pickup and
- * drop items in the world
+ * This Class is a Component to allow players to pickup and drop items in the
+ * world
+ * 
  * @author Sameer Magan
  *
  */
-public class PickUp extends Behaviour{
+public class PickUp extends Behaviour {
 	World world;
 
 	public PickUp(World world) {
@@ -28,25 +30,38 @@ public class PickUp extends Behaviour{
 	}
 
 	/**
-	 * Picks up the entity attached to this component and
-	 * adds it to the targeted players Inventory
+	 * Picks up the entity attached to this component and adds it to the
+	 * targeted players Inventory
+	 * 
 	 * @return true if entity exists in world false if not
 	 */
 	public boolean pickUpItem() {
 		Entity item = getOwner();
 		Entity player = item.getComponent(ProximitySensor.class).getTarget();
 		Inventory inventory = player.getComponent(Inventory.class);
-		inventory.addItem(item);
-		return world.destroyEntity(item.getID());
+		if(item.getComponent(Weight.class) == null){
+			System.out.println("Item " + item.getName() +" needs a Weight component to be picked up!");
+			return false;
+		}
+		//gets weight and checks if weight does not exceed the players carry amt.
+		int itemWeight = item.getComponent(Weight.class).getWeight();
+		if (inventory.reduceCarryWeight(itemWeight)) {
+			inventory.addItem(item);
+			return world.destroyEntity(item.getID());
+		}
+		return false;
 	}
 
 	@Override
 	public void update(float delta) {
 		requires(ProximitySensor.class);
-		//Checks if the proximity sensor attached to the owner of this component
-		//is triggered, ie. if the player is close enough to the item to be picked up
-		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
-			if(Keyboard.isKeyDownOnce(KeyEvent.VK_E)){
+		requires(Weight.class);
+		// Checks if the proximity sensor attached to the owner of this
+		// component
+		// is triggered, ie. if the player is close enough to the item to be
+		// picked up
+		if (getOwner().getComponent(ProximitySensor.class).isTriggered()) {
+			if (Keyboard.isKeyDownOnce(KeyEvent.VK_E)) {
 				pickUpItem();
 			}
 		}

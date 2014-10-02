@@ -1,15 +1,13 @@
 package wolf3d.components.behaviours;
 
-import java.util.Set;
-
 import wolf3d.components.Inventory;
+import wolf3d.components.Weight;
 import wolf3d.components.sensors.ProximitySensor;
 
 import com.jogamp.newt.event.KeyEvent;
 
 import engine.common.Vec3;
 import engine.components.Behaviour;
-import engine.components.Component;
 import engine.core.Entity;
 import engine.core.TempEntityDef;
 import engine.core.World;
@@ -43,8 +41,13 @@ public class DropItem extends Behaviour {
 			item.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
 			// creates an EntityDef to use to add back to the world
 			TempEntityDef entDef = new TempEntityDef(item);
+			//gets weight and adds it back to the players carryWeight
+//			int itemWeight = item.getComponent(Weight.class).getWeight();
+//			inventory.releaseWeight(itemWeight);
+			
 			inventory.removeEntity(item);
 			return world.addEntityDef(entDef);
+			
 		}
 		return false;
 	}
