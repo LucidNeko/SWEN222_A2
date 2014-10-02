@@ -109,16 +109,16 @@ public class GameDemo extends GameLoop {
 //			}
 //
 //		});
-		
+
 		//TODO: Entity Factory?
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
-		
+
 		camera = EntityFactory.createCamera(world, player).getComponent(Camera.class);
 
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
-		
+
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
 		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
 
@@ -134,7 +134,7 @@ public class GameDemo extends GameLoop {
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 
-		
+
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
@@ -214,7 +214,7 @@ public class GameDemo extends GameLoop {
 		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
 			System.exit(0);
 		}
-		
+
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_X)) {
 			log.trace("Pressed X");
 		}
@@ -228,6 +228,9 @@ public class GameDemo extends GameLoop {
 		for(Entity entity : world.getEntities()) {
 			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
 				behaviour.update(delta);
+				if(behaviour.hasChanged()){
+					//send over network.
+				}
 			}
 		}
 	}
