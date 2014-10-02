@@ -74,16 +74,11 @@ public class EntityFactory {
 				Transform at = target.getTransform();
 				Transform cam = getOwner().getTransform();
 				
-				cam.lookAt(at);
+//				cam.lookAt(at);
 				
-				float distance = at.getPosition().sub(cam.getPosition()).length();
-				
-				if(distance < 1) {
-					cam.walk(-2*delta);
-				} else if(distance > 1.1f) {
-					cam.walk(2*delta);
-				}
-					
+				cam.setPosition(at.getPosition().x(), at.getPosition().y(), at.getPosition().z());
+				cam.lookInDirection(at.getLook());
+				cam.walk(-2);
 			}
 			
 		});

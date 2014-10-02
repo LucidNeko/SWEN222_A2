@@ -120,7 +120,7 @@ public class GameDemo extends GameLoop {
 		
 		EntityFactory.createSun(world);
 
-		camera = player.getComponent(Camera.class);
+//		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");

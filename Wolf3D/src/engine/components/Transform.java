@@ -162,6 +162,14 @@ public class Transform extends Component {
 		look.set(cos*look.x() - sin*look.z(), look.y(),  sin*look.x() + cos*look.z());
 	}
 	
+	public void lookInDirection(Vec3 direction) {
+		if(direction.equals(Vec3.ZERO)) return;
+		Vec3 dir = direction.clone();
+		dir.set(dir.x(), 0, dir.z()); //ignore y component
+		dir.normalize(); //unit vector
+		yaw(Vec3.dot(Vec3.cross(up, dir), look)); //rotate to face dir
+	}
+	
 	/**
 	 * Rotates the transform so that it's look vector points at the targets position.
 	 * @param target Transform to point towards.
