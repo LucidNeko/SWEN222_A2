@@ -90,13 +90,13 @@ public class World {
 //		return Collections.unmodifiableCollection(entities.values());
 		return new LinkedList<Entity>(entities.values());
 	}
-	
+
 	/**
 	 * Adds an EntityDef to the world
 	 * @param entityDef the EntityDef to be added to the world
 	 * @return false if there was an entity already contained with the same key
 	 * true if it was added successfully
-	 * 
+	 *
 	 * @author Sameer Magan
 	 */
 	public boolean addEntityDef(TempEntityDef entityDef){
