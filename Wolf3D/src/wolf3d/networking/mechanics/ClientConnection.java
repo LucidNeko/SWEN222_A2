@@ -9,7 +9,7 @@ import engine.core.World;
 
 /**
  * This class represents the client. It's a dumb client class, it can send and receive messages but does absolutely no interpretation.
- * 
+ *
  * @author Michael Nelson (300276118)
  *
  */
@@ -18,7 +18,7 @@ public class ClientConnection extends Thread{
 	private Socket soc;
 	private DataOutputStream out;
 	private DataInputStream in;
-	
+
 	private boolean uncollectedMsg = false;;
 	private byte[] msg;
 
@@ -47,6 +47,7 @@ public class ClientConnection extends Thread{
 						int length = in.readInt();
 						msg = new byte[length];
 						in.readFully(msg);
+						System.out.println(msg);
 						uncollectedMsg = true;
 					}
 				}
@@ -73,10 +74,10 @@ public class ClientConnection extends Thread{
 	public boolean doWeNeedToCollect(){
 		return uncollectedMsg;
 	}
-	
+
 	/**
-	 * Returns the message. 
-	 * 
+	 * Returns the message.
+	 *
 	 * Note, this method will return old messages.
 	 * @return
 	 */
@@ -84,7 +85,7 @@ public class ClientConnection extends Thread{
 		uncollectedMsg = false;
 		return msg;
 	}
-	
+
 	/**
 	 * Write a message to the server
 	 * @param message Message to write
@@ -104,7 +105,7 @@ public class ClientConnection extends Thread{
 
 	public void giveMeACopyOfTheWorldPlease(World world) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

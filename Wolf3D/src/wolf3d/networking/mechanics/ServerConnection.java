@@ -9,7 +9,7 @@ public class ServerConnection extends Thread{
 	private Socket soc;
 	private DataInputStream in;
 	private DataOutputStream out;
-	
+
 	public ServerConnection(Socket socket){
 		soc=socket;
 		try {
@@ -20,12 +20,12 @@ public class ServerConnection extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void run(){
 		try{
 			try{
 
-			
+
 			while(true){
 				if(in.available()>0){
 					int length = in.readInt();
@@ -33,9 +33,11 @@ public class ServerConnection extends Thread{
 					in.readFully(message);
 					String s = new String(message);
 					System.out.println(s);
+					String ackClient = "Server Acknowledge Message:  " + s;
+					pushToClient(ackClient.getBytes());
 				}
 			}
-			
+
 			}catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -50,7 +52,7 @@ public class ServerConnection extends Thread{
 			}
 		}
 	}
-	
+
 	public void pushToClient(byte[] message){
 		try {
 			int length = message.length;
@@ -63,6 +65,6 @@ public class ServerConnection extends Thread{
 				e.printStackTrace();
 			}
 	}
-	
-	
+
+
 }
