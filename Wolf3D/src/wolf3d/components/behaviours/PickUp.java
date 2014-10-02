@@ -45,7 +45,7 @@ public class PickUp extends Behaviour {
 		}
 		//gets weight and checks if weight does not exceed the players carry amt.
 		int itemWeight = item.getComponent(Weight.class).getWeight();
-		if (inventory.reduceCarryWeight(itemWeight)) {
+		if (inventory.reduceStrength(itemWeight)) {
 			inventory.addItem(item);
 			setChanged();
 			return world.destroyEntity(item.getID());
