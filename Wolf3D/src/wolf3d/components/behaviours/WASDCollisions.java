@@ -79,7 +79,7 @@ public class WASDCollisions extends Behaviour {
 		Vec3 newPos = t.getPosition();
 		int col;
 		int row;
-		//this tests the players position +- the width of the player, so that 
+		//this tests the players position +- the width of the player, so that
 		//you can no longer look through walls
 		if(oldPos.getX()> newPos.getX()){
 			col = (int) ((newPos.getX() - playerWidth) / wallSize);
@@ -138,6 +138,6 @@ public class WASDCollisions extends Behaviour {
 				}
 			}
 		}
-
+		hasChanged();
 	}
 }
