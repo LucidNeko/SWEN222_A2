@@ -47,7 +47,7 @@ public class ClientConnection extends Thread{
 						int length = in.readInt();
 						msg = new byte[length];
 						in.readFully(msg);
-						System.out.println(msg);
+						System.out.println(new String(msg));
 						uncollectedMsg = true;
 					}
 				}
