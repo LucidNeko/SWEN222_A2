@@ -36,6 +36,7 @@ public class Wolf3DNetworkingDemo extends JFrame {
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 600;
 
+
 	public Wolf3DNetworkingDemo(int port, String ip) {
 		super(DEFAULT_TITLE);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -91,10 +92,12 @@ public class Wolf3DNetworkingDemo extends JFrame {
 
 	/** Create a new instance of App */
 	public static void main(String[] args) {
+		final String ip = args[0];
+		final int port = Integer.parseInt(args[1]);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				/*Starts the GUI frame*/
-				WolfFrame wf = new WolfFrame();
+				WolfFrameNetworkingDemo wf = new WolfFrameNetworkingDemo(ip,port);
 			}
 		});
 	}
