@@ -10,12 +10,17 @@ import org.apache.logging.log4j.Logger;
 
 import wolf3d.components.Health;
 import wolf3d.components.Inventory;
+import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.MouseLookController;
+import wolf3d.components.renderers.PyramidRenderer;
+import engine.common.Vec3;
+import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
 import engine.components.Renderer;
+import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
 import engine.texturing.Material;
@@ -65,6 +70,42 @@ public class EntityFactory {
 
 		});
 		return player;
+	}
+	
+	public static Entity createCamera(World world, final Entity target) {
+		Entity camera = world.createEntity("Camera");
+		camera.attachComponent(new Behaviour() {
+
+			@Override
+			public void update(float delta) {
+				Transform at = target.getTransform();
+				Transform cam = getOwner().getTransform();
+				
+				cam.lookAt(at);
+				
+				float distance = at.getPosition().sub(cam.getPosition()).length();
+				
+				if(distance < 1) {
+					cam.walk(-2*delta);
+				} else if(distance > 1.1f) {
+					cam.walk(2*delta);
+				}
+				
+				float radians = Vec3.dot(at.getLook(), cam.getLook());
+				
+//				log.trace("{} {} {}", at.getLook(), cam.getLook(), radians);
+				
+				if(radians < 0.98f) {
+					float sign = cam.getLook().x() < 0 ? -1 : 1;
+					cam.strafe(sign*1*delta);
+				}
+					
+			}
+			
+		});
+		camera.attachComponent(Camera.class);
+		camera.attachComponent(PyramidRenderer.class);
+		return camera;
 	}
 
 }
