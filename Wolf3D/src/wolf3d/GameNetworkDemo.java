@@ -118,7 +118,7 @@ public class GameNetworkDemo extends GameLoop {
 
 		//TODO: Entity Factory?
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
-		//player.attachComponent(parser.getWallCollisionComponent());
+//		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(WASDWalking.class);
 
 		camera = EntityFactory.createCamera(world, player).getComponent(Camera.class);

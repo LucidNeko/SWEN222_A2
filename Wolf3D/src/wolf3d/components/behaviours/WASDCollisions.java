@@ -74,6 +74,7 @@ public class WASDCollisions extends Behaviour {
 		// move foward
 		t.strafeFlat(moveSpeed * dx * delta);
 		t.walkFlat(moveSpeed * dy * delta);
+		setChanged();
 
 		// new Position and cell
 		Vec3 newPos = t.getPosition();
@@ -97,12 +98,14 @@ public class WASDCollisions extends Behaviour {
 		// west wall
 		if (newPos.getX() - playerWidth < 0 || newPos.getZ() - playerWidth < 0) {
 			moveBack(dy, dx, delta, t);
+			clearChanged();
 			return;
 		}
 
 		// check if inbounds of the walls array
 		if (row < 0 || row >= walls.length || col < 0 || col >= walls[0].length) {
 			moveBack(dy, dx, delta, t);
+			clearChanged();
 			return;
 		}
 
@@ -115,6 +118,7 @@ public class WASDCollisions extends Behaviour {
 			if (col > oldCol) {
 				if (oldCell.hasEast()) {
 					moveBack(dy, dx, delta, t);
+					clearChanged();
 					return;
 				}
 			}
@@ -122,22 +126,24 @@ public class WASDCollisions extends Behaviour {
 				if (oldCell.hasWest()) {
 					// move back
 					moveBack(dy, dx, delta, t);
+					clearChanged();
 					return;
 				}
 			}
 			if (row > oldRow) {
 				if (oldCell.hasSouth()) {
 					moveBack(dy, dx, delta, t);
+					clearChanged();
 					return;
 				}
 			}
 			if (row < oldRow) {
 				if (oldCell.hasNorth()) {
 					moveBack(dy, dx, delta, t);
+					clearChanged();
 					return;
 				}
 			}
 		}
-		hasChanged();
 	}
 }
