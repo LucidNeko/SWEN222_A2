@@ -15,15 +15,15 @@ import engine.display.View;
 
 /**
  * This class is a wrapper for the Client connection that performs logic necessary for the game to run.
- * 
+ *
  * @author Michael Nelson (300276118)
  *
  */
 public class Client extends Thread{
 	private ClientConnection connection;
-	
+
 	private World world; //this is the clients local copy of the world
-	
+
 	private Entity player;
 	private View view;
 	private Camera camera;
@@ -33,26 +33,25 @@ public class Client extends Thread{
 	 * Construct a new client object connecting to the given ipAddress on the port supplied.
 	 * @param ipAddress
 	 * @param port
-	 * @throws IOException 
-	 * @throws UnknownHostException 
+	 * @throws IOException
+	 * @throws UnknownHostException
 	 */
 	public Client(String playerName, String ipAddress, int port) throws UnknownHostException, IOException{
 		Socket sock = new Socket(ipAddress,port);
 		connection = new ClientConnection(sock);
-		
+
 		//Create this player on the server
-		createMe(playerName);
-		
+		//createMe(playerName);
+
 		//Get a copy of the gameworld
-		connection.giveMeACopyOfTheWorldPlease(world);
-		
+		//connection.giveMeACopyOfTheWorldPlease(world);
+
 		//Begin listening
 		connection.start();
 	}
 
 	private void createMe(String playerName) {
 		player = world.createEntity(playerName);
-		
 	}
 
 	/**
@@ -64,12 +63,12 @@ public class Client extends Thread{
 	}
 
 	/**
-	 * Polls the client to see if we have messages to connect. Then if we do it does something. 
+	 * Polls the client to see if we have messages to connect. Then if we do it does something.
 	 * (NOTE, MAY BE WORTHWILE TO MAKE THIS CLASS OBSERVABLE?)
 	 */
 	public void run(){
 		while(true){
-			
+
 			//simple write messagew for testing.
 			Scanner input = new Scanner(System.in);
 			while(true){
@@ -77,7 +76,7 @@ public class Client extends Thread{
 				System.out.println(s);
 				sendMessage(s.getBytes());
 			}
-			
+
 			/*
 			if(connection.doWeNeedToCollect()){
 				msg = connection.message();
