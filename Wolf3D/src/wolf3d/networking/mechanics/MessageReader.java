@@ -2,6 +2,7 @@ package wolf3d.networking.mechanics;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Set;
 
 import engine.components.Component;
@@ -48,7 +49,7 @@ public class MessageReader {
 				id = is.read()<<24 + is.read()<<16 + is.read()<<8 + is.read(); 
 				
 				//check this component exists in entity
-				Set<Component> comps = ent.getAllComponents();
+				List<Component> comps = ent.getComponents(Component.class); //ent.getAllComponents();
 				
 				for(Component comp : comps){
 					

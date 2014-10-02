@@ -95,22 +95,7 @@ public class Entity {
 			if(type.isAssignableFrom(component.getClass()))
 				out.add((E)component);
 		return out;
-	}
-	
-	/**
-	 * Returns a List containing all the Components.
-	 */
-	public Set<Component> getAllComponents() {
-		return components;
-	}
-	
-	/**
-	 * Returns a copy of List containing all the Components.
-	 */
-	public Set<Component> getAllComponentsCopy() {
-		return new LinkedHashSet<Component>(components);
-	}
-	
+	}	
 	
 	/**
 	 * Detaches the specified component from this Entity.<br>

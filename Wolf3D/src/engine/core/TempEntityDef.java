@@ -2,6 +2,7 @@ package engine.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class TempEntityDef {
 	
 	public TempEntityDef(Entity entity) {
 		name = entity.getName();
-		Set<Component> components = entity.getAllComponentsCopy();
+		List<Component> components = entity.getComponents(Component.class);
 		//need to detach all components so they can be added to new
 		//entity created in world
 		for(Component c: components){
