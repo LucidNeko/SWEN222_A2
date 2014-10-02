@@ -47,6 +47,7 @@ public class PickUp extends Behaviour {
 		int itemWeight = item.getComponent(Weight.class).getWeight();
 		if (inventory.reduceCarryWeight(itemWeight)) {
 			inventory.addItem(item);
+			setChanged();
 			return world.destroyEntity(item.getID());
 		}
 		return false;

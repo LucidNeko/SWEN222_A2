@@ -8,7 +8,8 @@ import engine.core.Entity;
 
 /**
  * This class is responsible for holding all of the items that a player has
- * picked up
+ * picked up and maintaining a carryWeight so that a player is only strong enough
+ * to hold a certain amount of weight
  * 
  * @author Sameer Magan
  *
@@ -45,6 +46,15 @@ public class Inventory extends Component {
 		return carryWeight;
 	}
 
+	/**
+	 * Reduces the carryWeight by the given amount
+	 * 
+	 * @param weight
+	 *            the amount to reduce by
+	 * @return true if it can be reduced, false if not, if your carryWeight
+	 *         becomes negative then you should not be able to carry anymore
+	 *         items
+	 */
 	public boolean reduceCarryWeight(int weight) {
 		if ((carryWeight - weight) >= 0) {
 			carryWeight -= weight;
@@ -53,6 +63,10 @@ public class Inventory extends Component {
 		return false;
 	}
 
+	/**
+	 * Releases the given amount of weight to carryWeight
+	 * @param weight the amount to be released
+	 */
 	public void releaseWeight(int weight) {
 		carryWeight += weight;
 	}

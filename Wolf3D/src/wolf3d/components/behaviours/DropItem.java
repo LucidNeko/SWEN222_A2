@@ -30,8 +30,7 @@ public class DropItem extends Behaviour {
 	 * Drops the given entity in the world on the player current position and
 	 * removes the given from the attached players inventory
 	 * 
-	 * @param item
-	 *            The Entity to be dropped
+	 * @param item The Entity to be dropped
 	 * @return true if the player is dropped into the world false if not
 	 */
 	public boolean drop(Entity item) {
@@ -81,6 +80,10 @@ public class DropItem extends Behaviour {
 
 	}
 
+	/**
+	 * Gives the drop method the corresponding item at the given index
+	 * @param index the index of the item that you want to drop
+	 */
 	private void itemToDrop(int index) {
 		Entity player = getOwner();
 		Inventory inventory = player.getComponent(Inventory.class);

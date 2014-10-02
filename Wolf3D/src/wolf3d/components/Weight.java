@@ -2,6 +2,11 @@ package wolf3d.components;
 
 import engine.components.Component;
 
+/**
+ * This class is responsible for giving an item a weight
+ * @author Sameer Magan
+ *
+ */
 public class Weight extends Component {
 	private int weight = 10;	//default weight amount
 	
