@@ -113,8 +113,12 @@ public class GameDemo extends GameLoop {
 		//TODO: Entity Factory?
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
+		
+		
 
 		camera = EntityFactory.createCamera(world, player).getComponent(Camera.class);
+		
+		EntityFactory.createSun(world);
 
 		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);

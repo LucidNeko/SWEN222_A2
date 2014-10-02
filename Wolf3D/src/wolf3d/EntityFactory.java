@@ -1,7 +1,9 @@
 package wolf3d;
 
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT1;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_DIRECTION;
 
 import javax.media.opengl.GL2;
 
@@ -92,11 +94,34 @@ public class EntityFactory {
 			@Override
 			public void render(GL2 gl) {
 				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
-				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-			}
+				Transform t = getOwner().getTransform();
+				Vec3 look = t.getLook();
+				gl.glLightfv(GL_LIGHT1, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+				gl.glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
+			} 
 
 		});
 		return camera;
+	}
+	
+	public static Entity createSun(World world) {
+		final Vec3 target = new Vec3(10, 0, 10);
+		Entity sun = world.createEntity("Sun");
+		sun.getTransform().translate(0, 0, -1);
+		sun.attachComponent(new Behaviour() {
+			public void update(float delta) {
+				Transform t = getOwner().getTransform();
+				t.lookAt(target, t.getUp());
+				t.fly(1f*delta);
+			}
+		});
+		sun.attachComponent(new Renderer() {
+			public void render(GL2 gl) {
+				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+			}
+		});
+		sun.attachComponent(PyramidRenderer.class);
+		return sun;
 	}
 
 }
