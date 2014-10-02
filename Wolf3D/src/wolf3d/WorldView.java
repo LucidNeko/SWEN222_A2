@@ -58,6 +58,11 @@ public class WorldView extends GameCanvas implements View{
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		gl.glEnable(GL_LIGHTING);
+		
+
+		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.0075f);
+		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0025f);
+		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.001f);
 		gl.glEnable(GL_LIGHT0);
 		
 		float[] light1_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
