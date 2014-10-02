@@ -43,6 +43,17 @@ public class Transform extends Component {
 	}
 	
 	/**
+	 * Sets this transform to match the source Transform.
+	 * @param source The Transform to copy.
+	 */
+	public void set(Transform source) {
+		this.position.set(source.position);
+		this.up.set(source.up);
+		this.along.set(source.along);
+		this.look.set(source.look);
+	}
+	
+	/**
 	 * Sets the position of this Transform
 	 * @param x
 	 * @param y
