@@ -104,6 +104,7 @@ public class GameDemo extends GameLoop {
 		//TODO: Entity Factory?
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
+		player.attachComponent(new DropItem(world));
 		
 		
 
@@ -124,7 +125,6 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(ProximitySensor.class).setTarget(player);
 		test.attachComponent(new PickUp(world));
 		test.attachComponent(new Weight(100));
-		test.attachComponent(new DropItem(world));
 		test.getTransform().translate(1, 0, 5);
 
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
@@ -143,8 +143,6 @@ public class GameDemo extends GameLoop {
 		//testing pickup
 		teddy.attachComponent(new PickUp(world));
 		teddy.attachComponent(Weight.class);
-		teddy.attachComponent(new DropItem(world));
-
 
 		//Create enemy.
 		Entity enemy = world.createEntity("Enemy");
