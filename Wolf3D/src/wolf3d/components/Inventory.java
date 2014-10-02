@@ -12,7 +12,9 @@ import engine.core.Entity;
  *
  */
 public class Inventory extends Component {
-	List<Entity> items = new ArrayList<Entity>();
+	private List<Entity> items = new ArrayList<Entity>();
+	
+	private int carryWeight = 100;
 
 	public List<Entity> getItems() {
 		return items;
@@ -29,6 +31,19 @@ public class Inventory extends Component {
 	public boolean contains(Entity item){
 		return items.contains(item);
 	}
+
+	public int getCarryWeight() {
+		return carryWeight;
+	}
+
+	public boolean reduceCarryWeight(int weight){
+		if((carryWeight - weight) > 0){
+			carryWeight -= weight;
+			return true;
+		}
+		return false;
+	}
+	
 
 
 }
