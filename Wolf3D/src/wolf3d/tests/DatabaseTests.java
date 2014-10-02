@@ -6,6 +6,8 @@ import java.util.Collection;
 
 import org.junit.Test;
 
+import wolf3d.database.DataManagement;
+
 import com.google.gson.Gson;
 
 import engine.components.Camera;
@@ -58,9 +60,17 @@ public class DatabaseTests {
 	@Test
 	// Test a world saves without crashing
 	public void testSaveWorld() {
-//		Gson gson = new Gson();
-//		World world = createDummyWorld();
-//		DataManagement.saveWorld("testWorld01", world);
+		Gson gson = new Gson();
+		World world = createDummyWorld();
+		DataManagement.saveWorld("testWorld01", world);
+	}
+
+	@Test
+	// Test a world loads without crashing
+	public void testLoadWorld() {
+		Gson gson = new Gson();
+		World world = DataManagement.loadWorld("testWorld01");
+
 	}
 
 	//============================================================================
@@ -74,9 +84,6 @@ public class DatabaseTests {
 		Camera cc = new Camera();
 		a = world.createEntity("0");
 		b = world.createEntity("1");
-		a.attachComponent(component);
-		b.attachComponent(component2);
-		b.attachComponent(cc);
 		return world;
 	}
 }
