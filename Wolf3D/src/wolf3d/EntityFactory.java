@@ -14,6 +14,7 @@ import wolf3d.components.Health;
 import wolf3d.components.Inventory;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.CameraScrollBackController;
+import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.renderers.PyramidRenderer;
 import engine.common.Vec3;
@@ -59,9 +60,9 @@ public class EntityFactory {
 //		player.attachComponent(WASDWalking.class);
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
-		player.attachComponent(Health.class);
-		//Testing pickup behavior
+//		player.attachComponent(Health.class);
 		player.attachComponent(Inventory.class);
+		player.attachComponent(new DropItem(world));
 		return player;
 	}
 	

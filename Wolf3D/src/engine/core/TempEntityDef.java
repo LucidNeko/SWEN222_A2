@@ -16,9 +16,7 @@ public class TempEntityDef {
 	private String name = "unnamed";
 	private List<Component> components = new ArrayList<Component>();
 
-	public TempEntityDef() {
-
-	}
+	public TempEntityDef() {}
 	
 	public TempEntityDef(Entity entity) {
 		name = entity.getName();
@@ -31,10 +29,18 @@ public class TempEntityDef {
 		this.components.addAll(components);
 	}
 
+	/**
+	 * Sets the name
+	 * @param name the name to set to
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Returns the name of the given EntityDef
+	 * @return returns the name
+	 */
 	public String getName() {
 		return name;
 	}
@@ -46,6 +52,10 @@ public class TempEntityDef {
 		return components;
 	}
 	
+	/**
+	 * Adds the given components to the components list
+	 * @param components the collection of components to be added
+	 */
 	public void addComponents(Collection<Component> components){
 		this.components.addAll(components);
 	}
