@@ -60,15 +60,6 @@ public class EntityFactory {
 		player.attachComponent(Health.class);
 		//Testing pickup behavior
 		player.attachComponent(Inventory.class);
-		player.attachComponent(new Renderer() {
-
-			@Override
-			public void render(GL2 gl) {
-				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
-				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-			}
-
-		});
 		return player;
 	}
 	
@@ -90,21 +81,21 @@ public class EntityFactory {
 				} else if(distance > 1.1f) {
 					cam.walk(2*delta);
 				}
-				
-				float radians = Vec3.dot(at.getLook(), cam.getLook());
-				
-//				log.trace("{} {} {}", at.getLook(), cam.getLook(), radians);
-				
-				if(radians < 0.98f) {
-					float sign = cam.getLook().x() < 0 ? -1 : 1;
-					cam.strafe(sign*1*delta);
-				}
 					
 			}
 			
 		});
 		camera.attachComponent(Camera.class);
 		camera.attachComponent(PyramidRenderer.class);
+		camera.attachComponent(new Renderer() {
+
+			@Override
+			public void render(GL2 gl) {
+				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
+				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+			}
+
+		});
 		return camera;
 	}
 
