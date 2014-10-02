@@ -240,6 +240,7 @@ public class GameNetworkDemo extends GameLoop {
 					//send over network.
 					String msg = "Player has moved";
 					client.sendMessage(msg.getBytes());
+					behaviour.notifyObservers();
 				}
 			}
 		}
