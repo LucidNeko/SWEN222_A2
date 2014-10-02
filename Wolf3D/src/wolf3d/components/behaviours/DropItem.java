@@ -2,7 +2,6 @@ package wolf3d.components.behaviours;
 
 import wolf3d.components.Inventory;
 import wolf3d.components.Weight;
-import wolf3d.components.sensors.ProximitySensor;
 
 import com.jogamp.newt.event.KeyEvent;
 
@@ -33,7 +32,7 @@ public class DropItem extends Behaviour {
 	 * @return true if the player is dropped into the world false if not
 	 */
 	public boolean drop(Entity item) {
-		Entity player = item.getComponent(ProximitySensor.class).getTarget();
+		Entity player = getOwner();
 		Inventory inventory = player.getComponent(Inventory.class);
 		if (inventory.contains(item)) {
 			Vec3 pos = player.getTransform().getPosition();
@@ -46,6 +45,7 @@ public class DropItem extends Behaviour {
 //			inventory.releaseWeight(itemWeight);
 			
 			inventory.removeEntity(item);
+			setChanged();
 			return world.addEntityDef(entDef);
 			
 		}
@@ -54,15 +54,45 @@ public class DropItem extends Behaviour {
 
 	@Override
 	public void update(float delta) {
-		if (Keyboard.isKeyDownOnce(KeyEvent.VK_R)) {
-			Entity player = getOwner().getComponent(ProximitySensor.class)
-					.getTarget();
-			Inventory inventory = player.getComponent(Inventory.class);
-			if (!inventory.getItems().isEmpty()) {
-				drop(inventory.getItems().get(0));
-			}
+		if (Keyboard.isKeyDownOnce(KeyEvent.VK_1)) {
+			itemToDrop(0);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_2)) {
+			itemToDrop(1);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_3)) {
+			itemToDrop(2);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_4)) {
+			itemToDrop(3);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_5)) {
+			itemToDrop(4);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_6)) {
+			itemToDrop(5);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_7)) {
+			itemToDrop(6);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_8)) {
+			itemToDrop(7);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_9)) {
+			itemToDrop(8);
+		}
+		else if (Keyboard.isKeyDownOnce(KeyEvent.VK_0)) {
+			itemToDrop(9);
 		}
 
+	}
+	
+	private void itemToDrop(int index){
+		Entity player = getOwner();
+		Inventory inventory = player.getComponent(Inventory.class);
+		if (inventory.get(index) != null) {
+			drop(inventory.get(index));
+		}
 	}
 
 }
