@@ -22,6 +22,7 @@ import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
+import wolf3d.components.behaviours.WASDWalking;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.networking.Client;
@@ -117,7 +118,8 @@ public class GameNetworkDemo extends GameLoop {
 
 		//TODO: Entity Factory?
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
-		player.attachComponent(parser.getWallCollisionComponent());
+		//player.attachComponent(parser.getWallCollisionComponent());
+		player.attachComponent(WASDWalking.class);
 
 		camera = EntityFactory.createCamera(world, player).getComponent(Camera.class);
 
@@ -233,7 +235,12 @@ public class GameNetworkDemo extends GameLoop {
 		for(Entity entity : world.getEntities()) {
 			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
 				behaviour.update(delta);
-				//SEND SHIT TO NETWORK HERE.
+				//SEND things, Simon, TO NETWORK HERE.
+				if(behaviour.hasChanged()){
+					//send over network.
+					String msg = "Player has moved";
+					client.sendMessage(msg.getBytes());
+				}
 			}
 		}
 	}
