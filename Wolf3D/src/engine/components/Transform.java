@@ -162,12 +162,19 @@ public class Transform extends Component {
 		look.set(cos*look.x() - sin*look.z(), look.y(),  sin*look.x() + cos*look.z());
 	}
 	
+	/**
+	 * Makes this transform look in the direction.<br>
+	 * Ignores the y component of direction.<br>
+	 * The resulting transform will be looking flat on the x/z plane and up is reset to world up.
+	 * @param direction The direction to look in. Cannot be (0, 0, 0)
+	 */
 	public void lookInDirection(Vec3 direction) {
 		if(direction.equals(Vec3.ZERO)) return;
-		Vec3 dir = direction.clone();
-		dir.set(dir.x(), 0, dir.z()); //ignore y component
+		Vec3 dir = new Vec3(direction.x(), 0, direction.z()); //ignore y component
 		dir.normalize(); //unit vector
-		yaw(Vec3.dot(Vec3.cross(up, dir), look)); //rotate to face dir
+		look.set(dir);
+		up.set(Vec3.UP);
+		along.set(Vec3.cross(up, look));
 	}
 	
 	/**
