@@ -86,7 +86,7 @@ public class World {
 	 * Gets a snapshot of the entities currently in the world.
 	 * @return The Collection of Entities.
 	 */
-	public Collection<Entity> getEntities() {
+	public synchronized Collection<Entity> getEntities() {
 //		return Collections.unmodifiableCollection(entities.values());
 		synchronized(this) {
 			return new LinkedList<Entity>(entities.values());
