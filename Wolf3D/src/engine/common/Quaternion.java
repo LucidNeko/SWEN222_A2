@@ -1,43 +1,34 @@
 package engine.common;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * 
  * @author Hamish
  *
  */
 public class Quaternion {
+	private static final Logger log = LogManager.getLogger();
 	
 	private float w;
 	private float x;
 	private float y;
 	private float z;
 	
-	/** Construct a unit Quaternion representing no rotation. */
+	/** Construct a Quaternion initialized to the identity Quaternion. */
 	public Quaternion() {
 		x = y = z = 0;
 		w = 1;
 	}
 	
-	/**
-	 * Construct a unit Quaternion defining the rotation about axis by theta radians.
-	 * @param axis The axis to rotate around (UNIT VECTOR).
-	 * @param theta The rotation amount in radians.
-	 */
-	public Quaternion(Vec3 axis, float theta) {
-		theta = theta/2;
-		this.w = Mathf.cos(theta);
-		this.x = axis.x()*Mathf.sin(theta);
-		this.y = axis.y()*Mathf.sin(theta);
-		this.z = axis.z()*Mathf.sin(theta);
-	}
-	
-	/** Construct a new Quaternion from the values. Private so it cannot be abused! */
-	private Quaternion(float w, float x, float y, float z) {
+	/** Construct a new Quaternion from the values. */
+	public Quaternion(float w, float x, float y, float z) {
 		this.w = w;
 		this.x = x;
 		this.y = y;
 		this.z = z;
-	}
+	}	
 	
 	public float w() { return w; }
 	public float x() { return x; }
@@ -56,6 +47,10 @@ public class Quaternion {
 							  this.w*other.z + this.x*other.y - this.y*other.x + this.z*other.w);
 	}
 	
+	public Quaternion conjugate() {
+		return new Quaternion(w, -x, -y, -z);
+	}
+	
 	public float magnitude() {
 		return Mathf.sqrt(w*w + x*x + y*y + z*z);
 	}
@@ -72,11 +67,11 @@ public class Quaternion {
 		float magnitudeSquared = magnitudeSquared();
 		if(magnitudeSquared <= 0) return 0;
 		float magnitude = Mathf.sqrt(magnitudeSquared);
-		float delta = 1/magnitude;
-		w *= delta;
-		x *= delta;
-		y *= delta;
-		z *= delta;
+		float invMag = 1/magnitude;
+		w *= invMag;
+		x *= invMag;
+		y *= invMag;
+		z *= invMag;
 		return magnitude;
 	}
 	
@@ -95,6 +90,33 @@ public class Quaternion {
 							  (1-t)*a.x + t*b.x,
 							  (1-t)*a.y + t*b.y,
 							  (1-t)*a.z + t*b.z);
+	}
+	
+	/**
+	 * q*v*(q's conjugate)
+	 * @param q Rotation Quaternion
+	 * @return The rotated vector. Does not modify param.
+	 */
+	public static Vec3 mul(Quaternion q, Vec3 v) {
+		Quaternion V = new Quaternion(0, v.x(), v.y(), v.z());
+		Quaternion R = q.mul(V).mul(q.conjugate());
+		return new Vec3(R.x, R.y, R.z);
+	}
+	
+	/**
+	 * Create a new Quaternion of theta/2 radians about the angle defined by the UNIT vector (x, y, z)
+	 * @param theta The angle of rotation in radians.
+	 * @param x Axis x component.
+	 * @param y Axis y component.
+	 * @param z Axis z component.
+	 * @return The Quaternion.
+	 */
+	public static Quaternion createRotation(float theta, float x, float y, float z) {
+		float halfTheta = theta/2;
+		return new Quaternion(Mathf.cos(halfTheta), 
+							x*Mathf.sin(halfTheta), 
+							y*Mathf.sin(halfTheta), 
+							z*Mathf.sin(halfTheta));
 	}
 
 	@Override

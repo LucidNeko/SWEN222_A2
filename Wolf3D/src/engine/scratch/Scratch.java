@@ -18,16 +18,17 @@ public class Scratch {
 		
 		log.trace(Mathf.radToDeg((float)Math.acos(Vec3.dot(a, b))));
 		
-		log.trace(new Quaternion(Vec3.UP, Mathf.degToRad(45)));
-		
 		//CCW
-		Quaternion q1 = new Quaternion(Vec3.RIGHT, Mathf.degToRad(0));
-		Quaternion q2 = new Quaternion(Vec3.RIGHT, Mathf.degToRad(180));
+		Quaternion q1 = new Quaternion();
+		Quaternion q2 = Quaternion.createRotation(Mathf.degToRad(180), 1, 0, 0);
 		
 		for(float t = 0; t <= 1; t+=0.25) {
 			Quaternion lerped = Quaternion.nlerp(q1, q2, t);
 			log.trace("{} t={}", lerped, t);
 			log.trace(lerped.toMatrix().mul(Vec3.UP));
+			Vec3 axis = Vec3.UP.add(Vec3.RIGHT).add(Vec3.FORWARD);
+			axis.normalize();
+			log.trace(Quaternion.mul(lerped, Vec3.UP));
 		}
 	}
 
