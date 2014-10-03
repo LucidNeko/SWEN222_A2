@@ -130,6 +130,14 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	}
 	
 	/**
+	 * Check if the mouse is grabbed.
+	 * @return Returns true if the mouse is grabbed.
+	 */
+	public static boolean isGrabbed() {
+		return isGrabbed;
+	}
+	
+	/**
 	 * Grab the Mouse causing it to remain locked in the center of the frame.
 	 * @param grabbed boolean state of grabbed. true to grab, false to not grab.
 	 */
