@@ -132,7 +132,8 @@ public class Vec3 {
 	}
 	
 	/**
-	 * Set the x component of this vector
+	 * Set the x component of this vector<br>
+	 * MODIFIES LOCALLY.
 	 * @param x
 	 */
 	public void setX(float x) {
@@ -140,7 +141,8 @@ public class Vec3 {
 	}
 	
 	/**
-	 * Set the y component of this vector
+	 * Set the y component of this vector<br>
+	 * MODIFIES LOCALLY.
 	 * @param y
 	 */
 	public void setY(float y) {
@@ -148,7 +150,8 @@ public class Vec3 {
 	}
 	
 	/**
-	 * Set the z component of this vector
+	 * Set the z component of this vector<br>
+	 * MODIFIES LOCALLY.
 	 * @param z
 	 */
 	public void setZ(float z) {
