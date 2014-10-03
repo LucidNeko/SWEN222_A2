@@ -88,7 +88,9 @@ public class World {
 	 */
 	public Collection<Entity> getEntities() {
 //		return Collections.unmodifiableCollection(entities.values());
-		return new LinkedList<Entity>(entities.values());
+		synchronized(this) {
+			return new LinkedList<Entity>(entities.values());
+		}
 	}
 
 	/**
