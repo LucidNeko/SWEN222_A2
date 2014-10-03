@@ -94,6 +94,7 @@ public class Quaternion {
 	
 	/**
 	 * q*v*(q's conjugate)
+	 * Seems to drift way faster than other mul (mul2)
 	 * @param q Rotation Quaternion
 	 * @return The rotated vector. Does not modify param.
 	 */
@@ -101,6 +102,22 @@ public class Quaternion {
 		Quaternion V = new Quaternion(0, v.x(), v.y(), v.z());
 		Quaternion R = q.mul(V).mul(q.conjugate());
 		return new Vec3(R.x, R.y, R.z);
+	}
+	
+	/**
+	 * Efficient mul. Seemingly no drift. Twice as fast and no need to normalize v. 
+	 * http://gamedev.stackexchange.com/a/50545
+	 * @param q
+	 * @param v
+	 * @return
+	 */
+	public static Vec3 mul2(Quaternion q, Vec3 v) {
+		Vec3 u = new Vec3(q.x, q.y, q.z);
+		float s = q.w;
+		
+		float dotUV = Vec3.dot(u, v);
+		float dotUU = Vec3.dot(u, u);
+		return u.mul(dotUV+dotUV).addLocal(v.mul(s*s - dotUU)).addLocal(Vec3.cross(u, v).mul(s+s));
 	}
 	
 	/**

@@ -29,7 +29,45 @@ public class Scratch {
 			Vec3 axis = Vec3.UP.add(Vec3.RIGHT).add(Vec3.FORWARD);
 			axis.normalize();
 			log.trace(Quaternion.mul(lerped, Vec3.UP));
+			log.trace(Quaternion.mul2(lerped, Vec3.UP));
 		}
+		
+		log.trace("");
+
+
+		benchMul();
+		benchMul2();
+		benchMul();
+		benchMul2();
+		benchMul();
+		benchMul2();
+
+	}
+	
+	private static void benchMul() {
+		Vec3 v = new Vec3(1, 1, 1);
+		v.mulLocal(Mathf.random());
+		v.normalize();
+		long start = System.nanoTime();
+		for(int i = 0; i < 10000000; i++) {
+			Quaternion q = Quaternion.createRotation(Mathf.degToRad(6), v.x(), v.y(), v.z());
+			v = Quaternion.mul(q, v);
+			v.normalize();
+		}
+		log.trace("benchMul -> v={} : {}s", v, (System.nanoTime()-start)*0.000000001f);
+	}
+	
+	private static void benchMul2() {
+		Vec3 v = new Vec3(1, 1, 1);
+		v.mulLocal(Mathf.random());
+		v.normalize();
+		long start = System.nanoTime();
+		for(int i = 0; i < 10000000; i++) {
+			Quaternion q = Quaternion.createRotation(Mathf.degToRad(6), v.x(), v.y(), v.z());
+			v = Quaternion.mul2(q, v);
+//			v.normalize();
+		}
+		log.trace("benchMul2-> v={} : {}s", v, (System.nanoTime()-start)*0.000000001f);
 	}
 
 }
