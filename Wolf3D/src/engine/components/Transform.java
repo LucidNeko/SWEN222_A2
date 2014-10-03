@@ -64,6 +64,14 @@ public class Transform extends Component {
 	}
 	
 	/**
+	 * Sets the position of this Transform
+	 * @param position The (x, y, z) to set this Transforms position to.
+	 */
+	public void setPosition(Vec3 position) {
+		this.position.set(position);
+	}
+	
+	/**
 	 * Strafe this transform. i.e left<->right movement.
 	 * @param delta Amount to move.
 	 */
@@ -209,35 +217,39 @@ public class Transform extends Component {
 	}
 	
 	/**
-	 * Get a Vec3 containing the Transforms current location. It's just a snapshot - so it's Immutable.
+	 * Get a Vec3 containing the Transforms current location. <br>
+	 * It's a snapshot. Modifications to this don't affect the Transform.
 	 * @return An Immutable Vec3 representing the Transforms current position.
 	 */
 	public Vec3 getPosition() {
-		return Vec3.unmodifiableVec3(position);
+		return position.clone();
 	}
 	
 	/** 
-	 * Get a Vec3 containing the Transforms current up vector. It's just a snapshot - so it's Immutable.
+	 * Get a Vec3 containing the Transforms current up vector. <br>
+	 * It's a snapshot. Modifications to this don't affect the Transform.
 	 * @return An Immutable Vec3 representing the Transforms current up direction.
 	 */
 	public Vec3 getUp() {
-		return Vec3.unmodifiableVec3(up);
+		return up.clone();
 	}
 	
 	/**
-	 * Get a Vec3 containing the Transforms current along vector. It's just a snapshot - so it's Immutable.
+	 * Get a Vec3 containing the Transforms current along vector. <br>
+	 * It's a snapshot. Modifications to this don't affect the Transform.
 	 * @return An Immutable Vec3 representing the Transforms current along direction.
 	 */
 	public Vec3 getAlong() {
-		return Vec3.unmodifiableVec3(along);
+		return along.clone();
 	}
 	
 	/**
-	 * Get a Vec3 containing the Transforms current look vector. It's just a snapshot - so it's Immutable.
+	 * Get a Vec3 containing the Transforms current look vector. <br>
+	 * It's a snapshot. Modifications to this don't affect the Transform.
 	 * @return An Immutable Vec3 representing the Transforms current look direction.
 	 */
 	public Vec3 getLook() {
-		return Vec3.unmodifiableVec3(look);
+		return look.clone();
 	}
 	
 	/**
