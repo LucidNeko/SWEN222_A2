@@ -215,9 +215,8 @@ public class GameDemo extends GameLoop {
 		}
 
 		//if control is held down frees the mouse.
-		if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))
-			Mouse.setGrabbed(false);
-		else Mouse.setGrabbed(true);
+		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
+			Mouse.setGrabbed(!Mouse.isGrabbed());
 
 		//Update all the behaviours attached to the entities.
 		for(Entity entity : world.getEntities()) {
