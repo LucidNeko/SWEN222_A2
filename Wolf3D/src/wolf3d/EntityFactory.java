@@ -72,7 +72,7 @@ public class EntityFactory {
 		return player;
 	}
 	
-	public static Entity createCamera(World world, final Entity target) {
+	public static Entity createFirstPersonCamera(World world, final Entity target) {
 		Entity camera = world.createEntity("Camera");
 		camera.attachComponent(new Behaviour() {
 
@@ -81,13 +81,24 @@ public class EntityFactory {
 				Transform at = target.getTransform();
 				Transform cam = getOwner().getTransform();
 				
-//				cam.lookAt(at);
-				
-				cam.setPosition(at.getPosition().x(), at.getPosition().y(), at.getPosition().z());
+				cam.setPosition(at.getPosition());
 				cam.lookInDirection(at.getLook());
-				cam.walk(-2);
-				cam.fly(1);
-				cam.pitch(Mathf.degToRad(-20));
+				cam.walk(0.25f);
+
+//				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
+//				float length = cam.getPosition().sub(at.getPosition()).length();
+//				if(length > 1f) cam.walk(7*(1-(1/length))*delta);
+//				Vec3 atLook = at.getLook();
+//				atLook.setY(0);
+//				atLook.normalize();
+//				Vec3 camLook = cam.getLook();
+//				camLook.setY(0);
+//				camLook.normalize();
+//				float dot = atLook.x()*(-camLook.z()) + atLook.z()*camLook.x();
+//				
+//				float sign = dot < 0 ? -1: 1;
+//				
+//				if(Vec3.dot(camLook, atLook) < 0.99f) cam.strafe(sign*10*Mathf.abs(dot)*delta); 
 			}
 			
 		});
@@ -105,6 +116,50 @@ public class EntityFactory {
 			} 
 
 		});
+		return camera;
+	}
+	
+	public static Entity createThirdPersonTrackingCamera(World world, final Entity target) {
+		Entity camera = world.createEntity("Camera");
+		camera.attachComponent(new Behaviour() {
+
+			@Override
+			public void update(float delta) {
+				Transform at = target.getTransform();
+				Transform cam = getOwner().getTransform();
+				
+				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
+				float length = cam.getPosition().sub(at.getPosition()).length();
+				if(length > 1f) cam.walk(7*(1-(1/length))*delta);
+				Vec3 atLook = at.getLook();
+				atLook.setY(0);
+				atLook.normalize();
+				Vec3 camLook = cam.getLook();
+				camLook.setY(0);
+				camLook.normalize();
+				float dot = atLook.x()*(-camLook.z()) + atLook.z()*camLook.x();
+				
+				float sign = dot < 0 ? -1: 1;
+				
+				if(Vec3.dot(camLook, atLook) < 0.995f) cam.strafe(sign*10*Mathf.abs(dot)*delta); 
+			}
+			
+		});
+		camera.attachComponent(Camera.class);
+		camera.attachComponent(PyramidRenderer.class);
+		camera.attachComponent(new Renderer() {
+
+			@Override
+			public void render(GL2 gl) {
+				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
+				Transform t = getOwner().getTransform();
+				Vec3 look = t.getLook();
+				gl.glLightfv(GL_LIGHT1, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+				gl.glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
+			} 
+
+		});
+		camera.getTransform().setPosition(target.getTransform().getPosition().add(target.getTransform().getAlong().mul(20))); //start far away so it zooms in
 		return camera;
 	}
 	
