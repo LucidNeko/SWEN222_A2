@@ -13,6 +13,21 @@ public class Mat44 {
 	private final Vec4 row4;
 	
 	/**
+	 * Construct a Mat44 from the given UNIT quaternion
+	 * @param q The unit Quaternion.
+	 */
+	public Mat44(Quaternion q) {
+		float w = q.w();
+		float x = q.x();
+		float y = q.y();
+		float z = q.z();
+		row1 = new Vec4(1 - 2*y*y - 2*z*z, 2*x*y - 2*w*z, 2*x*z + 2*w*y, 0);
+		row2 = new Vec4(2*x*y + 2*w*z, 1 - 2*x*x - 2*z*z, 2*y*z + 2*w*x, 0);
+		row3 = new Vec4(2*x*z - 2*w*y, 2*y*z - 2*w*x, 1 - 2*x*x - 2*y*y, 0);
+		row4 = new Vec4(0, 0, 0, 1);
+	}
+	
+	/**
 	 * Create a new 4x4 matrix initialized as the identity matrix.
 	 */
 	private Mat44() { 
@@ -20,6 +35,11 @@ public class Mat44 {
 		row2 = new Vec4(0, 1, 0, 0);
 		row3 = new Vec4(0, 0, 1, 0);
 		row4 = new Vec4(0, 0, 0, 1);
+	}
+	
+	/** Returns the resulting vector from this * v.<br> DOES NOT MODIFY v */
+	public Vec3 mul(Vec3 v) {
+		return Mat44.multiply(this, v);
 	}
 	
 	/**
