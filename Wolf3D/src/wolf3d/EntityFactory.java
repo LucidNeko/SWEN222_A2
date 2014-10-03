@@ -17,6 +17,7 @@ import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.renderers.PyramidRenderer;
+import engine.common.Mathf;
 import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Camera;
@@ -31,6 +32,11 @@ import engine.texturing.Mesh;
 import engine.texturing.Texture;
 import engine.util.Resources;
 
+/**
+ * 
+ * @author Hamish
+ *
+ */
 public class EntityFactory {
 	private static final Logger log = LogManager.getLogger();
 	
@@ -80,6 +86,8 @@ public class EntityFactory {
 				cam.setPosition(at.getPosition().x(), at.getPosition().y(), at.getPosition().z());
 				cam.lookInDirection(at.getLook());
 				cam.walk(-2);
+				cam.fly(1);
+				cam.pitch(Mathf.degToRad(-20));
 			}
 			
 		});
