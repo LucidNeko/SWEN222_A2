@@ -31,7 +31,7 @@ public class MouseLookController extends Behaviour {
 		
 		float dx = Mouse.getDX(); //calls to getDX/getDY wipe out the value.. TODO logical fix?
 		float dy = Mouse.getDY();
-		t.pitch(Mathf.degToRad(dy*speed*delta));
+//		t.pitch(Mathf.degToRad(dy*speed*delta));
 		t.rotateY(Mathf.degToRad(dx*speed*delta)); 
 	}
 
