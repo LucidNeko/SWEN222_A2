@@ -132,6 +132,30 @@ public class Vec3 {
 	}
 	
 	/**
+	 * Set the x component of this vector
+	 * @param x
+	 */
+	public void setX(float x) {
+		this.x = x;
+	}
+	
+	/**
+	 * Set the y component of this vector
+	 * @param y
+	 */
+	public void setY(float y) {
+		this.y = y;
+	}
+	
+	/**
+	 * Set the z component of this vector
+	 * @param z
+	 */
+	public void setZ(float z) {
+		this.z = z;
+	}
+	
+	/**
 	 * Sets this Vector such that (x, y, z) = (0, 0, 0).
 	 */
 	public void setZero() {
