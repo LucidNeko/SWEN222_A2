@@ -131,6 +131,7 @@ public class EntityFactory {
 				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
 				float length = cam.getPosition().sub(at.getPosition()).length();
 				if(length > 1f) cam.walk(7*(1-(1/length))*delta);
+				else if(length < 0.8f) cam.walk(-2*delta);
 				Vec3 atLook = at.getLook();
 				atLook.setY(0);
 				atLook.normalize();
@@ -141,7 +142,12 @@ public class EntityFactory {
 				
 				float sign = dot < 0 ? -1: 1;
 				
-				if(Vec3.dot(camLook, atLook) < 0.995f) cam.strafe(sign*10*Mathf.abs(dot)*delta); 
+				float theta = (float) Math.acos(Vec3.dot(atLook, camLook));
+				
+				//if(Vec3.dot(camLook, atLook) < 0.995f) cam.strafe(sign*10*Mathf.abs(dot)*delta); 
+				if(Mathf.radToDeg(theta) > 1) {
+					cam.strafe(10*sign*theta*delta);
+				}
 			}
 			
 		});
