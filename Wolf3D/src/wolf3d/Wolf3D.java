@@ -31,6 +31,8 @@ public class Wolf3D extends JFrame {
 	private static final String DEFAULT_TITLE = "Wolf3D";
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 600;
+	
+	private World world;
 
 	public Wolf3D() {
 		super(DEFAULT_TITLE);
@@ -45,7 +47,7 @@ public class Wolf3D extends JFrame {
 	    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 
 		//Create the World
-		final World world = new World();
+		world = new World();
 
 		//Build OpenGL panel.
 		GLProfile glProfile = GLProfile.getDefault();
@@ -66,6 +68,10 @@ public class Wolf3D extends JFrame {
 		GameDemo game = new GameDemo(world);
 		game.setView(view); // give it the view so it can call it's display method appropriately.
 		game.start();
+	}
+	
+	public World getWorld() {
+		return world;
 	}
 
 	/** Exits after confirming with the user if they really want to exit */
