@@ -52,7 +52,7 @@ public class Scratch {
 		for(int i = 0; i < 10000000; i++) {
 			Quaternion q = Quaternion.createRotation(Mathf.degToRad(6), v.x(), v.y(), v.z());
 			v = Quaternion.mul(q, v);
-			v.normalize();
+			v.normalize(); //have to normalize because of drift!
 		}
 		log.trace("benchMul -> v={} : {}s", v, (System.nanoTime()-start)*0.000000001f);
 	}
