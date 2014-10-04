@@ -23,7 +23,7 @@ import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
-import engine.components.Renderer;
+import engine.components.GL2Renderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
@@ -104,7 +104,7 @@ public class EntityFactory {
 		});
 		camera.attachComponent(Camera.class);
 		camera.attachComponent(PyramidRenderer.class);
-		camera.attachComponent(new Renderer() {
+		camera.attachComponent(new GL2Renderer() {
 
 			@Override
 			public void render(GL2 gl) {
@@ -153,7 +153,7 @@ public class EntityFactory {
 		});
 		camera.attachComponent(Camera.class);
 		camera.attachComponent(PyramidRenderer.class);
-		camera.attachComponent(new Renderer() {
+		camera.attachComponent(new GL2Renderer() {
 
 			@Override
 			public void render(GL2 gl) {
@@ -180,7 +180,7 @@ public class EntityFactory {
 				t.fly(1f*delta);
 			}
 		});
-		sun.attachComponent(new Renderer() {
+		sun.attachComponent(new GL2Renderer() {
 			public void render(GL2 gl) {
 				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
 			}

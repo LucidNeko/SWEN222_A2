@@ -5,7 +5,7 @@ import javax.media.opengl.GL2;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
 
-public class MeshRenderer extends Renderer {
+public class MeshRenderer extends GL2Renderer {
 	
 	private Material material = new Material();
 	
