@@ -50,6 +50,7 @@ public class PickUp extends Behaviour {
 			setChanged();
 			return world.destroyEntity(item.getID());
 		}
+		System.out.println("Not stong enough to pick up this item, try dropping an item first");
 		return false;
 	}
 
