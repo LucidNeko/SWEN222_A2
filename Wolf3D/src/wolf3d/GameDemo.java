@@ -124,7 +124,7 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
 		test.attachComponent(ProximitySensor.class).setTarget(player);
 		test.attachComponent(new PickUp(world));
-		test.attachComponent(new Weight(50));
+		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
