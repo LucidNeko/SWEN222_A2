@@ -18,7 +18,7 @@ public class PickUpTests {
 	
 	@Before
 	public void init(){
-		//create world with player and two items inside
+		//create world with player and three items inside
 		World world = new World();
 		player = EntityFactory.createPlayer(world, "Player");
 		item1 = world.createEntity("motorbike");
