@@ -33,7 +33,7 @@ public class PickUp extends Behaviour {
 	 * Picks up the entity attached to this component and adds it to the
 	 * targeted players Inventory
 	 * 
-	 * @return true if entity exists in world false if not
+	 * @return true if entity is picked up false if not
 	 */
 	public boolean pickUpItem() {
 		Entity item = getOwner();
@@ -50,7 +50,7 @@ public class PickUp extends Behaviour {
 			setChanged();
 			return world.destroyEntity(item.getID());
 		}
-		System.out.println("Not stong enough to pick up this item, try dropping an item first");
+		System.out.printf("Not stong enough to pick up %s item, try dropping an item first\n", item.getName());
 		return false;
 	}
 

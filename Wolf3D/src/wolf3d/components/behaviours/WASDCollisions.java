@@ -47,23 +47,12 @@ public class WASDCollisions extends Behaviour {
 	public void moveBack(float dy, float dx, float delta, Transform t) {
 		t.strafeFlat(-moveSpeed * dx * delta);
 		t.walkFlat(-moveSpeed * dy * delta);
+		//clears the initial change, meaning the the player hasn't actually moved
+		clearChanged();
 	}
 
-	@Override
-	public void update(float delta) {
-		requires(Transform.class);
-
+	private void movePlayer(float dy, float dx, float delta) {
 		Transform t = getOwner().getComponent(Transform.class);
-
-		float dx = 0, dy = 0;
-		if (Keyboard.isKeyDown(KeyEvent.VK_A))
-			dx += 1;
-		if (Keyboard.isKeyDown(KeyEvent.VK_D))
-			dx -= 1;
-		if (Keyboard.isKeyDown(KeyEvent.VK_W))
-			dy += 1;
-		if (Keyboard.isKeyDown(KeyEvent.VK_S))
-			dy -= 1;
 
 		// old position and cell
 		Vec3 oldPos = t.getPosition();
@@ -74,18 +63,18 @@ public class WASDCollisions extends Behaviour {
 		// move foward
 		t.strafeFlat(moveSpeed * dx * delta);
 		t.walkFlat(moveSpeed * dy * delta);
+		// lets the networking know that something has changed
 		setChanged();
 
 		// new Position and cell
 		Vec3 newPos = t.getPosition();
 		int col;
 		int row;
-		//this tests the players position +- the width of the player, so that
-		//you can no longer look through walls
-		if(oldPos.getX()> newPos.getX()){
+		// this tests the players position +- the width of the player, so that
+		// you can no longer look through walls
+		if (oldPos.getX() > newPos.getX()) {
 			col = (int) ((newPos.getX() - playerWidth) / wallSize);
-		}
-		else{
+		} else {
 			col = (int) ((newPos.getX() + playerWidth) / wallSize);
 		}
 		if (oldPos.getZ() > newPos.getZ()) {
@@ -98,14 +87,12 @@ public class WASDCollisions extends Behaviour {
 		// west wall
 		if (newPos.getX() - playerWidth < 0 || newPos.getZ() - playerWidth < 0) {
 			moveBack(dy, dx, delta, t);
-			clearChanged();
 			return;
 		}
 
 		// check if inbounds of the walls array
 		if (row < 0 || row >= walls.length || col < 0 || col >= walls[0].length) {
 			moveBack(dy, dx, delta, t);
-			clearChanged();
 			return;
 		}
 
@@ -118,7 +105,6 @@ public class WASDCollisions extends Behaviour {
 			if (col > oldCol) {
 				if (oldCell.hasEast()) {
 					moveBack(dy, dx, delta, t);
-					clearChanged();
 					return;
 				}
 			}
@@ -126,24 +112,47 @@ public class WASDCollisions extends Behaviour {
 				if (oldCell.hasWest()) {
 					// move back
 					moveBack(dy, dx, delta, t);
-					clearChanged();
 					return;
 				}
 			}
 			if (row > oldRow) {
 				if (oldCell.hasSouth()) {
 					moveBack(dy, dx, delta, t);
-					clearChanged();
 					return;
 				}
 			}
 			if (row < oldRow) {
 				if (oldCell.hasNorth()) {
 					moveBack(dy, dx, delta, t);
-					clearChanged();
 					return;
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update(float delta) {
+		requires(Transform.class);
+		
+		float dx = 0, dy = 0;
+		if (Keyboard.isKeyDown(KeyEvent.VK_A))
+			dx += 1;
+		if (Keyboard.isKeyDown(KeyEvent.VK_D))
+			dx -= 1;
+		if (Keyboard.isKeyDown(KeyEvent.VK_W))
+			dy += 1;
+		if (Keyboard.isKeyDown(KeyEvent.VK_S))
+			dy -= 1;
+
+		// only move if player has actually pressed WASD
+		if (dx != 0 || dy != 0) {
+			movePlayer(dy, dx, delta);
+		}
+		
+		//checking notifications
+//		if(hasChanged()){
+//			System.out.println("player moved");
+//		}
+//		clearChanged();
 	}
 }
