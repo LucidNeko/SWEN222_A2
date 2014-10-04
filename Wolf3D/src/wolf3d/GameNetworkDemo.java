@@ -33,7 +33,7 @@ import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
-import engine.components.Renderer;
+import engine.components.GL2Renderer;
 import engine.core.Entity;
 import engine.core.GameLoop;
 import engine.core.World;

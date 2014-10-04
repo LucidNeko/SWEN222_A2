@@ -2,7 +2,7 @@ package wolf3d.components.renderers;
 
 import javax.media.opengl.GL2;
 
-import engine.components.Renderer;
+import engine.components.GL2Renderer;
 import engine.components.Transform;
 
 /**
@@ -10,7 +10,7 @@ import engine.components.Transform;
  * @author Hamish Rae-Hodgson
  *
  */
-public class PyramidRenderer extends Renderer {
+public class PyramidRenderer extends GL2Renderer {
 
 	public void render(GL2 gl) {
 //		requires(Transform.class);

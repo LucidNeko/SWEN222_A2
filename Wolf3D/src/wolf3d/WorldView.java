@@ -10,7 +10,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.glu.GLU;
 
 import engine.components.Camera;
-import engine.components.Renderer;
+import engine.components.GL2Renderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
@@ -131,7 +131,7 @@ public class WorldView extends GameCanvas implements View{
 			
 			gl.glPushMatrix();
 				t.applyTransform(gl);
-				for(Renderer renderer : entity.getComponents(Renderer.class)) {
+				for(GL2Renderer renderer : entity.getComponents(GL2Renderer.class)) {
 					renderer.render(gl);
 				}
 //				renderEntities(gl, entity.getChildren()); //recurse through children. Compounding transforms.

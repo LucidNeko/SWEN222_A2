@@ -7,7 +7,7 @@ import javax.media.opengl.GL2;
  * @author Hamish
  *
  */
-public abstract class Renderer extends Component {
+public abstract class GL2Renderer extends Component {
 
 	/**
 	 * Render this component to the provided gl context.
