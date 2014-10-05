@@ -73,8 +73,10 @@ public class GameDemo extends GameLoop {
 	private void createEntities() {
 		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
+		parser.passDoorFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
+		parser.createDoors(world);
 //ghfix for sameer
 
 //		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
