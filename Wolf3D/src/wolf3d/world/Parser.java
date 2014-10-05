@@ -239,6 +239,6 @@ public class Parser {
 	 * @return Returns a WASDCollion object with the walls array initialised
 	 */
 	public WASDCollisions getWallCollisionComponent() {
-		return new WASDCollisions(walls);
+		return new WASDCollisions(walls, doors);
 	}
 }

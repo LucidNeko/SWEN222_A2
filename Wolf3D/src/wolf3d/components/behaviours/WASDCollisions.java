@@ -20,9 +20,11 @@ public class WASDCollisions extends Behaviour {
 	private float playerWidth = 0.25f;
 
 	private Cell[][] walls;
+	private Cell[][] doors;
 
-	public WASDCollisions(Cell[][] walls) {
+	public WASDCollisions(Cell[][] walls, Cell[][] doors) {
 		this.walls = walls;
+		this.doors = doors;
 	}
 
 	/**
@@ -59,6 +61,7 @@ public class WASDCollisions extends Behaviour {
 		int oldCol = (int) ((oldPos.getX()) / wallSize);
 		int oldRow = (int) ((oldPos.getZ()) / wallSize);
 		Cell oldCell = walls[oldRow][oldCol];
+		Cell doorCell = doors[oldRow][oldCol];
 
 		// move foward
 		t.strafeFlat(moveSpeed * dx * delta);
@@ -103,26 +106,26 @@ public class WASDCollisions extends Behaviour {
 		} else {
 			// we know were in a different cell from where we started.
 			if (col > oldCol) {
-				if (oldCell.hasEast()) {
+				if (oldCell.hasEast() || doorCell.hasEast()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (col < oldCol) {
-				if (oldCell.hasWest()) {
+				if (oldCell.hasWest() || doorCell.hasWest()) {
 					// move back
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (row > oldRow) {
-				if (oldCell.hasSouth()) {
+				if (oldCell.hasSouth() || doorCell.hasSouth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (row < oldRow) {
-				if (oldCell.hasNorth()) {
+				if (oldCell.hasNorth() || doorCell.hasNorth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
