@@ -84,8 +84,8 @@ public class GameNetworkDemo extends GameLoop {
 	}
 
 	private void createEntities() {
-		Parser parser = new Parser("Map.txt");
-		parser.passFileToArray();
+		Parser parser = new Parser("Map.txt", "Doors.txt");
+		parser.passWallFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
 //ghfix for sameer

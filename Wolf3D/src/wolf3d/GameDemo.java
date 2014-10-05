@@ -5,10 +5,12 @@ import java.awt.event.KeyEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import wolf3d.components.Health;
 import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
+import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
@@ -69,10 +71,12 @@ public class GameDemo extends GameLoop {
 	}
 
 	private void createEntities() {
-		Parser parser = new Parser("Map.txt");
-		parser.passFileToArray();
+		Parser parser = new Parser("Map.txt", "Doors.txt");
+		parser.passWallFileToArray();
+		parser.passDoorFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
+		parser.createDoors(world);
 //ghfix for sameer
 
 //		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
@@ -141,8 +145,11 @@ public class GameDemo extends GameLoop {
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
 		//testing pickup
-		teddy.attachComponent(new PickUp(world));
-		teddy.attachComponent(Weight.class);
+//		teddy.attachComponent(new PickUp(world));
+//		teddy.attachComponent(Weight.class);
+		//testing attack
+		teddy.attachComponent(Health.class);
+		teddy.attachComponent(new Attackable(world));
 
 		//Create enemy.
 		Entity enemy = world.createEntity("Enemy");
@@ -152,6 +159,8 @@ public class GameDemo extends GameLoop {
 		enemy.attachComponent(AddChaseBehaviour.class);
 		enemy.getComponent(AILookAtController.class).setTarget(player);
 		enemy.getComponent(ProximitySensor.class).setTarget(player);
+		enemy.attachComponent(Health.class);
+		enemy.attachComponent(new Attackable(world));
 		enemy.getTransform().translate(0, 0, -10);
 		enemy.attachComponent(new Translate(enemy.getTransform().getPosition(), new Vec3(0, 0, -20), 1));
 		enemy.getTransform().yaw(Mathf.degToRad(180));

@@ -66,7 +66,7 @@ public class EntityFactory {
 //		player.attachComponent(WASDWalking.class);
 		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
-//		player.attachComponent(Health.class);
+		player.attachComponent(Health.class);
 		player.attachComponent(Inventory.class);
 		player.attachComponent(new DropItem(world));
 		return player;
