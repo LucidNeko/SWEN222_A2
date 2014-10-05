@@ -3,7 +3,9 @@ package wolf3d.world;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.WASDCollisions;
+import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Color;
 import engine.common.Mathf;
 import engine.components.MeshFilter;
@@ -29,6 +31,8 @@ public class Parser {
 
 	private Cell[][] walls;
 	private Cell[][] doors;
+	
+	private Entity player;
 
 	private int width, height;
 
@@ -70,7 +74,8 @@ public class Parser {
 	 * Creates all doors in the world
 	 * @param world the world in which the doors are added to
 	 */
-	public void createDoors(World world) {
+	public void createDoors(World world, Entity player) {
+		this.player = player;
 		create3DObjects(world, doors, "Doors");
 	}
 
@@ -230,6 +235,8 @@ public class Parser {
 		Entity door = world.createEntity("door");
 		door.attachComponent(MeshFilter.class).setMesh(mesh);
 		door.attachComponent(MeshRenderer.class).setMaterial(material);
+		door.attachComponent(ProximitySensor.class).setTarget(player);
+		door.attachComponent(AddAnimation.class);
 		return door;
 	}
 

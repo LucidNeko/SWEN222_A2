@@ -76,7 +76,6 @@ public class GameDemo extends GameLoop {
 		parser.passDoorFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
-		parser.createDoors(world);
 //ghfix for sameer
 
 //		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
@@ -109,7 +108,7 @@ public class GameDemo extends GameLoop {
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
-		
+		parser.createDoors(world, player);
 		
 
 		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
@@ -170,7 +169,7 @@ public class GameDemo extends GameLoop {
 		Texture doorTex = Resources.getTexture("1.png", true);
 		Mesh mesh = Resources.getMesh("wall.obj");
 
-
+		
 
 		Entity entity;
 		for(int i = 0; i < 20; i+=2) {
