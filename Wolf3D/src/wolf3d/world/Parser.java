@@ -25,9 +25,10 @@ import engine.util.Resources;
  */
 public class Parser {
 
-	private String filePath;
+	private String wallFilePath, doorFilePath;
 
 	private Cell[][] walls;
+	private Cell[][] doors;
 
 	private int width, height;
 
@@ -37,15 +38,33 @@ public class Parser {
 	private int topY = 1;
 	private int tileX = 1;
 	private int tileY = 1;
+	
+	private World world;
 
-	public Parser(String filePath) {
-		this.filePath = filePath;
+	public Parser(String wallFilePath, String doorFilePath) {
+		this.wallFilePath = wallFilePath;
+	}
+
+	public void passWallFileToArray() {
+		walls = passFileToArray(wallFilePath);
+	}
+
+	public void passDoorFileToArray() {
+		doors = passFileToArray(doorFilePath);
+	}
+
+	public void createWalls(World world) {
+		create3DObjects(world, walls, "Walls");
+	}
+
+	public void createDoors(World world) {
+		create3DObjects(world, doors, "Doors");
 	}
 
 	/**
-	 * passes file into 2d array of ints
+	 * passes file into 2d array of Cells
 	 */
-	public void passFileToArray() {
+	private Cell[][] passFileToArray(String filePath) {
 		InputStream in = Resources.getInputStream(filePath);
 
 		Scanner sc = new Scanner(in);
@@ -54,7 +73,7 @@ public class Parser {
 		width = sc.nextInt();
 		height = sc.nextInt();
 		// int cur = 0;
-		walls = new Cell[height][width];
+		Cell[][] processArray = new Cell[height][width];
 		int col = 0;
 		while (sc.hasNext()) {
 			if (2 * height == col * 2) {
@@ -66,11 +85,12 @@ public class Parser {
 			int rowCheck = sc.nextInt();
 			for (int i = 0; i < row.length; i++) {
 				int temp = Integer.decode("0x" + row[i]);
-				walls[col][i] = new Cell(temp);
+				processArray[col][i] = new Cell(temp);
 			}
 			col++;
 		}
 		sc.close();
+		return processArray;
 	}
 
 	/**
@@ -100,59 +120,71 @@ public class Parser {
 	 * @param world
 	 *            the world that the walls will be added to
 	 */
-	public void createWalls(World world) {
+	private void create3DObjects(World world, Cell[][] processArray, String type) {
 		// +x-->
 		// z
 		// |
 		// V
 		float width = 2;
 		float height = 2;
-		for (int row = 0; row < walls.length; row++) {
-			for (int col = 0; col < walls[row].length; col++) {
+		for (int row = 0; row < processArray.length; row++) {
+			for (int col = 0; col < processArray[row].length; col++) {
 				float x = col * width;
 				float z = row * height;
 				float halfWidth = width / 2;
 				float halfHeight = height / 2;
 				x += width / 2;
 				z += height / 2;
-				if (walls[row][col].hasNorth()) {
+				if (processArray[row][col].hasNorth()) {
 					z -= halfHeight;
-					Entity wall = addWall(world);
-					wall.getTransform().translate(x, 0, z);
+					Entity object = addObject(world, type);
+					object.getTransform().translate(x, 0, z);
 					z += halfHeight;
 				}
-				if (walls[row][col].hasEast()) {
+				if (processArray[row][col].hasEast()) {
 					x += halfWidth;
-					Entity wall = addWall(world);
-					wall.getTransform().translate(x, 0, z);
-					wall.getTransform().rotateY(Mathf.degToRad(90));
+					Entity object = addObject(world, type);
+					object.getTransform().translate(x, 0, z);
+					object.getTransform().rotateY(Mathf.degToRad(90));
 					x -= halfWidth;
 				}
-				if (walls[row][col].hasSouth()) {
+				if (processArray[row][col].hasSouth()) {
 					z += halfHeight;
-					Entity wall = addWall(world);
-					wall.getTransform().translate(x, 0, z);
-					wall.getTransform().rotateY(Mathf.degToRad(180));
+					Entity object = addObject(world, type);
+					object.getTransform().translate(x, 0, z);
+					object.getTransform().rotateY(Mathf.degToRad(180));
 					z -= halfHeight;
 				}
-				if (walls[row][col].hasWest()) {
+				if (processArray[row][col].hasWest()) {
 					x -= halfWidth;
-					Entity wall = addWall(world);
-					wall.getTransform().translate(x, 0, z);
-					wall.getTransform().rotateY(Mathf.degToRad(-90));
+					Entity object = addObject(world, type);
+					object.getTransform().translate(x, 0, z);
+					object.getTransform().rotateY(Mathf.degToRad(-90));
 					x += halfWidth;
 				}
 			}
 		}
 	}
+	
+	private Entity addObject(World world, String type){
+		switch(type){
+		case "Walls":
+			return addWall(world);
+		case "Doors":
+			return addDoor(world);
+		}
+		return null;
+	}
 
 	/**
 	 * Adds a Wall to the given world with a Texture, Mesh, and Material
-	 * @param world the world for the wall to be added to
+	 * 
+	 * @param world
+	 *            the world for the wall to be added to
 	 * @return the newly created wall
 	 */
-	public Entity addWall(World world) {
-		//the texture for the wall
+	private Entity addWall(World world) {
+		// the texture for the wall
 		Texture wallTex = Resources.getTexture("debug_wall.png", true);
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(wallTex, Color.WHITE);
@@ -161,6 +193,25 @@ public class Parser {
 		wall.attachComponent(MeshFilter.class).setMesh(mesh);
 		wall.attachComponent(MeshRenderer.class).setMaterial(material);
 		return wall;
+	}
+
+	/**
+	 * Adds a Door to the given world with a Texture, Mesh, and Material
+	 * 
+	 * @param world
+	 *            the world for the door to be added to
+	 * @return the newly created door
+	 */
+	private Entity addDoor(World world) {
+		// the texture for the wall
+		Texture wallTex = Resources.getTexture("1.png", true);
+		Mesh mesh = Resources.getMesh("wall.obj");
+		Material material = new Material(wallTex, Color.WHITE);
+
+		Entity door = world.createEntity("door");
+		door.attachComponent(MeshFilter.class).setMesh(mesh);
+		door.attachComponent(MeshRenderer.class).setMaterial(material);
+		return door;
 	}
 
 	/**
