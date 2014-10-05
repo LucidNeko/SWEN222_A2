@@ -106,26 +106,26 @@ public class WASDCollisions extends Behaviour {
 		} else {
 			// we know were in a different cell from where we started.
 			if (col > oldCol) {
-				if (oldCell.hasEast() || doorCell.hasEast()) {
+				if (oldCell.hasEast()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (col < oldCol) {
-				if (oldCell.hasWest() || doorCell.hasWest()) {
+				if (oldCell.hasWest()) {
 					// move back
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (row > oldRow) {
-				if (oldCell.hasSouth() || doorCell.hasSouth()) {
+				if (oldCell.hasSouth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (row < oldRow) {
-				if (oldCell.hasNorth() || doorCell.hasNorth()) {
+				if (oldCell.hasNorth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
