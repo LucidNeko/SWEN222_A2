@@ -38,25 +38,38 @@ public class Parser {
 	private int topY = 1;
 	private int tileX = 1;
 	private int tileY = 1;
-	
-	private World world;
 
 	public Parser(String wallFilePath, String doorFilePath) {
 		this.wallFilePath = wallFilePath;
+		this.doorFilePath = doorFilePath;
 	}
 
+	/**
+	 * Parses walls file into a 2d array of Cells
+	 */
 	public void passWallFileToArray() {
 		walls = passFileToArray(wallFilePath);
 	}
-
+	
+	/**
+	 * Parses doors file into a 2d array of Cells
+	 */
 	public void passDoorFileToArray() {
 		doors = passFileToArray(doorFilePath);
 	}
 
+	/**
+	 * creates all walls in the world
+	 * @param world the world in which the walls are added to
+	 */
 	public void createWalls(World world) {
 		create3DObjects(world, walls, "Walls");
 	}
 
+	/**
+	 * Creates all doors in the world
+	 * @param world the world in which the doors are added to
+	 */
 	public void createDoors(World world) {
 		create3DObjects(world, doors, "Doors");
 	}
