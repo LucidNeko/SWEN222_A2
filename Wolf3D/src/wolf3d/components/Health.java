@@ -10,8 +10,9 @@ import engine.components.Component;
 public class Health extends Component{
 
 	private int health = 100;
+	private boolean alive = true;
 	
-	private int damageAmt = 10;
+	private int damageAmt = 20;
 
 	public int getHealth() {
 		return health;
@@ -44,15 +45,18 @@ public class Health extends Component{
 	
 	/**
 	 * Decreases health by damageAmt
-	 * @return returns true if decreased, false if not
+	 * @return returns true if still alive, false if not
 	 */
-	public boolean decreaseHealth(){
-		if (health > 0) {
-			health -= damageAmt;
-			System.out.println(health);
-			return true;
+	public boolean decreaseHealth(int hitAmt){
+		if (health - hitAmt >0) {
+			health -= hitAmt;
+			return alive;
 		}
-		return false;
+		else{
+			health = 0;
+			alive = false;
+			return alive;
+		}
 	}
 
 }
