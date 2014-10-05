@@ -21,4 +21,9 @@ public class ParserTests {
 		parser.passWallFileToArray();
 		parser.createWalls(world);
 	}
+	
+	@Test
+	public void test_passDoorFileToArray(){
+		parser.passDoorFileToArray();
+	}
 }
