@@ -25,7 +25,6 @@ public class Scratch {
 		for(float t = 0; t <= 1; t+=0.25) {
 			Quaternion lerped = Quaternion.nlerp(q1, q2, t);
 			log.trace("{} t={}", lerped, t);
-			log.trace(lerped.toMatrix().mul(Vec3.UP));
 			Vec3 axis = Vec3.UP.add(Vec3.RIGHT).add(Vec3.FORWARD);
 			axis.normalize();
 			log.trace(Quaternion.mul(lerped, Vec3.UP));
@@ -41,6 +40,43 @@ public class Scratch {
 		benchMul2();
 		benchMul();
 		benchMul2();
+		
+		log.trace("");
+		
+		Quaternion[] qs = new Quaternion[] {
+				Quaternion.createRotation(Mathf.degToRad(45), 0, 1, 0),
+				Quaternion.createRotation(Mathf.degToRad(45), 0, 1, 0),
+				Quaternion.createRotation(Mathf.degToRad(45), 0, 0, 1),
+				Quaternion.createRotation(Mathf.degToRad(45), 0, 0, 1),
+				Quaternion.createRotation(Mathf.degToRad(45), 0, 0, 1),
+//				Quaternion.createRotation(Mathf.degToRad(45), 0, 1, 0),
+//				Quaternion.createRotation(Mathf.degToRad(45), 0, 1, 0),
+//				Quaternion.createRotation(Mathf.degToRad(45), 0, 1, 0),
+//				Quaternion.createRotation(Mathf.degToRad(45), 0, 1, 0),
+		};
+		
+		//gimbal lock multiplying vector by all quats
+		for(int i = 0; i < qs.length; i++) {
+			Vec3 v = Vec3.RIGHT;
+			for(int j = 0; j <= i; j++) {
+//				log.trace("i={} j={}", i, j);
+				v = Quaternion.mul2(qs[j], v);
+			}
+			log.trace(v);
+		}
+		
+		log.trace("");
+		
+		//perfect response by multiplying quats then vector by result instead.
+		log.trace(Vec3.RIGHT);
+		for(int i = 1; i < qs.length; i++) {
+			Quaternion q = qs[0];
+			for(int j = 1; j < i; j++) {
+//				log.trace("i={} j={}", i, j);
+				q = q.mul(qs[j]);
+			}
+			log.trace(Quaternion.mul2(q, Vec3.RIGHT));
+		}
 
 	}
 	

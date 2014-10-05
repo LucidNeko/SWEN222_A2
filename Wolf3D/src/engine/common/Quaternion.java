@@ -18,22 +18,37 @@ public class Quaternion {
 	
 	/** Construct a Quaternion initialized to the identity Quaternion. */
 	public Quaternion() {
-		x = y = z = 0;
-		w = 1;
+		setIdentity();
 	}
 	
 	/** Construct a new Quaternion from the values. */
 	public Quaternion(float w, float x, float y, float z) {
-		this.w = w;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		set(w, x, y, z);
 	}	
 	
 	public float w() { return w; }
 	public float x() { return x; }
 	public float y() { return y; }
 	public float z() { return z; }
+	
+	public void set(Quaternion source) {
+		this.w = source.w;
+		this.x = source.x;
+		this.y = source.y;
+		this.z = source.z;
+	}
+	
+	public void set(float w, float x, float y, float z) {
+		this.w = w;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	public void setIdentity() {
+		x = y = z = 0;
+		w = 1;
+	}
 	
 	/**
 	 * Multiply this Quaternion by the other Quaternion.
@@ -47,8 +62,38 @@ public class Quaternion {
 							  this.w*other.z + this.x*other.y - this.y*other.x + this.z*other.w);
 	}
 	
+	public Quaternion mulLocal(Quaternion other) {
+		float w = this.w*other.w - this.x*other.x - this.y*other.y - this.z*other.z;
+		float x = this.w*other.x + this.x*other.w + this.y*other.z - this.z*other.y;
+		float y = this.w*other.y - this.x*other.z + this.y*other.w + this.z*other.x;
+		float z = this.w*other.z + this.x*other.y - this.y*other.x + this.z*other.w;
+		set(w, x, y, z);
+		return this;
+	}
+	
+	/**
+	 * Multiplies the given UNIT vector by this quaternion. this * v
+	 * @param v The UNIT vector.
+	 * @return A new vector containing the result.
+	 */
+	public Vec3 mul(Vec3 v) {
+		Vec3 u = new Vec3(x, y, z);
+		float s = w;
+		
+		float dotUV = Vec3.dot(u, v);
+		float dotUU = Vec3.dot(u, u);
+		return u.mul(dotUV+dotUV).addLocal(v.mul(s*s - dotUU)).addLocal(Vec3.cross(u, v).mul(s+s));
+	}
+	
 	public Quaternion conjugate() {
 		return new Quaternion(w, -x, -y, -z);
+	}
+	
+	public Quaternion conjugateLocal() {
+		x = -x;
+		y = -y;
+		z = -z;
+		return this;
 	}
 	
 	public float magnitude() {
@@ -75,10 +120,10 @@ public class Quaternion {
 		return magnitude;
 	}
 	
-	/** Returns this Quaternion as a 4x4 rotation matrix. */
-	public Mat44 toMatrix() {
-		return new Mat44(this);
-	}
+//	/** Returns this Quaternion as a 4x4 rotation matrix. */
+//	public Mat44 toMatrix() {
+//		return new Mat44(this);
+//	}
 	
 	/**
 	 * nlerps between a and b. t is clamped between 0..1.
@@ -120,6 +165,10 @@ public class Quaternion {
 		return u.mul(dotUV+dotUV).addLocal(v.mul(s*s - dotUU)).addLocal(Vec3.cross(u, v).mul(s+s));
 	}
 	
+	public static Quaternion createRotation(Vec3 axis, float thetaRadians) {
+		return createRotation(thetaRadians, axis.x(), axis.y(), axis.z());
+	}
+	
 	/**
 	 * Create a new Quaternion of theta/2 radians about the angle defined by the UNIT vector (x, y, z)
 	 * @param theta The angle of rotation in radians.
@@ -139,6 +188,10 @@ public class Quaternion {
 	@Override
 	public String toString() {
 		return "Quaternion [w=" + w + ", x=" + x + ", y=" + y + ", z=" + z + "]";
+	}
+	
+	public Quaternion clone() {
+		return new Quaternion(w, x, y, z);
 	}
 
 }
