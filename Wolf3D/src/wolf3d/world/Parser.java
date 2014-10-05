@@ -179,6 +179,12 @@ public class Parser {
 		}
 	}
 	
+	/**
+	 * Adds an entity of the given type to the world
+	 * @param world the world for the entity to be added to
+	 * @param type the type of entity that what gets created
+	 * @return the newly created entity or null if the type does not match a valid input
+	 */
 	private Entity addObject(World world, String type){
 		switch(type){
 		case "Walls":
