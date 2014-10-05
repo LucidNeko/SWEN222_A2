@@ -1,5 +1,6 @@
 package engine.util;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -75,6 +76,14 @@ public class Resources {
 		//Otherwise load in and put in textureMap.
 		try {
 			BufferedImage image = getImage(fname);
+			
+			//@ensures image is of the write underlying format.
+			BufferedImage buffy = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			Graphics2D g = buffy.createGraphics();
+			g.drawImage(image, null, 0, 0);
+			g.dispose();
+			image = buffy;
+			
 			DataBuffer imageBuffer = image.getRaster().getDataBuffer();
 			//DataBuffer must be of type DataBufferByte
 			byte[] pixels = ((DataBufferByte)imageBuffer).getData();
