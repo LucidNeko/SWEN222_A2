@@ -31,7 +31,6 @@ public class Attackable extends Behaviour{
 		Entity player = getOwner().getComponent(ProximitySensor.class).getTarget();
 		Health playerHealth = player.getComponent(Health.class);
 		Health enemyHealth = getOwner().getComponent(Health.class);
-		
 		//checks if player is dead or alive
 		if(!enemyHealth.decreaseHealth(playerHealth.getDamageAmt())){
 			world.destroyEntity(getOwner().getID());
@@ -42,10 +41,12 @@ public class Attackable extends Behaviour{
 	public void update(float delta) {
 		requires(Health.class);
 		requires(ProximitySensor.class);
+		
+		//Attack entity if it is range and if 'C' has been pressed
 		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
 			if(Keyboard.isKeyDownOnce(KeyEvent.VK_C)){
 				attack();
-				System.out.println("C has been pressed!");
+				setChanged();
 			}
 		}
 		
