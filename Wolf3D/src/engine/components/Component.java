@@ -15,7 +15,7 @@ public class Component extends Observable {
 	protected static final Logger log = LogManager.getLogger();
 	
 	/** The Entity that this component is attached to - null if not attached to anything */
-	private Entity owner;
+	private transient Entity owner;
 	
 	/**
 	 * Sets the Entity that contains this component<br>
