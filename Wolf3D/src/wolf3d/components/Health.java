@@ -1,19 +1,17 @@
 package wolf3d.components;
 
-import java.awt.event.KeyEvent;
-
-import engine.components.Behaviour;
-import engine.components.Sensor;
-import engine.input.Keyboard;
+import engine.components.Component;
 
 /**
  * This class is responsible for maintaining the heath of the player
  * @author Sameer Magan
  *
  */
-public class Health extends Sensor{
+public class Health extends Component{
 
 	private int health = 100;
+	
+	private int damageAmt = 10;
 
 	public int getHealth() {
 		return health;
@@ -29,19 +27,6 @@ public class Health extends Sensor{
 
 	public void setDamageAmt(int damageAmt) {
 		this.damageAmt = damageAmt;
-	}
-
-	private int damageAmt = 10;
-
-	@Override
-	public boolean isTriggered() {
-		if (Keyboard.isKeyDown(KeyEvent.VK_X)) {
-			if (health >= 0) {
-				health -= damageAmt;
-				System.out.println(health);
-			}
-		}
-		return false;
 	}
 	
 	/**
