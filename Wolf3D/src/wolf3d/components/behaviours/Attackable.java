@@ -32,7 +32,7 @@ public class Attackable extends Behaviour{
 		requires(Health.class);
 		requires(ProximitySensor.class);
 		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
-			if(Keyboard.isKeyDownOnce(KeyEvent.VK_C)){
+			if(Keyboard.isKeyDownOnce(KeyEvent.VK_X)){
 				attack();
 				System.out.println("C has been pressed!");
 			}
