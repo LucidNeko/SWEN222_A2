@@ -91,12 +91,13 @@ public class Resources {
 			convertABGRtoRGBAinPlace(pixels);
 			if(flip) yFlipInPlace(pixels, image.getWidth(), image.getHeight());
 			textureMap.put(fname, new Texture(image.getWidth(), image.getHeight(), pixels)); //put in the map.
-			return textureMap.get(fname);
 		} catch(Exception e) {
 			log.error("Failed to load texture: " + e.getMessage());
 			e.printStackTrace();
 			throw new Error(e);
 		}
+		
+		return textureMap.get(fname);
 	}
 
 	/**
