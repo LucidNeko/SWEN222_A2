@@ -3,6 +3,8 @@ package wolf3d;
 import static javax.media.opengl.GL2.*;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -11,11 +13,14 @@ import javax.media.opengl.glu.GLU;
 
 import engine.components.Camera;
 import engine.components.GL2Renderer;
+import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
 import engine.display.GameCanvas;
 import engine.display.View;
+import engine.texturing.Material;
+import engine.texturing.Texture;
 
 /**
  * The WorldView is a View of a World. Renders all the Renderer components on every Entity in the world.
@@ -122,6 +127,7 @@ public class WorldView extends GameCanvas implements View{
 	}
 	
 	private void renderEntities(GL2 gl, Collection<Entity> entities) {
+		List<Entity> transparent = new LinkedList<Entity>();
 		for(Entity entity : entities) {
 			Transform t = entity.getTransform();
 			if(t == null) { 
@@ -129,12 +135,40 @@ public class WorldView extends GameCanvas implements View{
 				continue; //next entity.
 			}
 			
+			//skip entities with transparancy.
+			MeshRenderer mr = entity.getComponent(MeshRenderer.class);
+			if(mr != null) {
+				Material m = mr.getMaterial();
+				if(m != null) {
+					Texture tex = m.getTexture();
+					if(tex != null) {
+						if(tex.hasTransparency()) {
+							transparent.add(entity);
+							continue;
+						}
+					}
+				}
+			}
+			
+			//if not skipped render.
 			gl.glPushMatrix();
 				t.applyTransform(gl);
 				for(GL2Renderer renderer : entity.getComponents(GL2Renderer.class)) {
 					renderer.render(gl);
 				}
 //				renderEntities(gl, entity.getChildren()); //recurse through children. Compounding transforms.
+			gl.glPopMatrix();
+		}
+		
+		//now we go back and render the transparant ones last so they overlap properly.
+		for(Entity e : transparent) {
+			Transform t = e.getTransform();
+			
+			gl.glPushMatrix();
+				t.applyTransform(gl);
+				for(GL2Renderer renderer : e.getComponents(GL2Renderer.class)) {
+					renderer.render(gl);
+				}
 			gl.glPopMatrix();
 		}
 	}
