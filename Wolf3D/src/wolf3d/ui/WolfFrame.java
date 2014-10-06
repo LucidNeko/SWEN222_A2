@@ -87,4 +87,8 @@ public class WolfFrame extends JFrame implements MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
+	public static void main(String[] args) {
+		new WolfFrame();
+	}
 }

@@ -64,14 +64,14 @@ public class Wolf3D extends JFrame {
 		this.pack();
 		this.setVisible(true);
 
-		//the game. This is a thread. You need to start it.
-		GameDemo game = new GameDemo(world);
-		game.setView(view); // give it the view so it can call it's display method appropriately.
-		game.start();
-	}
-	
-	public World getWorld() {
-		return world;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				//the game. This is a thread. You need to start it.
+				GameDemo game = new GameDemo(world);
+				game.setView(view); // give it the view so it can call it's display method appropriately.
+				game.start();
+			}
+		});
 	}
 
 	/** Exits after confirming with the user if they really want to exit */
@@ -89,7 +89,8 @@ public class Wolf3D extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				/*Starts the GUI frame*/
-				WolfFrame wf = new WolfFrame();
+//				WolfFrame wf = new WolfFrame();
+				new Wolf3D();
 			}
 		});
 	}
