@@ -76,6 +76,8 @@ public class GameDemo extends GameLoop {
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
 		parser.passTextures();
+		parser.passfloorFileToArray();
+		parser.createFloor(world);
 		parser.createWalls(world);
 		parser.createFloor(world);
 		
@@ -185,7 +187,7 @@ public class GameDemo extends GameLoop {
 		enemy.getTransform().yaw(Mathf.degToRad(180));
 
 		Texture wallTex = Resources.getTexture("debug_wall.png", true);
-		Texture floorTex = Resources.getTexture("debug_floor.png", true);
+		Texture floorTex = Resources.getTexture("floorTextures/0.png", true);
 		Texture doorTex = Resources.getTexture("1.png", true);
 		Mesh mesh = Resources.getMesh("wall.obj");
 
