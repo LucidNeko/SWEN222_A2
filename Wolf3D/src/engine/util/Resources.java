@@ -32,6 +32,7 @@ public class Resources {
 	
 	//Maps to reuse objects.
 	private static Map<String, Texture> textureMap = new HashMap<String, Texture>();
+	private static Map<String, Mesh> meshMap = new HashMap<String, Mesh>();
 
 	/**
 	 * Gets an InputStream over the file at fname.
@@ -104,7 +105,14 @@ public class Resources {
 	 * @return The Mesh.
 	 */
 	public static Mesh getMesh(String fnameOBJ) {
-		return new OBJBuilder(getInputStream(fnameOBJ)).getMesh();
+		//if the mesh has already been loaded.
+		if(meshMap.containsKey(fnameOBJ)) {
+			return meshMap.get(fnameOBJ);
+		}
+		//otherwise add to the map
+		meshMap.put(fnameOBJ, new OBJBuilder(getInputStream(fnameOBJ)).getMesh());
+		
+		return meshMap.get(fnameOBJ);
 	}
 
 	/**
