@@ -126,7 +126,9 @@ public class EntityFactory {
 	}
 	
 	public static Entity createThirdPersonTrackingCamera(World world, final Entity target) {
-		Entity camera = world.createEntity("Camera");
+		final Entity camera = world.createEntity("Camera");
+		final float near = 0.8f; //0.9f;
+		final float far = 1f; //1f;
 		camera.attachComponent(new Behaviour() {
 
 			@Override
@@ -136,8 +138,8 @@ public class EntityFactory {
 				
 				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
 				float length = cam.getPosition().sub(at.getPosition()).length();
-				if(length > 1f) cam.walk(7*(1-(1/length))*delta);
-				else if(length < 0.8f) cam.walk(-2*delta);
+				if(length > far) cam.walk(7*(1-(1/length))*delta);
+				else if(length < near) cam.walk(-2*delta);
 				Vec3 atLook = at.getLook();
 				atLook.setY(0);
 				atLook.normalize();
@@ -172,6 +174,19 @@ public class EntityFactory {
 
 		});
 		camera.getTransform().setPosition(target.getTransform().getPosition().add(target.getTransform().getLook().mul(25))); //start far away so it zooms in
+		
+		target.attachComponent(new Behaviour() {
+
+			@Override
+			public void update(float delta) {
+				float dx = Mouse.getDX(); //calls to getDX/getDY wipe out the value.. TODO logical fix?
+//				float dy = Mouse.getDY();
+//				target.getTransform().pitch(Mathf.degToRad(dy*10*delta));
+				target.getTransform().rotateY(Mathf.degToRad(dx*10*delta)); 
+			}
+			
+		});
+		
 		return camera;
 	}
 	

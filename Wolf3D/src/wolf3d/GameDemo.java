@@ -79,9 +79,7 @@ public class GameDemo extends GameLoop {
 		parser.createWalls(world);
 		parser.createFloor(world);
 		
-		Entity skybox = world.createEntity("skybox");
-		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox_large.obj"));
-		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox2.jpg", true)));
+		
 		
 //ghfix for sameer
 
@@ -125,6 +123,19 @@ public class GameDemo extends GameLoop {
 
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
+		
+		Entity skybox = world.createEntity("skybox");
+		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));
+		skybox.attachComponent(new Behaviour() {
+			//moves the box around with player so they can't come close to the edges.
+			@Override
+			public void update(float delta) {
+				Vec3 pos = player.getTransform().getPosition();
+				this.getOwner().getTransform().setPosition(pos);
+			}
+			
+		});
 
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
 		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
