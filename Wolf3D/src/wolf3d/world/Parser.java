@@ -65,7 +65,7 @@ public class Parser {
 	}
 	
 	/**
-	 * Parses doors file into a 2d array of Cells
+	 * Parses floors file into a 2d array of Cells
 	 */
 	public void passfloorFileToArray() {
 		floor = passFileToArray(floorFilePath);

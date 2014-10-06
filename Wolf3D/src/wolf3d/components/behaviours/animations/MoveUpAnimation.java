@@ -1,9 +1,13 @@
 package wolf3d.components.behaviours.animations;
 
+import wolf3d.components.behaviours.WASDCollisions;
+import wolf3d.components.sensors.ProximitySensor;
+import wolf3d.world.Cell;
 import engine.common.Mathf;
 import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Transform;
+import engine.core.Entity;
 
 public class MoveUpAnimation extends Behaviour {
 	
@@ -25,6 +29,19 @@ public class MoveUpAnimation extends Behaviour {
 		}
 		
 		if(isFinished()) {
+			//remove collision for this door
+			Entity player = getOwner().getComponent(ProximitySensor.class).getTarget();
+			Vec3 pos = t.getPosition();
+			int wallSize = player.getComponent(WASDCollisions.class).getWallsize();
+			int col = (int) ((pos.getX() / wallSize)-1);
+			int row = (int) ((pos.getZ() / wallSize)-1);
+			int door = player.getComponent(WASDCollisions.class).getDoor(row, col);
+			//zero out door at you position
+			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
+			System.out.println(pos);
+			System.out.println(row+" ,"+col);
+			System.out.println(door);
+			
 			getOwner().detachComponent(this);
 			return;
 		}

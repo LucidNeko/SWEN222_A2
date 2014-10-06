@@ -106,31 +106,47 @@ public class WASDCollisions extends Behaviour {
 		} else {
 			// we know were in a different cell from where we started.
 			if (col > oldCol) {
-				if (oldCell.hasEast()) {
+				if (oldCell.hasEast() ||doorCell.hasEast()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (col < oldCol) {
-				if (oldCell.hasWest()) {
+				if (oldCell.hasWest() || doorCell.hasWest()) {
 					// move back
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (row > oldRow) {
-				if (oldCell.hasSouth()) {
+				if (oldCell.hasSouth() || doorCell.hasSouth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 			if (row < oldRow) {
-				if (oldCell.hasNorth()) {
+				if (oldCell.hasNorth() || doorCell.hasNorth()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
 			}
 		}
+	}
+	
+	public int getDoor(int row, int col){
+		return doors[row][col].getWalls();
+	}
+	
+	public void zeroDoor(int row, int col){
+		doors[row][col].setWalls(0);
+	}
+
+
+	/**
+	 * @return the wallsize
+	 */
+	public static int getWallsize() {
+		return wallSize;
 	}
 
 	@Override
