@@ -127,7 +127,7 @@ public class EntityFactory {
 	
 	public static Entity createThirdPersonTrackingCamera(World world, final Entity target) {
 		final Entity camera = world.createEntity("Camera");
-		final float near = 0.8f; //0.9f;
+		final float near = 0.8f; //0.8f;
 		final float far = 1f; //1f;
 		camera.attachComponent(new Behaviour() {
 
@@ -136,7 +136,12 @@ public class EntityFactory {
 				Transform at = target.getTransform();
 				Transform cam = getOwner().getTransform();
 				
-				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
+				float dy = Mouse.getDY();
+				cam.fly(dy*0.5f*delta);
+				cam.lookAt(at);
+				
+//				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
+				
 				float length = cam.getPosition().sub(at.getPosition()).length();
 				if(length > far) cam.walk(7*(1-(1/length))*delta);
 				else if(length < near) cam.walk(-2*delta);

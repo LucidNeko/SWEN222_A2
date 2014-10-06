@@ -118,8 +118,8 @@ public class GameDemo extends GameLoop {
 		parser.createDoors(world, player);
 
 
-//		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
+//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
 
 		EntityFactory.createSun(world);
 
