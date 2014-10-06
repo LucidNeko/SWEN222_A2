@@ -135,7 +135,7 @@ public class WorldView extends GameCanvas implements View{
 				continue; //next entity.
 			}
 			
-			//skip entities with transparancy.
+			//skip entities with transparency.
 			MeshRenderer mr = entity.getComponent(MeshRenderer.class);
 			if(mr != null) {
 				Material m = mr.getMaterial();
@@ -160,7 +160,7 @@ public class WorldView extends GameCanvas implements View{
 			gl.glPopMatrix();
 		}
 		
-		//now we go back and render the transparant ones last so they overlap properly.
+		//now we go back and render the transparent ones last so they overlap properly.
 		for(Entity e : transparent) {
 			Transform t = e.getTransform();
 			
