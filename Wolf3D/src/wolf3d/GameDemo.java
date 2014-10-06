@@ -80,36 +80,7 @@ public class GameDemo extends GameLoop {
 		parser.createFloor(world);
 		parser.createWalls(world);
 		parser.createFloor(world);
-		
-		
-		
-//ghfix for sameer
 
-//		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
-//		Texture linkTex = Resources.getTexture("link/young_link.png", true);
-//
-//		//Create player
-//		player = world.createEntity("Player");
-//		player.attachComponent(Camera.class);
-////		player.attachComponent(PyramidRenderer.class);
-//		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
-//		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
-//		player.attachComponent(parser.getWallCollisionComponent());
-////		player.attachComponent(WASDWalking.class);
-//		player.attachComponent(MouseLookController.class);
-//		player.attachComponent(CameraScrollBackController.class);
-//		player.attachComponent(Health.class);
-//		//Testing pickup behavior
-//		player.attachComponent(Inventory.class);
-//		player.attachComponent(new Renderer() {
-//
-//			@Override
-//			public void render(GL2 gl) {
-//				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
-//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-//			}
-//
-//		});
 
 		//TODO: Entity Factory?
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
