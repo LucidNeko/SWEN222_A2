@@ -1,6 +1,8 @@
 package wolf3d.world;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import wolf3d.components.behaviours.AddAnimation;
@@ -31,7 +33,10 @@ public class Parser {
 
 	private Cell[][] walls;
 	private Cell[][] doors;
-	
+	private int[][] floor;
+
+	private Map<Integer, Cell[][]> textures = new HashMap<Integer, Cell[][]>();
+
 	private Entity player;
 
 	private int width, height;
@@ -54,7 +59,7 @@ public class Parser {
 	public void passWallFileToArray() {
 		walls = passFileToArray(wallFilePath);
 	}
-	
+
 	/**
 	 * Parses doors file into a 2d array of Cells
 	 */
@@ -183,7 +188,7 @@ public class Parser {
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds an entity of the given type to the world
 	 * @param world the world for the entity to be added to
@@ -202,7 +207,7 @@ public class Parser {
 
 	/**
 	 * Adds a Wall to the given world with a Texture, Mesh, and Material
-	 * 
+	 *
 	 * @param world
 	 *            the world for the wall to be added to
 	 * @return the newly created wall
@@ -221,7 +226,7 @@ public class Parser {
 
 	/**
 	 * Adds a Door to the given world with a Texture, Mesh, and Material
-	 * 
+	 *
 	 * @param world
 	 *            the world for the door to be added to
 	 * @return the newly created door
