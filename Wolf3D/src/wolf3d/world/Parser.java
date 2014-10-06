@@ -29,11 +29,9 @@ import engine.util.Resources;
  */
 public class Parser {
 
-	private String wallFilePath, doorFilePath, textureFilePath;
+	private String wallFilePath, doorFilePath, textureFilePath, floorFilePath, floorTexturePath;
 
-	private Cell[][] walls;
-	private Cell[][] doors;
-	private int[][] floor;
+	private Cell[][] walls, doors, floor;
 
 	private Map<Integer, Cell[][]> textures = new HashMap<Integer, Cell[][]>();
 
@@ -48,6 +46,8 @@ public class Parser {
 		this.wallFilePath = wallFilePath;
 		this.doorFilePath = doorFilePath;
 		this.textureFilePath = "walls2/";
+		this.floorFilePath = "floors.txt";
+		this.floorTexturePath = "floorTextures/";
 	}
 
 	/**
@@ -62,6 +62,13 @@ public class Parser {
 	 */
 	public void passDoorFileToArray() {
 		doors = passFileToArray(doorFilePath);
+	}
+	
+	/**
+	 * Parses doors file into a 2d array of Cells
+	 */
+	public void passfloorFileToArray() {
+		floor = passFileToArray(floorFilePath);
 	}
 
 	/**
@@ -85,6 +92,9 @@ public class Parser {
 		create3DObjects(world, doors, "Doors");
 	}
 
+	/**
+	 * Passes the textures into the map of textures
+	 */
 	public void passTextures() {
 		for (int i = 0; i < 2; i++) {
 			String filepath = "textureFiles/" + Integer.toString(i) + ".txt";
@@ -130,19 +140,32 @@ public class Parser {
 	 * @param world
 	 *            the world that the floor will be added to
 	 */
-	public void createFloor(World world) {
-		Texture floorTex = Resources.getTexture("debug_floor.png", true);
-		Mesh mesh = Resources.getMesh("wall.obj");
-		Entity floor = world.createEntity("floor");
-		floor.attachComponent(MeshFilter.class).setMesh(mesh);
-		floor.attachComponent(MeshRenderer.class).setMaterial(
-				new Material(floorTex));
-		// TODO: Need to make a Mesh creator that can make a basic Mesh from
-		// (width, Height)
-		// floor.attachComponent(new TextureRenderer(floorTexture, -width,
-		// -height, width, height, width, height));
-		floor.getTransform().translate(width, bottomY, height);
-		floor.getTransform().pitch(Mathf.degToRad(90));
+//	public void createFloor(World world) {
+//		Texture floorTex = Resources.getTexture("debug_floor.png", true);
+//		Mesh mesh = Resources.getMesh("wall.obj");
+//		Entity floor = world.createEntity("floor");
+//		floor.attachComponent(MeshFilter.class).setMesh(mesh);
+//		floor.attachComponent(MeshRenderer.class).setMaterial(
+//				new Material(floorTex));
+//		floor.getTransform().translate(width, bottomY, height);
+//		floor.getTransform().pitch(Mathf.degToRad(90));
+//	}
+	
+	public void createFloor(World world){
+		String type = "Floor";
+		float width = 2;
+		float height = 2;
+		float halfWidth = width/2;
+		float halfHeight = width/2;
+		for(row = 0; row < floor.length; row++){
+			for(col = 0; col < floor[row].length; col++){
+				float x = col * width + halfWidth;
+				float z = row * height + halfHeight;
+				Entity floor = addObject(world, type, "");
+				floor.getTransform().translate(x, bottomY, z);
+				floor.getTransform().pitch(Mathf.degToRad(90));
+			}
+		}
 	}
 
 	/**
@@ -213,8 +236,21 @@ public class Parser {
 			return addWall(world, dir);
 		case "Doors":
 			return addDoor(world);
+		case "Floor":
+			return addFloor(world);
 		}
 		return null;
+	}
+	
+	private Entity addFloor(World world){
+		Texture floorTex = getFloorTexture();
+		Mesh mesh = Resources.getMesh("wall.obj");
+		Entity floor = world.createEntity("floor");
+		
+		Material material = new Material(floorTex, Color.WHITE);
+		floor.attachComponent(MeshFilter.class).setMesh(mesh);
+		floor.attachComponent(MeshRenderer.class).setMaterial(material);
+		return floor;
 	}
 
 	/**
@@ -260,6 +296,11 @@ public class Parser {
 		door.attachComponent(ProximitySensor.class).setTarget(player);
 		door.attachComponent(AddAnimation.class);
 		return door;
+	}
+	
+	private Texture getFloorTexture(){
+		String fname = floorTexturePath +Integer.toString(floor[row][col].getWalls()) + ".png";
+		return Resources.getTexture(fname, true);
 	}
 
 	/**
