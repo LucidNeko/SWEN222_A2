@@ -76,6 +76,11 @@ public class GameDemo extends GameLoop {
 		parser.passDoorFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
+		
+		Entity skybox = world.createEntity("skybox");
+		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox_large.obj"));
+		skybox.attachComponent(MeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox2.jpg", true)));
+		
 //ghfix for sameer
 
 //		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
@@ -111,8 +116,8 @@ public class GameDemo extends GameLoop {
 		parser.createDoors(world, player);
 
 
-		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-		//EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+//		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
+		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
 
 		EntityFactory.createSun(world);
 

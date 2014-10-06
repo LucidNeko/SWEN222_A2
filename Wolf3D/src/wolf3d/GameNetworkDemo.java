@@ -19,7 +19,6 @@ import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.DropItem;
-import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDWalking;

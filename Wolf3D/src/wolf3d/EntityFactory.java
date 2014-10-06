@@ -15,7 +15,6 @@ import wolf3d.components.Inventory;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.DropItem;
-import wolf3d.components.behaviours.MouseLookController;
 import wolf3d.components.renderers.PyramidRenderer;
 import engine.common.Mathf;
 import engine.common.Vec3;
@@ -27,6 +26,7 @@ import engine.components.GL2Renderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
+import engine.input.Mouse;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
 import engine.texturing.Texture;
@@ -64,7 +64,6 @@ public class EntityFactory {
 		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 //		player.attachComponent(parser.getWallCollisionComponent());
 //		player.attachComponent(WASDWalking.class);
-		player.attachComponent(MouseLookController.class);
 		player.attachComponent(CameraScrollBackController.class);
 		player.attachComponent(Health.class);
 		player.attachComponent(Inventory.class);
@@ -82,8 +81,15 @@ public class EntityFactory {
 				Transform cam = getOwner().getTransform();
 				
 				cam.setPosition(at.getPosition());
-				cam.lookInDirection(at.getLook());
+//				cam.lookInDirection(at.getLook());
 				cam.walk(0.25f);
+				
+				float dx = Mouse.getDX(); //calls to getDX/getDY wipe out the value.. TODO logical fix?
+				float dy = Mouse.getDY();
+				cam.pitch(Mathf.degToRad(dy*10*delta));
+				cam.rotateY(Mathf.degToRad(dx*10*delta)); 
+				
+				at.lookInDirection(cam.getLook());
 
 //				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
 //				float length = cam.getPosition().sub(at.getPosition()).length();
