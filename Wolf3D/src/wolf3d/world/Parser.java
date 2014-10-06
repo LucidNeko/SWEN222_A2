@@ -29,7 +29,7 @@ import engine.util.Resources;
  */
 public class Parser {
 
-	private String wallFilePath, doorFilePath;
+	private String wallFilePath, doorFilePath, textureFilePath;
 
 	private Cell[][] walls;
 	private Cell[][] doors;
@@ -41,16 +41,13 @@ public class Parser {
 
 	private int width, height;
 
-	private int leftX = -1;
-	private int rightX = 1;
+	private int row, col;
 	private int bottomY = -1;
-	private int topY = 1;
-	private int tileX = 1;
-	private int tileY = 1;
 
 	public Parser(String wallFilePath, String doorFilePath) {
 		this.wallFilePath = wallFilePath;
 		this.doorFilePath = doorFilePath;
+		this.textureFilePath = "walls2/";
 	}
 
 	/**
@@ -69,7 +66,9 @@ public class Parser {
 
 	/**
 	 * creates all walls in the world
-	 * @param world the world in which the walls are added to
+	 *
+	 * @param world
+	 *            the world in which the walls are added to
 	 */
 	public void createWalls(World world) {
 		create3DObjects(world, walls, "Walls");
@@ -77,11 +76,20 @@ public class Parser {
 
 	/**
 	 * Creates all doors in the world
-	 * @param world the world in which the doors are added to
+	 *
+	 * @param world
+	 *            the world in which the doors are added to
 	 */
 	public void createDoors(World world, Entity player) {
 		this.player = player;
 		create3DObjects(world, doors, "Doors");
+	}
+
+	public void passTextures() {
+		for (int i = 0; i < 2; i++) {
+			String filepath = "textureFiles/" + Integer.toString(i) + ".txt";
+			textures.put(i, passFileToArray(filepath));
+		}
 	}
 
 	/**
@@ -150,8 +158,8 @@ public class Parser {
 		// V
 		float width = 2;
 		float height = 2;
-		for (int row = 0; row < processArray.length; row++) {
-			for (int col = 0; col < processArray[row].length; col++) {
+		for (row = 0; row < processArray.length; row++) {
+			for (col = 0; col < processArray[row].length; col++) {
 				float x = col * width;
 				float z = row * height;
 				float halfWidth = width / 2;
@@ -160,27 +168,27 @@ public class Parser {
 				z += height / 2;
 				if (processArray[row][col].hasNorth()) {
 					z -= halfHeight;
-					Entity object = addObject(world, type);
+					Entity object = addObject(world, type, "North");
 					object.getTransform().translate(x, 0, z);
 					z += halfHeight;
 				}
 				if (processArray[row][col].hasEast()) {
 					x += halfWidth;
-					Entity object = addObject(world, type);
+					Entity object = addObject(world, type, "East");
 					object.getTransform().translate(x, 0, z);
 					object.getTransform().rotateY(Mathf.degToRad(90));
 					x -= halfWidth;
 				}
 				if (processArray[row][col].hasSouth()) {
 					z += halfHeight;
-					Entity object = addObject(world, type);
+					Entity object = addObject(world, type, "South");
 					object.getTransform().translate(x, 0, z);
 					object.getTransform().rotateY(Mathf.degToRad(180));
 					z -= halfHeight;
 				}
 				if (processArray[row][col].hasWest()) {
 					x -= halfWidth;
-					Entity object = addObject(world, type);
+					Entity object = addObject(world, type, "West");
 					object.getTransform().translate(x, 0, z);
 					object.getTransform().rotateY(Mathf.degToRad(-90));
 					x += halfWidth;
@@ -191,14 +199,18 @@ public class Parser {
 
 	/**
 	 * Adds an entity of the given type to the world
-	 * @param world the world for the entity to be added to
-	 * @param type the type of entity that what gets created
-	 * @return the newly created entity or null if the type does not match a valid input
+	 *
+	 * @param world
+	 *            the world for the entity to be added to
+	 * @param type
+	 *            the type of entity that what gets created
+	 * @return the newly created entity or null if the type does not match a
+	 *         valid input
 	 */
-	private Entity addObject(World world, String type){
-		switch(type){
+	private Entity addObject(World world, String type, String dir) {
+		switch (type) {
 		case "Walls":
-			return addWall(world);
+			return addWall(world, dir);
 		case "Doors":
 			return addDoor(world);
 		}
@@ -212,9 +224,14 @@ public class Parser {
 	 *            the world for the wall to be added to
 	 * @return the newly created wall
 	 */
-	private Entity addWall(World world) {
+	private Entity addWall(World world, String dir) {
 		// the texture for the wall
-		Texture wallTex = Resources.getTexture("debug_wall.png", true);
+		Texture wallTex = getTexture(dir);
+		//setting default if there is no texture specified in map
+		if(wallTex == null){
+			wallTex = Resources.getTexture("debug_wall.png", true);
+		}
+
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(wallTex, Color.WHITE);
 
@@ -243,6 +260,41 @@ public class Parser {
 		door.attachComponent(ProximitySensor.class).setTarget(player);
 		door.attachComponent(AddAnimation.class);
 		return door;
+	}
+
+	/**
+	 * Gets the texture of the current row and col from the textures map
+	 * @param dir the direction in which wall/door we are looking for
+	 * @return the texture associated with the wall/door or null if it can not find it
+	 */
+	private Texture getTexture(String dir) {
+		for (Integer i : textures.keySet()) {
+			if (dir.equals("North")) {
+				if (textures.get(i)[row][col].hasNorth()) {
+					String fname = textureFilePath +Integer.toString(i) + ".png";
+					return Resources.getTexture(fname, true);
+				}
+			}
+			if (dir.equals("East")) {
+				if (textures.get(i)[row][col].hasEast()) {
+					String fname = textureFilePath+Integer.toString(i) + ".png";
+					return Resources.getTexture(fname, true);
+				}
+			}
+			if (dir.equals("South")) {
+				if (textures.get(i)[row][col].hasSouth()) {
+					String fname = textureFilePath+Integer.toString(i) + ".png";
+					return Resources.getTexture(fname, true);
+				}
+			}
+			if (dir.equals("West")) {
+				if (textures.get(i)[row][col].hasWest()) {
+					String fname = textureFilePath+Integer.toString(i) + ".png";
+					return Resources.getTexture(fname, true);
+				}
+			}
+		}
+		return null;
 	}
 
 	/**
