@@ -28,7 +28,7 @@ public class WorldView extends GameCanvas implements View{
 	//gluPerspective params
 	private static final float FIELD_OF_VIEW = 60;
 	private static final float ZNEAR = 0.1f;
-	private static final float ZFAR = 100;
+	private static final float ZFAR = 200;
 
 	private World world;
 	private Camera camera;
