@@ -140,17 +140,6 @@ public class Parser {
 	 * @param world
 	 *            the world that the floor will be added to
 	 */
-//	public void createFloor(World world) {
-//		Texture floorTex = Resources.getTexture("debug_floor.png", true);
-//		Mesh mesh = Resources.getMesh("wall.obj");
-//		Entity floor = world.createEntity("floor");
-//		floor.attachComponent(MeshFilter.class).setMesh(mesh);
-//		floor.attachComponent(MeshRenderer.class).setMaterial(
-//				new Material(floorTex));
-//		floor.getTransform().translate(width, bottomY, height);
-//		floor.getTransform().pitch(Mathf.degToRad(90));
-//	}
-	
 	public void createFloor(World world){
 		String type = "Floor";
 		float width = 2;
@@ -242,6 +231,13 @@ public class Parser {
 		return null;
 	}
 	
+	/**
+	 * Adds a floor panel to the given world with a Texture, Mesh, and Material
+	 *
+	 * @param world
+	 *            the world for the floor to be added to
+	 * @return the newly created floor panel
+	 */
 	private Entity addFloor(World world){
 		Texture floorTex = getFloorTexture();
 		Mesh mesh = Resources.getMesh("wall.obj");
@@ -298,6 +294,10 @@ public class Parser {
 		return door;
 	}
 	
+	/**
+	 * Gets the corresponding floor texture for the current position
+	 * @return the corresponding floor texture
+	 */
 	private Texture getFloorTexture(){
 		String fname = floorTexturePath +Integer.toString(floor[row][col].getWalls()) + ".png";
 		return Resources.getTexture(fname, true);
