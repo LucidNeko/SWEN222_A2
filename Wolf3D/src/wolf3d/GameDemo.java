@@ -74,6 +74,7 @@ public class GameDemo extends GameLoop {
 		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
+		parser.passTextures();
 		parser.createWalls(world);
 		parser.createFloor(world);
 //ghfix for sameer
