@@ -33,4 +33,10 @@ public class ParserTests {
 		parser.passWallFileToArray();
 		parser.createWalls(world);
 	}
+	
+	@Test
+	public void test_createFloor(){
+		parser.passfloorFileToArray();
+		parser.createFloor(world);
+	}
 }
