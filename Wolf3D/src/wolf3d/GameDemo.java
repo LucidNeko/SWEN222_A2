@@ -109,10 +109,11 @@ public class GameDemo extends GameLoop {
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
 		parser.createDoors(world, player);
-		
+
 
 		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-		
+		//EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+
 		EntityFactory.createSun(world);
 
 //		camera = player.getComponent(Camera.class);
@@ -137,6 +138,7 @@ public class GameDemo extends GameLoop {
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
+		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
@@ -169,7 +171,7 @@ public class GameDemo extends GameLoop {
 		Texture doorTex = Resources.getTexture("1.png", true);
 		Mesh mesh = Resources.getMesh("wall.obj");
 
-		
+
 
 		Entity entity;
 		for(int i = 0; i < 20; i+=2) {
