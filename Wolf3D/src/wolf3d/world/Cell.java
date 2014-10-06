@@ -60,4 +60,18 @@ public class Cell {
 		return false;
 	}
 
+	/**
+	 * @return the walls
+	 */
+	public int getWalls() {
+		return walls;
+	}
+
+	/**
+	 * @param walls the walls to set
+	 */
+	public void setWalls(int walls) {
+		this.walls = walls;
+	}
+
 }
