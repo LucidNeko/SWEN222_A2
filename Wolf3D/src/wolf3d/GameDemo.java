@@ -14,6 +14,7 @@ import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
+import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.world.Parser;
@@ -79,7 +80,7 @@ public class GameDemo extends GameLoop {
 		
 		Entity skybox = world.createEntity("skybox");
 		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox_large.obj"));
-		skybox.attachComponent(MeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox2.jpg", true)));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox2.jpg", true)));
 		
 //ghfix for sameer
 
