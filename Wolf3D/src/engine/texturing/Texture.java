@@ -23,6 +23,8 @@ public class Texture {
 	private int height;
 
 	private byte[] pixels;
+	
+	private boolean hasTransparency = false;
 
 	/**
 	 * Create a new Texture with the width and height and pixels containing the image data.
@@ -34,6 +36,16 @@ public class Texture {
 		this.width = width;
 		this.height = height;
 		this.pixels = pixels;
+		for(int i = 3; i < pixels.length; i+=4) {
+			if(pixels[i] == 0) {
+				hasTransparency = true;
+				break;
+			}
+		}
+	}
+	
+	public boolean hasTransparency() {
+		return hasTransparency;
 	}
 
 	/**
