@@ -10,7 +10,7 @@ import engine.components.Component;
 import engine.input.Keyboard;
 
 public class AddAnimation extends Behaviour {
-	//default animation to attach
+	// default animation to attach
 	Class<? extends Component> comToAttach = MoveUpAnimation.class;
 
 	@Override
@@ -18,16 +18,13 @@ public class AddAnimation extends Behaviour {
 		requires(ProximitySensor.class);
 
 		if (getOwner().getComponent(ProximitySensor.class).isTriggered()) {
-			if (Keyboard.isKeyDownOnce(KeyEvent.VK_SPACE)) {
-				getOwner().attachComponent(comToAttach);
-				getOwner().detachComponent(this);
-			}
+			getOwner().attachComponent(comToAttach);
+			getOwner().detachComponent(this);
 		}
 	}
 
-	public void setAttachment(Class<? extends Component> comToAttach){
+	public void setAttachment(Class<? extends Component> comToAttach) {
 		this.comToAttach = comToAttach;
 	}
-
 
 }
