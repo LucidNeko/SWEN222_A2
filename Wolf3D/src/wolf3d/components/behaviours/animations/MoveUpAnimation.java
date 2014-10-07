@@ -2,6 +2,7 @@ package wolf3d.components.behaviours.animations;
 
 import java.awt.event.KeyEvent;
 
+import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.world.Cell;
@@ -21,23 +22,31 @@ public class MoveUpAnimation extends Behaviour {
 	private Vec3 endPos = null;
 
 	private boolean start;
+	
+	private Translate translate;
 
 	@Override
 	public void update(float delta) {
 		requires(Transform.class);
-		if(Keyboard.isKeyDownOnce(KeyEvent.VK_SPACE)){
+		if (Keyboard.isKeyDownOnce(KeyEvent.VK_SPACE)) {
 			start = true;
 		}
 
 		if (start) {
-			Transform t = getOwner().getTransform();
 
+			Transform t = getOwner().getTransform();
 			if (startPos == null) {
 				startPos = t.getPosition();
 				endPos = startPos.add(0, distance, 0);
+				translate = new Translate(startPos, endPos, speed);
+				getOwner().attachComponent(translate);
+				
 			}
-
-			if (isFinished()) {
+			
+			
+			if(!getOwner().contains(translate)){
+				log.trace("finished");
+//			if (isFinished()) {
 				// remove collision for this door
 				Entity player = getOwner().getComponent(ProximitySensor.class)
 						.getTarget();
@@ -55,7 +64,6 @@ public class MoveUpAnimation extends Behaviour {
 				getOwner().detachComponent(this);
 				return;
 			}
-			t.translate(0, speed * delta, 0);
 		}
 	}
 

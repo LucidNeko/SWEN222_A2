@@ -45,7 +45,7 @@ public class Parser {
 	public Parser(String wallFilePath, String doorFilePath) {
 		this.wallFilePath = wallFilePath;
 		this.doorFilePath = doorFilePath;
-		this.textureFilePath = "walls2/";
+		this.textureFilePath = "wallTextures/";
 		this.floorFilePath = "floors.txt";
 		this.floorTexturePath = "floorTextures/";
 	}
@@ -63,7 +63,7 @@ public class Parser {
 	public void passDoorFileToArray() {
 		doors = passFileToArray(doorFilePath);
 	}
-	
+
 	/**
 	 * Parses floors file into a 2d array of Cells
 	 */
@@ -96,7 +96,7 @@ public class Parser {
 	 * Passes the textures into the map of textures
 	 */
 	public void passTextures() {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			String filepath = "textureFiles/" + Integer.toString(i) + ".txt";
 			textures.put(i, passFileToArray(filepath));
 		}
@@ -224,13 +224,13 @@ public class Parser {
 		case "Walls":
 			return addWall(world, dir);
 		case "Doors":
-			return addDoor(world);
+			return addDoor(world, dir);
 		case "Floor":
 			return addFloor(world);
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Adds a floor panel to the given world with a Texture, Mesh, and Material
 	 *
@@ -242,7 +242,7 @@ public class Parser {
 		Texture floorTex = getFloorTexture();
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Entity floor = world.createEntity("floor");
-		
+
 		Material material = new Material(floorTex, Color.WHITE);
 		floor.attachComponent(MeshFilter.class).setMesh(mesh);
 		floor.attachComponent(MeshRenderer.class).setMaterial(material);
@@ -280,11 +280,12 @@ public class Parser {
 	 *            the world for the door to be added to
 	 * @return the newly created door
 	 */
-	private Entity addDoor(World world) {
+	private Entity addDoor(World world, String dir) {
 		// the texture for the wall
-		Texture wallTex = Resources.getTexture("1.png", true);
+//		Texture doorTex = Resources.getTexture("1.png", true);
+		Texture doorTex = getTexture(dir);
 		Mesh mesh = Resources.getMesh("wall.obj");
-		Material material = new Material(wallTex, Color.WHITE);
+		Material material = new Material(doorTex, Color.WHITE);
 
 		Entity door = world.createEntity("door");
 		door.attachComponent(MeshFilter.class).setMesh(mesh);
@@ -293,7 +294,7 @@ public class Parser {
 		door.attachComponent(AddAnimation.class);
 		return door;
 	}
-	
+
 	/**
 	 * Gets the corresponding floor texture for the current position
 	 * @return the corresponding floor texture
