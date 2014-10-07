@@ -38,6 +38,7 @@ public class MoveUpAnimation extends Behaviour {
 			int door = player.getComponent(WASDCollisions.class).getDoor(row, col);
 			//zero out door at you position
 			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
+			getOwner().attachComponent(new MoveDownAnimation(row, col, door));
 			getOwner().detachComponent(this);
 			return;
 		}
