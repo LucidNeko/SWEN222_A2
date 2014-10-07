@@ -134,7 +134,7 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
 		//animation
-		teddy.attachComponent(AddAnimation.class).setAttachment(DieAnimation.class);
+//		teddy.attachComponent(AddAnimation.class).setAttachment(DieAnimation.class);
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 

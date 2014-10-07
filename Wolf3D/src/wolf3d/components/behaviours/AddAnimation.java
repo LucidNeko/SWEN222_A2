@@ -11,7 +11,7 @@ import engine.input.Keyboard;
 
 public class AddAnimation extends Behaviour {
 	// default animation to attach
-	Class<? extends Component> comToAttach = MoveUpAnimation.class;
+	private Class<? extends Component> comToAttach = MoveUpAnimation.class;
 
 	@Override
 	public void update(float delta) {

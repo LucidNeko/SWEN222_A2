@@ -1,6 +1,7 @@
 package wolf3d.components.behaviours;
 
 import wolf3d.components.Health;
+import wolf3d.components.behaviours.animations.DieAnimation;
 import wolf3d.components.sensors.ProximitySensor;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -11,18 +12,18 @@ import engine.core.World;
 import engine.input.Keyboard;
 
 /**
- * This class is responsible for allowing the owner of this Component to be 
+ * This class is responsible for allowing the owner of this Component to be
  * attacked when they are in a certain proximity of a target
  * @author Sameer Magan
  *
  */
 public class Attackable extends Behaviour{
 	private World world;
-	
+
 	public Attackable(World world){
 		this.world = world;
 	}
-	
+
 	/**
 	 * Attacks the Owner of this component by the damage amount of the player
 	 * attacking
@@ -33,7 +34,7 @@ public class Attackable extends Behaviour{
 		Health enemyHealth = getOwner().getComponent(Health.class);
 		//checks if player is dead or alive
 		if(!enemyHealth.decreaseHealth(playerHealth.getDamageAmt())){
-			world.destroyEntity(getOwner().getID());
+			getOwner().attachComponent(new DieAnimation(world));
 		}
 	}
 
@@ -41,7 +42,7 @@ public class Attackable extends Behaviour{
 	public void update(float delta) {
 		requires(Health.class);
 		requires(ProximitySensor.class);
-		
+
 		//Attack entity if it is range and if 'C' has been pressed
 		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
 			if(Keyboard.isKeyDownOnce(KeyEvent.VK_C)){
@@ -49,7 +50,7 @@ public class Attackable extends Behaviour{
 				setChanged();
 			}
 		}
-		
+
 	}
 
 }

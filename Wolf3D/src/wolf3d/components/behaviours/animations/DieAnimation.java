@@ -1,28 +1,42 @@
 package wolf3d.components.behaviours.animations;
 
-import engine.common.Mathf;
-import engine.common.Vec3;
+import wolf3d.components.Health;
+import wolf3d.components.behaviours.AILookAtController;
 import engine.components.Behaviour;
 import engine.components.Transform;
+import engine.core.World;
 
 public class DieAnimation extends Behaviour {
-	private float speed = 10f; //1.0 units per second.
-	private float rotationAmount = 90; //2 units.
+	private float speed = 0.01f; // 1.0 units per second.
+	private float rotationAmount = 90; // 2 units.
 
 	private Transform startPos = null;
+
+	private float time;
+	private World world;
+
+	public DieAnimation(World world){
+		this.world = world;
+	}
 
 	@Override
 	public void update(float delta) {
 		requires(Transform.class);
 
-		Transform t = getOwner().getTransform();
+		time += delta;
+		int health = getOwner().getComponent(Health.class).getHealth();
+		AILookAtController lookAt;
 
-		if(startPos == null) {
-			startPos = t;
+		if((lookAt = getOwner().getComponent(AILookAtController.class)) != null){
+			getOwner().detachComponent(lookAt);
 		}
-
-		t.rotateY(delta*speed);
-
+		Transform t = getOwner().getTransform();
+		t.rotateY(time * speed);
+		if(time >= 4){
+			t.fly((time -4)*speed);
+		}
+		if(time > 10){
+			world.destroyEntity(getOwner().getID());
+		}
 	}
-
 }
