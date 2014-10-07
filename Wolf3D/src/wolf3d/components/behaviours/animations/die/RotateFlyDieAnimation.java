@@ -1,4 +1,4 @@
-package wolf3d.components.behaviours.animations;
+package wolf3d.components.behaviours.animations.die;
 
 import wolf3d.components.Health;
 import wolf3d.components.behaviours.AILookAtController;
@@ -6,7 +6,7 @@ import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.World;
 
-public class DieAnimation extends Behaviour {
+public class RotateFlyDieAnimation extends Behaviour {
 	private float speed = 0.01f; // 1.0 units per second.
 	private float rotationAmount = 90; // 2 units.
 
@@ -15,7 +15,7 @@ public class DieAnimation extends Behaviour {
 	private float time;
 	private World world;
 
-	public DieAnimation(World world){
+	public RotateFlyDieAnimation(World world){
 		this.world = world;
 	}
 

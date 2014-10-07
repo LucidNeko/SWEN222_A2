@@ -1,7 +1,7 @@
 package wolf3d.components.behaviours;
 
 import wolf3d.components.Health;
-import wolf3d.components.behaviours.animations.DieAnimation;
+import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
 import wolf3d.components.sensors.ProximitySensor;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -34,7 +34,7 @@ public class Attackable extends Behaviour{
 		Health enemyHealth = getOwner().getComponent(Health.class);
 		//checks if player is dead or alive
 		if(!enemyHealth.decreaseHealth(playerHealth.getDamageAmt())){
-			getOwner().attachComponent(new DieAnimation(world));
+			getOwner().attachComponent(new RotateFlyDieAnimation(world));
 		}
 	}
 

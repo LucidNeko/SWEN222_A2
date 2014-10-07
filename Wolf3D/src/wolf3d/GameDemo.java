@@ -14,7 +14,7 @@ import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
-import wolf3d.components.behaviours.animations.DieAnimation;
+import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
 import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
