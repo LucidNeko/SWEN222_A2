@@ -1,13 +1,17 @@
 package wolf3d.components.behaviours;
 
-import com.jogamp.newt.event.KeyEvent;
-
-import engine.components.Behaviour;
-import engine.input.Keyboard;
 import wolf3d.components.behaviours.animations.MoveUpAnimation;
 import wolf3d.components.sensors.ProximitySensor;
 
+import com.jogamp.newt.event.KeyEvent;
+
+import engine.components.Behaviour;
+import engine.components.Component;
+import engine.input.Keyboard;
+
 public class AddAnimation extends Behaviour {
+	//default animation to attach
+	Class<? extends Component> comToAttach = MoveUpAnimation.class;
 
 	@Override
 	public void update(float delta) {
@@ -15,10 +19,15 @@ public class AddAnimation extends Behaviour {
 
 		if (getOwner().getComponent(ProximitySensor.class).isTriggered()) {
 			if (Keyboard.isKeyDownOnce(KeyEvent.VK_SPACE)) {
-				getOwner().attachComponent(MoveUpAnimation.class);
+				getOwner().attachComponent(comToAttach);
 				getOwner().detachComponent(this);
 			}
 		}
 	}
+
+	public void setAttachment(Class<? extends Component> comToAttach){
+		this.comToAttach = comToAttach;
+	}
+
 
 }
