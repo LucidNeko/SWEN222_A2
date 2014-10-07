@@ -56,6 +56,7 @@ public class MoveUpAnimation extends Behaviour {
 						row, col);
 				// zero out door at you position
 				player.getComponent(WASDCollisions.class).zeroDoor(row, col);
+				//attach the move down animation after 
 				getOwner().attachComponent(
 						new MoveDownAnimation(row, col, door));
 				getOwner().detachComponent(this);
