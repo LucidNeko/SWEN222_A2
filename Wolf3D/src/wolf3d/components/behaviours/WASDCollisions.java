@@ -49,7 +49,8 @@ public class WASDCollisions extends Behaviour {
 	public void moveBack(float dy, float dx, float delta, Transform t) {
 		t.strafeFlat(-moveSpeed * dx * delta);
 		t.walkFlat(-moveSpeed * dy * delta);
-		//clears the initial change, meaning the the player hasn't actually moved
+		// clears the initial change, meaning the the player hasn't actually
+		// moved
 		clearChanged();
 	}
 
@@ -106,7 +107,7 @@ public class WASDCollisions extends Behaviour {
 		} else {
 			// we know were in a different cell from where we started.
 			if (col > oldCol) {
-				if (oldCell.hasEast() ||doorCell.hasEast()) {
+				if (oldCell.hasEast() || doorCell.hasEast()) {
 					moveBack(dy, dx, delta, t);
 					return;
 				}
@@ -132,15 +133,35 @@ public class WASDCollisions extends Behaviour {
 			}
 		}
 	}
-	
-	public int getDoor(int row, int col){
+
+	public int getDoor(int row, int col) {
 		return doors[row][col].getWalls();
 	}
-	
-	public void zeroDoor(int row, int col){
+
+	public void zeroDoor(int row, int col) {
 		doors[row][col].setWalls(0);
 	}
 
+	/**
+	 * Sets the door at the given position to the value specified in door iff
+	 * there is no value already in this cell
+	 *
+	 * @param row
+	 *            the row in which to reference
+	 * @param col
+	 *            the column in which to refrence
+	 * @param door
+	 *            the door value to be set
+	 * @return true if update was made, false if there was already a value
+	 *         contained in this cell
+	 */
+	public boolean setDoor(int row, int col, int door) {
+		if (doors[row][col].getWalls() == 0) {
+			doors[row][col].setWalls(door);
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * @return the wallsize
@@ -152,7 +173,7 @@ public class WASDCollisions extends Behaviour {
 	@Override
 	public void update(float delta) {
 		requires(Transform.class);
-		
+
 		float dx = 0, dy = 0;
 		if (Keyboard.isKeyDown(KeyEvent.VK_A))
 			dx += 1;
@@ -167,11 +188,11 @@ public class WASDCollisions extends Behaviour {
 		if (dx != 0 || dy != 0) {
 			movePlayer(dy, dx, delta);
 		}
-		
-		//checking notifications
-//		if(hasChanged()){
-//			System.out.println("player moved");
-//		}
-//		clearChanged();
+
+		// checking notifications
+		// if(hasChanged()){
+		// System.out.println("player moved");
+		// }
+		// clearChanged();
 	}
 }
