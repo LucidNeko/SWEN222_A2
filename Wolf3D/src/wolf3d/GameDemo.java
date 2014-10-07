@@ -14,6 +14,7 @@ import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
+import wolf3d.components.behaviours.animations.DieAnimation;
 import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
@@ -98,7 +99,7 @@ public class GameDemo extends GameLoop {
 
 		Entity skybox = world.createEntity("skybox");
 		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
-		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox2.jpg", true)));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox.png", true)));
 		skybox.attachComponent(new Behaviour() {
 			//moves the box around with player so they can't come close to the edges.
 			@Override
@@ -132,6 +133,8 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
+		//animation
+		teddy.attachComponent(AddAnimation.class).setAttachment(DieAnimation.class);
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
