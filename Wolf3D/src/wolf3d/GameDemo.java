@@ -77,7 +77,6 @@ public class GameDemo extends GameLoop {
 		parser.passDoorFileToArray();
 		parser.passTextures();
 		parser.passfloorFileToArray();
-		parser.createFloor(world);
 		parser.createWalls(world);
 		parser.createFloor(world);
 
@@ -96,7 +95,7 @@ public class GameDemo extends GameLoop {
 
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
-		
+
 		Entity skybox = world.createEntity("skybox");
 		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
 		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox2.jpg", true)));
@@ -107,7 +106,7 @@ public class GameDemo extends GameLoop {
 				Vec3 pos = player.getTransform().getPosition();
 				this.getOwner().getTransform().setPosition(pos);
 			}
-			
+
 		});
 
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
