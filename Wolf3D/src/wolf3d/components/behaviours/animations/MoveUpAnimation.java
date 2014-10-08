@@ -1,16 +1,12 @@
 package wolf3d.components.behaviours.animations;
 
-import java.awt.event.KeyEvent;
-
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
-
 import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.Entity;
-import engine.input.Keyboard;
 
 public class MoveUpAnimation extends Behaviour {
 
@@ -19,9 +15,6 @@ public class MoveUpAnimation extends Behaviour {
 
 	private Vec3 startPos = null;
 	private Vec3 endPos = null;
-
-
-	private boolean start;
 
 	private Translate translate;
 

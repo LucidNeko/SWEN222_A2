@@ -4,7 +4,6 @@ import wolf3d.components.behaviours.DoorBehaviour;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
-import engine.common.Mathf;
 import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Transform;
@@ -40,7 +39,6 @@ public class MoveDownAnimation extends Behaviour {
 			getOwner().attachComponent(translate);
 		}
 
-//		if(isFinished()){
 		if(!getOwner().contains(translate)){
 			log.trace("finished");
 			Entity player = getOwner().getComponent(ProximitySensor.class).getTarget();
@@ -49,12 +47,8 @@ public class MoveDownAnimation extends Behaviour {
 			getOwner().detachComponent(this);
 		}
 
-//		t.translate(0, speed*delta, 0);
 
 	}
 
-	public boolean isFinished() {
-		return Mathf.abs(getOwner().getTransform().getPosition().sub(startPos).y()) >= distance;
-	}
 
 }
