@@ -5,16 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.DoorBehaviour;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
-import wolf3d.components.sensors.SpacebarSensor;
 import engine.common.Color;
 import engine.common.Mathf;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
-import engine.components.Sensor;
 import engine.core.Entity;
 import engine.core.World;
 import engine.texturing.Material;
