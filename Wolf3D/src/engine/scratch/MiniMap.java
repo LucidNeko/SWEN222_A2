@@ -27,6 +27,11 @@ import engine.core.World;
 import engine.display.GameCanvas;
 import engine.display.View;
 
+/**
+ * A minimap view of the game world.
+ * @author Hamish
+ *
+ */
 public class MiniMap extends GameCanvas implements View {
 	
 	//gluPerspective params
@@ -59,6 +64,7 @@ public class MiniMap extends GameCanvas implements View {
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
+		//Start a thread calling display on this every 16ms. Not so critical.
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new Thread(new Runnable() {
@@ -66,7 +72,7 @@ public class MiniMap extends GameCanvas implements View {
 						while(true) {
 							MiniMap.this.display();
 							try {
-								Thread.sleep(10);
+								Thread.sleep(16);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -85,8 +91,6 @@ public class MiniMap extends GameCanvas implements View {
 	public void display(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 
-//		bugFix(gl); //Maybe only required for GLJPanel not GLCanvas.
-
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Transform t = null;
 		try {
@@ -94,23 +98,30 @@ public class MiniMap extends GameCanvas implements View {
 		} catch(Exception e) { }
 		
 		if(t != null) {
+			//center map over player.
 			camera.getTransform().setPosition(t.getPosition());
 			camera.getTransform().translate(0, 10, 0);
+		} else {
+			//no player... just set cam at (10, 30, 10)
+			camera.getTransform().setPosition(10, 30, 10);
 		}
 
-		for(Entity e : world.getEntities()) {
-			if(e.getName().equals("skybox")) continue;
-			gl.glPushMatrix();
-				camera.getComponent(Camera.class).setActive(gl);
-				if(e.hasComponent(MeshFilter.class)) {
-					e.getTransform().applyTransform(gl);
-					WireframeMeshRenderer wmr = e.attachComponent(WireframeMeshRenderer.class);
-					wmr.render(gl);
-					e.detachComponent(wmr);
-				}
-			gl.glPopMatrix();
-		}
-
+		gl.glPushMatrix();
+			camera.getComponent(Camera.class).setActive(gl);
+			for(Entity e : world.getEntities()) {
+				if(e.getName().equals("skybox")) continue; //dont render skybox.
+				gl.glPushMatrix();
+					if(e.hasComponent(MeshFilter.class)) {
+						e.getTransform().applyTransform(gl);
+						//add wireframe renderer, render, then detach.
+						WireframeMeshRenderer wmr = e.attachComponent(WireframeMeshRenderer.class);
+						wmr.render(gl);
+						e.detachComponent(wmr);
+					}
+				gl.glPopMatrix();
+			}
+		gl.glPopMatrix();
+		
 		checkError(gl); //prints out error code if we get an error.
 	}
 
