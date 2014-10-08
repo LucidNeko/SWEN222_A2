@@ -7,9 +7,11 @@ import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.Entity;
+
 /**
- * This class is responsible for moving animating the attached component
- * up by the set amount of distance and then attaching a MoveDown animation
+ * This class is responsible for moving animating the attached component up by
+ * the set amount of distance and then attaching a MoveDown animation
+ * 
  * @author Sameer Magan 300223776
  *
  */
@@ -22,8 +24,10 @@ public class MoveUpAnimation extends Behaviour {
 	private Vec3 endPos = null;
 
 	private Translate translate;
-	
+
 	private int row, col, door;
+	
+	private boolean halfwaydown;
 
 	@Override
 	public void update(float delta) {
@@ -32,38 +36,47 @@ public class MoveUpAnimation extends Behaviour {
 		Transform t = getOwner().getTransform();
 		if (startPos == null) {
 			startPos = t.getPosition();
-			endPos = startPos.add(0, distance, 0);
+			endPos = startPos.add(0, distance/2, 0);
 			translate = new Translate(startPos, endPos, speed);
 			getOwner().attachComponent(translate);
 		}
-
-		if (!getOwner().contains(translate)) {
-			// if (isFinished()) {
-			// remove collision for this door
-//			Entity player = getOwner().getComponent(ProximitySensor.class)
-//					.getTarget();
-//			Vec3 pos = player.getTransform().getPosition();
-//			int wallSize = player.getComponent(WASDCollisions.class)
-//					.getWallsize();
-//			int col = (int) ((pos.getX() / wallSize));
-//			int row = (int) ((pos.getZ() / wallSize));
-//			int door = player.getComponent(WASDCollisions.class).getDoor(row,
-//					col);
-			// zero out door at you position
-//			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
-			getOwner().attachComponent(new MoveDownAnimation(row, col, door));
-			getOwner().detachComponent(this);
-			return;
-
+		
+		if(halfwaydown){
+			if (!getOwner().contains(translate)) {
+				getOwner().attachComponent(new MoveDownAnimation(row, col, door));
+				getOwner().detachComponent(this);
+				return;
+			}
 		}
 
+		if (!getOwner().contains(translate)) {
+			// remove collision for this door
+			Entity player = getOwner().getComponent(ProximitySensor.class)
+					.getTarget();
+			Vec3 pos = player.getTransform().getPosition();
+			int wallSize = player.getComponent(WASDCollisions.class)
+					.getWallsize();
+			int col = (int) ((pos.getX() / wallSize));
+			int row = (int) ((pos.getZ() / wallSize));
+			int door = player.getComponent(WASDCollisions.class).getDoor(row,
+					col);
+			// zero out door at you position
+			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
+			startPos = endPos;
+			endPos = startPos.add(0, distance/2, 0);
+			translate = new Translate(startPos, endPos, speed);
+			getOwner().attachComponent(translate);
+			halfwaydown = true;
+
+		}
+		
+
 	}
-	
-	public void setCollision(int row, int col, int door){
+
+	public void setCollision(int row, int col, int door) {
 		this.row = row;
 		this.col = col;
 		this.door = door;
 	}
-
 
 }
