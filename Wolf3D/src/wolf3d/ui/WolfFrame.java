@@ -48,7 +48,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 		if(x>470 || x<320 || y<185 || y>400){ // Gotta move the mouse
 			System.out.println("Way outside the hit box");
 		}
-		if(y<216 && y>189){ //New game area
+		else if(y<216 && y>189){ //New game area
 			//New Game method
 			System.out.println("New Game Selected");
 			f.dispose();
@@ -87,7 +87,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-	
+
 	public static void main(String[] args) {
 		new WolfFrame();
 	}

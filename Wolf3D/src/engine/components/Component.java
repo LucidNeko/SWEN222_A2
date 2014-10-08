@@ -13,10 +13,10 @@ import engine.core.Entity;
  */
 public class Component extends Observable {
 	protected static final Logger log = LogManager.getLogger();
-	
+
 	/** The Entity that this component is attached to - null if not attached to anything */
 	private transient Entity owner;
-	
+
 	/**
 	 * Sets the Entity that contains this component<br>
 	 * INVARIANT: Must be contained in the provided owner AND must no longer be contained in the old owner.<br>
@@ -34,8 +34,8 @@ public class Component extends Observable {
 			this.notifyObservers();
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Gets the Entity this Component is attached to.
 	 * @return Returns the Entity that owns this Component - or null if not attached to anything.
 	 */
@@ -63,5 +63,5 @@ public class Component extends Observable {
 		}
 		return result;
 	}
-	
+
 }

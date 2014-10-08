@@ -180,6 +180,8 @@ public class EntityFactory {
 		});
 		camera.getTransform().setPosition(target.getTransform().getPosition().add(target.getTransform().getLook().mul(25))); //start far away so it zooms in
 
+
+
 		target.attachComponent(new Behaviour() {
 
 			@Override

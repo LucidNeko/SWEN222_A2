@@ -1,7 +1,10 @@
 package wolf3d;
 
 import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
+import java.awt.image.BufferedImage;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -31,7 +34,7 @@ public class Wolf3D extends JFrame {
 	private static final String DEFAULT_TITLE = "Wolf3D";
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 600;
-	
+
 	private World world;
 
 	public Wolf3D() {
@@ -44,7 +47,8 @@ public class Wolf3D extends JFrame {
 		});
 
 		//Sets the mouse to be a crosshair
-	    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+//	    setCursor(Cursor.getPredefinedCursor(Cursor..CROSSHAIR_CURSOR));
+	    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TRANSLUCENT), new Point(0,0), "inviscursor"));
 
 		//Create the World
 		world = new World();

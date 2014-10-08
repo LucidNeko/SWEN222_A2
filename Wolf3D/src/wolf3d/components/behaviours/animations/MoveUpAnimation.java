@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
-import engine.common.Mathf;
+
 import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Transform;
@@ -20,6 +20,9 @@ public class MoveUpAnimation extends Behaviour {
 	private Vec3 startPos = null;
 	private Vec3 endPos = null;
 
+
+	private boolean start;
+
 	private Translate translate;
 
 	@Override
@@ -32,7 +35,6 @@ public class MoveUpAnimation extends Behaviour {
 			endPos = startPos.add(0, distance, 0);
 			translate = new Translate(startPos, endPos, speed);
 			getOwner().attachComponent(translate);
-
 		}
 
 		if (!getOwner().contains(translate)) {
@@ -53,13 +55,10 @@ public class MoveUpAnimation extends Behaviour {
 			getOwner().attachComponent(new MoveDownAnimation(row, col, door));
 			getOwner().detachComponent(this);
 			return;
+
 		}
 
 	}
 
-	public boolean isFinished() {
-		return Mathf.abs(getOwner().getTransform().getPosition().sub(startPos)
-				.y()) >= distance;
-	}
 
 }
