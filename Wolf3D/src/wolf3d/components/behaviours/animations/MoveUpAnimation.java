@@ -7,7 +7,12 @@ import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.Entity;
-
+/**
+ * This class is responsible for moving animating the attached component
+ * up by the set amount of distance and then attaching a MoveDown animation
+ * @author Sameer Magan 300223776
+ *
+ */
 public class MoveUpAnimation extends Behaviour {
 
 	private float speed = 1f; // 0.1 units per second.
@@ -33,7 +38,6 @@ public class MoveUpAnimation extends Behaviour {
 		}
 
 		if (!getOwner().contains(translate)) {
-			log.trace("finished");
 			// if (isFinished()) {
 			// remove collision for this door
 //			Entity player = getOwner().getComponent(ProximitySensor.class)

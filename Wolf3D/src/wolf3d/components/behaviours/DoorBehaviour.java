@@ -8,7 +8,11 @@ import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.core.Entity;
 import engine.input.Keyboard;
-
+/**
+ * This class is responsible for setting the behaviours of the door 
+ * @author Sameer Magan 300223776
+ *
+ */
 public class DoorBehaviour extends Behaviour {
 
 	@Override
