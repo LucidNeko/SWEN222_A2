@@ -9,9 +9,12 @@ public class ServerConnection extends Thread{
 	private Socket soc;
 	private DataInputStream in;
 	private DataOutputStream out;
+	
+	private ServerConnectionsMaster master;
 
-	public ServerConnection(Socket socket){
+	public ServerConnection(Socket socket, ServerConnectionsMaster master){
 		soc=socket;
+		this.master = master;
 		try {
 			out = new DataOutputStream(soc.getOutputStream());
 			in = new DataInputStream(soc.getInputStream());
@@ -31,10 +34,13 @@ public class ServerConnection extends Thread{
 					int length = in.readInt();
 					byte[] message = new byte[length];
 					in.readFully(message);
+					master.pushToClient(-1, message);
+					/*
 					String s = new String(message);
 					System.out.println(s);
 					String ackClient = "Server Acknowledge Message:  " + s;
 					pushToClient(ackClient.getBytes());
+					*/
 				}
 			}
 

@@ -59,17 +59,20 @@ public class ServerConnectionsMaster extends Thread{
 			try {
 				sock = ss.accept();
 				System.out.println("Accepted a connection from " + sock.getInetAddress() + "...");
-				connections[index] = new ServerConnection(sock);
-				connections[index].start();
+				connections[index] = new ServerConnection(sock,this);
+				
 				if(index==(capacity-1)){
 					listening = false;
+					
+					//begin listening
+					for(ServerConnection c : connections){
+						c.start();
+					}
+					
+					//let the clients know the game can now begin.
+					String listening = "start";
+					pushToClient(-1,listening.getBytes());
 				}
-
-				byte[] ms = new byte[5];
-				//Just test code, send byte to client.
-				ms[0] = (byte) 1;
-				connections[index].pushToClient(ms);
-
 				index++;
 
 			} catch (IOException e) {
