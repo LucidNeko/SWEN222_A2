@@ -161,7 +161,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	}
 	
 	/** Moves the mouse to the center of the component that this Mouse is listening to */
-	private static void centerMouseOverComponent() {
+	public static void centerMouseOverComponent() {
 		if(component == null || robot == null) return;
 		robot.mouseMove(component.getLocationOnScreen().x + component.getWidth()/2,
 						component.getLocationOnScreen().y + component.getHeight()/2);
