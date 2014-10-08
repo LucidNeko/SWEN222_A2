@@ -122,7 +122,7 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
-		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj");
+		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj").getScaledInstance(4);
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 
 
