@@ -220,6 +220,10 @@ public class GameDemo extends GameLoop {
 		//if control is pressed (toggles) frees the mouse.
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(!Mouse.isGrabbed());
+		
+		//stop the Mouse from freeing itself by going out of the bounds of the component.
+		if(Mouse.isGrabbed())
+			Mouse.centerMouseOverComponent();
 
 		//Update all the behaviours attached to the entities.
 		for(Entity entity : world.getEntities()) {
