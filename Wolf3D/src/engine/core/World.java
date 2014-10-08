@@ -9,6 +9,7 @@ import java.util.Map;
 
 import engine.components.Component;
 import engine.components.Transform;
+import engine.scratch.WireframeMeshRenderer;
 
 /**
  * The world is a factory for Entities and contains all of the Entities.

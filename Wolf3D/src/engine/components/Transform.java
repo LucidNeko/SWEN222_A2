@@ -15,23 +15,23 @@ import engine.common.Vec3;
  *
  */
 public class Transform extends Component {
-	
+
 	private final Vec3 position;
 	private final Vec3 up;
 	private final Vec3 along;
 	private final Vec3 look;
-	
+
 	/**
 	 * Create a new Transform with position=(0,0,0) and zero rotation.
 	 */
-	public Transform() { 
+	public Transform() {
 		position = new Vec3();
 		up = new Vec3();
 		along = new Vec3();
 		look = new Vec3();
 		reset(); //sets up vectors correctly
 	}
-	
+
 	/**
 	 * Resets this transform to (0,0,0) and zero rotation
 	 */
@@ -41,7 +41,7 @@ public class Transform extends Component {
 		along.set(Vec3.RIGHT);
 		look.set(Vec3.FORWARD);
 	}
-	
+
 	/**
 	 * Sets this transform to match the source Transform.
 	 * @param source The Transform to copy.
@@ -52,7 +52,7 @@ public class Transform extends Component {
 		this.along.set(source.along);
 		this.look.set(source.look);
 	}
-	
+
 	/**
 	 * Sets the position of this Transform
 	 * @param x
@@ -62,7 +62,7 @@ public class Transform extends Component {
 	public void setPosition(float x, float y, float z) {
 		this.position.set(x, y, z);
 	}
-	
+
 	/**
 	 * Sets the position of this Transform
 	 * @param position The (x, y, z) to set this Transforms position to.
@@ -70,7 +70,7 @@ public class Transform extends Component {
 	public void setPosition(Vec3 position) {
 		this.position.set(position);
 	}
-	
+
 	/**
 	 * Strafe this transform. i.e left<->right movement.
 	 * @param delta Amount to move.
@@ -78,7 +78,7 @@ public class Transform extends Component {
 	public void strafe(float delta) {
 		position.addLocal(along.mul(delta));
 	}
-	
+
 	/**
 	 * Fly this transform. i.e up<->down movement.
 	 * @param delta Amount to move.
@@ -86,7 +86,7 @@ public class Transform extends Component {
 	public void fly(float delta) {
 		position.addLocal(up.mul(delta));
 	}
-	
+
 	/**
 	 * Walk this transform. i.e in<->out movement.<br>
 	 * @param delta Amount to move.
@@ -94,7 +94,7 @@ public class Transform extends Component {
 	public void walk(float delta) {
 		position.addLocal(look.mul(delta));
 	}
-	
+
 	/**
 	 * Rotates around the look vector (facing direction).
 	 * @param theta Rotation amount in radians.
@@ -104,7 +104,7 @@ public class Transform extends Component {
 		up.normalize();
 		along.set(Vec3.cross(up, look));
 	}
-	
+
 	/**
 	 * Rotates around the along vector (left<->right).
 	 * @param theta Rotation amount in radians.
@@ -114,17 +114,17 @@ public class Transform extends Component {
 		look.normalize();
 		up.set(Vec3.cross(look, along));
 	}
-	
+
 	/**
 	 * Rotates around the up vector (up<->down)
 	 * @param theta Rotation amount in radians.
 	 */
 	public void yaw(float theta) {
 		along.mulLocal(Mathf.cos(theta)).addLocal(look.mul(Mathf.sin(theta)));
-		along.normalize();		
+		along.normalize();
 		look.set(Vec3.cross(along, up));
 	}
-	
+
 	/**
 	 * Translate the position of this transform by (dx, dy, dz).
 	 * @param dx The x translation.
@@ -134,7 +134,7 @@ public class Transform extends Component {
 	public void translate(float dx, float dy, float dz) {
 		position.addLocal(dx, dy, dz);
 	}
-	
+
 	/**
 	 * Walks forwards along the X/Z plane.
 	 * @param delta Amount of movement.
@@ -144,7 +144,7 @@ public class Transform extends Component {
 		direction.normalize(); //must normalize otherwise we don't end up with a unit vector.
 		position.addLocal(direction.mulLocal(delta));
 	}
-	
+
 	/**
 	 * Strafes along the X/Z plane
 	 * @param delta Amount of movement.
@@ -154,7 +154,7 @@ public class Transform extends Component {
 		direction.normalize(); //must normalize otherwise we don't end up with a unit vector.
 		position.addLocal(direction.mulLocal(delta));
 	}
-	
+
 	/**
 	 * Rotates the Transform about the world up vector.
 	 * @param theta Rotation amount in radians.
@@ -169,7 +169,7 @@ public class Transform extends Component {
 		up.set(cos*up.x() - sin*up.z(), up.y(), sin*up.x() + cos*up.z());
 		look.set(cos*look.x() - sin*look.z(), look.y(),  sin*look.x() + cos*look.z());
 	}
-	
+
 	/**
 	 * Makes this transform look in the direction.<br>
 	 * Ignores the y component of direction.<br>
@@ -177,14 +177,14 @@ public class Transform extends Component {
 	 * @param direction The direction to look in. Cannot be (0, 0, 0)
 	 */
 	public void lookInDirection(Vec3 direction) {
-		if(direction.equals(Vec3.ZERO)) return;
+		if(direction.equals(Vec3.ZERO) || direction.equals(Vec3.UP) || direction.equals(Vec3.DOWN)) return;
 		Vec3 dir = new Vec3(direction.x(), 0, direction.z()); //ignore y component
 		dir.normalize(); //unit vector
 		look.set(dir);
 		up.set(Vec3.UP);
 		along.set(Vec3.cross(up, look));
 	}
-	
+
 	/**
 	 * Rotates the transform so that it's look vector points at the targets position.
 	 * @param target Transform to point towards.
@@ -192,7 +192,7 @@ public class Transform extends Component {
 	public void lookAt(Transform target) {
 		lookAt(target.getPosition());
 	}
-	
+
 	/**
 	 * Rotates the transform so that it's look vector points at the target point.
 	 * @param Target Point to look at.
@@ -200,7 +200,7 @@ public class Transform extends Component {
 	public void lookAt(Vec3 target) {
 		lookAt(target, Vec3.UP);
 	}
-	
+
 	/**
 	 * Rotates the transform so that it's look vector points at the target point.<br>
 	 * Then rotate the transform so the up vector points at worldUp.
@@ -215,7 +215,7 @@ public class Transform extends Component {
 		pitch(Vec3.dot(Vec3.cross(along,  eye), look));
 		roll(Vec3.dot(Vec3.cross(worldUp, up), eye));
 	}
-	
+
 	/**
 	 * Get a Vec3 containing the Transforms current location. <br>
 	 * It's a snapshot. Modifications to this don't affect the Transform.
@@ -224,8 +224,8 @@ public class Transform extends Component {
 	public Vec3 getPosition() {
 		return position.clone();
 	}
-	
-	/** 
+
+	/**
 	 * Get a Vec3 containing the Transforms current up vector. <br>
 	 * It's a snapshot. Modifications to this don't affect the Transform.
 	 * @return An Immutable Vec3 representing the Transforms current up direction.
@@ -233,7 +233,7 @@ public class Transform extends Component {
 	public Vec3 getUp() {
 		return up.clone();
 	}
-	
+
 	/**
 	 * Get a Vec3 containing the Transforms current along vector. <br>
 	 * It's a snapshot. Modifications to this don't affect the Transform.
@@ -242,7 +242,7 @@ public class Transform extends Component {
 	public Vec3 getAlong() {
 		return along.clone();
 	}
-	
+
 	/**
 	 * Get a Vec3 containing the Transforms current look vector. <br>
 	 * It's a snapshot. Modifications to this don't affect the Transform.
@@ -251,31 +251,31 @@ public class Transform extends Component {
 	public Vec3 getLook() {
 		return look.clone();
 	}
-	
+
 	/**
 	 * Gets this Transformation represented as a 4x4 column order matrix.
 	 * @return The transformation matrix that this Transform represents.
 	 */
 	public float[] getMatrix() {
-		return new float[] {				
+		return new float[] {
 				//Column 1
 				along.x(),
 				along.y(),
 				along.z(),
 				0,
-				
+
 				//Column 2
 				up.x(),
 				up.y(),
 				up.z(),
 				0,
-				
+
 				//Column 3
 				look.x(),
 				look.y(),
 				look.z(),
 				0,
-				
+
 				//Column 4
 				position.x(),
 				position.y(),
@@ -293,13 +293,13 @@ public class Transform extends Component {
 		FloatBuffer buffer = FloatBuffer.allocate(16);
 		gl.glGetFloatv(GL_MODELVIEW_MATRIX, buffer);
 		float[] modelviewMatrix = buffer.array();
-		
+
 		//Build the transformation matrix this Transform specifies
 		float[] transformationMatrix = getMatrix();
-		
+
 		//Multiply modelview x transformation
 		float[] m = Mathf.multiplyMatrix(modelviewMatrix, transformationMatrix);
-		
+
 		//Load the matrix into OpenGL
 		gl.glLoadMatrixf(m, 0);
 	}
@@ -309,7 +309,7 @@ public class Transform extends Component {
 		return "Transform [position=" + position + ", up=" + up + ", along="
 				+ along + ", look=" + look + "]";
 	}
-	
+
 	@Override
 	public Transform clone() {
 		Transform t = new Transform();
@@ -319,5 +319,5 @@ public class Transform extends Component {
 		t.position.set(this.position);
 		return t;
 	}
-	
+
 }
