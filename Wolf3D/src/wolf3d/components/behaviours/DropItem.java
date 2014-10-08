@@ -38,8 +38,9 @@ public class DropItem extends Behaviour {
 		Inventory inventory = player.getComponent(Inventory.class);
 		if (inventory.contains(item)) {
 			Vec3 pos = player.getTransform().getPosition();
-			// setting item position to the players current position
+			// setting item position to the players current position and look vector
 			item.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
+			item.getTransform().lookInDirection(player.getTransform().getLook());
 			// gets weight and adds it back to the players carryWeight
 			int itemWeight = item.getComponent(Weight.class).getWeight();
 			inventory.releaseWeight(itemWeight);
