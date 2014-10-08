@@ -1,5 +1,6 @@
 package engine.core;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,7 @@ import engine.components.Transform;
 public class Entity {
 	
 	//HashSet in the order Components were added
-	private final Set<Component> components = new LinkedHashSet<Component>();
+	private final Set<Component> components = Collections.synchronizedSet(new LinkedHashSet<Component>());
 	
 	/** A unique ID in the system. */
 	private final int uniqueID;
@@ -47,7 +48,9 @@ public class Entity {
 			throw new NullPointerException();
 		if(component.getOwner() != null)
 			throw new IllegalStateException("Component is already attached to something");
-		this.components.add(component);
+		synchronized(components) {
+			components.add(component);
+		}
 		component.setOwner(this);
 		return component;
 	}
@@ -77,10 +80,12 @@ public class Entity {
 	 */
 	@SuppressWarnings("unchecked")
 	public <E extends Component> E getComponent(Class<E> type) {
-		for(Component component : components)
-			if(type.isAssignableFrom(component.getClass()))
-				return (E)component;
-		return null;
+		synchronized(components) {
+			for(Component component : components)
+				if(type.isAssignableFrom(component.getClass()))
+					return (E)component;
+			return null;
+		}
 	}
 
 	/**
@@ -90,11 +95,13 @@ public class Entity {
 	 */
 	@SuppressWarnings("unchecked")
 	public <E extends Component> List<E> getComponents(Class<E> type) {
-		List<E> out = new LinkedList<E>();
-		for(Component component : components)
-			if(type.isAssignableFrom(component.getClass()))
-				out.add((E)component);
-		return out;
+		synchronized(components) {
+			List<E> out = new LinkedList<E>();
+			for(Component component : components)
+				if(type.isAssignableFrom(component.getClass()))
+					out.add((E)component);
+			return out;
+		}
 	}	
 	
 	/**
@@ -105,10 +112,12 @@ public class Entity {
 	 * @return true if the component was present and successfully detached - otherwise false.
 	 */
 	public <E extends Component> boolean detachComponent(E component) {
-		if(this.components.remove(component)) {
-			component.setOwner(null);
-			return true;
-		} else return false;
+		synchronized(components) {
+			if(this.components.remove(component)) {
+				component.setOwner(null);
+				return true;
+			} else return false;
+		}
 	}
 	
 	/**

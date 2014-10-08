@@ -5,6 +5,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL2;
 
 import engine.common.Vec3;
+import engine.components.Component;
 import engine.components.GL2Renderer;
 import engine.components.MeshFilter;
 import engine.texturing.Mesh;
@@ -14,15 +15,14 @@ import engine.texturing.Mesh;
  * @author Hamish
  *
  */
-public class WireframeMeshRenderer extends GL2Renderer {
+public class WireframeMeshRenderer extends Component {
 
-	@Override
 	public void render(GL2 gl) {
 		if(!requires(MeshFilter.class)) return;
 
 		Mesh mesh = getOwner().getComponent(MeshFilter.class).getMesh();
 
-		gl.glColor3f(0, 0, 0);
+		gl.glColor3f(1,1,1);
 		Iterator<Vec3> iter = mesh.iterator();
 		while(iter.hasNext()) {
 			Vec3 a = iter.next();

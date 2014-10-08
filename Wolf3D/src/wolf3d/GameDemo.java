@@ -44,8 +44,8 @@ import engine.util.Resources;
 public class GameDemo extends GameLoop {
 	private static final Logger log = LogManager.getLogger();
 
-	private static final int FPS = 60; //frames per second/regular updates per second.
-	private static final int FUPS = 50; //fixed updates per second.
+	private static final int FPS = 40; //frames per second/regular updates per second.
+	private static final int FUPS = 40; //fixed updates per second.
 
 	private World world;
 	private View view;
@@ -129,7 +129,7 @@ public class GameDemo extends GameLoop {
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
-		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
+//		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
@@ -220,6 +220,10 @@ public class GameDemo extends GameLoop {
 		//if control is pressed (toggles) frees the mouse.
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(!Mouse.isGrabbed());
+		
+		//stop the Mouse from freeing itself by going out of the bounds of the component.
+		if(Mouse.isGrabbed())
+			Mouse.centerMouseOverComponent();
 
 		//Update all the behaviours attached to the entities.
 		for(Entity entity : world.getEntities()) {

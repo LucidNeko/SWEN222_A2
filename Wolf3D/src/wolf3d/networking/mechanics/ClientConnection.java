@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import wolf3d.networking.Client;
 import engine.core.World;
 
 /**
@@ -18,6 +19,8 @@ public class ClientConnection extends Thread{
 	private Socket soc;
 	private DataOutputStream out;
 	private DataInputStream in;
+	
+	private Client master;
 
 	private boolean uncollectedMsg = false;;
 	private byte[] msg;
@@ -26,8 +29,9 @@ public class ClientConnection extends Thread{
 	 * Create a new client on the given socket.
 	 * @param socket
 	 */
-	public ClientConnection(Socket socket){
+	public ClientConnection(Socket socket, Client master){
 		soc = socket;
+		this.master = master;
 	}
 
 	/**
@@ -44,11 +48,19 @@ public class ClientConnection extends Thread{
 				//listen
 				while(true){
 					if(in.available()>0){
-						int length = in.readInt();
-						msg = new byte[length];
-						in.readFully(msg);
-						System.out.println(new String(msg));
-						uncollectedMsg = true;
+						if(master.hasGameStarted()){
+						master.receivedMessage(in);
+						}
+						else{
+							if(in.readUTF()=="start"){
+								master.startGame(out);
+							}
+						}
+//						int length = in.readInt();
+//						msg = new byte[length];
+//						in.readFully(msg);
+//						System.out.println(new String(msg));
+//						uncollectedMsg = true;
 					}
 				}
 			}

@@ -55,7 +55,7 @@ public class Wolf3DNetworkingDemo extends JFrame {
 		//Build OpenGL panel.
 		GLProfile glProfile = GLProfile.getDefault();
 		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
-		final WorldView view = new WorldView(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT, world);
+		final WorldView view = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT, world);
 		this.getContentPane().add(view);
 
 		//Register input devices. If GLCanvas have to register to canvas.
@@ -97,7 +97,9 @@ public class Wolf3DNetworkingDemo extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				/*Starts the GUI frame*/
-				WolfFrameNetworkingDemo wf = new WolfFrameNetworkingDemo(ip,port);
+				new Wolf3DNetworkingDemo(port, ip);
+				
+				//WolfFrameNetworkingDemo wf = new WolfFrameNetworkingDemo(ip,port);
 			}
 		});
 	}

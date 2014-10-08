@@ -1,15 +1,21 @@
 package wolf3d;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -19,6 +25,8 @@ import org.apache.logging.log4j.Logger;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
+import engine.scratch.MiniMap;
+import engine.util.Resources;
 import wolf3d.ui.*;
 
 /**
@@ -35,8 +43,6 @@ public class Wolf3D extends JFrame {
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 600;
 
-	private World world;
-
 	public Wolf3D() {
 		super(DEFAULT_TITLE);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -46,23 +52,27 @@ public class Wolf3D extends JFrame {
 			}
 		});
 
-		//Sets the mouse to be a crosshair
-//	    setCursor(Cursor.getPredefinedCursor(Cursor..CROSSHAIR_CURSOR));
-	    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TRANSLUCENT), new Point(0,0), "inviscursor"));
-
 		//Create the World
-		world = new World();
+		final World world = new World();
+		
+		//create views
+		final WorldView worldView = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT, world);
+		final MiniMap minimap = new MiniMap(200, 200, world);
 
+		JPanel mainPanel = new JPanel();
+		mainPanel.add(worldView);
+		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
+		
 		//Build OpenGL panel.
-		GLProfile glProfile = GLProfile.getDefault();
-		GLCapabilities glCapabilities = new GLCapabilities(glProfile);
-		final WorldView view = new WorldView(glCapabilities, DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT, world);
-		this.getContentPane().add(view);
+		JPanel sidePanel = new JPanel();
+		sidePanel.add(minimap);
+		this.getContentPane().add(sidePanel, BorderLayout.EAST);
 
 		//Register input devices. If GLCanvas have to register to canvas.
-  		view.setFocusable(true);
-  		Keyboard.register(view);
-  		Mouse.register(view);
+		worldView.setFocusable(true);
+  		Keyboard.register(worldView);
+  		Mouse.register(worldView);
+  		Mouse.setCursor(Mouse.CURSOR_INVISIBLE);
 
 		//Pack and display window.
 		this.pack();
@@ -72,7 +82,7 @@ public class Wolf3D extends JFrame {
 			public void run() {
 				//the game. This is a thread. You need to start it.
 				GameDemo game = new GameDemo(world);
-				game.setView(view); // give it the view so it can call it's display method appropriately.
+				game.setView(worldView); // give it the view so it can call it's display method appropriately.
 				game.start();
 			}
 		});
@@ -93,7 +103,6 @@ public class Wolf3D extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				/*Starts the GUI frame*/
-//				WolfFrame wf = new WolfFrame();
 				new Wolf3D();
 			}
 		});
