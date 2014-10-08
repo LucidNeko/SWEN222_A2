@@ -1,5 +1,6 @@
 package engine.core;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,7 @@ import engine.components.Transform;
 public class Entity {
 	
 	//HashSet in the order Components were added
-	private final Set<Component> components = new LinkedHashSet<Component>();
+	private final Set<Component> components = Collections.synchronizedSet(new LinkedHashSet<Component>());
 	
 	/** A unique ID in the system. */
 	private final int uniqueID;
