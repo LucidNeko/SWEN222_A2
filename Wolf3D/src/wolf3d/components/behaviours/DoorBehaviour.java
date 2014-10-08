@@ -28,18 +28,18 @@ public class DoorBehaviour extends Behaviour {
 				//
 				// if (Vec3.dot(playerLook, doorLook) < 0f) {
 				// remove collision for this door
-				Entity player = getOwner().getComponent(ProximitySensor.class)
-						.getTarget();
-				Vec3 pos = player.getTransform().getPosition();
-				int wallSize = player.getComponent(WASDCollisions.class)
-						.getWallsize();
-				int col = (int) ((pos.getX() / wallSize));
-				int row = (int) ((pos.getZ() / wallSize));
-				int door = player.getComponent(WASDCollisions.class).getDoor(
-						row, col);
-				// zero out door at you position
-				player.getComponent(WASDCollisions.class).zeroDoor(row, col);
-				getOwner().attachComponent(MoveUpAnimation.class).setCollision(row, col, door);
+//				Entity player = getOwner().getComponent(ProximitySensor.class)
+//						.getTarget();
+//				Vec3 pos = player.getTransform().getPosition();
+//				int wallSize = player.getComponent(WASDCollisions.class)
+//						.getWallsize();
+//				int col = (int) ((pos.getX() / wallSize));
+//				int row = (int) ((pos.getZ() / wallSize));
+//				int door = player.getComponent(WASDCollisions.class).getDoor(
+//						row, col);
+//				// zero out door at you position
+//				player.getComponent(WASDCollisions.class).zeroDoor(row, col);
+				getOwner().attachComponent(MoveUpAnimation.class);
 				getOwner().detachComponent(this);
 				// }
 			}

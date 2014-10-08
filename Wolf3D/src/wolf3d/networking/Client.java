@@ -1,12 +1,13 @@
 package wolf3d.networking;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Scanner;
 
+import wolf3d.GameNetworkDemo;
 import wolf3d.networking.mechanics.ClientConnection;
 import engine.components.Camera;
 import engine.core.Entity;
@@ -27,6 +28,11 @@ public class Client extends Thread{
 	private Entity player;
 	private View view;
 	private Camera camera;
+	
+	private boolean gameStart = false;
+	
+	
+	private GameNetworkDemo gameloop;
 
 
 	/**
@@ -36,9 +42,11 @@ public class Client extends Thread{
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	public Client(String playerName, String ipAddress, int port) throws UnknownHostException, IOException{
+	public Client(String playerName, String ipAddress, int port, GameNetworkDemo gameloop) throws UnknownHostException, IOException{
 		Socket sock = new Socket(ipAddress,port);
-		connection = new ClientConnection(sock);
+		connection = new ClientConnection(sock,this);
+		
+		this.gameloop = gameloop;
 
 		//Create this player on the server
 		//createMe(playerName);
@@ -86,17 +94,41 @@ public class Client extends Thread{
 			//
 		}
 	}
+	
+	public void receivedMessage(DataInputStream msg) throws IOException{
+		if(gameStart){
+			gameloop.receiveMessage(msg);
+		}
+//		else{
+//			if(msg.readUTF()=="start"){
+//				gameStart = true;
+//				gameloop.beginGame();
+//			}
+//		}
+	}
+	
+	public void startGame(DataOutputStream os){
+		gameloop.beginGame(os);
+	}
 
+	public boolean hasGameStarted() {
+		// TODO Auto-generated method stub
+		return gameStart;
+		
+	}
+
+	/*
 	/**
 	 * Test method.
 	 * @param args
 	 * @throws NumberFormatException
 	 * @throws UnknownHostException
 	 * @throws IOException
-	 */
+	 
 	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException{
 		Client pc = new Client("Bob McBob", args[0],Integer.parseInt(args[1]));
 		pc.start();
 	}
+	*/
 
 }
