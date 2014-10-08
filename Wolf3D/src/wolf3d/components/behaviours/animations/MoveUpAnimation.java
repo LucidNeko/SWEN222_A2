@@ -17,6 +17,8 @@ public class MoveUpAnimation extends Behaviour {
 	private Vec3 endPos = null;
 
 	private Translate translate;
+	
+	private int row, col, door;
 
 	@Override
 	public void update(float delta) {
@@ -34,23 +36,29 @@ public class MoveUpAnimation extends Behaviour {
 			log.trace("finished");
 			// if (isFinished()) {
 			// remove collision for this door
-			Entity player = getOwner().getComponent(ProximitySensor.class)
-					.getTarget();
-			Vec3 pos = player.getTransform().getPosition();
-			int wallSize = player.getComponent(WASDCollisions.class)
-					.getWallsize();
-			int col = (int) ((pos.getX() / wallSize));
-			int row = (int) ((pos.getZ() / wallSize));
-			int door = player.getComponent(WASDCollisions.class).getDoor(row,
-					col);
+//			Entity player = getOwner().getComponent(ProximitySensor.class)
+//					.getTarget();
+//			Vec3 pos = player.getTransform().getPosition();
+//			int wallSize = player.getComponent(WASDCollisions.class)
+//					.getWallsize();
+//			int col = (int) ((pos.getX() / wallSize));
+//			int row = (int) ((pos.getZ() / wallSize));
+//			int door = player.getComponent(WASDCollisions.class).getDoor(row,
+//					col);
 			// zero out door at you position
-			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
+//			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
 			getOwner().attachComponent(new MoveDownAnimation(row, col, door));
 			getOwner().detachComponent(this);
 			return;
 
 		}
 
+	}
+	
+	public void setCollision(int row, int col, int door){
+		this.row = row;
+		this.col = col;
+		this.door = door;
 	}
 
 
