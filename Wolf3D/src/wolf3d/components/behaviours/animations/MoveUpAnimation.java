@@ -36,18 +36,18 @@ public class MoveUpAnimation extends Behaviour {
 		Transform t = getOwner().getTransform();
 		if (startPos == null) {
 			startPos = t.getPosition();
-			endPos = startPos.add(0, distance/2, 0);
+			endPos = startPos.add(0, distance, 0);
 			translate = new Translate(startPos, endPos, speed);
 			getOwner().attachComponent(translate);
 		}
 		
-		if(halfwaydown){
-			if (!getOwner().contains(translate)) {
-				getOwner().attachComponent(new MoveDownAnimation(row, col, door));
-				getOwner().detachComponent(this);
-				return;
-			}
-		}
+//		if(halfwaydown){
+//			if (!getOwner().contains(translate)) {
+//				getOwner().attachComponent(new MoveDownAnimation(row, col, door));
+//				getOwner().detachComponent(this);
+//				return;
+//			}
+//		}
 
 		if (!getOwner().contains(translate)) {
 			// remove collision for this door
@@ -62,11 +62,14 @@ public class MoveUpAnimation extends Behaviour {
 					col);
 			// zero out door at you position
 			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
-			startPos = endPos;
-			endPos = startPos.add(0, distance/2, 0);
-			translate = new Translate(startPos, endPos, speed);
-			getOwner().attachComponent(translate);
-			halfwaydown = true;
+//			startPos = endPos;
+//			endPos = startPos.add(0, distance/2, 0);
+//			translate = new Translate(startPos, endPos, speed);
+//			getOwner().attachComponent(translate);
+			getOwner().attachComponent(new MoveDownAnimation(row, col, door));
+			getOwner().detachComponent(this);
+			return;
+//			halfwaydown = true;
 
 		}
 		
