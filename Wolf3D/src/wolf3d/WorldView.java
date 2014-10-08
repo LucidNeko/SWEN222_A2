@@ -39,8 +39,8 @@ public class WorldView extends GameCanvas implements View{
 	private Camera camera;
 
 	/** Create a new WorldView over the given World. */
-	public WorldView(GLCapabilities glCapabilities, int width, int height, World world) {
-		super(glCapabilities, width, height);
+	public WorldView(int width, int height, World world) {
+		super(width, height);
 		this.world = world;
 	}
 
