@@ -9,6 +9,11 @@ import engine.components.GL2Renderer;
 import engine.components.MeshFilter;
 import engine.texturing.Mesh;
 
+/**
+ * 
+ * @author Hamish
+ *
+ */
 public class WireframeMeshRenderer extends GL2Renderer {
 
 	@Override
