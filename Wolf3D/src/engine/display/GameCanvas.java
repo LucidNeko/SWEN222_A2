@@ -12,6 +12,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,10 +22,19 @@ import org.apache.logging.log4j.Logger;
  * Base class for all OpenGl renderable (awt)components
  * @author Hamish
  */
-public abstract class GameCanvas extends GLCanvas implements GLEventListener {
+public abstract class GameCanvas extends GLJPanel implements GLEventListener { //TODO: GLJPanel vs GLCanvas.......
 	private static final long serialVersionUID = -1372862841511384090L;
 
 	protected static final Logger log = LogManager.getLogger();
+	
+	/**
+	 * Creates a new GameCanvas. Uses a default GLCompatabilities.
+	 * @param width
+	 * @param height
+	 */
+	public GameCanvas(int width, int height) {
+		this(null, width, height);
+	}
 
 	/**
 	 * Creates a new GameCanvas with the given capabilities and a preferred size of (width, height).
