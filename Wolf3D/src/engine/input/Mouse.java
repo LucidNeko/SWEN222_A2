@@ -2,12 +2,16 @@ package engine.input;
 
 import java.awt.AWTException;
 import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +29,10 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	public static final int LEFT_BUTTON = MouseEvent.BUTTON1;
 	public static final int MIDDLE_BUTTON = MouseEvent.BUTTON2;
 	public static final int RIGHT_BUTTON = MouseEvent.BUTTON3;
+	
+	public static Cursor CURSOR_INVISIBLE = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TRANSLUCENT), new Point(0,0), "inviscursor");
+	public static Cursor CURSOR_CROSSHAIR = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+	public static Cursor CURSOR_DEFAULT = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	
 	private static float MOUSE_SENSITIVITY = 0.5f;
 	
@@ -73,6 +81,11 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		if(Mouse.component == component) {
 			Mouse.component = null;
 		}
+	}
+	
+	public static void setCursor(Cursor cursor) {
+		if(component != null)
+			component.setCursor(cursor);
 	}
 	
 	/**
