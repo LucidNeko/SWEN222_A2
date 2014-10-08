@@ -184,6 +184,19 @@ public class Mesh implements Iterable<Vec3> {
 		gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		gl.glDisableClientState(GL_NORMAL_ARRAY);
 	}
+	
+	/**
+	 * Creates and returns a scaled version of this mesh.
+	 * @param scale The scale factor.
+	 * @return A new (scaled) Mesh.
+	 */
+	public Mesh getScaledInstance(float scale) {
+		Vec3[] scaledVertices = new Vec3[vertices.length];
+		for(int i = 0; i < vertices.length; i++) {
+			scaledVertices[i] = vertices[i].mul(scale);
+		}
+		return new Mesh(scaledVertices, uvs, triangles);
+	}
 
 
 
