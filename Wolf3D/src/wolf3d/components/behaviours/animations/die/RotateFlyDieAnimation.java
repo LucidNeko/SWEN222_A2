@@ -7,10 +7,7 @@ import engine.components.Transform;
 import engine.core.World;
 
 public class RotateFlyDieAnimation extends Behaviour {
-	private float speed = 0.01f; // 1.0 units per second.
-	private float rotationAmount = 90; // 2 units.
-
-	private Transform startPos = null;
+	private float speed = 0.1f; // 1.0 units per second.
 
 	private float time;
 	private World world;
