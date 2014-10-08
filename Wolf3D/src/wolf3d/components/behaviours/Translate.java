@@ -22,9 +22,7 @@ public class Translate extends Behaviour {
 	@Override
 	public void update(float delta) {
 		requires(Transform.class);
-		
-		log.trace("entity={}", getOwner().getName());
-		
+
 		t = Mathf.clamp(t+(speed*delta), 0, 1);
 		Transform transform = getOwner().getTransform();
 
