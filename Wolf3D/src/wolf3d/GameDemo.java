@@ -99,7 +99,7 @@ public class GameDemo extends GameLoop {
 
 		Entity skybox = world.createEntity("skybox");
 		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
-		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox.png", true)));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));
 		skybox.attachComponent(new Behaviour() {
 			//moves the box around with player so they can't come close to the edges.
 			@Override
