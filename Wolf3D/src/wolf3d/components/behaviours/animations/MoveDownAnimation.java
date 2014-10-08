@@ -1,9 +1,11 @@
 package wolf3d.components.behaviours.animations;
 
 import wolf3d.components.behaviours.AddAnimation;
+import wolf3d.components.behaviours.DoorBehaviour;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
+import wolf3d.components.sensors.SpacebarSensor;
 import engine.common.Mathf;
 import engine.common.Vec3;
 import engine.components.Behaviour;
@@ -45,7 +47,7 @@ public class MoveDownAnimation extends Behaviour {
 			log.trace("finished");
 			Entity player = getOwner().getComponent(ProximitySensor.class).getTarget();
 			player.getComponent(WASDCollisions.class).setDoor(row, col, door);
-			getOwner().attachComponent(AddAnimation.class);
+			getOwner().attachComponent(DoorBehaviour.class);
 			getOwner().detachComponent(this);
 		}
 
