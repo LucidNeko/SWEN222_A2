@@ -97,7 +97,9 @@ public class Wolf3DNetworkingDemo extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				/*Starts the GUI frame*/
-				WolfFrameNetworkingDemo wf = new WolfFrameNetworkingDemo(ip,port);
+				new Wolf3DNetworkingDemo(port, ip);
+				
+				//WolfFrameNetworkingDemo wf = new WolfFrameNetworkingDemo(ip,port);
 			}
 		});
 	}
