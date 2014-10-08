@@ -1,7 +1,12 @@
 package wolf3d.components;
 
 import engine.components.Component;
-
+/**
+ * This class is responsible for storing and updating the strength of the entity
+ * that it is attached to
+ * @author Sameer Magan 300223776
+ *
+ */
 public class Strength extends Component{
 	private int strength = 100;
 	
