@@ -37,18 +37,11 @@ public class Server extends Thread{
 
 	/**
 	 * Send a message to client number [id]
-	 * @param id The client to send the message to. If id=-1, send to all clients.
+	 * @param id The client to send the message to.
 	 * @param msg the message.
 	 */
 	public void pushToClient(int id, byte[] msg){
-		if(id==-1){
-			for(ServerConnection sc : connections){
-				sc.pushToClient(msg);
-			}
-		}
-		else{
-			connections[id].pushToClient(msg);
-		}
+		connections[id].pushToClient(msg);
 	}
 
 	/**
@@ -56,7 +49,11 @@ public class Server extends Thread{
 	 */
 	public void run(){
 		System.out.println("Server listening for connections...");
+
 		while(listening){
+
+			pushToAllClients("Waiting for " + (capacity - index) + " more players to join");
+
 			Socket sock;
 			try {
 				sock = ss.accept();
@@ -66,14 +63,15 @@ public class Server extends Thread{
 				if(index==(capacity-1)){
 					listening = false;
 
+
 					//begin listening
 					for(ServerConnection c : connections){
 						c.start();
 					}
 
 					//let the clients know the game can now begin.
-					String listening = "start";
-					pushToClient(-1,listening.getBytes());
+					pushToAllClients("Begin");
+					assignIDs();
 				}
 				index++;
 
@@ -87,6 +85,32 @@ public class Server extends Thread{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	private void assignIDs() {
+		// TODO Auto-generated method stub
+
+		//first give every client their id
+		for(int i = 0; i<capacity; i++){
+			connections[i].pushToClient((-i));
+
+			//then give the other clients ids of other players, we dont care about order.
+			for(int j = 0; j<capacity; j++){
+				if(j!=i){
+					connections[i].pushToClient(-j);
+				}
+			}
+		}
+
+	}
+
+	private void pushToAllClients(String string) {
+		// TODO Auto-generated method stub
+		for(ServerConnection sc : connections){
+			if(sc != null){
+				sc.pushToClient(string);
+			}
 		}
 	}
 

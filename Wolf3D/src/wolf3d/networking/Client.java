@@ -99,6 +99,9 @@ public class Client extends Thread{
 		if(gameStart){
 			gameloop.receiveMessage(msg);
 		}
+		else{
+			System.out.println(msg.readUTF());
+		}
 //		else{
 //			if(msg.readUTF()=="start"){
 //				gameStart = true;

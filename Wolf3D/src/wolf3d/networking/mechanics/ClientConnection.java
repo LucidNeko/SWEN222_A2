@@ -19,7 +19,7 @@ public class ClientConnection extends Thread{
 	private Socket soc;
 	private DataOutputStream out;
 	private DataInputStream in;
-	
+
 	private Client master;
 
 	private boolean uncollectedMsg = false;;
@@ -48,13 +48,7 @@ public class ClientConnection extends Thread{
 				//listen
 				while(true){
 					if(in.available()>0){
-						if(master.hasGameStarted()){
 						master.receivedMessage(in);
-						}
-						else{
-							if(in.readUTF()=="start"){
-								master.startGame(out);
-							}
 						}
 //						int length = in.readInt();
 //						msg = new byte[length];
@@ -62,7 +56,7 @@ public class ClientConnection extends Thread{
 //						System.out.println(new String(msg));
 //						uncollectedMsg = true;
 					}
-				}
+
 			}
 			catch (IOException e) {
 				// TODO Auto-generated catch block
