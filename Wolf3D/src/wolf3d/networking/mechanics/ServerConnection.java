@@ -91,7 +91,6 @@ public class ServerConnection extends Thread{
 		// TODO Auto-generated method stub
 
 		try {
-			System.out.println("what  " + i);
 			out.writeInt(i);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

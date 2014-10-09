@@ -70,8 +70,8 @@ public class Server extends Thread{
 					}
 
 					//let the clients know the game can now begin.
-					pushToAllClients("Begin");
 					assignIDs();
+					pushToAllClients("Begin");
 				}
 				index++;
 
@@ -98,8 +98,8 @@ public class Server extends Thread{
 
 			//let player know how many other players there are
 			connections[i].pushToClient(capacity-1);
-			
-			
+
+
 			//then give the other clients ids of other players, we dont care about order.
 			for(int j = 0; j<capacity; j++){
 				if(j!=i){
