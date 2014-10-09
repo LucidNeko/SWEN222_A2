@@ -97,7 +97,6 @@ public class Client extends Thread{
 
 	public void receivedMessage(DataInputStream msg) throws IOException{
 		if(gameStart){
-			System.out.println("FANeiguRZ");
 			gameloop.receiveMessage(msg);
 		}
 		else{
@@ -122,6 +121,7 @@ public class Client extends Thread{
 	}
 
 	public void startGame(DataOutputStream os){
+		gameStart = true;
 		gameloop.beginGame(os);
 	}
 

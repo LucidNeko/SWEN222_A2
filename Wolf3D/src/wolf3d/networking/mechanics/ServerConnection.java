@@ -33,10 +33,19 @@ public class ServerConnection extends Thread{
 
 			while(true){
 				if(in.available()>0){
+					//Now forward this msg to all clients.
+
+					String marker = in.readUTF();
+
+					if(marker.equals("transform")){
+						master.pushToAllClients(in.readUTF());
+					}
+					/*
 					int length = in.readInt();
 					byte[] message = new byte[length];
 					in.readFully(message);
 					master.pushToClient(-1, message);
+					*/
 					/*
 					String s = new String(message);
 					System.out.println(s);
