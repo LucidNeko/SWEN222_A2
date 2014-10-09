@@ -5,14 +5,16 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import wolf3d.networking.Server;
+
 public class ServerConnection extends Thread{
 	private Socket soc;
 	private DataInputStream in;
 	private DataOutputStream out;
 	
-	private ServerConnectionsMaster master;
+	private Server master;
 
-	public ServerConnection(Socket socket, ServerConnectionsMaster master){
+	public ServerConnection(Socket socket, Server master){
 		soc=socket;
 		this.master = master;
 		try {
