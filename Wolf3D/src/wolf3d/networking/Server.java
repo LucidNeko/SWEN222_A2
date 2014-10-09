@@ -110,7 +110,7 @@ public class Server extends Thread{
 
 	}
 
-	private void pushToAllClients(String string) {
+	public void pushToAllClients(String string) {
 		// TODO Auto-generated method stub
 		for(ServerConnection sc : connections){
 			if(sc != null){
