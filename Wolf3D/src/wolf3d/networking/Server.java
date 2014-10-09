@@ -93,12 +93,12 @@ public class Server extends Thread{
 
 		//first give every client their id
 		for(int i = 0; i<capacity; i++){
-			connections[i].pushToClient((-i));
+			connections[i].pushToClient((-(i+1)));
 
 			//then give the other clients ids of other players, we dont care about order.
 			for(int j = 0; j<capacity; j++){
 				if(j!=i){
-					connections[i].pushToClient(-j);
+					connections[i].pushToClient(-(j+1));
 				}
 			}
 		}
