@@ -100,6 +100,16 @@ public class Client extends Thread{
 			gameloop.receiveMessage(msg);
 		}
 		else{
+			String st = msg.readUTF();
+			System.out.println(st);
+			if(st.equals("ids")){
+				System.out.println("Your ID is: "+msg.readInt());
+				System.out.println("Other IDs are: ");
+				int noOthers = msg.readInt();
+				for(int i = 0; i< noOthers; i++){
+					System.out.println(msg.readInt());
+				}
+			}
 			System.out.println(msg.readUTF());
 		}
 //		else{
