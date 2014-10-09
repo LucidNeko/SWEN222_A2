@@ -82,8 +82,8 @@ public class DatabaseTests {
 		component = new Component();
 		Component component2 = new Component();
 		Camera cc = new Camera();
-		a = world.createEntity("0");
-		b = world.createEntity("1");
+		a = world.createEntity("entA");
+		b = world.createEntity("entB");
 		return world;
 	}
 }

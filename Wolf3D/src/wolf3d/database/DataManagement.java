@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import engine.common.Vec3;
 import engine.components.Component;
@@ -50,7 +51,7 @@ public class DataManagement {
 		Gson gson = new Gson();
 		World world = new World();
 		Scanner scan = new Scanner(Resources.getInputStream(fname));
-
+		//check ID and name match after deserialization to check case of duplicate IDs etc
 		int name = 0;
 		while(scan.hasNext()) {
 			Entity e = world.createEntity(Integer.toString(name));
@@ -65,12 +66,14 @@ public class DataManagement {
 	}
 
 	/**
-	 * Saves the current Wolf3D world to a given filename.
+	 * Saves the current Wolf3D world's entities and their Transform
+	 * component using JSON, entity IDs and names are not stored in
+	 * JSON formatting.
 	 * @param filename
 	 * @param world
 	 */
-	public static void saveWorld(String fname, World world) {
-		Gson gson = new Gson();
+	public static void saveWorld(String fname, World world) {	//TODO: should get world inside method, not param
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Collection<Entity> entities = world.getEntities();
 
 		BufferedWriter writer = null;
@@ -78,8 +81,11 @@ public class DataManagement {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(fname)));
 			for (Entity entity : entities) {
-				writer.write(gson.toJson(entity.getComponent(Transform.class).getPosition()));
-				writer.newLine();
+				writer.write("#\n");			// Hash indicates start of entity record
+				writer.write(Integer.toString(entity.getID())+"\n");
+				writer.write(entity.getName()+"\n");
+				writer.write(gson.toJson(entity.getComponent(Transform.class)));
+				writer.write("\n*\n\n");		// Asterisk indicates end of entity record
 			}
 		} catch (IOException ex) {
 			// report
