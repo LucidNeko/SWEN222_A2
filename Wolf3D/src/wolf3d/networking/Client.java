@@ -28,10 +28,10 @@ public class Client extends Thread{
 	private Entity player;
 	private View view;
 	private Camera camera;
-	
+
 	private boolean gameStart = false;
-	
-	
+
+
 	private GameNetworkDemo gameloop;
 
 
@@ -45,7 +45,7 @@ public class Client extends Thread{
 	public Client(String playerName, String ipAddress, int port, GameNetworkDemo gameloop) throws UnknownHostException, IOException{
 		Socket sock = new Socket(ipAddress,port);
 		connection = new ClientConnection(sock,this);
-		
+
 		this.gameloop = gameloop;
 
 		//Create this player on the server
@@ -94,7 +94,7 @@ public class Client extends Thread{
 			//
 		}
 	}
-	
+
 	public void receivedMessage(DataInputStream msg) throws IOException{
 		if(gameStart){
 			gameloop.receiveMessage(msg);
@@ -106,7 +106,7 @@ public class Client extends Thread{
 //			}
 //		}
 	}
-	
+
 	public void startGame(DataOutputStream os){
 		gameloop.beginGame(os);
 	}
@@ -114,21 +114,21 @@ public class Client extends Thread{
 	public boolean hasGameStarted() {
 		// TODO Auto-generated method stub
 		return gameStart;
-		
+
 	}
 
-	/*
+
 	/**
 	 * Test method.
 	 * @param args
 	 * @throws NumberFormatException
 	 * @throws UnknownHostException
 	 * @throws IOException
-	 
+	 */
 	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException{
-		Client pc = new Client("Bob McBob", args[0],Integer.parseInt(args[1]));
+		Client pc = new Client("Bob McBob", args[0],Integer.parseInt(args[1]), null);
 		pc.start();
 	}
-	*/
+
 
 }

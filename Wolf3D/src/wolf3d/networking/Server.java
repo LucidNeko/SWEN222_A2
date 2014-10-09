@@ -89,4 +89,9 @@ public class Server extends Thread{
 			e.printStackTrace();
 		}
 	}
+
+	public static void main(String[] args){
+		Server serber = new Server(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+		serber.start();
+	}
 }
