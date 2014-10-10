@@ -16,9 +16,9 @@ public class MapMakerFrame implements MouseListener {
 	private MapMakerCanvas mmc;
 	private JFrame f;
 
-	private static final int width = 1000;
-	private static final int height = 1000;
 	private final int cellDim = mmc.getCellDim(); // Height and width of a cell, also offset
+	private final int width = mmc.getCellDim()*50+5; // the 5 accounts for the sideways slant
+	private final int height = mmc.getCellDim()*50+27; //25 is the bar accounts for the bar at the top
 
 	public MapMakerFrame(){
 		/*Basic Frame Setup*/
@@ -31,15 +31,14 @@ public class MapMakerFrame implements MouseListener {
 		mmc = new MapMakerCanvas();
 		f.add(mmc);
 		f.addMouseListener(this);
-		f.setResizable(false);
+		f.setResizable(true);
 		f.setVisible(true);
-
 	}
 
-	public static int getWidth() {
+	public int getWidth() {
 		return width;
 	}
-	public static int getHeight() {
+	public int getHeight() {
 		return height;
 	}
 
@@ -47,10 +46,13 @@ public class MapMakerFrame implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		/* The cell that you clicked*/
-		int cellX=(int)e.getX()/cellDim;
-		int cellY=(int)e.getY()/cellDim;
-		System.out.println(cellX);
-		System.out.println(cellY);
+		int cellX=(int)(e.getX()/cellDim);
+		int cellY=(int)(((e.getY()-((int)cellDim/2))/cellDim))-1;//Y location does not scale properly, this puts it roughly in the right area
+		if(cellY<0){
+			cellY=0;
+		}
+		System.out.println(e.getX());
+		System.out.println(e.getY());
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -75,5 +77,4 @@ public class MapMakerFrame implements MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-
 }
