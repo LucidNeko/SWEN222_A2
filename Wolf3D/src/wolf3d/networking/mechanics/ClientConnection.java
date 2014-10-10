@@ -113,5 +113,14 @@ public class ClientConnection extends Thread{
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+	public void sendToServer(String s) throws IOException{
+		out.writeUTF(s);
+	}
+	
+	public void sendToServer(int i) throws IOException{
+		out.writeInt(i);
+	}
 
 }

@@ -7,9 +7,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+
 import wolf3d.GameNetworkDemo;
 import wolf3d.networking.mechanics.ClientConnection;
 import engine.components.Camera;
+import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
 import engine.display.View;
@@ -102,6 +105,17 @@ public class Client extends Thread{
 		else{
 			String st = msg.readUTF();
 			System.out.println(st);
+			if(st.equals("transform")){
+				int id = msg.readInt();
+				Entity ent = world.getEntity(id);
+				Transform t;
+				Gson g = new Gson();
+				t = g.fromJson(msg.readUTF(), Transform.class);
+				ent.getTransform().set(t);
+			}
+			if(st.equals("message")){
+				
+			}
 			if(st.equals("ids")){
 				System.out.println("Your ID is: "+msg.readInt());
 				System.out.println("Other IDs are: ");
@@ -109,6 +123,9 @@ public class Client extends Thread{
 				for(int i = 0; i< noOthers; i++){
 					System.out.println(msg.readInt());
 				}
+			}
+			if(st.equals("begin")){
+				startGame();
 			}
 			//System.out.println(msg.readUTF());
 		}
@@ -120,15 +137,14 @@ public class Client extends Thread{
 //		}
 	}
 
-	public void startGame(DataOutputStream os){
+	public void startGame(){
 		gameStart = true;
-		gameloop.beginGame(os);
+		gameloop.start();
 	}
 
 	public boolean hasGameStarted() {
 		// TODO Auto-generated method stub
 		return gameStart;
-
 	}
 
 

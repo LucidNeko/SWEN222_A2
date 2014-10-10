@@ -146,4 +146,13 @@ public class Server extends Thread{
 		Server serber = new Server(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 		serber.start();
 	}
+
+	public void pushToAllClients(int i) {
+		// TODO Auto-generated method stub
+		for(ServerConnection sc : connections){
+			if(sc != null){
+				sc.pushToClient(i);
+			}
+		}
+	}
 }
