@@ -73,6 +73,7 @@ public class GameDemo extends GameLoop {
 	}
 
 	private void createEntities() {
+//		Parser parser = new Parser("Map2.txt", "Doors2.txt");
 		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
