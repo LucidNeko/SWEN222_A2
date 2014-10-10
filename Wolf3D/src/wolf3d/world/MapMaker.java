@@ -16,5 +16,4 @@ public class MapMaker {
 		// TODO Auto-generated method stub
 		MapMakerFrame mmf = new MapMakerFrame();
 	}
-
 }
