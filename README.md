@@ -1,6 +1,10 @@
 Wolf3D
 ==========
+This is a start for the class diagram
+https://drive.google.com/file/d/0B2CawmmmcfjSbm5kZnNodWZGLUE/view?usp=sharing
 
+If you want to edit the file use this link
+https://drive.google.com/file/d/0B2CawmmmcfjScTc3aTQ2LWo0c1k/view?usp=sharing
 Note: Need system to generate unique IDs for Entities.
 
 Key concepts:
