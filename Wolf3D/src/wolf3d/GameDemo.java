@@ -73,8 +73,8 @@ public class GameDemo extends GameLoop {
 	}
 
 	private void createEntities() {
-//		Parser parser = new Parser("Map2.txt", "Doors2.txt");
-		Parser parser = new Parser("Map.txt", "Doors.txt");
+		Parser parser = new Parser("Map2.txt", "Doors2.txt");
+//		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
 		parser.passTextures();
@@ -221,7 +221,7 @@ public class GameDemo extends GameLoop {
 		//if control is pressed (toggles) frees the mouse.
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(!Mouse.isGrabbed());
-		
+
 		//stop the Mouse from freeing itself by going out of the bounds of the component.
 		if(Mouse.isGrabbed())
 			Mouse.centerMouseOverComponent();
