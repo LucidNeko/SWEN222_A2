@@ -2,7 +2,7 @@ Wolf3D
 ==========
 This is a start for the class diagram
 
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=5,IE=9" ><![endif]--><!DOCTYPE html><html>
+<html>
 <head>
 <title>Class Diagram</title>
 </head>
