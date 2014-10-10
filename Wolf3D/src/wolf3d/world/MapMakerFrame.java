@@ -27,8 +27,8 @@ public class MapMakerFrame implements MouseListener {
 	private final int sideSlant = 5;
 	private final int vertSlant = 27;
 	private final int cellDim = mmc.getCellDim(); // Height and width of a cell, also offset
-	private final int width = mmc.getCellDim()*50+sideSlant; // the 5 accounts for the sideways slant
-	private final int height = mmc.getCellDim()*50+vertSlant; //50 is the bar accounts for the bar at the top
+	private final int width = mmc.getCellDim()*mmc.mmd.width+sideSlant; // the 5 accounts for the sideways slant
+	private final int height = mmc.getCellDim()*mmc.mmd.height+vertSlant; //50 is the bar accounts for the bar at the top
 
 	private String walls;
 	private static boolean[] dirUsed= {false, false, false, false};//whether there is already an entry for W, D, S or A in the string
@@ -44,6 +44,7 @@ public class MapMakerFrame implements MouseListener {
 		f.setResizable(true);
 
 		/*Adds button*/
+		//Need to make button neater
 		jb = new JButton();
 		f.add(jb, BorderLayout.NORTH);
 		jb.addActionListener(new java.awt.event.ActionListener() {
@@ -63,7 +64,7 @@ public class MapMakerFrame implements MouseListener {
 
 	private int wallNibble(String s){
 		int wCount = 0;
-		if(s.equals(""))return wCount;
+		if(s.equals("")|| s.equals(null))return wCount;
 		s=s.toUpperCase();
 		char[]curSegment = s.toCharArray();
 		for(int i=0; i<curSegment.length; i++){
@@ -108,16 +109,14 @@ public class MapMakerFrame implements MouseListener {
     	try {
 			//Map.txt will always be in the workspace folder
 			PrintStream ps = new PrintStream("Map.txt");
-			//TODO change from 50
-			char[]cArray=new char[50];
-			for(int i=0; i<50; i++){
-				for(int j=0; j<50; j++){
+			char[]cArray=new char[mmc.mmd.height];
+			for(int i=0; i<mmc.mmd.height; i++){
+				for(int j=0; j<mmc.mmd.width; j++){
 					cArray[j]=mmc.mmd.getData(i,j);
 					if(cArray[j]== ' '){
 						cArray[j]='0';
 					}
-					//TODO change from 50
-					if(j==50-1){
+					if(j==mmc.mmd.height-1){
 						String str = new String(cArray);
 						ps.println(str);
 					}
