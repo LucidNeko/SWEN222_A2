@@ -86,7 +86,8 @@ public class EntityFactory {
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
 
 		//Create player
-		Entity player = world.createEntity("Player", id);
+//		Entity player = world.createEntity("Player", id);
+		Entity player = world.createEntity(id, "Player");
 		player.attachComponent(Camera.class);
 //		player.attachComponent(PyramidRenderer.class);
 		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
@@ -116,7 +117,8 @@ public class EntityFactory {
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
 
 		//Create player
-		Entity player = world.createEntity("Other Player", id);
+//		Entity player = world.createEntity("Other Player", id);
+		Entity player = world.createEntity(id, "Other Player");
 //		player.attachComponent(Camera.class);
 //		player.attachComponent(PyramidRenderer.class);
 		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
