@@ -128,7 +128,7 @@ public class GameDemoNet2 extends GameLoop {
 
 		EntityFactory.createSun(world);
 
-		camera = player.getComponent(Camera.class);
+		//camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
 		Entity skybox = world.createEntity("skybox");
@@ -309,10 +309,12 @@ public class GameDemoNet2 extends GameLoop {
 		System.out.println(st);
 		if(st.equals("transform")){
 			int id = msg.readInt();
+			System.out.println("On id: "+id);
 			Entity ent = world.getEntity(id);
 			Transform t;
 			Gson g = new Gson();
 			t = g.fromJson(msg.readUTF(), Transform.class);
+			System.out.println("The created transform: " + t.toString());
 			ent.getTransform().set(t);
 		}
 		if(st.equals("message")){
