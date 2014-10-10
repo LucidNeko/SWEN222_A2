@@ -73,8 +73,8 @@ public class GameDemo extends GameLoop {
 	}
 
 	private void createEntities() {
-//		Parser parser = new Parser("Map2.txt", "Doors2.txt");
-		Parser parser = new Parser("Map.txt", "Doors.txt");
+		Parser parser = new Parser("Map2.txt", "Doors2.txt");
+//		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
 		parser.passTextures();
@@ -100,7 +100,7 @@ public class GameDemo extends GameLoop {
 
 		Entity skybox = world.createEntity("skybox");
 		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
-		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox2.jpg", true)));
 		skybox.attachComponent(new Behaviour() {
 			//moves the box around with player so they can't come close to the edges.
 			@Override
@@ -221,7 +221,7 @@ public class GameDemo extends GameLoop {
 		//if control is pressed (toggles) frees the mouse.
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(!Mouse.isGrabbed());
-		
+
 		//stop the Mouse from freeing itself by going out of the bounds of the component.
 		if(Mouse.isGrabbed())
 			Mouse.centerMouseOverComponent();
