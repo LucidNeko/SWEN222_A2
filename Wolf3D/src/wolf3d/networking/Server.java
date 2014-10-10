@@ -106,16 +106,21 @@ public class Server extends Thread{
 
 		//first give every client their id
 		for(int i = 0; i<capacity; i++){
+			System.out.println("SendTo"+i+": \"ids\"");
 			connections[i].pushToClient("ids");
+			System.out.println("SendTo"+i+": [int]"+-(i+1));
 			connections[i].pushToClient((-(i+1)));
 
 			//let player know how many other players there are
+
+			System.out.println("SendTo"+i+": [int]"+(capacity-1));
 			connections[i].pushToClient(capacity-1);
 
 
 			//then give the other clients ids of other players, we dont care about order.
 			for(int j = 0; j<capacity; j++){
 				if(j!=i){
+					System.out.println("SendTo"+i+": [int]"+(-(j+1)));
 					connections[i].pushToClient(-(j+1));
 				}
 			}
@@ -129,6 +134,7 @@ public class Server extends Thread{
 	 */
 	public void pushToAllClients(String string) {
 		// TODO Auto-generated method stub
+		System.out.println("SendAll: " + string);
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				sc.pushToClient(string);
@@ -147,6 +153,7 @@ public class Server extends Thread{
 
 	public void pushToAllClients(int i) {
 		// TODO Auto-generated method stub
+		System.out.println("SendAll: [int]"+i);
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				sc.pushToClient(i);

@@ -1,16 +1,17 @@
 package wolf3d.networking;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import com.google.gson.Gson;
-
+import wolf3d.GameDemoNet2;
 import wolf3d.GameNetworkDemo;
 import wolf3d.networking.mechanics.ClientConnection;
+
+import com.google.gson.Gson;
+
 import engine.components.Camera;
 import engine.components.Transform;
 import engine.core.Entity;
@@ -35,7 +36,7 @@ public class Client extends Thread{
 	private boolean gameStart = false;
 
 
-	private GameNetworkDemo gameloop;
+	private GameDemoNet2 gameloop;
 
 
 	/**
@@ -45,7 +46,7 @@ public class Client extends Thread{
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	public Client(String playerName, String ipAddress, int port, GameNetworkDemo gameloop) throws UnknownHostException, IOException{
+	public Client(String playerName, String ipAddress, int port, GameDemoNet2 gameloop) throws UnknownHostException, IOException{
 		Socket sock = new Socket(ipAddress,port);
 		connection = new ClientConnection(sock,this);
 
@@ -99,6 +100,8 @@ public class Client extends Thread{
 	}
 
 	public void receivedMessage(DataInputStream msg) throws IOException{
+		gameloop.receiveMessage(msg);
+		/*
 		if(gameStart){
 			gameloop.receiveMessage(msg);
 		}
@@ -129,6 +132,7 @@ public class Client extends Thread{
 			}
 			//System.out.println(msg.readUTF());
 		}
+		*/
 //		else{
 //			if(msg.readUTF()=="start"){
 //				gameStart = true;

@@ -2,12 +2,13 @@ package wolf3d;
 
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.gson.Gson;
 
 import wolf3d.components.Health;
 import wolf3d.components.Weight;
@@ -18,15 +19,11 @@ import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
-import wolf3d.components.behaviours.WASDWalking;
 import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.networking.Client;
 import wolf3d.world.Parser;
-
-import com.google.gson.Gson;
-
 import engine.common.Mathf;
 import engine.common.Vec3;
 import engine.components.Behaviour;
@@ -46,35 +43,52 @@ import engine.texturing.Texture;
 import engine.util.Resources;
 
 /**
- * This is a copy of GameDemo
- * made to connect to a server though, and send simple messages anytime an action is performed
- * This is merely to demonstrate the network does work.
+ * GameDemo is a demo game that shows off the GameLoop class and the Entity/Component system.
+ * @author Hamish Rae-Hodgson
+ *
  */
-public class GameNetworkDemo extends GameLoop {
+public class GameDemoNet2 extends GameLoop {
 	private static final Logger log = LogManager.getLogger();
 
-	private static final int FPS = 60; //frames per second/regular updates per second.
-	private static final int FUPS = 50; //fixed updates per second.
+	private static final int FPS = 40; //frames per second/regular updates per second.
+	private static final int FUPS = 40; //fixed updates per second.
 
 	private World world;
 	private View view;
 
-	private boolean gameStarted = false;
-	private DataOutputStream os;
-
 	private Camera camera;
 	private Entity player;
-
+	
 	private Client client;
 
 	/**
 	 * Create a new GameDemo with the given world as it's world.
 	 * @param world The world.
 	 */
-	public GameNetworkDemo(World world) {
+	public GameDemoNet2(World world) {
 		super(FPS, FUPS);
 		this.world = world;
 		createEntities();
+	}
+
+	public GameDemoNet2(World world, String ip, int port) {
+		// TODO Auto-generated constructor stub
+
+		super(FPS, FUPS);
+		this.world = world;
+		
+		//dont create the entities until the game starts
+		//createEntities();
+		
+		try {
+			client = new Client("Joe",ip,port,this);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -86,6 +100,8 @@ public class GameNetworkDemo extends GameLoop {
 		this.view = view;
 	}
 
+	
+	
 	private void createEntities() {
 		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
@@ -97,9 +113,13 @@ public class GameNetworkDemo extends GameLoop {
 
 
 		//TODO: Entity Factory?
-		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
+		
+		//already made.
+		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
+		
+		
 		parser.createDoors(world, player);
 
 
@@ -113,7 +133,7 @@ public class GameNetworkDemo extends GameLoop {
 
 		Entity skybox = world.createEntity("skybox");
 		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
-		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox.png", true)));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));
 		skybox.attachComponent(new Behaviour() {
 			//moves the box around with player so they can't come close to the edges.
 			@Override
@@ -143,7 +163,7 @@ public class GameNetworkDemo extends GameLoop {
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
-		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
+//		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
@@ -220,48 +240,42 @@ public class GameNetworkDemo extends GameLoop {
 		entity.attachComponent(MeshRenderer.class).setMaterial(new Material(doorTex));
 	}
 
-
 	@Override
 	protected void tick(float delta) {
-		//this is a bit ugly... but for now POC.
-		if(gameStarted){
+		//escape closes the game.
+		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
+			System.exit(0);
+		}
 
-			//escape closes the game.
-			if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
-				System.exit(0);
-			}
+		if(Keyboard.isKeyDownOnce(KeyEvent.VK_X)) {
+			log.trace("Pressed X");
+		}
 
-			if(Keyboard.isKeyDownOnce(KeyEvent.VK_X)) {
-				log.trace("Pressed X");
-			}
+		//if control is pressed (toggles) frees the mouse.
+		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
+			Mouse.setGrabbed(!Mouse.isGrabbed());
+		
+		//stop the Mouse from freeing itself by going out of the bounds of the component.
+		if(Mouse.isGrabbed())
+			Mouse.centerMouseOverComponent();
 
-			//if control is held down frees the mouse.
-			if(Keyboard.isKeyDown(KeyEvent.VK_CONTROL))
-				Mouse.setGrabbed(false);
-			else Mouse.setGrabbed(true);
+		//Update all the behaviours attached to the entities.
+		for(Entity entity : world.getEntities()) {
+			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
+				behaviour.update(delta);
+				if(behaviour.hasChanged()){
+					//send over network.
 
-			//Update all the behaviours attached to the entities.
-			for(Entity entity : world.getEntities()) {
-				for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
-					behaviour.update(delta);
-					//SEND things, Simon, TO NETWORK HERE.
-					if(behaviour.hasChanged()){	
-						try {
-							client.sendToServer("transform");
-							Entity owner = behaviour.getOwner();
-							client.sendToServer(owner.getID());
-							Gson gs = new Gson();
-							client.sendToServer(gs.toJson(owner.getTransform()));
-							
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						/*
-						String msg = "Player has moved";
-						client.sendMessage(msg.getBytes());
-						behaviour.notifyObservers();
-						*/
+					try {
+						client.sendToServer("transform");
+						Entity owner = behaviour.getOwner();
+						client.sendToServer(owner.getID());
+						Gson gs = new Gson();
+						client.sendToServer(gs.toJson(owner.getTransform()));
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 			}
@@ -273,33 +287,54 @@ public class GameNetworkDemo extends GameLoop {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void createPlayer(int ID){
+			player = EntityFactory.createPlayerWithID(world, "Player", ID);
+	}
+	
+	public void createOtherPlayer(int ID){
+		EntityFactory.createOtherPlayer(world, "other", ID);
+	}
 
 	@Override
 	protected void render() {
 		if(view != null) view.display();
 	}
 
-	public void initConnection(int port, String ip) throws UnknownHostException, IOException {
+	public void receiveMessage(DataInputStream msg) throws IOException {
 		// TODO Auto-generated method stub
-		client = new Client("Bob", ip, port,this);
-	}
 
-	public void beginGame(DataOutputStream os) {
-		// TODO Auto-generated method stub
-		this.os = os;
-		gameStarted = true;
-	}
+		String st = msg.readUTF();
+		System.out.println(st);
+		if(st.equals("transform")){
+			int id = msg.readInt();
+			Entity ent = world.getEntity(id);
+			Transform t;
+			Gson g = new Gson();
+			t = g.fromJson(msg.readUTF(), Transform.class);
+			ent.getTransform().set(t);
+		}
+		if(st.equals("message")){
+			
+		}
+		if(st.equals("ids")){
+			int playerID = msg.readInt();
+			createPlayer(playerID);
+			System.out.println("Your ID is: "+playerID);
+			System.out.println("Other IDs are: ");
+			int noOthers = msg.readInt();
+			for(int i = 0; i< noOthers; i++){
+				int otID = msg.readInt();
+				createOtherPlayer(otID);
+				System.out.println(otID);
+			}
+		}
+		if(st.equals("begin")){
+			createEntities();
+			this.run();
+		}
 
-	public void receiveMessage(DataInputStream is) throws IOException {
-		// TODO Auto-generated method stub
-		Gson gs = new Gson();
-
-		int id = is.readInt();
-		Entity toChange = world.getEntity(id);
-
-		Transform newTransform = gs.fromJson(is.readUTF(), Transform.class);
-
-		toChange.getComponent(Transform.class).set(newTransform);
+			// TODO Auto-generated method stub
 	}
 
 }
