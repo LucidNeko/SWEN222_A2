@@ -48,8 +48,6 @@ public class Server extends Thread{
 	 * Server run thread, starts up the server and listens for new connections.
 	 */
 	public void run(){
-		System.out.println("Server listening for " + capacity + " connections...");
-
 		while(listening){
 
 			pushToAllClients("Waiting for " + (capacity - index) + " more players to join");

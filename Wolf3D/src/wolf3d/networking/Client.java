@@ -160,5 +160,14 @@ public class Client extends Thread{
 		pc.start();
 	}
 
+	public void sendToServer(String string) throws IOException {
+		// TODO Auto-generated method stub
+		connection.sendToServer(string);
+	}
+	
+	public void sendToServer(int i) throws IOException{
+		connection.sendToServer(i);
+	}
+
 
 }
