@@ -22,7 +22,7 @@ public class Server extends Thread{
 	/**
 	 * Construct a new server listening on a port and with a capacity.
 	 * @param port
-	 * @param capacity maximum players (game will start at first connection)
+	 * @param capacity maximum players (game will start only when all players have connected
 	 */
 	public Server(int port, int capacity) {
 		try {
@@ -48,11 +48,10 @@ public class Server extends Thread{
 	 * Server run thread, starts up the server and listens for new connections.
 	 */
 	public void run(){
-		System.out.println("Server listening for connections...");
-
 		while(listening){
 
 			pushToAllClients("Waiting for " + (capacity - index) + " more players to join");
+			System.out.println("Server listening for " + (capacity-index) + " more connections...");
 
 			Socket sock;
 			try {
@@ -71,7 +70,7 @@ public class Server extends Thread{
 
 					//let the clients know the game can now begin.
 					assignIDs();
-					pushToAllClients("Begin");
+					pushToAllClients("begin");
 				}
 				index++;
 
@@ -88,6 +87,20 @@ public class Server extends Thread{
 		}
 	}
 
+	/**
+	 * This method will send some IDs over the network for the clients to construct
+	 * themselves and other players. THe message looks as follows:
+	 * 
+	 * "ids"
+	 * [int - player id]
+	 * [int - # other clients]
+	 * [int - client 1 id]
+	 * [int - client 2 id]
+	 * ....
+	 * ....
+	 * ....
+	 * 
+	 */
 	private void assignIDs() {
 		// TODO Auto-generated method stub
 
@@ -110,6 +123,10 @@ public class Server extends Thread{
 
 	}
 
+	/**
+	 * Sends a string to every client.
+	 * @param string
+	 */
 	public void pushToAllClients(String string) {
 		// TODO Auto-generated method stub
 		for(ServerConnection sc : connections){
@@ -119,8 +136,21 @@ public class Server extends Thread{
 		}
 	}
 
+	/**
+	 * Testing code.
+	 * @param args
+	 */
 	public static void main(String[] args){
 		Server serber = new Server(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 		serber.start();
+	}
+
+	public void pushToAllClients(int i) {
+		// TODO Auto-generated method stub
+		for(ServerConnection sc : connections){
+			if(sc != null){
+				sc.pushToClient(i);
+			}
+		}
 	}
 }

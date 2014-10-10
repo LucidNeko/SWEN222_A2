@@ -33,25 +33,18 @@ public class ServerConnection extends Thread{
 
 			while(true){
 				if(in.available()>0){
-					//Now forward this msg to all clients.
-
 					String marker = in.readUTF();
 
 					if(marker.equals("transform")){
-						master.pushToAllClients(in.readUTF());
+						master.pushToAllClients("transform"); //marker
+						master.pushToAllClients(in.readInt()); //ID of entity transformed.
+						master.pushToAllClients(in.readUTF()); //json string of transform.
 					}
-					/*
-					int length = in.readInt();
-					byte[] message = new byte[length];
-					in.readFully(message);
-					master.pushToClient(-1, message);
-					*/
-					/*
-					String s = new String(message);
-					System.out.println(s);
-					String ackClient = "Server Acknowledge Message:  " + s;
-					pushToClient(ackClient.getBytes());
-					*/
+					if(marker.equals("message")){
+						master.pushToAllClients("message");
+						master.pushToAllClients(in.readInt()); //ID of sender.
+						master.pushToAllClients(in.readUTF()); // message itself.
+					}
 				}
 			}
 

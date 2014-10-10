@@ -70,6 +70,65 @@ public class EntityFactory {
 		player.attachComponent(new DropItem(world));
 		return player;
 	}
+	
+	/**
+	 * This creates a player with supplied ID.
+	 * needed for networking.
+	 * Note: This attaches a camera, so use it only for the local player.
+	 * @param world
+	 * @param name
+	 * @param id
+	 * @return
+	 */
+	public static Entity createPlayerWithID(World world, String name, int id){
+
+		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
+		Texture linkTex = Resources.getTexture("link/young_link.png", true);
+
+		//Create player
+		Entity player = world.createEntity("Player", id);
+		player.attachComponent(Camera.class);
+//		player.attachComponent(PyramidRenderer.class);
+		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
+//		player.attachComponent(parser.getWallCollisionComponent());
+//		player.attachComponent(WASDWalking.class);
+		player.attachComponent(CameraScrollBackController.class);
+		player.attachComponent(Health.class);
+		player.attachComponent(Inventory.class);
+		player.attachComponent(new DropItem(world));
+		return player;
+	}
+	
+	/**
+	 * Create a player without all the stuff that the local player needs,
+	 * i.e. camera etc.
+	 * Use this method for creating the other players.
+	 * @param world
+	 * @param name
+	 * @param id
+	 * @return
+	 */
+	public static Entity createOtherPlayer(World world, String name, int id){
+
+
+		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
+		Texture linkTex = Resources.getTexture("link/young_link.png", true);
+
+		//Create player
+		Entity player = world.createEntity("Other Player", id);
+//		player.attachComponent(Camera.class);
+//		player.attachComponent(PyramidRenderer.class);
+		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
+		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
+//		player.attachComponent(parser.getWallCollisionComponent());
+//		player.attachComponent(WASDWalking.class);
+	//	player.attachComponent(CameraScrollBackController.class);
+	//	player.attachComponent(Health.class);
+	//	player.attachComponent(Inventory.class);
+	//	player.attachComponent(new DropItem(world));
+		return player;
+	}
 
 	public static Entity createFirstPersonCamera(World world, final Entity target) {
 		Entity camera = world.createEntity("Camera");
