@@ -267,6 +267,9 @@ public class Parser {
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(wallTex, Color.WHITE);
 
+		
+		
+		
 		Entity wall = world.createEntity("wall");
 		wall.attachComponent(MeshFilter.class).setMesh(mesh);
 		wall.attachComponent(MeshRenderer.class).setMaterial(material);
