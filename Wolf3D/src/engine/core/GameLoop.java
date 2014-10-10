@@ -102,7 +102,7 @@ public abstract class GameLoop extends Thread {
 		if(nanos > 0)  {
 			LockSupport.parkNanos(nanos);
 		} else {
-			log.trace("Running slow - Can't keep up!!");
+//			log.trace("Running slow - Can't keep up!!");
 		}
 	}
 	
