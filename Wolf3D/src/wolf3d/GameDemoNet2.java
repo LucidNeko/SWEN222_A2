@@ -128,7 +128,7 @@ public class GameDemoNet2 extends GameLoop {
 
 		EntityFactory.createSun(world);
 
-//		camera = player.getComponent(Camera.class);
+		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
 		Entity skybox = world.createEntity("skybox");
@@ -293,7 +293,8 @@ public class GameDemoNet2 extends GameLoop {
 	}
 	
 	public void createOtherPlayer(int ID){
-		EntityFactory.createOtherPlayer(world, "other", ID);
+		Entity other = EntityFactory.createOtherPlayer(world, "other", ID);
+		other.getTransform().translate(1, 0, 1);
 	}
 
 	@Override

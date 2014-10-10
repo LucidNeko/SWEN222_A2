@@ -2,6 +2,7 @@ package engine.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ import engine.scratch.WireframeMeshRenderer;
 public class World {
 
 	/** All the Entities in the world */
-	private Map<Integer, Entity> entities = new HashMap<Integer, Entity>();
+	private Map<Integer, Entity> entities = Collections.synchronizedMap(new HashMap<Integer, Entity>());
 
 	/**
 	 * Create an Entity with the given name and register it in this world.
@@ -29,24 +30,11 @@ public class World {
 	public Entity createEntity(String name) {
 		Entity entity = new Entity(getFreeID(), name);
 		entity.attachComponent(Transform.class);
-		entities.put(entity.getID(), entity);
+		synchronized(entities) {
+			entities.put(entity.getID(), entity);
+		}
 		return entity;
 	}
-
-//	/**
-//	 * Create an entity with the specified ID
-//	 * (This is needed so that we can assign players unique ID over network
-//	 * Returns null if ID is already used. 
-//	 */
-//	public Entity createEntity(String name, int ID){
-//		if(getEntity(ID) == null){
-//			Entity entity = new Entity(ID, name);
-//			entity.attachComponent(Transform.class);
-//			entities.put(entity.getID(), entity);
-//			return entity;
-//		}
-//		return null;
-//	}
 
 	/**
 	 * Tries to create the Entity with the given ID.
@@ -62,7 +50,9 @@ public class World {
 
 		Entity entity = new Entity(id, name);
 		entity.attachComponent(Transform.class);
-		entities.put(entity.getID(), entity);
+		synchronized(entities) {
+			entities.put(entity.getID(), entity);
+		}
 		return entity;
 	}
 
@@ -73,7 +63,9 @@ public class World {
 	 * 		   Returns false if there was no Entity meaning no removal.
 	 */
 	public boolean destroyEntity(int id) {
-		return entities.remove(id) != null;
+		synchronized(entities) {
+			return entities.remove(id) != null;
+		}
 	}
 
 	/**
@@ -82,7 +74,9 @@ public class World {
 	 * @return The Entity, or null if not found.
 	 */
 	public Entity getEntity(int id) {
-		return entities.get(id);
+		synchronized(entities) {
+			return entities.get(id);
+		}
 	}
 
 	/**
@@ -92,9 +86,11 @@ public class World {
 	 */
 	public List<Entity> getEntity(String name) {
 		List<Entity> out = new ArrayList<Entity>(2);
-		for(Entity entity : entities.values())
-			if(entity.getName().equals(name))
-				out.add(entity);
+		synchronized(entities) {
+			for(Entity entity : entities.values())
+				if(entity.getName().equals(name))
+					out.add(entity);
+		}
 		return out;
 	}
 
@@ -103,8 +99,7 @@ public class World {
 	 * @return The Collection of Entities.
 	 */
 	public synchronized Collection<Entity> getEntities() {
-		//		return Collections.unmodifiableCollection(entities.values());
-		synchronized(this) {
+		synchronized(entities) {
 			return new LinkedList<Entity>(entities.values());
 		}
 	}
@@ -123,7 +118,9 @@ public class World {
 		for(Component com: entityDef.getComponents()){
 			entity.attachComponent(com);
 		}
-		return entities.put(id, entity) == null;
+		synchronized(entities) {
+			return entities.put(id, entity) == null;
+		}
 	}
 
 	/**
