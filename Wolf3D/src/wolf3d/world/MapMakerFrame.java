@@ -43,10 +43,6 @@ public class MapMakerFrame implements MouseListener {
 		f.addMouseListener(this);
 		f.setResizable(true);
 
-		/*Sets up the canvas*/
-		mmc = new MapMakerCanvas();
-		f.add(mmc);
-
 		/*Adds button*/
 		jb = new JButton();
 		f.add(jb, BorderLayout.NORTH);
@@ -56,6 +52,12 @@ public class MapMakerFrame implements MouseListener {
             	printToFile();
             }
         });
+
+		/*Sets up the canvas*/
+		mmc = new MapMakerCanvas();
+		f.add(mmc);
+
+
 		f.setVisible(true);
 	}
 
@@ -99,8 +101,7 @@ public class MapMakerFrame implements MouseListener {
 	private char putWalls(String str){
 		int x = wallNibble(str);
 		String a = Integer.toHexString(x);
-		char[]c = a.toCharArray();
-		return c[0];
+		return a.charAt(0);
 	}
 
 	public void printToFile(){
