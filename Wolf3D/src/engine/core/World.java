@@ -34,6 +34,21 @@ public class World {
 	}
 
 	/**
+	 * Create an entity with the specified ID
+	 * (This is needed so that we can assign players unique ID over network
+	 * Returns null if ID is already used. 
+	 */
+	public Entity createEntity(String name, int ID){
+		if(getEntity(ID) == null){
+			Entity entity = new Entity(ID, name);
+			entity.attachComponent(Transform.class);
+			entities.put(entity.getID(), entity);
+			return entity;
+		}
+		return null;
+	}
+
+	/**
 	 * Tries to create the Entity with the given ID.
 	 * If that ID is already taken throws error.
 	 * Otherwise creates the entity.
@@ -88,7 +103,7 @@ public class World {
 	 * @return The Collection of Entities.
 	 */
 	public synchronized Collection<Entity> getEntities() {
-//		return Collections.unmodifiableCollection(entities.values());
+		//		return Collections.unmodifiableCollection(entities.values());
 		synchronized(this) {
 			return new LinkedList<Entity>(entities.values());
 		}
