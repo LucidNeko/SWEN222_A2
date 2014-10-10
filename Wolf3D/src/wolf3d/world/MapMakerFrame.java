@@ -3,9 +3,13 @@
  */
 package wolf3d.world;
 
+import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,10 +22,11 @@ public class MapMakerFrame implements MouseListener {
 
 	private MapMakerCanvas mmc;
 	private JFrame f;
+	private JButton jb;
 
 	private final int cellDim = mmc.getCellDim(); // Height and width of a cell, also offset
 	private final int width = mmc.getCellDim()*50+5; // the 5 accounts for the sideways slant
-	private final int height = mmc.getCellDim()*50+27; //25 is the bar accounts for the bar at the top
+	private final int height = mmc.getCellDim()*50+27; //27 is the bar accounts for the bar at the top
 
 	private String walls;
 	private static boolean[] dirUsed= {false, false, false, false};//whether there is already an entry for W, D, S or A in the string
@@ -33,12 +38,22 @@ public class MapMakerFrame implements MouseListener {
 		f.setTitle("Interactive Map maker");
 		f.setSize(width, height);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.addMouseListener(this);
+		f.setResizable(true);
 
 		/*Sets up the canvas*/
 		mmc = new MapMakerCanvas();
 		f.add(mmc);
-		f.addMouseListener(this);
-		f.setResizable(true);
+
+		/*Adds button*/
+		jb = new JButton();
+		f.add(jb, BorderLayout.NORTH);
+		jb.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	printToFile();
+            }
+        });
 		f.setVisible(true);
 	}
 
@@ -86,12 +101,31 @@ public class MapMakerFrame implements MouseListener {
 		return c[0];
 	}
 
-	public int getWidth() {
-		return width;
-	}
-	public int getHeight() {
-		return height;
-	}
+	public void printToFile(){
+    	try {
+			//Map.txt will always be in the workspace folder
+			PrintStream ps = new PrintStream("Map.txt");
+			//TODO change from 50
+			char[]cArray=new char[50];
+			for(int i=0; i<50; i++){
+				for(int j=0; j<50; j++){
+					cArray[j]=mmc.mmd.getData(i,j);
+					if(cArray[j]== ' '){
+						cArray[j]='0';
+					}
+					//TODO change from 50
+					if(j==50-1){
+						String str = new String(cArray);
+						ps.println(str);
+					}
+				}
+			}
+			ps.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+    }
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
