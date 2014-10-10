@@ -24,9 +24,11 @@ public class MapMakerFrame implements MouseListener {
 	private JFrame f;
 	private JButton jb;
 
+	private final int sideSlant = 5;
+	private final int vertSlant = 27;
 	private final int cellDim = mmc.getCellDim(); // Height and width of a cell, also offset
-	private final int width = mmc.getCellDim()*50+5; // the 5 accounts for the sideways slant
-	private final int height = mmc.getCellDim()*50+27; //27 is the bar accounts for the bar at the top
+	private final int width = mmc.getCellDim()*50+sideSlant; // the 5 accounts for the sideways slant
+	private final int height = mmc.getCellDim()*50+vertSlant; //50 is the bar accounts for the bar at the top
 
 	private String walls;
 	private static boolean[] dirUsed= {false, false, false, false};//whether there is already an entry for W, D, S or A in the string
@@ -130,8 +132,11 @@ public class MapMakerFrame implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		/* The cell that you clicked*/
-		int cellX=(int)(e.getX()/cellDim);
-		int cellY=(int)(((e.getY()-((int)cellDim/2))/cellDim))-1;//Y location does not scale properly, this puts it roughly in the right area
+		int cellX=((e.getX()+5)/cellDim)-1;//(int)((e.getX()+5)/cellDim)-1;
+		if(cellX<0){
+			cellX=0;
+		}
+		int cellY=(int)(((e.getY()-((int)cellDim/2))/cellDim))-2;//Y location does not scale properly, this puts it roughly in the right area
 		if(cellY<0){
 			cellY=0;
 		}

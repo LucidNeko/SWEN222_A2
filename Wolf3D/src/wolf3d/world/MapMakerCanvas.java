@@ -30,22 +30,37 @@ public class MapMakerCanvas extends JPanel{
 					g.setColor(Color.red);
 					g.fillRect(i*cellDim, j*cellDim, cellDim, cellDim);
 				}
-				else if(mmd.data[i][j]=='a'){
-					g.setColor(Color.blue);
-					g.fillRect(i*cellDim, j*cellDim, cellDim, cellDim);
-				}
 			}
 		}
 		for(int i=0; i<50; i++){
+			int lazyX=i*cellDim;
 			for(int j=0; j<50; j++){
+				int lazyY=j*cellDim;
 				if(mmd.data[i][j]==' '){
 					g.setColor(Color.red);
-					g.fillRect(i*cellDim, j*cellDim, cellDim, cellDim);
+					g.fillRect(lazyX, lazyY, cellDim, cellDim);
 				}
-				else if(mmd.data[i][j]=='a'){
-					g.setColor(Color.blue);
-					g.fillRect(i*cellDim, j*cellDim, cellDim, cellDim);
+				if(mmd.hasNorth(i, j)){
+					g.setColor(Color.green);
+					g.drawLine(lazyX, lazyY+1, lazyX+cellDim, lazyY+1);
+					g.drawLine(lazyX, lazyY+2, lazyX+cellDim, lazyY+2);
 				}
+				if(mmd.hasEast(i, j)){
+					g.setColor(Color.green);
+					g.drawLine((lazyX+cellDim)-1, lazyY, (lazyX+cellDim)-1, lazyY+cellDim);
+					g.drawLine((lazyX+cellDim)-2, lazyY, (lazyX+cellDim)-2, lazyY+cellDim);
+				}
+				if(mmd.hasSouth(i, j)){
+					g.setColor(Color.green);
+					g.drawLine(lazyX, (lazyY+cellDim)-1, lazyX+cellDim, (lazyY+cellDim)-1);
+					g.drawLine(lazyX, (lazyY+cellDim)-2, lazyX+cellDim, (lazyY+cellDim)-2);
+				}
+				if(mmd.hasWest(i, j)){
+					g.setColor(Color.green);
+					g.drawLine(lazyX+1, lazyY, lazyX+1, lazyY+cellDim);
+					g.drawLine(lazyX+2, lazyY, lazyX+2, lazyY+cellDim);
+				}
+
 			}
 		}
 		g.setColor(Color.white);
