@@ -123,13 +123,15 @@ public class World {
 		}
 	}
 
+	private int nextID = 0;
 	/**
 	 * Gets an ID that doesn't clash with any of the other Entities in the world.
 	 * @return The available/free ID.
 	 */
 	private int getFreeID() {
 		int id;
-		while(getEntity((id = ((int)(Math.random()*Integer.MAX_VALUE)))) != null);
+//		while(getEntity((id = ((int)(Math.random()*Integer.MAX_VALUE)))) != null);
+		while(getEntity((id = nextID++)) != null);
 		return id;
 	}
 
