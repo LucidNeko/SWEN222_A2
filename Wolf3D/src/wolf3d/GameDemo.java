@@ -83,7 +83,6 @@ public class GameDemo extends GameLoop {
 		parser.createFloor(world);
 
 
-		//TODO: Entity Factory?
 		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
@@ -96,18 +95,7 @@ public class GameDemo extends GameLoop {
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
-		Entity skybox = world.createEntity("skybox");
-		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
-		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));
-		skybox.attachComponent(new Behaviour() {
-			//moves the box around with player so they can't come close to the edges.
-			@Override
-			public void update(float delta) {
-				Vec3 pos = player.getTransform().getPosition();
-				this.getOwner().getTransform().setPosition(pos);
-			}
-
-		});
+		Entity skybox = EntityFactory.createSkybox(world, player);
 
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
 		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
@@ -121,19 +109,16 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
-		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj").getScaledInstance(4);
+		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj").getScaledInstance(0.5f);
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 
 
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
-//		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
-		//animation
-//		teddy.attachComponent(AddAnimation.class).setAttachment(DieAnimation.class);
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 

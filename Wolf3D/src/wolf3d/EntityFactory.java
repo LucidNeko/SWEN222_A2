@@ -15,6 +15,7 @@ import wolf3d.components.Inventory;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.DropItem;
+import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import engine.common.Mathf;
 import engine.common.Vec3;
@@ -256,6 +257,39 @@ public class EntityFactory {
 		});
 
 		return camera;
+	}
+	
+	public static Entity createSkybox(World world, final Entity target) {
+		Entity skybox = world.createEntity("skybox");
+		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));
+		skybox.attachComponent(new Behaviour() {
+			//moves the box around with player so they can't come close to the edges.
+			@Override
+			public void update(float delta) {
+				Vec3 pos = target.getTransform().getPosition();
+				this.getOwner().getTransform().setPosition(pos);
+			}
+		});
+		skybox.attachComponent(new Behaviour() {
+			private float time = 0;
+			private float duration = 10;
+			private Texture[] textures = {
+				Resources.getTexture("skybox.png", true),
+				Resources.getTexture("skybox3.png", true),
+				Resources.getTexture("skybox2.jpg", true),
+				Resources.getTexture("skybox3.png", true),
+			};
+			
+			public void update(float delta) {
+				requires(LightlessMeshRenderer.class);
+				
+				time += delta;
+				
+				getOwner().getComponent(LightlessMeshRenderer.class).getMaterial().setTexture(textures[(int)((time/duration) % textures.length)]);
+			}
+		});
+		return skybox;
 	}
 
 }
