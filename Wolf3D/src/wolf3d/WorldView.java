@@ -120,20 +120,20 @@ public class WorldView extends GameCanvas implements View{
 				continue; //next entity.
 			}
 			
-			//skip entities with transparency.
-			MeshRenderer mr = entity.getComponent(MeshRenderer.class);
-			if(mr != null) {
-				Material m = mr.getMaterial();
-				if(m != null) {
-					Texture tex = m.getTexture();
-					if(tex != null) {
-						if(tex.hasTransparency()) {
-							transparent.add(entity);
-							continue;
-						}
-					}
-				}
-			}
+//			//skip entities with transparency.
+//			MeshRenderer mr = entity.getComponent(MeshRenderer.class);
+//			if(mr != null) {
+//				Material m = mr.getMaterial();
+//				if(m != null) {
+//					Texture tex = m.getTexture();
+//					if(tex != null) {
+//						if(tex.hasTransparency()) {
+//							transparent.add(entity);
+//							continue;
+//						}
+//					}
+//				}
+//			}
 			
 			//if not skipped render.
 			gl.glPushMatrix();
@@ -145,17 +145,17 @@ public class WorldView extends GameCanvas implements View{
 			gl.glPopMatrix();
 		}
 		
-		//now we go back and render the transparent ones last so they overlap properly.
-		for(Entity e : transparent) {
-			Transform t = e.getTransform();
-			
-			gl.glPushMatrix();
-				t.applyTransform(gl);
-				for(GL2Renderer renderer : e.getComponents(GL2Renderer.class)) {
-					renderer.render(gl);
-				}
-			gl.glPopMatrix();
-		}
+//		//now we go back and render the transparent ones last so they overlap properly.
+//		for(Entity e : transparent) {
+//			Transform t = e.getTransform();
+//			
+//			gl.glPushMatrix();
+//				t.applyTransform(gl);
+//				for(GL2Renderer renderer : e.getComponents(GL2Renderer.class)) {
+//					renderer.render(gl);
+//				}
+//			gl.glPopMatrix();
+//		}
 	}
 
 }
