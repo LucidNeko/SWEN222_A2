@@ -105,6 +105,9 @@ public class GameDemoNet2 extends GameLoop {
 		this.view = view;
 	}
 
+	public void updateCamView(){
+		view.setCamera(camera);
+	}
 	
 	
 	public void createEntities() {
@@ -130,6 +133,7 @@ public class GameDemoNet2 extends GameLoop {
 
 		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
 //		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+		updateCamView();
 
 		EntityFactory.createSun(world);
 

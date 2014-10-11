@@ -78,14 +78,16 @@ public class Client extends Thread{
 						System.out.println("Your ID is: "+playerID);
 						//REPLACE THIS WITH THE METHOD IN GAME LOOP
 						//TODO
-						Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
-						gl.setPlayer(player);
+						gl.createPlayer(playerID);
+					//	Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
+					//	gl.setPlayer(player);
 						System.out.printf("Other IDs are: ");
 						int noOthers = in.readInt();
 						for(int i = 0; i< noOthers; i++){
 							int otherID = in.readInt();
 							System.out.printf("%d, ",otherID);
-							EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
+							gl.createOtherPlayer(otherID);
+						//	EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
 						}
 						System.out.printf("\n");
 						break;
