@@ -40,6 +40,7 @@ public class Transform extends Component {
 		up.set(Vec3.UP);
 		along.set(Vec3.RIGHT);
 		look.set(Vec3.FORWARD);
+		setChanged();
 	}
 
 	/**
@@ -51,6 +52,7 @@ public class Transform extends Component {
 		this.up.set(source.up);
 		this.along.set(source.along);
 		this.look.set(source.look);
+		setChanged();
 	}
 
 	/**
@@ -61,6 +63,7 @@ public class Transform extends Component {
 	 */
 	public void setPosition(float x, float y, float z) {
 		this.position.set(x, y, z);
+		setChanged();
 	}
 
 	/**
@@ -69,6 +72,7 @@ public class Transform extends Component {
 	 */
 	public void setPosition(Vec3 position) {
 		this.position.set(position);
+		setChanged();
 	}
 
 	/**
@@ -77,6 +81,7 @@ public class Transform extends Component {
 	 */
 	public void strafe(float delta) {
 		position.addLocal(along.mul(delta));
+		setChanged();
 	}
 
 	/**
@@ -85,6 +90,7 @@ public class Transform extends Component {
 	 */
 	public void fly(float delta) {
 		position.addLocal(up.mul(delta));
+		setChanged();
 	}
 
 	/**
@@ -93,6 +99,7 @@ public class Transform extends Component {
 	 */
 	public void walk(float delta) {
 		position.addLocal(look.mul(delta));
+		setChanged();
 	}
 
 	/**
@@ -103,6 +110,7 @@ public class Transform extends Component {
 		up.mulLocal(Mathf.cos(theta)).addLocal(along.mul(Mathf.sin(theta)));
 		up.normalize();
 		along.set(Vec3.cross(up, look));
+		setChanged();
 	}
 
 	/**
@@ -113,6 +121,7 @@ public class Transform extends Component {
 		look.mulLocal(Mathf.cos(theta)).addLocal(up.mul(Mathf.sin(theta)));
 		look.normalize();
 		up.set(Vec3.cross(look, along));
+		setChanged();
 	}
 
 	/**
@@ -123,6 +132,7 @@ public class Transform extends Component {
 		along.mulLocal(Mathf.cos(theta)).addLocal(look.mul(Mathf.sin(theta)));
 		along.normalize();
 		look.set(Vec3.cross(along, up));
+		setChanged();
 	}
 
 	/**
@@ -133,6 +143,7 @@ public class Transform extends Component {
 	 */
 	public void translate(float dx, float dy, float dz) {
 		position.addLocal(dx, dy, dz);
+		setChanged();
 	}
 
 	/**
@@ -143,6 +154,7 @@ public class Transform extends Component {
 		Vec3 direction = new Vec3(look.x(), 0, look.z());
 		direction.normalize(); //must normalize otherwise we don't end up with a unit vector.
 		position.addLocal(direction.mulLocal(delta));
+		setChanged();
 	}
 
 	/**
@@ -153,6 +165,7 @@ public class Transform extends Component {
 		Vec3 direction = new Vec3(along.x(), 0, along.z());
 		direction.normalize(); //must normalize otherwise we don't end up with a unit vector.
 		position.addLocal(direction.mulLocal(delta));
+		setChanged();
 	}
 
 	/**
@@ -168,6 +181,7 @@ public class Transform extends Component {
 		along.set(cos*along.x() - sin*along.z(), along.y(), sin*along.x() + cos*along.z());
 		up.set(cos*up.x() - sin*up.z(), up.y(), sin*up.x() + cos*up.z());
 		look.set(cos*look.x() - sin*look.z(), look.y(),  sin*look.x() + cos*look.z());
+		setChanged();
 	}
 
 	/**
@@ -183,6 +197,7 @@ public class Transform extends Component {
 		look.set(dir);
 		up.set(Vec3.UP);
 		along.set(Vec3.cross(up, look));
+		setChanged();
 	}
 
 	/**
@@ -214,6 +229,7 @@ public class Transform extends Component {
 		yaw(Vec3.dot(Vec3.cross(up, eye), look));
 		pitch(Vec3.dot(Vec3.cross(along,  eye), look));
 		roll(Vec3.dot(Vec3.cross(worldUp, up), eye));
+		setChanged();
 	}
 
 	/**
@@ -318,6 +334,11 @@ public class Transform extends Component {
 		t.look.set(this.look);
 		t.position.set(this.position);
 		return t;
+	}
+	
+	//TODO: hack..
+	public void clearChanged() {
+		super.clearChanged();
 	}
 
 }

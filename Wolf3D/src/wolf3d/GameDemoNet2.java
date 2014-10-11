@@ -270,14 +270,28 @@ public class GameDemoNet2 extends GameLoop {
 		for(Entity entity : world.getEntities()) {
 			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
 				behaviour.update(delta);
-				if(behaviour.hasChanged()){
-					//send over network.
-					try {
-						client.sendTransform(behaviour.getOwner().getTransform());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+//				if(behaviour.hasChanged()){
+//					//send over network.
+//					try {
+//						client.sendTransform(behaviour.getOwner().getTransform());
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//				}
+			}
+		}
+		
+		//send all modified transforms.
+		for(Entity entity : world.getEntities()) {
+			Transform transform = entity.getTransform();
+			if(transform.hasChanged()) {
+				try {
+					client.sendTransform(transform);
+					transform.clearChanged();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		}
