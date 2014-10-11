@@ -59,7 +59,7 @@ public class GameDemoNet2 extends GameLoop {
 
 	private Camera camera;
 	private Entity player;
-	
+
 	private Client client;
 
 	/**
@@ -71,7 +71,7 @@ public class GameDemoNet2 extends GameLoop {
 		this.world = world;
 		createEntities();
 	}
-	
+
 	public void setPlayer(Entity e){
 		this.player = e;
 	}
@@ -81,10 +81,10 @@ public class GameDemoNet2 extends GameLoop {
 
 		super(FPS, FUPS);
 		this.world = world;
-		
+
 		//dont create the entities until the game starts
 		//createEntities();
-		
+
 		try {
 			client = new Client("Joe",ip,port,world, this);
 		} catch (UnknownHostException e) {
@@ -108,8 +108,8 @@ public class GameDemoNet2 extends GameLoop {
 	public void updateCamView(){
 		view.setCamera(camera);
 	}
-	
-	
+
+
 	public void createEntities() {
 		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
@@ -121,18 +121,18 @@ public class GameDemoNet2 extends GameLoop {
 
 
 		//TODO: Entity Factory?
-		
+
 		//already made.
 		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
-		
-		
+
+
 		parser.createDoors(world, player);
 
 
 		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+		//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
 		updateCamView();
 
 		EntityFactory.createSun(world);
@@ -172,18 +172,18 @@ public class GameDemoNet2 extends GameLoop {
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
-//		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
+		//		teddy.attachComponent(engine.scratch.WireframeMeshRenderer.class);
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
 		//animation
-//		teddy.attachComponent(AddAnimation.class).setAttachment(DieAnimation.class);
+		//		teddy.attachComponent(AddAnimation.class).setAttachment(DieAnimation.class);
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
 		//testing pickup
-//		teddy.attachComponent(new PickUp(world));
-//		teddy.attachComponent(Weight.class);
+		//		teddy.attachComponent(new PickUp(world));
+		//		teddy.attachComponent(Weight.class);
 		//testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
@@ -247,7 +247,7 @@ public class GameDemoNet2 extends GameLoop {
 		entity.getTransform().yaw(Mathf.degToRad(180));
 		entity.attachComponent(MeshFilter.class).setMesh(mesh);
 		entity.attachComponent(MeshRenderer.class).setMaterial(new Material(doorTex));
-		
+
 		//clear the changed flag for new game.
 		for(Entity e : world.getEntities()) {
 			e.getTransform().clearChanged();
@@ -268,36 +268,39 @@ public class GameDemoNet2 extends GameLoop {
 		//if control is pressed (toggles) frees the mouse.
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(!Mouse.isGrabbed());
-		
+
 		//stop the Mouse from freeing itself by going out of the bounds of the component.
 		if(Mouse.isGrabbed())
 			Mouse.centerMouseOverComponent();
 
 
-		
+
 		//Update all the behaviours attached to the entities.
-		for(Entity entity : world.getEntities()) {
-			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
-				behaviour.update(delta);
-//				if(behaviour.hasChanged()){
-//					//send over network.
-//					try {
-//						client.sendTransform(behaviour.getOwner().getTransform());
-//					} catch (IOException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-//				}
-			}
-		}
-		
+				for(Entity entity : world.getEntities()) {
+					for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
+						behaviour.update(delta);
+		//				if(behaviour.hasChanged()){
+		//					//send over network.
+		//					try {
+		//						client.sendTransform(behaviour.getOwner().getTransform());
+		//					} catch (IOException e1) {
+		//						// TODO Auto-generated catch block
+		//						e1.printStackTrace();
+		//					}
+		//				}
+					}
+				}
+
 		//send all modified transforms.
 		for(Entity entity : world.getEntities()) {
 			Transform transform = entity.getTransform();
 			if(transform.hasChanged()) {
 				try {
-					client.sendTransform(transform);
-					transform.clearChanged();
+					String name = transform.getOwner().getName();
+					if(!(name.equals("skybox") || name.equals("Camera"))){
+						client.sendTransform(transform);
+						transform.clearChanged();
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -311,11 +314,11 @@ public class GameDemoNet2 extends GameLoop {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public void createPlayer(int ID){
-			player = EntityFactory.createPlayerWithID(world, "Player", ID);
+		player = EntityFactory.createPlayerWithID(world, "Player", ID);
 	}
-	
+
 	public void createOtherPlayer(int ID){
 		Entity other = EntityFactory.createOtherPlayer(world, "other", ID);
 		other.getTransform().translate(1, 0, 1);
