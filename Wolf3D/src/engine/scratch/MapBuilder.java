@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.locks.LockSupport;
 
@@ -37,9 +38,9 @@ public class MapBuilder extends JFrame {
 	private static final int EAST  = 0x4;
 	private static final int NORTH = 0x8;
 	
-	private static final int CELL_SIZE = 25;
-	private static final int MAP_WIDTH = 100;
-	private static final int MAP_HEIGHT = 50;
+	private static final int CELL_SIZE = 20;
+	private static int MAP_WIDTH = 50;
+	private static int MAP_HEIGHT = 30;
 	
 	private int[][] cells = new int[MAP_HEIGHT][MAP_WIDTH];
 	
@@ -106,12 +107,13 @@ public class MapBuilder extends JFrame {
 				if(f != null) {
 					try {
 						Scanner scan = new Scanner(f);
-						int cols = Integer.parseInt(scan.nextLine());
-						int rows = Integer.parseInt(scan.nextLine());
-						cells = new int[rows][cols];
-						for(int row = 0; row < rows; row++) {
-							String[] line = scan.nextLine().split(""); //jdk7 vs 8
-							for(int col = 0; col < cols; col++) {
+						MAP_WIDTH = Integer.parseInt(scan.nextLine());
+						MAP_HEIGHT = Integer.parseInt(scan.nextLine());
+						cells = new int[MAP_HEIGHT][MAP_WIDTH];
+						for(int row = 0; row < MAP_HEIGHT; row++) {
+							String[] line = scan.nextLine().split("");
+							if(line[0].equals("")) line = Arrays.copyOfRange(line, 1, line.length); //fix for java7.
+							for(int col = 0; col < MAP_WIDTH; col++) {
 								cells[row][col] = Integer.decode("0x"+line[col]);
 							}
 						}
