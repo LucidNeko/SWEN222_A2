@@ -1,5 +1,6 @@
 package wolf3d.networking;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,6 +16,7 @@ import wolf3d.networking.mechanics.ServerConnection;
 public class Server extends Thread{
 	ServerSocket ss;
 	ServerConnection[] connections;
+	DataInputStream[] dis;
 	private boolean listening = true;
 	private int index = 0;
 	private int capacity;
@@ -28,6 +30,7 @@ public class Server extends Thread{
 		try {
 			ss = new ServerSocket(port);
 			connections = new ServerConnection[capacity];
+			dis = new DataInputStream[capacity];
 			this.capacity = capacity;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -58,6 +61,7 @@ public class Server extends Thread{
 				sock = ss.accept();
 				System.out.println("Accepted a connection from " + sock.getInetAddress() + "...");
 				connections[index] = new ServerConnection(sock,this);
+				dis[index] = connections[index].getInputStream();
 
 				if(index==(capacity-1)){
 					listening = false;
@@ -71,6 +75,7 @@ public class Server extends Thread{
 					//let the clients know the game can now begin.
 					assignIDs();
 					pushToAllClients("begin");
+					//	return;
 				}
 				index++;
 
@@ -79,12 +84,37 @@ public class Server extends Thread{
 				e.printStackTrace();
 			}
 		}
+		//no longer listening for connections...
+		while(!listening){
+			for(DataInputStream in: dis){
+				try {
+					if(in.available()>0){
+						String marker = in.readUTF();
+
+						if(marker.equals("transform")){
+							pushToAllClients("transform"); //marker
+							pushToAllClients(in.readInt()); //ID of entity transformed.
+							pushToAllClients(in.readUTF()); //json string of transform.
+						}
+						if(marker.equals("message")){
+							pushToAllClients("message");
+							pushToAllClients(in.readInt()); //ID of sender.
+							pushToAllClients(in.readUTF()); // message itself.
+						}
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		try {
 			ss.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	/**

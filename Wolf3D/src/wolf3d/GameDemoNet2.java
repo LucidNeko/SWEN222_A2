@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import wolf3d.components.Health;
 import wolf3d.components.Weight;
@@ -60,6 +61,7 @@ public class GameDemoNet2 extends GameLoop {
 	private Entity player;
 	
 	private Client client;
+	private DataInputStream in;
 
 	/**
 	 * Create a new GameDemo with the given world as it's world.
@@ -82,6 +84,7 @@ public class GameDemoNet2 extends GameLoop {
 		
 		try {
 			client = new Client("Joe",ip,port,this);
+			in = client.getInputStream();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -259,6 +262,31 @@ public class GameDemoNet2 extends GameLoop {
 		if(Mouse.isGrabbed())
 			Mouse.centerMouseOverComponent();
 
+		try {
+			if(in.available() > 0){
+
+				String st = in.readUTF();
+				System.out.println(st);
+				if(st.equals("transform")){
+					int id = in.readInt();
+					System.out.println("On id: "+id);
+					Entity ent = world.getEntity(id);
+					Transform t;
+					Gson g = new Gson();
+					t = g.fromJson(in.readUTF(), Transform.class);
+					System.out.println("The created transform: " + t.toString());
+					ent.getTransform().set(t);
+				}
+			}
+		} catch (JsonSyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		//Update all the behaviours attached to the entities.
 		for(Entity entity : world.getEntities()) {
 			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
