@@ -243,6 +243,11 @@ public class GameDemoNet2 extends GameLoop {
 		entity.getTransform().yaw(Mathf.degToRad(180));
 		entity.attachComponent(MeshFilter.class).setMesh(mesh);
 		entity.attachComponent(MeshRenderer.class).setMaterial(new Material(doorTex));
+		
+		//clear the changed flag for new game.
+		for(Entity e : world.getEntities()) {
+			e.getTransform().clearChanged();
+		}
 	}
 
 	@Override
