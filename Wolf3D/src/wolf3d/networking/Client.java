@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import wolf3d.GameDemoNet2;
-import wolf3d.GameNetworkDemo;
 import wolf3d.networking.mechanics.ClientConnection;
 
 import com.google.gson.Gson;
