@@ -93,8 +93,6 @@ public class GameDemo extends GameLoop {
 		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
 //		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
 
-		EntityFactory.createSun(world);
-
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
@@ -145,66 +143,6 @@ public class GameDemo extends GameLoop {
 		//testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
-
-		//Create enemy.
-		Entity enemy = world.createEntity("Enemy");
-		enemy.attachComponent(PyramidRenderer.class);
-		enemy.attachComponent(AILookAtController.class);
-		enemy.attachComponent(ProximitySensor.class);
-		enemy.attachComponent(AddChaseBehaviour.class);
-		enemy.getComponent(AILookAtController.class).setTarget(player);
-		enemy.getComponent(ProximitySensor.class).setTarget(player);
-		enemy.attachComponent(Health.class);
-		enemy.attachComponent(new Attackable(world));
-		enemy.getTransform().translate(0, 0, -10);
-		enemy.attachComponent(new Translate(enemy.getTransform().getPosition(), new Vec3(0, 0, -20), 1));
-		enemy.getTransform().yaw(Mathf.degToRad(180));
-
-		Texture wallTex = Resources.getTexture("debug_wall.png", true);
-		Texture floorTex = Resources.getTexture("floorTextures/0.png", true);
-		Texture doorTex = Resources.getTexture("1.png", true);
-		Mesh mesh = Resources.getMesh("wall.obj");
-
-
-
-		Entity entity;
-		for(int i = 0; i < 20; i+=2) {
-			//left wall
-			entity = world.createEntity("wall");
-			entity.getTransform().translate(-1, 0, -i);
-			entity.getTransform().yaw(Mathf.degToRad(-90));
-			entity.attachComponent(MeshFilter.class).setMesh(mesh);
-			entity.attachComponent(MeshRenderer.class).setMaterial(new Material(wallTex));
-			//right wall
-			entity = world.createEntity("wall");
-			entity.getTransform().translate(1, 0, -i);
-			entity.getTransform().yaw(Mathf.degToRad(90));
-			entity.attachComponent(MeshFilter.class).setMesh(mesh);
-			entity.attachComponent(MeshRenderer.class).setMaterial(new Material(wallTex));
-			//floor
-			entity = world.createEntity("wall");
-			entity.getTransform().translate(0, -1, -i);
-			entity.getTransform().pitch(Mathf.degToRad(90));
-			entity.attachComponent(MeshFilter.class).setMesh(mesh);
-			entity.attachComponent(MeshRenderer.class).setMaterial(new Material(floorTex));
-		}
-		//door
-		entity = world.createEntity("door");
-		entity.attachComponent(ProximitySensor.class);
-		entity.attachComponent(AddAnimation.class);
-		entity.getComponent(ProximitySensor.class).setTarget(player);
-		entity.getTransform().translate(0, 0, -5);
-		entity.attachComponent(MeshFilter.class).setMesh(mesh);
-		entity.attachComponent(MeshRenderer.class).setMaterial(new Material(doorTex));
-		//reverse door
-		entity = world.createEntity("door");
-		entity.attachComponent(ProximitySensor.class);
-		entity.attachComponent(AddAnimation.class);
-		entity.getComponent(ProximitySensor.class).setTarget(player);
-		entity.getTransform().translate(0, 0, -5);
-		entity.getTransform().yaw(Mathf.degToRad(180));
-		entity.attachComponent(MeshFilter.class).setMesh(mesh);
-		entity.attachComponent(MeshRenderer.class).setMaterial(new Material(doorTex));
 	}
 
 	@Override

@@ -178,8 +178,8 @@ public class EntityFactory {
 				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
 				Transform t = getOwner().getTransform();
 				Vec3 look = t.getLook();
-				gl.glLightfv(GL_LIGHT1, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-				gl.glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
+//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+//				gl.glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
 			}
 
 		});
@@ -234,8 +234,8 @@ public class EntityFactory {
 				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
 				Transform t = getOwner().getTransform();
 				Vec3 look = t.getLook();
-				gl.glLightfv(GL_LIGHT1, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-				gl.glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
+//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+//				gl.glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
 			}
 
 		});
@@ -256,26 +256,6 @@ public class EntityFactory {
 		});
 
 		return camera;
-	}
-
-	public static Entity createSun(World world) {
-		final Vec3 target = new Vec3(10, 0, 10);
-		Entity sun = world.createEntity("Sun");
-		sun.getTransform().translate(0, 0, -1);
-		sun.attachComponent(new Behaviour() {
-			public void update(float delta) {
-				Transform t = getOwner().getTransform();
-				t.lookAt(target, t.getUp());
-				t.fly(1f*delta);
-			}
-		});
-		sun.attachComponent(new GL2Renderer() {
-			public void render(GL2 gl) {
-				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-			}
-		});
-		sun.attachComponent(PyramidRenderer.class);
-		return sun;
 	}
 
 }

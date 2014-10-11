@@ -65,26 +65,40 @@ public class WorldView extends GameCanvas implements View{
 		gl.glEnable(GL_LIGHTING);
 		
 
-		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.0075f);
-		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0025f);
-		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.001f);
+//		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.0075f);
+//		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0025f);
+//		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.001f);
 		gl.glEnable(GL_LIGHT0);
+		gl.glEnable(GL_COLOR_MATERIAL);
+		gl.glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		
-		float[] light1_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
-		float[] light1_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float[] light1_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+//		float[] light1_ambient = { 0f, 0f, 0f, 1.0f };
+//		float[] light1_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+//		float[] light1_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+//		float[] position = { 0, 0, 0, 1 };
+//		float[] direction = { 0, 0, 1 };
+//
+//		gl.glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 0);
+//		gl.glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 180);
+//		gl.glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1);
+//		gl.glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0);
+//		gl.glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0);
+//		
+//		gl.glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient, 0);
+//		gl.glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse, 0);
+//		gl.glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular, 0);
+//		gl.glLightfv(GL_LIGHT1, GL_POSITION, position, 0);
+//		gl.glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction, 0);
 		
-		gl.glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient, 0);
-		gl.glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse, 0);
-		gl.glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular, 0);
-		gl.glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.75f);
-		gl.glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.25f);
-		gl.glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.1f);
+
+//		gl.glLightModelfv(GL_LIGHT_MODEL_AMBIENT, new float[] { 0.5f, 0.5f, 0.5f, 1}, 0);
+//		gl.glLightModelfv(GL_LIGHT_MODEL_AMBIENT, new float[] { 0f, 0f, 0f, 1}, 0);
 		 
-		gl.glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0f);
-		gl.glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0f);
-		 
-		gl.glEnable(GL_LIGHT1);
+//		gl.glEnable(GL_LIGHT1);
+//		gl.glEnable(GL_COLOR_MATERIAL);
+//		gl.glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+//		gl.glMaterialfv(GL_FRONT, GL_SPECULAR, new float[]{ 1.0f, 1.0f, 1.0f, 1.0f }, 0);
+//        gl.glMateriali(GL_FRONT, GL_SHININESS, 128);
 	}
 
 	@Override
