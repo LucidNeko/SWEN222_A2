@@ -48,11 +48,16 @@ public class Transform extends Component {
 	 * @param source The Transform to copy.
 	 */
 	public void set(Transform source) {
+		set(source, true);
+	}
+	
+	/** Sets this transform to the source transform, but only sets hasChanged if you tell it to. */
+	public void set(Transform source, boolean setChanged) {
 		this.position.set(source.position);
 		this.up.set(source.up);
 		this.along.set(source.along);
 		this.look.set(source.look);
-		setChanged();
+		if(setChanged) setChanged();
 	}
 
 	/**
