@@ -34,6 +34,8 @@ public class Client extends Thread{
 	private Camera camera;
 
 	private boolean gameStart = false;
+	
+	private boolean msgWaiting = false;
 
 
 	private GameDemoNet2 gameloop;
@@ -100,12 +102,14 @@ public class Client extends Thread{
 	}
 
 	public void receivedMessage(DataInputStream msg) throws IOException{
+//		msgWaiting = true;
 		gameloop.receiveMessage(msg);
 		/*
 		if(gameStart){
 			gameloop.receiveMessage(msg);
 		}
-		else{
+		
+		
 			String st = msg.readUTF();
 			System.out.println(st);
 			if(st.equals("transform")){
@@ -131,15 +135,25 @@ public class Client extends Thread{
 				startGame();
 			}
 			//System.out.println(msg.readUTF());
-		}
-		*/
+		
+		
 //		else{
 //			if(msg.readUTF()=="start"){
 //				gameStart = true;
 //				gameloop.beginGame();
 //			}
 //		}
+ * 
+ */
 	}
+	
+	/*
+	public boolean doWeHaveAMessage(){
+		if(msgWaiting){
+			
+		}
+	}
+	*/
 
 	public void startGame(){
 		gameStart = true;
@@ -171,6 +185,11 @@ public class Client extends Thread{
 	
 	public void sendToServer(int i) throws IOException{
 		connection.sendToServer(i);
+	}
+
+	public DataInputStream getInputStream() {
+		// TODO Auto-generated method stub
+		return connection.getInputStream();
 	}
 
 

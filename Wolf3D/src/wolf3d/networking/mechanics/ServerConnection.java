@@ -28,11 +28,14 @@ public class ServerConnection extends Thread{
 
 	public void run(){
 		try{
-			try{
+			
+			//try{
 
 
 			while(true){
+				/*
 				if(in.available()>0){
+					System.out.println("HELLO");
 					String marker = in.readUTF();
 
 					if(marker.equals("transform")){
@@ -46,12 +49,16 @@ public class ServerConnection extends Thread{
 						master.pushToAllClients(in.readUTF()); // message itself.
 					}
 				}
+				*/
+				
 			}
 
+			/*
 			}catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			*/
 		}
 		finally{
 			try {
@@ -98,6 +105,11 @@ public class ServerConnection extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	}
+
+	public DataInputStream getInputStream() {
+		// TODO Auto-generated method stub
+		return in;
 	}
 
 

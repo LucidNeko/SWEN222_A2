@@ -123,4 +123,9 @@ public class ClientConnection extends Thread{
 		out.writeInt(i);
 	}
 
+	public DataInputStream getInputStream() {
+		// TODO Auto-generated method stub
+		return in;
+	}
+
 }
