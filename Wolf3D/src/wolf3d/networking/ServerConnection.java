@@ -24,6 +24,11 @@ public class ServerConnection extends Thread{
 		}
 	}
 
+	
+	public boolean areWeAlive(){
+		return (!(soc.isClosed()) && soc.isConnected());
+	}
+	
 	public void run(){
 		try{
 			
