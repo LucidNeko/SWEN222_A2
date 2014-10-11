@@ -70,12 +70,14 @@ public class Client extends Thread{
 						Gson g = new Gson();
 						t = g.fromJson(in.readUTF(), Transform.class);
 						System.out.println("The created transform: " + t.toString());
-						ent.getTransform().set(t);
+						ent.getTransform().set(t, false);
 						break;
 						
 					case "ids":
 						int playerID = in.readInt();
 						System.out.println("Your ID is: "+playerID);
+						//REPLACE THIS WITH THE METHOD IN GAME LOOP
+						//TODO
 						Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
 						gl.setPlayer(player);
 						System.out.printf("Other IDs are: ");
