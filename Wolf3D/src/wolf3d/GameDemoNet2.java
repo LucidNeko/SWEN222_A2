@@ -135,7 +135,6 @@ public class GameDemoNet2 extends GameLoop {
 		//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
 		updateCamView();
 
-		EntityFactory.createSun(world);
 
 		//camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
@@ -327,6 +326,11 @@ public class GameDemoNet2 extends GameLoop {
 	@Override
 	protected void render() {
 		if(view != null) view.display();
+	}
+
+	public Entity getPlayer() {
+		// TODO Auto-generated method stub
+		return player;
 	}
 
 

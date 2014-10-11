@@ -7,6 +7,9 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -18,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -46,6 +50,8 @@ public class MapBuilder extends JFrame {
 	
 	private int selectionX = 0;
 	private int selectionY = 0;
+	
+	private JComponent mapWindow;
 	
 	public MapBuilder() {
 		super("Map Builder v1.0");
@@ -78,6 +84,23 @@ public class MapBuilder extends JFrame {
 			}
 		});
 		buttonPanel.add(printButton);
+		
+		JButton newButton = new JButton("New");
+		newButton.setFocusable(false);
+		newButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MAP_WIDTH = Integer.parseInt(JOptionPane.showInputDialog(MapBuilder.this, "Enter the width:"));
+				MAP_HEIGHT = Integer.parseInt(JOptionPane.showInputDialog(MapBuilder.this, "Enter the height:"));
+				cells = new int[MAP_HEIGHT][MAP_WIDTH];
+				Dimension dim = mapWindow.getPreferredSize();
+				if(dim.getWidth() < MAP_WIDTH*CELL_SIZE || dim.getHeight() < MAP_HEIGHT*CELL_SIZE) {
+					mapWindow.setPreferredSize(new Dimension(MAP_WIDTH*CELL_SIZE, MAP_HEIGHT*CELL_SIZE));
+					MapBuilder.this.pack();
+					MapBuilder.this.repaint();
+				}
+			}
+		});
+		buttonPanel.add(newButton);
 		
 		JButton clearButton = new JButton("Clear");
 		clearButton.setFocusable(false);
@@ -117,7 +140,6 @@ public class MapBuilder extends JFrame {
 								cells[row][col] = Integer.decode("0x"+line[col]);
 							}
 						}
-						MapBuilder.this.repaint();
 					} catch (FileNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -130,13 +152,12 @@ public class MapBuilder extends JFrame {
 		
 		this.getContentPane().add(buttonPanel, BorderLayout.NORTH);
 		
-		this.getContentPane().add(new JComponent() {
-			{
-				this.setPreferredSize(new Dimension(MAP_WIDTH*CELL_SIZE, MAP_HEIGHT*CELL_SIZE));
-			}
+		mapWindow = new JComponent() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				g.setColor(new Color(0, 0, 32, 16));
+				g.fillRect(0, 0, MAP_WIDTH*CELL_SIZE, MAP_HEIGHT*CELL_SIZE);
 				g.setColor(new Color(255, 0, 0, 64));
 				g.fillRect(selectionX*CELL_SIZE, selectionY*CELL_SIZE, CELL_SIZE, CELL_SIZE);
 				g.setColor(Color.BLACK);
@@ -162,7 +183,20 @@ public class MapBuilder extends JFrame {
 					}
 				}
 			}
-		}, BorderLayout.CENTER);
+		};
+		mapWindow.setPreferredSize(new Dimension(MAP_WIDTH*CELL_SIZE, MAP_HEIGHT*CELL_SIZE));
+		mapWindow.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				selectionX = (int) Mathf.clamp(x/CELL_SIZE, 0, MAP_WIDTH-1);
+				selectionY = (int) Mathf.clamp(y/CELL_SIZE, 0, MAP_HEIGHT-1);
+				MapBuilder.this.repaint();
+			}
+		});
+		
+		this.getContentPane().add(mapWindow, BorderLayout.CENTER);
 		
 		this.pack();
 		this.setVisible(true);
@@ -200,30 +234,6 @@ public class MapBuilder extends JFrame {
 						if(selectionY < MAP_HEIGHT-1)
 							cells[selectionY+1][selectionX] ^= opposite(SOUTH & walls); //down
 					}
-					
-					//this cell
-//					if()
-//					
-//					if(Keyboard.isKeyDownOnce(KeyEvent.VK_W)) {
-//						if((cell & NORTH) != 0) 
-//							cells[selectionY][selectionX] &= ~NORTH; //remove
-//						else cells[selectionY][selectionX] |= NORTH; //add
-//					}
-//					if(Keyboard.isKeyDownOnce(KeyEvent.VK_A)) {
-//						if((cell & WEST) != 0) 
-//							cells[selectionY][selectionX] &= ~WEST;
-//						else cells[selectionY][selectionX] |= WEST;
-//					}
-//					if(Keyboard.isKeyDownOnce(KeyEvent.VK_S)) {
-//						if((cell & SOUTH) != 0) 
-//							cells[selectionY][selectionX] &= ~SOUTH;
-//						else cells[selectionY][selectionX] |= SOUTH;
-//					}
-//					if(Keyboard.isKeyDownOnce(KeyEvent.VK_D)) {
-//						if((cell & EAST) != 0) 
-//							cells[selectionY][selectionX] &= ~EAST;
-//						else cells[selectionY][selectionX] |= EAST;
-//					}
 					
 					MapBuilder.this.repaint();
 					

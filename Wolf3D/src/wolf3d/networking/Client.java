@@ -61,42 +61,48 @@ public class Client extends Thread{
 				while(true){
 					String marker = in.readUTF();
 					switch(marker){
-					
+
 					case "transform":
 						int id = in.readInt();
 						System.out.println("On id: "+id);
-						Entity ent = world.getEntity(id);
-						Transform t;
-						Gson g = new Gson();
-						t = g.fromJson(in.readUTF(), Transform.class);
-						System.out.println("The created transform: " + t.toString());
-						ent.getTransform().set(t, false);
+						if(id==gl.getPlayer().getID()){
+							System.out.println("Hey, that's our own player ID. Let's not apply this transform...");
+							in.readUTF();
+						}
+						else{
+							Entity ent = world.getEntity(id);
+							Transform t;
+							Gson g = new Gson();
+							t = g.fromJson(in.readUTF(), Transform.class);
+							System.out.println("The created transform: " + t.toString());
+							ent.getTransform().set(t, false);
+						}
 						break;
-						
+
 					case "ids":
 						int playerID = in.readInt();
 						System.out.println("Your ID is: "+playerID);
 						//REPLACE THIS WITH THE METHOD IN GAME LOOP
 						//TODO
 						gl.createPlayer(playerID);
-					//	Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
-					//	gl.setPlayer(player);
+						//	Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
+						//	gl.setPlayer(player);
 						System.out.printf("Other IDs are: ");
 						int noOthers = in.readInt();
 						for(int i = 0; i< noOthers; i++){
 							int otherID = in.readInt();
 							System.out.printf("%d, ",otherID);
 							gl.createOtherPlayer(otherID);
-						//	EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
+							//	EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
 						}
 						System.out.printf("\n");
 						break;
-						
+
 					case "begin":
 						gl.createEntities();
 						gl.start();
 						break;
-						
+
 					case "wait":
 						int waitNo = in.readInt();
 						System.out.println("Waiting for "+waitNo+" more player/s to join.");
@@ -139,7 +145,7 @@ public class Client extends Thread{
 		Gson g = new Gson();
 		out.writeUTF(g.toJson(t));
 	}
-	
+
 	public void sendToServer(String string) throws IOException {
 		out.writeUTF(string);
 	}
@@ -151,7 +157,7 @@ public class Client extends Thread{
 	public DataInputStream getInputStream() {
 		return in;
 	}
-	 
+
 
 
 }

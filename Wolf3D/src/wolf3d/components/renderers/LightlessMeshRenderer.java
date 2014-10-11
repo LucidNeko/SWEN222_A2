@@ -24,6 +24,10 @@ public class LightlessMeshRenderer extends GL2Renderer {
 		if(material == null) throw new IllegalArgumentException("Cannot set material to null.");
 		this.material = material;
 	}
+	
+	public Material getMaterial() {
+		return material;
+	}
 
 	@Override
 	public void render(GL2 gl) {

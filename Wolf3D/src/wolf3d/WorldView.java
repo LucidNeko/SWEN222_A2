@@ -64,27 +64,12 @@ public class WorldView extends GameCanvas implements View{
 
 		gl.glEnable(GL_LIGHTING);
 		
-
-		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.0075f);
-		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0025f);
-		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.001f);
+		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.75f);
+		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.25f);
+		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
 		gl.glEnable(GL_LIGHT0);
-		
-		float[] light1_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
-		float[] light1_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float[] light1_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
-		
-		gl.glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient, 0);
-		gl.glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse, 0);
-		gl.glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular, 0);
-		gl.glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.75f);
-		gl.glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.25f);
-		gl.glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.1f);
-		 
-		gl.glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0f);
-		gl.glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0f);
-		 
-		gl.glEnable(GL_LIGHT1);
+		gl.glEnable(GL_COLOR_MATERIAL);
+		gl.glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	}
 
 	@Override
@@ -135,20 +120,20 @@ public class WorldView extends GameCanvas implements View{
 				continue; //next entity.
 			}
 			
-			//skip entities with transparency.
-			MeshRenderer mr = entity.getComponent(MeshRenderer.class);
-			if(mr != null) {
-				Material m = mr.getMaterial();
-				if(m != null) {
-					Texture tex = m.getTexture();
-					if(tex != null) {
-						if(tex.hasTransparency()) {
-							transparent.add(entity);
-							continue;
-						}
-					}
-				}
-			}
+//			//skip entities with transparency.
+//			MeshRenderer mr = entity.getComponent(MeshRenderer.class);
+//			if(mr != null) {
+//				Material m = mr.getMaterial();
+//				if(m != null) {
+//					Texture tex = m.getTexture();
+//					if(tex != null) {
+//						if(tex.hasTransparency()) {
+//							transparent.add(entity);
+//							continue;
+//						}
+//					}
+//				}
+//			}
 			
 			//if not skipped render.
 			gl.glPushMatrix();
@@ -160,17 +145,17 @@ public class WorldView extends GameCanvas implements View{
 			gl.glPopMatrix();
 		}
 		
-		//now we go back and render the transparent ones last so they overlap properly.
-		for(Entity e : transparent) {
-			Transform t = e.getTransform();
-			
-			gl.glPushMatrix();
-				t.applyTransform(gl);
-				for(GL2Renderer renderer : e.getComponents(GL2Renderer.class)) {
-					renderer.render(gl);
-				}
-			gl.glPopMatrix();
-		}
+//		//now we go back and render the transparent ones last so they overlap properly.
+//		for(Entity e : transparent) {
+//			Transform t = e.getTransform();
+//			
+//			gl.glPushMatrix();
+//				t.applyTransform(gl);
+//				for(GL2Renderer renderer : e.getComponents(GL2Renderer.class)) {
+//					renderer.render(gl);
+//				}
+//			gl.glPopMatrix();
+//		}
 	}
 
 }

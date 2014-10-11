@@ -15,6 +15,7 @@ import wolf3d.components.Inventory;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.DropItem;
+import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import engine.common.Mathf;
 import engine.common.Vec3;
@@ -178,8 +179,8 @@ public class EntityFactory {
 				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
 				Transform t = getOwner().getTransform();
 				Vec3 look = t.getLook();
-				gl.glLightfv(GL_LIGHT1, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-				gl.glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
+//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+//				gl.glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
 			}
 
 		});
@@ -234,8 +235,8 @@ public class EntityFactory {
 				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
 				Transform t = getOwner().getTransform();
 				Vec3 look = t.getLook();
-				gl.glLightfv(GL_LIGHT1, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-				gl.glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
+//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+//				gl.glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
 			}
 
 		});
@@ -257,25 +258,38 @@ public class EntityFactory {
 
 		return camera;
 	}
-
-	public static Entity createSun(World world) {
-		final Vec3 target = new Vec3(10, 0, 10);
-		Entity sun = world.createEntity("Sun");
-		sun.getTransform().translate(0, 0, -1);
-		sun.attachComponent(new Behaviour() {
+	
+	public static Entity createSkybox(World world, final Entity target) {
+		Entity skybox = world.createEntity("skybox");
+		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
+		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));
+		skybox.attachComponent(new Behaviour() {
+			//moves the box around with player so they can't come close to the edges.
+			@Override
 			public void update(float delta) {
-				Transform t = getOwner().getTransform();
-				t.lookAt(target, t.getUp());
-				t.fly(1f*delta);
+				Vec3 pos = target.getTransform().getPosition();
+				this.getOwner().getTransform().setPosition(pos);
 			}
 		});
-		sun.attachComponent(new GL2Renderer() {
-			public void render(GL2 gl) {
-				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
+		skybox.attachComponent(new Behaviour() {
+			private float time = 0;
+			private float duration = 10;
+			private Texture[] textures = {
+				Resources.getTexture("skybox.png", true),
+				Resources.getTexture("skybox3.png", true),
+				Resources.getTexture("skybox2.jpg", true),
+				Resources.getTexture("skybox3.png", true),
+			};
+			
+			public void update(float delta) {
+				requires(LightlessMeshRenderer.class);
+				
+				time += delta;
+				
+				getOwner().getComponent(LightlessMeshRenderer.class).getMaterial().setTexture(textures[(int)((time/duration) % textures.length)]);
 			}
 		});
-		sun.attachComponent(PyramidRenderer.class);
-		return sun;
+		return skybox;
 	}
 
 }
