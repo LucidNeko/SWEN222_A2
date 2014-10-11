@@ -328,5 +328,10 @@ public class GameDemoNet2 extends GameLoop {
 		if(view != null) view.display();
 	}
 
+	public Entity getPlayer() {
+		// TODO Auto-generated method stub
+		return player;
+	}
+
 
 }
