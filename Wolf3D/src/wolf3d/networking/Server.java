@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import wolf3d.networking.mechanics.ServerConnection;
-
 /**
  * This is a dumb server, i.e. it does no logic.
  * It has multiple connections and methods for sending and receiving messages.

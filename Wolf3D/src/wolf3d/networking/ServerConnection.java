@@ -1,11 +1,9 @@
-package wolf3d.networking.mechanics;
+package wolf3d.networking;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
-import wolf3d.networking.Server;
 
 public class ServerConnection extends Thread{
 	private Socket soc;
