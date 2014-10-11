@@ -36,14 +36,6 @@ public class Server extends Thread{
 		}
 	}
 
-	/**
-	 * Send a message to client number [id]
-	 * @param id The client to send the message to.
-	 * @param msg the message.
-	 */
-	public void pushToClient(int id, byte[] msg){
-		connections[id].pushToClient(msg);
-	}
 
 	/**
 	 * Server run thread, starts up the server and listens for new connections.
@@ -51,7 +43,8 @@ public class Server extends Thread{
 	public void run(){
 		while(listening){
 
-			pushToAllClients("Waiting for " + (capacity - index) + " more players to join");
+			pushToAllClients("wait");
+			pushToAllClients((capacity-index));
 			System.out.println("Server listening for " + (capacity-index) + " more connections...");
 
 			Socket sock;

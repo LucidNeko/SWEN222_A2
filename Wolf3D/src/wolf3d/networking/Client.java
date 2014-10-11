@@ -1,21 +1,19 @@
 package wolf3d.networking;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
+import wolf3d.EntityFactory;
 import wolf3d.GameDemoNet2;
-import wolf3d.networking.mechanics.ClientConnection;
 
 import com.google.gson.Gson;
 
-import engine.components.Camera;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
-import engine.display.View;
 
 /**
  * This class is a wrapper for the Client connection that performs logic necessary for the game to run.
@@ -24,20 +22,15 @@ import engine.display.View;
  *
  */
 public class Client extends Thread{
-	private ClientConnection connection;
+	private Socket sock;
 
-	private World world; //this is the clients local copy of the world
+	private World world;
+	private GameDemoNet2 gl;
 
-	private Entity player;
-	private View view;
-	private Camera camera;
+	private String state;
 
-	private boolean gameStart = false;
-	
-	private boolean msgWaiting = false;
-
-
-	private GameDemoNet2 gameloop;
+	private DataInputStream in;
+	private DataOutputStream out;
 
 
 	/**
@@ -47,32 +40,12 @@ public class Client extends Thread{
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	public Client(String playerName, String ipAddress, int port, GameDemoNet2 gameloop) throws UnknownHostException, IOException{
-		Socket sock = new Socket(ipAddress,port);
-		connection = new ClientConnection(sock,this);
-
-		this.gameloop = gameloop;
-
-		//Create this player on the server
-		//createMe(playerName);
-
-		//Get a copy of the gameworld
-		//connection.giveMeACopyOfTheWorldPlease(world);
-
-		//Begin listening
-		connection.start();
-	}
-
-	private void createMe(String playerName) {
-		player = world.createEntity(playerName);
-	}
-
-	/**
-	 * Dumb message method, will probably be deleted in future.
-	 * @param message
-	 */
-	public void sendMessage(byte[] message){
-		connection.writeToServer(message);
+	public Client(String playerName, String ipAddress, int port, World world, GameDemoNet2 gl) throws UnknownHostException, IOException{
+		this.sock = new Socket(ipAddress,port);
+		this.state = "connected";
+		this.world = world;
+		this.gl = gl;
+		this.start();
 	}
 
 	/**
@@ -80,88 +53,67 @@ public class Client extends Thread{
 	 * (NOTE, MAY BE WORTHWILE TO MAKE THIS CLASS OBSERVABLE?)
 	 */
 	public void run(){
-		while(true){
+		try{
+			try{
+				out = new DataOutputStream(sock.getOutputStream());
+				in = new DataInputStream(sock.getInputStream());
 
-			//simple write messagew for testing.
-			Scanner input = new Scanner(System.in);
-			while(true){
-				String s = input.nextLine();
-				System.out.println(s);
-				sendMessage(s.getBytes());
-			}
-
-			/*
-			if(connection.doWeNeedToCollect()){
-				msg = connection.message();
-				System.out.println(msg.toString());
-			}
-			*/
-			//
-		}
-	}
-
-	public void receivedMessage(DataInputStream msg) throws IOException{
-//		msgWaiting = true;
-		gameloop.receiveMessage(msg);
-		/*
-		if(gameStart){
-			gameloop.receiveMessage(msg);
-		}
-		
-		
-			String st = msg.readUTF();
-			System.out.println(st);
-			if(st.equals("transform")){
-				int id = msg.readInt();
-				Entity ent = world.getEntity(id);
-				Transform t;
-				Gson g = new Gson();
-				t = g.fromJson(msg.readUTF(), Transform.class);
-				ent.getTransform().set(t);
-			}
-			if(st.equals("message")){
-				
-			}
-			if(st.equals("ids")){
-				System.out.println("Your ID is: "+msg.readInt());
-				System.out.println("Other IDs are: ");
-				int noOthers = msg.readInt();
-				for(int i = 0; i< noOthers; i++){
-					System.out.println(msg.readInt());
+				while(true){
+					String marker = in.readUTF();
+					switch(marker){
+					
+					case "transform":
+						int id = in.readInt();
+						System.out.println("On id: "+id);
+						Entity ent = world.getEntity(id);
+						Transform t;
+						Gson g = new Gson();
+						t = g.fromJson(in.readUTF(), Transform.class);
+						System.out.println("The created transform: " + t.toString());
+						ent.getTransform().set(t);
+						break;
+						
+					case "ids":
+						int playerID = in.readInt();
+						System.out.println("Your ID is: "+playerID);
+						Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
+						gl.setPlayer(player);
+						System.out.printf("Other IDs are: ");
+						int noOthers = in.readInt();
+						for(int i = 0; i< noOthers; i++){
+							int otherID = in.readInt();
+							System.out.printf("%d, ",otherID);
+							EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
+						}
+						System.out.printf("\n");
+						break;
+						
+					case "begin":
+						gl.createEntities();
+						gl.start();
+						break;
+						
+					case "wait":
+						int waitNo = in.readInt();
+						System.out.println("Waiting for "+waitNo+" more player/s to join.");
+						break;
+					}
 				}
+
 			}
-			if(st.equals("begin")){
-				startGame();
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			//System.out.println(msg.readUTF());
-		
-		
-//		else{
-//			if(msg.readUTF()=="start"){
-//				gameStart = true;
-//				gameloop.beginGame();
-//			}
-//		}
- * 
- */
-	}
-	
-	/*
-	public boolean doWeHaveAMessage(){
-		if(msgWaiting){
-			
 		}
-	}
-	*/
-
-	public void startGame(){
-		gameStart = true;
-		gameloop.start();
-	}
-
-	public boolean hasGameStarted() {
-		// TODO Auto-generated method stub
-		return gameStart;
+		finally{
+			try {
+				sock.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
@@ -173,23 +125,29 @@ public class Client extends Thread{
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException{
-		Client pc = new Client("Bob McBob", args[0],Integer.parseInt(args[1]), null);
-		pc.start();
+		new Client("Bob McBob", args[0],Integer.parseInt(args[1]), null, null);
+		//pc.start();
 	}
 
-	public void sendToServer(String string) throws IOException {
-		// TODO Auto-generated method stub
-		connection.sendToServer(string);
+	public void sendTransform(Transform t) throws IOException{
+		out.writeUTF("transform");
+		out.writeInt(t.getOwner().getID());
+		Gson g = new Gson();
+		out.writeUTF(g.toJson(t));
 	}
 	
+	public void sendToServer(String string) throws IOException {
+		out.writeUTF(string);
+	}
+
 	public void sendToServer(int i) throws IOException{
-		connection.sendToServer(i);
+		out.writeInt(i);
 	}
 
 	public DataInputStream getInputStream() {
-		// TODO Auto-generated method stub
-		return connection.getInputStream();
+		return in;
 	}
+	 
 
 
 }
