@@ -158,7 +158,9 @@ public class Server extends Thread{
 		System.out.println("SendAll: " + string);
 		for(ServerConnection sc : connections){
 			if(sc != null){
-				sc.pushToClient(string);
+				if(sc.areWeAlive()){
+					sc.pushToClient(string);
+				}
 			}
 		}
 	}
@@ -177,7 +179,9 @@ public class Server extends Thread{
 		System.out.println("SendAll: [int]"+i);
 		for(ServerConnection sc : connections){
 			if(sc != null){
-				sc.pushToClient(i);
+				if(sc.areWeAlive()){
+					sc.pushToClient(i);
+				}
 			}
 		}
 	}
