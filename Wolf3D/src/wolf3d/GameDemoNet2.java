@@ -61,7 +61,6 @@ public class GameDemoNet2 extends GameLoop {
 	private Entity player;
 	
 	private Client client;
-	private DataInputStream in;
 
 	/**
 	 * Create a new GameDemo with the given world as it's world.
@@ -71,6 +70,10 @@ public class GameDemoNet2 extends GameLoop {
 		super(FPS, FUPS);
 		this.world = world;
 		createEntities();
+	}
+	
+	public void setPlayer(Entity e){
+		this.player = e;
 	}
 
 	public GameDemoNet2(World world, String ip, int port) {
@@ -83,8 +86,7 @@ public class GameDemoNet2 extends GameLoop {
 		//createEntities();
 		
 		try {
-			client = new Client("Joe",ip,port,this);
-			in = client.getInputStream();
+			client = new Client("Joe",ip,port,world, this);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,7 +107,7 @@ public class GameDemoNet2 extends GameLoop {
 
 	
 	
-	private void createEntities() {
+	public void createEntities() {
 		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
@@ -262,30 +264,7 @@ public class GameDemoNet2 extends GameLoop {
 		if(Mouse.isGrabbed())
 			Mouse.centerMouseOverComponent();
 
-		try {
-			if(in.available() > 0){
 
-				String st = in.readUTF();
-				System.out.println(st);
-				if(st.equals("transform")){
-					int id = in.readInt();
-					System.out.println("On id: "+id);
-					Entity ent = world.getEntity(id);
-					Transform t;
-					Gson g = new Gson();
-					t = g.fromJson(in.readUTF(), Transform.class);
-					System.out.println("The created transform: " + t.toString());
-					ent.getTransform().set(t);
-				}
-			}
-		} catch (JsonSyntaxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
 		
 		//Update all the behaviours attached to the entities.
 		for(Entity entity : world.getEntities()) {
@@ -293,17 +272,11 @@ public class GameDemoNet2 extends GameLoop {
 				behaviour.update(delta);
 				if(behaviour.hasChanged()){
 					//send over network.
-
 					try {
-						client.sendToServer("transform");
-						Entity owner = behaviour.getOwner();
-						client.sendToServer(owner.getID());
-						Gson gs = new Gson();
-						client.sendToServer(gs.toJson(owner.getTransform()));
-						
-					} catch (IOException e) {
+						client.sendTransform(behaviour.getOwner().getTransform());
+					} catch (IOException e1) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						e1.printStackTrace();
 					}
 				}
 			}
@@ -330,42 +303,5 @@ public class GameDemoNet2 extends GameLoop {
 		if(view != null) view.display();
 	}
 
-	public void receiveMessage(DataInputStream msg) throws IOException {
-		// TODO Auto-generated method stub
-
-		String st = msg.readUTF();
-		System.out.println(st);
-		if(st.equals("transform")){
-			int id = msg.readInt();
-			System.out.println("On id: "+id);
-			Entity ent = world.getEntity(id);
-			Transform t;
-			Gson g = new Gson();
-			t = g.fromJson(msg.readUTF(), Transform.class);
-			System.out.println("The created transform: " + t.toString());
-			ent.getTransform().set(t);
-		}
-		if(st.equals("message")){
-			
-		}
-		if(st.equals("ids")){
-			int playerID = msg.readInt();
-			createPlayer(playerID);
-			System.out.println("Your ID is: "+playerID);
-			System.out.println("Other IDs are: ");
-			int noOthers = msg.readInt();
-			for(int i = 0; i< noOthers; i++){
-				int otID = msg.readInt();
-				createOtherPlayer(otID);
-				System.out.println(otID);
-			}
-		}
-		if(st.equals("begin")){
-			createEntities();
-			this.run();
-		}
-
-			// TODO Auto-generated method stub
-	}
 
 }
