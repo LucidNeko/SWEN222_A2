@@ -11,7 +11,7 @@ import wolf3d.database.DataManagement;
 
 import com.google.gson.Gson;
 
-import engine.components.Camera;
+import engine.components.Transform;
 import engine.components.Component;
 import engine.core.Entity;
 import engine.core.World;
@@ -46,37 +46,37 @@ public class DatabaseTests {
 	}
 
 	@Test
-	// Tests Gson parsing a world's entity collection
-	public void testParseEntities() {
-		Gson gson = new Gson();
-		World world = createDummyWorld();
-		Collection<Entity> entities = world.getEntities();
-		String es;
-
-		for (Entity entity : entities) {
-			// get each component
-		}
-	}
-
-	@Test
 	// Test a world saves without crashing.
-	// Will overwrite existing saved world.
-	public void testSaveWorld() {
-		Gson gson = new Gson();
+	public void testSaveWorldCrash() {
 		World world = createDummyWorld();
-		DataManagement.saveWorld(world);
+		DataManagement.saveWorld("testSaveWorldCrash.txt", world);
 	}
 
 	@Test
-	// Test a world loads without crashing
+	// Test a world loads correctly, only checks entities and their Transform component
 	public void testLoadWorld() {
-		Gson gson = new Gson();
+		World world = null;
+		World dummy = createDummyWorld();
+		DataManagement.saveWorld("test_testLoadWorld.txt", dummy);
 		try {
-			World world = DataManagement.loadWorld();
+			world = DataManagement.loadWorld("test_testLoadWorld.txt");
 		} catch (IOException e) {
 			fail(e.getMessage());
+		}		
+		Collection<Entity> loadedEntities = world.getEntities();
+		Collection<Entity> controlEntities = dummy.getEntities();
+		assertFalse(loadedEntities.isEmpty());		// Check something loaded
+		for (Entity le : loadedEntities) {
+			for (Entity ce : controlEntities) {
+				if (le.getComponent(Transform.class).getPosition() == 
+						ce.getComponent(Transform.class).getPosition()) {
+					loadedEntities.remove(le);		// Remove matching entities
+					controlEntities.remove(le);
+				}
+			}
 		}
-
+		assertTrue(loadedEntities.isEmpty());	
+		assertTrue(controlEntities.isEmpty());	
 	}
 
 	//============================================================================
@@ -85,11 +85,8 @@ public class DatabaseTests {
 
 	private World createDummyWorld() {
 		World world = new World();
-		component = new Component();
-		Component component2 = new Component();
-		Camera cc = new Camera();
 		a = world.createEntity("entA");
-		b = world.createEntity("entB");
+		//b = world.createEntity("entB");
 		return world;
 	}
 }
