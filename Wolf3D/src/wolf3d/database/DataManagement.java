@@ -108,15 +108,15 @@ public class DataManagement {
 			}
 		}
 		scan.close();
-		//return world;
+		return world;
 
 		//=================================================
 		//FOR INTEGRATION ONLY: DELETE ME
 		// return a dummy world
-				World dummyWorld = new World();
-				dummyWorld.createEntity("entA");
-				dummyWorld.createEntity("entB");
-				return dummyWorld;
+//				World dummyWorld = new World();
+//				dummyWorld.createEntity("entA");
+//				dummyWorld.createEntity("entB");
+//				return dummyWorld;
 		//=================================================
 	}
 
@@ -139,16 +139,8 @@ public class DataManagement {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(saveFile)));
 			for (Entity entity : entities) {
-				//				writer.write("#\n");			// '#' indicates start of entity record
-				//				writer.write(Integer.toString(entity.getID())+"\n");
-				//				writer.write(entity.getName()+"\n");
-				//				writer.write(gson.toJson(entity.getComponent(Transform.class)));
-				//				writer.write("\n*\n\n");		// '*' indicates end of entity record
-				//				writer.write(gson.toJson(entity.getComponent(Transform.class)));
-
 				writer.write(gson.toJson(entity));
 				writer.write("\n*\n\n");		// Asterisk indicates end of entity record
-
 			}
 		} catch (IOException ex) {
 			// report
