@@ -51,8 +51,8 @@ import engine.util.Resources;
 public class GameDemoNet2 extends GameLoop {
 	private static final Logger log = LogManager.getLogger();
 
-	private static final int FPS = 40; //frames per second/regular updates per second.
-	private static final int FUPS = 40; //fixed updates per second.
+	private static final int FPS = 30; //frames per second/regular updates per second.
+	private static final int FUPS = 30; //fixed updates per second.
 
 	private World world;
 	private View view;

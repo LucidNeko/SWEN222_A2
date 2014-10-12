@@ -69,9 +69,11 @@ public class Wolf3DNet2 extends JFrame {
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		
 		//Build OpenGL panel.
+		/*
 		JPanel sidePanel = new JPanel();
 		sidePanel.add(minimap);
 		this.getContentPane().add(sidePanel, BorderLayout.EAST);
+		*/
 
 		//Register input devices. If GLCanvas have to register to canvas.
 		worldView.setFocusable(true);
