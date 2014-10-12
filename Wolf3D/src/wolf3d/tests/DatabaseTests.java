@@ -11,7 +11,7 @@ import wolf3d.database.DataManagement;
 
 import com.google.gson.Gson;
 
-import engine.components.Camera;
+import engine.components.Transform;
 import engine.components.Component;
 import engine.core.Entity;
 import engine.core.World;
@@ -49,29 +49,34 @@ public class DatabaseTests {
 	// Test a world saves without crashing.
 	public void testSaveWorldCrash() {
 		World world = createDummyWorld();
-		DataManagement.saveWorld("worldSave.txt", world);
+		DataManagement.saveWorld("testSaveWorldCrash.txt", world);
 	}
 
 	@Test
-	// Test a world loads without crashing
-	public void testLoadWorldCrash() {
-		try {
-			World world = DataManagement.loadWorld("worldSave.txt");
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}		
-	}
-	
-	@Test
-	// Test a world loads correctly
+	// Test a world loads correctly, only checks entities and their Transform component
 	public void testLoadWorld() {
 		World world = null;
+		World dummy = createDummyWorld();
+		DataManagement.saveWorld("test_testLoadWorld.txt", dummy);
 		try {
-			world = DataManagement.loadWorld("worldSave.txt");
+			world = DataManagement.loadWorld("test_testLoadWorld.txt");
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}		
-		// CHECK EACH ENTITY IS THE SAME AS IN CREATEDUMMYWORLD()
+		Collection<Entity> loadedEntities = world.getEntities();
+		Collection<Entity> controlEntities = dummy.getEntities();
+		assertFalse(loadedEntities.isEmpty());		// Check something loaded
+		for (Entity le : loadedEntities) {
+			for (Entity ce : controlEntities) {
+				if (le.getComponent(Transform.class).getPosition() == 
+						ce.getComponent(Transform.class).getPosition()) {
+					loadedEntities.remove(le);		// Remove matching entities
+					controlEntities.remove(le);
+				}
+			}
+		}
+		assertTrue(loadedEntities.isEmpty());	
+		assertTrue(controlEntities.isEmpty());	
 	}
 
 	//============================================================================
@@ -81,7 +86,7 @@ public class DatabaseTests {
 	private World createDummyWorld() {
 		World world = new World();
 		a = world.createEntity("entA");
-		b = world.createEntity("entB");
+		//b = world.createEntity("entB");
 		return world;
 	}
 }
