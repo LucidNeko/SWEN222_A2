@@ -47,21 +47,31 @@ public class DatabaseTests {
 
 	@Test
 	// Test a world saves without crashing.
-	// Will overwrite existing saved world.
-	public void testSaveWorld() {
+	public void testSaveWorldCrash() {
 		World world = createDummyWorld();
 		DataManagement.saveWorld("worldSave.txt", world);
 	}
 
 	@Test
 	// Test a world loads without crashing
-	public void testLoadWorld() {
+	public void testLoadWorldCrash() {
 		try {
-			World world = DataManagement.loadWorld("/wolf3d/assets/worldSave.txt");
+			World world = DataManagement.loadWorld("worldSave.txt");
 		} catch (IOException e) {
 			fail(e.getMessage());
-		}
-		
+		}		
+	}
+	
+	@Test
+	// Test a world loads correctly
+	public void testLoadWorld() {
+		World world = null;
+		try {
+			world = DataManagement.loadWorld("worldSave.txt");
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}		
+		// CHECK EACH ENTITY IS THE SAME AS IN CREATEDUMMYWORLD()
 	}
 
 	//============================================================================
