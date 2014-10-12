@@ -1,7 +1,8 @@
 package wolf3d.tests;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -58,18 +59,23 @@ public class DatabaseTests {
 	}
 
 	@Test
-	// Test a world saves without crashing
+	// Test a world saves without crashing.
+	// Will overwrite existing saved world.
 	public void testSaveWorld() {
 		Gson gson = new Gson();
 		World world = createDummyWorld();
-		DataManagement.saveWorld("testWorld01", world);
+		DataManagement.saveWorld(world);
 	}
 
 	@Test
 	// Test a world loads without crashing
 	public void testLoadWorld() {
 		Gson gson = new Gson();
-		World world = DataManagement.loadWorld("testWorld01");
+		try {
+			World world = DataManagement.loadWorld();
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 
 	}
 

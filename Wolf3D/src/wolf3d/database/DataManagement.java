@@ -3,6 +3,7 @@ package wolf3d.database;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import engine.common.Vec3;
+import engine.components.Camera;
 import engine.components.Component;
 import engine.components.Transform;
 import engine.core.Entity;
@@ -39,14 +41,19 @@ import engine.util.Resources;
 public class DataManagement {
 	private static final Logger log = LogManager.getLogger();
 
-	/** base asset directory */
-	//private static final String ASSETS_DIR = "/wolf3d/assets/";
-
+	private static final String fname = "savedWorld.txt"; //filename for world being saved 
+	
 	/**
-	 * Loads a Wolf3D world from a given filename.
-	 * @param filename
+	 * Loads the Wolf3D world from the saved file.
+	 * @throws IOException 
 	 */
-	public static World loadWorld(String fname) {
+	public static World loadWorld() throws IOException {
+		// check save file exists
+		if (!new File(fname).isFile()) {
+			 log.error("Game file unable to load: file does not exist.");
+			 throw new IOException("Game file unable to load: file does not exist.");
+		}
+		
 		Vec3 c = new Vec3();
 		Gson gson = new Gson();
 		World world = new World();
@@ -62,17 +69,25 @@ public class DataManagement {
 			name++;
 		}
 		scan.close();
-		return world;
+		//return world;
+		
+		//=================================================
+		//FOR INTEGRATION ONLY: DELETE ME
+		// return a dummy world
+		World dummyWorld = new World();
+		dummyWorld.createEntity("entA");
+		dummyWorld.createEntity("entB");
+		return dummyWorld;
+		//=================================================
 	}
 
 	/**
 	 * Saves the current Wolf3D world's entities and their Transform
 	 * component using JSON, entity IDs and names are not stored in
 	 * JSON formatting.
-	 * @param filename
 	 * @param world
 	 */
-	public static void saveWorld(String fname, World world) {	//TODO: should get world inside method, not param
+	public static void saveWorld(World world) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Collection<Entity> entities = world.getEntities();
 
