@@ -64,7 +64,7 @@ public class DatabaseTests {
 	public void testSaveWorld() {
 		Gson gson = new Gson();
 		World world = createDummyWorld();
-		DataManagement.saveWorld(world);
+		DataManagement.saveWorld("/wolf3d/assets/worldSave.txt", world);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class DatabaseTests {
 	public void testLoadWorld() {
 		Gson gson = new Gson();
 		try {
-			World world = DataManagement.loadWorld();
+			World world = DataManagement.loadWorld("/wolf3d/assets/worldSave.txt");
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}

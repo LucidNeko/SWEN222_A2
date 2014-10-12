@@ -40,16 +40,16 @@ import engine.util.Resources;
 
 public class DataManagement {
 	private static final Logger log = LogManager.getLogger();
-
-	private static final String fname = "savedWorld.txt"; //filename for world being saved 
 	
 	/**
-	 * Loads the Wolf3D world from the saved file.
-	 * @throws IOException 
+	 * Loads the Wolf3D world from the file path specified
+	 * fpath must be the full path (e.g. "/wolf3d/assets/worldSave.txt")
+	 * @throws IOException	 * 
+	 * @param fpath
 	 */
-	public static World loadWorld() throws IOException {
+	public static World loadWorld(String fpath) throws IOException {
 		// check save file exists
-		if (!new File(fname).isFile()) {
+		if (!new File(fpath).isFile()) {
 			 log.error("Game file unable to load: file does not exist.");
 			 throw new IOException("Game file unable to load: file does not exist.");
 		}
@@ -57,7 +57,7 @@ public class DataManagement {
 		Vec3 c = new Vec3();
 		Gson gson = new Gson();
 		World world = new World();
-		Scanner scan = new Scanner(Resources.getInputStream(fname));
+		Scanner scan = new Scanner(Resources.getInputStream(fpath));
 		//check ID and name match after deserialization to check case of duplicate IDs etc
 		int name = 0;
 		while(scan.hasNext()) {
@@ -85,16 +85,18 @@ public class DataManagement {
 	 * Saves the current Wolf3D world's entities and their Transform
 	 * component using JSON, entity IDs and names are not stored in
 	 * JSON formatting.
+	 * Gets passed the world to be saved, and the file path to save it to
+	 * @param fpath
 	 * @param world
 	 */
-	public static void saveWorld(World world) {
+	public static void saveWorld(String fpath, World world) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Collection<Entity> entities = world.getEntities();
 
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(fname)));
+					new FileOutputStream(fpath)));
 			for (Entity entity : entities) {
 				writer.write("#\n");			// Hash indicates start of entity record
 				writer.write(Integer.toString(entity.getID())+"\n");
