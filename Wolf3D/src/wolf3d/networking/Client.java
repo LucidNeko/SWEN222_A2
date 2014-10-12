@@ -83,9 +83,7 @@ public class Client extends Thread{
 						*/
 					case "transform":
 						int id = in.readInt();
-						System.out.println("On id: "+id);
 						if(id==gl.getPlayer().getID()){
-							System.out.println("Hey, that's our own player ID. Let's not apply this transform...");
 							in.readFloat();
 							in.readFloat();
 							in.readFloat();
@@ -96,28 +94,23 @@ public class Client extends Thread{
 						}
 						else{
 							Transform t = world.getEntity(id).getTransform();
-							t.setPosition(in.readFloat(),in.readFloat(), in.readFloat());
-							t.lookInDirection(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
-							System.out.println("The created transform: " + t.toString());
+							t.setPositionNoFlag(in.readFloat(),in.readFloat(), in.readFloat());
+							t.lookAtDirectionNoFlag(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
 						}
 						break;
 					case "ids":
 						int playerID = in.readInt();
-						System.out.println("Your ID is: "+playerID);
 						//REPLACE THIS WITH THE METHOD IN GAME LOOP
 						//TODO
 						gl.createPlayer(playerID);
 						//	Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
 						//	gl.setPlayer(player);
-						System.out.printf("Other IDs are: ");
 						int noOthers = in.readInt();
 						for(int i = 0; i< noOthers; i++){
 							int otherID = in.readInt();
-							System.out.printf("%d, ",otherID);
 							gl.createOtherPlayer(otherID);
 							//	EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
 						}
-						System.out.printf("\n");
 						break;
 
 					case "begin":

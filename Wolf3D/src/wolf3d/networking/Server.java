@@ -160,7 +160,6 @@ public class Server extends Thread{
 	 */
 	public void pushToAllClients(String string) {
 		// TODO Auto-generated method stub
-		System.out.println("SendAll: " + string);
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				if(sc.areWeAlive()){
@@ -181,7 +180,6 @@ public class Server extends Thread{
 
 	public void pushToAllClients(int i) {
 		// TODO Auto-generated method stub
-		System.out.println("SendAll: [int]"+i);
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				if(sc.areWeAlive()){
@@ -193,7 +191,6 @@ public class Server extends Thread{
 	
 	public void pushToAllClients(float f) {
 		// TODO Auto-generated method stub
-		System.out.println("SendAll: [float]"+f);
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				if(sc.areWeAlive()){
