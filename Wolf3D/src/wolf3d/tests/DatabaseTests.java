@@ -46,37 +46,22 @@ public class DatabaseTests {
 	}
 
 	@Test
-	// Tests Gson parsing a world's entity collection
-	public void testParseEntities() {
-		Gson gson = new Gson();
-		World world = createDummyWorld();
-		Collection<Entity> entities = world.getEntities();
-		String es;
-
-		for (Entity entity : entities) {
-			// get each component
-		}
-	}
-
-	@Test
 	// Test a world saves without crashing.
 	// Will overwrite existing saved world.
 	public void testSaveWorld() {
-		Gson gson = new Gson();
 		World world = createDummyWorld();
-		DataManagement.saveWorld("/wolf3d/assets/worldSave.txt", world);
+		DataManagement.saveWorld("worldSave.txt", world);
 	}
 
 	@Test
 	// Test a world loads without crashing
 	public void testLoadWorld() {
-		Gson gson = new Gson();
 		try {
 			World world = DataManagement.loadWorld("/wolf3d/assets/worldSave.txt");
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
-
+		
 	}
 
 	//============================================================================
@@ -85,9 +70,6 @@ public class DatabaseTests {
 
 	private World createDummyWorld() {
 		World world = new World();
-		component = new Component();
-		Component component2 = new Component();
-		Camera cc = new Camera();
 		a = world.createEntity("entA");
 		b = world.createEntity("entB");
 		return world;

@@ -45,7 +45,7 @@ public class DataManagement {
 	 * Loads the Wolf3D world from the file path specified
 	 * fpath must be the full path (e.g. "/wolf3d/assets/worldSave.txt")
 	 * @throws IOException	 * 
-	 * @param fpath
+	 * @param fname
 	 */
 	public static World loadWorld(String fpath) throws IOException {
 		// check save file exists
@@ -86,17 +86,19 @@ public class DataManagement {
 	 * component using JSON, entity IDs and names are not stored in
 	 * JSON formatting.
 	 * Gets passed the world to be saved, and the file path to save it to
-	 * @param fpath
+	 * @param fname
 	 * @param world
 	 */
-	public static void saveWorld(String fpath, World world) {
+	public static void saveWorld(String fname, World world) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Collection<Entity> entities = world.getEntities();
-
+						
+		File saveFile = new File(getSaveFpath()+fname);		
+		
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(fpath)));
+					new FileOutputStream(saveFile)));
 			for (Entity entity : entities) {
 				writer.write("#\n");			// Hash indicates start of entity record
 				writer.write(Integer.toString(entity.getID())+"\n");
@@ -106,11 +108,23 @@ public class DataManagement {
 			}
 		} catch (IOException ex) {
 			// report
-			log.error("Writing world to file failed. {}", gson);
+			log.error("Writing world to file failed: {}", ex.getMessage());
 		} finally {
 			try {writer.close();} catch (Exception ex) {}
 		}
 
+	}
+	
+	
+	// Returns the file path within the game directory to save the world file to.
+	// If unable to get directory, and no exception thrown, returns game root path.
+	private static String getSaveFpath() {
+		String path = "";
+		File currentDirFile = new File(".");
+		path = currentDirFile.getAbsolutePath();
+		path = path.substring(0, path.length()-1);	
+		path = path+"Wolf3D\\src\\wolf3d\\assets\\saves\\";
+		return path;
 	}
 
 
