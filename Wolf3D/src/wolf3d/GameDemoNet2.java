@@ -51,8 +51,8 @@ import engine.util.Resources;
 public class GameDemoNet2 extends GameLoop {
 	private static final Logger log = LogManager.getLogger();
 
-	private static final int FPS = 40; //frames per second/regular updates per second.
-	private static final int FUPS = 40; //fixed updates per second.
+	private static final int FPS = 60; //frames per second/regular updates per second.
+	private static final int FUPS = 30; //fixed updates per second.
 
 	private World world;
 	private View view;
@@ -291,6 +291,11 @@ public class GameDemoNet2 extends GameLoop {
 				}
 
 		//send all modified transforms.
+	}
+
+	@Override
+	protected void fixedTick(float delta) {
+		// TODO Auto-generated method stub
 		for(Entity entity : world.getEntities()) {
 			Transform transform = entity.getTransform();
 			if(transform.hasChanged()) {
@@ -306,12 +311,6 @@ public class GameDemoNet2 extends GameLoop {
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void fixedTick(float delta) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void createPlayer(int ID){

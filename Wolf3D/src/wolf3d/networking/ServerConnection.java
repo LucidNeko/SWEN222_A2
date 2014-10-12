@@ -116,4 +116,15 @@ public class ServerConnection extends Thread{
 	}
 
 
+	public void pushToClient(float f) {
+		// TODO Auto-generated method stub
+		try {
+			out.writeFloat(f);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+
+
 }

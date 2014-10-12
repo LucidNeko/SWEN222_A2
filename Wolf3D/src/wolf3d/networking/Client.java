@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import wolf3d.EntityFactory;
 import wolf3d.GameDemoNet2;
 
 import com.google.gson.Gson;
 
+import engine.common.Vec3;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
@@ -61,7 +61,9 @@ public class Client extends Thread{
 				while(true){
 					String marker = in.readUTF();
 					switch(marker){
-
+					/*
+					 * This be the JSON way, Is slow.
+					 
 					case "transform":
 						int id = in.readInt();
 						System.out.println("On id: "+id);
@@ -78,24 +80,37 @@ public class Client extends Thread{
 							ent.getTransform().set(t, false);
 						}
 						break;
-
+						*/
+					case "transform":
+						int id = in.readInt();
+						if(id==gl.getPlayer().getID()){
+							in.readFloat();
+							in.readFloat();
+							in.readFloat();
+							in.readFloat();
+							in.readFloat();
+							in.readFloat();
+							//this is bordering on a for loop...
+						}
+						else{
+							Transform t = world.getEntity(id).getTransform();
+							t.setPositionNoFlag(in.readFloat(),in.readFloat(), in.readFloat());
+							t.lookAtDirectionNoFlag(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
+						}
+						break;
 					case "ids":
 						int playerID = in.readInt();
-						System.out.println("Your ID is: "+playerID);
 						//REPLACE THIS WITH THE METHOD IN GAME LOOP
 						//TODO
 						gl.createPlayer(playerID);
 						//	Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
 						//	gl.setPlayer(player);
-						System.out.printf("Other IDs are: ");
 						int noOthers = in.readInt();
 						for(int i = 0; i< noOthers; i++){
 							int otherID = in.readInt();
-							System.out.printf("%d, ",otherID);
 							gl.createOtherPlayer(otherID);
 							//	EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
 						}
-						System.out.printf("\n");
 						break;
 
 					case "begin":
@@ -139,11 +154,32 @@ public class Client extends Thread{
 		//pc.start();
 	}
 
+	/*
+	 * THIS IS THE JSON WAY, ITS SLOW.
 	public void sendTransform(Transform t) throws IOException{
 		out.writeUTF("transform");
 		out.writeInt(t.getOwner().getID());
 		Gson g = new Gson();
 		out.writeUTF(g.toJson(t));
+	}
+	*/
+	
+	/**
+	 * Sends via floats, much more efficient.
+	 * @param t
+	 * @throws IOException
+	 */
+	public void sendTransform(Transform t) throws IOException{
+		out.writeUTF("transform");
+		out.writeInt(t.getOwner().getID());
+		Vec3 pos = t.getPosition();
+		Vec3 look = t.getLook();
+		out.writeFloat(pos.x());
+		out.writeFloat(pos.y());
+		out.writeFloat(pos.z());
+		out.writeFloat(look.x());
+		out.writeFloat(look.y());
+		out.writeFloat(look.z());
 	}
 
 	public void sendToServer(String string) throws IOException {

@@ -72,6 +72,31 @@ public class Transform extends Component {
 	}
 
 	/**
+	 * Sets position without altering changed flag.
+	 * This way we can send stuff over the network and when receiving we needn't flag
+	 * a change that really isn't a change.
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void setPositionNoFlag(float x, float y, float z){
+		this.position.set(x, y, z);
+	}
+	
+	/**
+	 * Look at direction without setting changed.
+	 * @param direction
+	 */
+	public void lookAtDirectionNoFlag(Vec3 direction){
+		if(direction.equals(Vec3.ZERO) || direction.equals(Vec3.UP) || direction.equals(Vec3.DOWN)) return;
+		Vec3 dir = new Vec3(direction.x(), 0, direction.z()); //ignore y component
+		dir.normalize(); //unit vector
+		look.set(dir);
+		up.set(Vec3.UP);
+		along.set(Vec3.cross(up, look));
+	}
+	
+	/**
 	 * Sets the position of this Transform
 	 * @param position The (x, y, z) to set this Transforms position to.
 	 */

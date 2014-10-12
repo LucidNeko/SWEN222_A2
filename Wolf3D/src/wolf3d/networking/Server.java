@@ -85,7 +85,12 @@ public class Server extends Thread{
 						if(marker.equals("transform")){
 							pushToAllClients("transform"); //marker
 							pushToAllClients(in.readInt()); //ID of entity transformed.
-							pushToAllClients(in.readUTF()); //json string of transform.
+							pushToAllClients(in.readFloat());
+							pushToAllClients(in.readFloat());
+							pushToAllClients(in.readFloat());
+							pushToAllClients(in.readFloat());
+							pushToAllClients(in.readFloat());
+							pushToAllClients(in.readFloat());
 						}
 						if(marker.equals("message")){
 							pushToAllClients("message");
@@ -155,7 +160,6 @@ public class Server extends Thread{
 	 */
 	public void pushToAllClients(String string) {
 		// TODO Auto-generated method stub
-		System.out.println("SendAll: " + string);
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				if(sc.areWeAlive()){
@@ -176,11 +180,21 @@ public class Server extends Thread{
 
 	public void pushToAllClients(int i) {
 		// TODO Auto-generated method stub
-		System.out.println("SendAll: [int]"+i);
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				if(sc.areWeAlive()){
 					sc.pushToClient(i);
+				}
+			}
+		}
+	}
+	
+	public void pushToAllClients(float f) {
+		// TODO Auto-generated method stub
+		for(ServerConnection sc : connections){
+			if(sc != null){
+				if(sc.areWeAlive()){
+					sc.pushToClient(f);
 				}
 			}
 		}
