@@ -14,6 +14,7 @@ import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
+import wolf3d.components.behaviours.HealthFlash;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
@@ -146,7 +147,8 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
-		teddy.getTransform().translate(15, 0, 3);
+//		teddy.getTransform().translate(15, 0, 3);
+		teddy.getTransform().translate(2, 0, 2);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
 		//testing pickup
@@ -155,6 +157,8 @@ public class GameDemo extends GameLoop {
 		//testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
+
+		teddy.attachComponent(HealthFlash.class);
 
 		for(Entity e : world.getEntities()) {
 			e.getTransform().clearChanged();
