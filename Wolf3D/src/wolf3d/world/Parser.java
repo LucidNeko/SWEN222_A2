@@ -30,9 +30,10 @@ import engine.util.Resources;
 public class Parser {
 
 	private String wallFilePath, doorFilePath, textureFilePath, floorFilePath,
-			floorTexturePath, ceilingTexturePath, ceilingFilePath;
+			floorTexturePath, ceilingTexturePath, ceilingFilePath, mapFilePath,
+			specialDoorFilePath;
 
-	private Cell[][] walls, doors, floor, ceiling;
+	private Cell[][] walls, doors, floor, ceiling, specialDoors;
 
 	private Map<Integer, Cell[][]> textures = new HashMap<Integer, Cell[][]>();
 
@@ -44,42 +45,66 @@ public class Parser {
 	private int bottomY = -1;
 	private int topY = 1;
 
-	public Parser(String wallFilePath, String doorFilePath) {
-		this.wallFilePath = wallFilePath;
-		this.doorFilePath = doorFilePath;
-		this.textureFilePath = "wallTextures/";
-		this.floorFilePath = "floors.txt";
-		this.floorTexturePath = "floorTextures/";
-		this.ceilingFilePath = "ceilings.txt";
-		this.ceilingTexturePath = "ceilingTextures/";
+	public Parser(String map) {
+		this.mapFilePath = map;
+		if (!map.substring(map.length() - 1).equals("/")) {
+			map += "/";
+		}
+		this.wallFilePath = map + "walls.txt";
+		this.doorFilePath = map + "doors.txt";
+		this.ceilingFilePath = map + "ceilings.txt";
+		this.floorFilePath = map + "floors.txt";
+		this.specialDoorFilePath = map + "specialDoors.txt";
+		this.textureFilePath = map + "wallTextures/";
+		this.floorTexturePath = map + "floorTextures/";
+		this.ceilingTexturePath = map + "ceilingTextures/";
 	}
 
 	/**
 	 * Parses walls file into a 2d array of Cells
 	 */
-	public void passWallFileToArray() {
-		walls = passFileToArray(wallFilePath);
+	public void parseWallFileToArray() {
+		walls = parseFileToArray(wallFilePath);
 	}
 
 	/**
 	 * Parses doors file into a 2d array of Cells
 	 */
-	public void passDoorFileToArray() {
-		doors = passFileToArray(doorFilePath);
+	public void parseDoorFileToArray() {
+		doors = parseFileToArray(doorFilePath);
 	}
 
 	/**
 	 * Parses floors file into a 2d array of Cells
 	 */
-	public void passfloorFileToArray() {
-		floor = passFileToArray(floorFilePath);
+	public void parsefloorFileToArray() {
+		floor = parseFileToArray(floorFilePath);
 	}
 
 	/**
 	 * Parses ceilings file into a 2d array of Cells
 	 */
-	public void passCeilingFileToArray() {
-		ceiling = passFileToArray(ceilingFilePath);
+	public void parseCeilingFileToArray() {
+		ceiling = parseFileToArray(ceilingFilePath);
+	}
+
+	/**
+	 * Parses SpecialDoors file into a 2d array of Cells
+	 */
+	public void parseSpecialDoorsFileToArray() {
+		specialDoors = parseFileToArray(specialDoorFilePath);
+	}
+
+	public void createEntities(World world, Entity player){
+		parseWallFileToArray();
+		parseDoorFileToArray();
+		passTextures();
+		parsefloorFileToArray();
+		createWalls(world);
+		createFloor(world);
+		parseCeilingFileToArray();
+		createCeiling(world);
+		createDoors(world, player);
 	}
 
 	/**
@@ -99,7 +124,7 @@ public class Parser {
 				float x = col * width + halfWidth;
 				float z = row * height + halfHeight;
 				Entity ceiling = addObject(world, type, "");
-				if(ceiling != null){
+				if (ceiling != null) {
 					ceiling.getTransform().translate(x, topY, z);
 					ceiling.getTransform().pitch(Mathf.degToRad(-90));
 				}
@@ -135,14 +160,14 @@ public class Parser {
 	public void passTextures() {
 		for (int i = 0; i < 3; i++) {
 			String filepath = "textureFiles/" + Integer.toString(i) + ".txt";
-			textures.put(i, passFileToArray(filepath));
+			textures.put(i, parseFileToArray(filepath));
 		}
 	}
 
 	/**
 	 * passes file into 2d array of Cells
 	 */
-	private Cell[][] passFileToArray(String filePath) {
+	private Cell[][] parseFileToArray(String filePath) {
 		InputStream in = Resources.getInputStream(filePath);
 
 		Scanner sc = new Scanner(in);
@@ -280,7 +305,7 @@ public class Parser {
 	private Entity addCeiling(World world) {
 		Texture floorTex;
 		floorTex = getCeilingTexture();
-		if(floorTex == null){
+		if (floorTex == null) {
 			return null;
 		}
 		Mesh mesh = Resources.getMesh("wall.obj");
@@ -362,7 +387,7 @@ public class Parser {
 	 * @return the corresponding ceiling texture or null if 0
 	 */
 	private Texture getCeilingTexture() {
-		if(ceiling[row][col].getWalls() == 0){
+		if (ceiling[row][col].getWalls() == 0) {
 			return null;
 		}
 		String fname = ceilingTexturePath

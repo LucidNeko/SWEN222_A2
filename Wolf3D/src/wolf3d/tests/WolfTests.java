@@ -8,6 +8,7 @@ package wolf3d.tests;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -19,8 +20,15 @@ import engine.core.World;
 
 public class WolfTests {
 
-	private World world = new World();
-	private static Path path;
+	private static World world = new World();
+	private static File f;
+
+	//////////////////////////////////
+	/*
+	 * Helper methods
+	 */
+	//////////////////////////////////
+
 	//////////////////////////////////
 	/*
 	 * Ensure that the package has all the items and textures that it needs
@@ -32,52 +40,22 @@ public class WolfTests {
 	//If there is no wall map, the test fails.
 	@Test
 	public void packageTest1(){
-		path = FileSystems.getDefault().getPath("src/wolf3d/assets", "Map.txt");
-		try (Scanner scan = new Scanner(path)) {
-			while(scan.hasNext()){
-				if(scan.hasNext()){
-					break;
-				}
-			}
-			scan.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		    fail("Map.txt does not exist");
-		}
+		f = new File("src/wolf3d/assets/map.txt");
+		assertTrue(f.exists());
 	}
 
 	//If there is no door map, the test fails.
 	@Test
 	public void packageTest2() {
-		path = FileSystems.getDefault().getPath("src/wolf3d/assets", "Doors.txt");
-		try (Scanner scan = new Scanner(path)) {
-			while(scan.hasNext()){
-				if(scan.hasNext()){
-					break;
-				}
-			}
-			scan.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			fail("Doors.txt does not exist");
-		}
+		f = new File("src/wolf3d/assets/doors.txt");
+		assertTrue(f.exists());
 	}
 
 	// If there is no texture map, the test fails
 	@Test
 	public void packageTest3() {
-		path = FileSystems.getDefault().getPath("src/wolf3d/assets/textureFiles", "0.txt");
-		try (Scanner scan = new Scanner(path)) {
-			while(scan.hasNext()){
-				if(scan.hasNext()){
-					break;
-				}
-			}
-			scan.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			fail("Textures.txt does not exist");
-		}
+		f = new File("src/wolf3d/assets/textureFiles/walls.txt");
+		assertTrue(f.exists());
 	}
 
 	// Model files present in the folder

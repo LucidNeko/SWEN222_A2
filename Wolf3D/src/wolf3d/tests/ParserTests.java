@@ -18,25 +18,25 @@ public class ParserTests {
 
 	@Test
 	public void test_passWallFileToArray(){
-		parser.passWallFileToArray();
+		parser.parseWallFileToArray();
 		parser.createWalls(world);
 	}
 
 	@Test
 	public void test_passDoorFileToArray(){
-		parser.passDoorFileToArray();
+		parser.parseDoorFileToArray();
 	}
 
 	@Test
 	public void test_passTextures(){
 		parser.passTextures();
-		parser.passWallFileToArray();
+		parser.parseWallFileToArray();
 		parser.createWalls(world);
 	}
 	
 	@Test
 	public void test_createFloor(){
-		parser.passfloorFileToArray();
+		parser.parsefloorFileToArray();
 		parser.createFloor(world);
 	}
 }
