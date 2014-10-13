@@ -149,9 +149,15 @@ public class DataManagement {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(saveFile)));
 			
-			//Write map and door filenames
-			String mapFname = ""
-			String doorsFname = 
+			//Write map directory and filenames
+			String mapDirName = "map00/";
+			String wallFname = "walls.txt";
+			String doorFname = "door.txt";
+			String floorFname = "floor.txt";
+			String ceilingFname = "ceiling.txt";
+			
+			
+			
 			//Write entities
 			for (Entity entity : entities) {
 				
