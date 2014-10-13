@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import wolf3d.GameDemo;
 import wolf3d.GameDemoNet2;
 
 import com.google.gson.Gson;
@@ -25,7 +26,7 @@ public class Client extends Thread{
 	private Socket sock;
 
 	private World world;
-	private GameDemoNet2 gl;
+	private GameDemo gl;
 
 	private String state;
 
@@ -40,11 +41,11 @@ public class Client extends Thread{
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	public Client(String playerName, String ipAddress, int port, World world, GameDemoNet2 gl) throws UnknownHostException, IOException{
+	public Client(String playerName, String ipAddress, int port, World world, GameDemo gameDemo) throws UnknownHostException, IOException{
 		this.sock = new Socket(ipAddress,port);
 		this.state = "connected";
 		this.world = world;
-		this.gl = gl;
+		this.gl = gameDemo;
 		this.start();
 	}
 

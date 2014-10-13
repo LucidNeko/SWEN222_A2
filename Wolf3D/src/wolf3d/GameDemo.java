@@ -1,6 +1,8 @@
 package wolf3d;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +21,7 @@ import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
 import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
+import wolf3d.networking.Client;
 import wolf3d.world.Parser;
 import engine.common.Mathf;
 import engine.common.Vec3;
@@ -26,6 +29,7 @@ import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
+import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.GameLoop;
 import engine.core.World;
@@ -45,8 +49,8 @@ import engine.util.Resources;
 public class GameDemo extends GameLoop {
 	private static final Logger log = LogManager.getLogger();
 
-	private static final int FPS = 40; //frames per second/regular updates per second.
-	private static final int FUPS = 40; //fixed updates per second.
+	private static final int FPS = 60; //frames per second/regular updates per second.
+	private static final int FUPS = 30; //fixed updates per second.
 
 	private World world;
 	private View view;
@@ -54,14 +58,29 @@ public class GameDemo extends GameLoop {
 	private Camera camera;
 	private Entity player;
 
+	private Client client;
+
 	/**
 	 * Create a new GameDemo with the given world as it's world.
 	 * @param world The world.
 	 */
-	public GameDemo(World world) {
+	public GameDemo(World world, String ip, int port) {
 		super(FPS, FUPS);
 		this.world = world;
-		createEntities();
+		try {
+			client = new Client("Joe",ip,port,world, this);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	public void setPlayer(Entity e){
+		this.player = e;
 	}
 
 	/**
@@ -73,7 +92,14 @@ public class GameDemo extends GameLoop {
 		this.view = view;
 	}
 
-	private void createEntities() {
+	public void updateCamView(){
+		view.setCamera(camera);
+	}
+
+	/*
+	 * public because network needs to call this...
+	 */
+	public void createEntities() {
 		Parser parser = new Parser("Map3.txt", "Doors2.txt");
 //		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
@@ -84,14 +110,15 @@ public class GameDemo extends GameLoop {
 		parser.createFloor(world);
 
 
-		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
+		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
 		parser.createDoors(world, player);
 
 
-		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+//		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
+		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+		updateCamView();
 
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
@@ -130,7 +157,12 @@ public class GameDemo extends GameLoop {
 		//testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
+
 		teddy.attachComponent(HealthFlash.class);
+
+		for(Entity e : world.getEntities()) {
+			e.getTransform().clearChanged();
+		}
 	}
 
 	@Override
@@ -156,22 +188,52 @@ public class GameDemo extends GameLoop {
 		for(Entity entity : world.getEntities()) {
 			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
 				behaviour.update(delta);
-				if(behaviour.hasChanged()){
-					//send over network.
+				}
+
+		}
+			for(Entity entity : world.getEntities()) {
+				Transform transform = entity.getTransform();
+				if(transform.hasChanged()) {
+					try {
+						String name = transform.getOwner().getName();
+						if(!(name.equals("skybox") || name.equals("Camera"))){
+							client.sendTransform(transform);
+							transform.clearChanged();
+						}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
+
 		}
-	}
+
 
 	@Override
 	protected void fixedTick(float delta) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void render() {
 		if(view != null) view.display();
+	}
+
+
+	public Entity getPlayer() {
+		// TODO Auto-generated method stub
+		return player;
+	}
+
+
+	public void createPlayer(int ID){
+		player = EntityFactory.createPlayerWithID(world, "Player", ID);
+	}
+
+	public void createOtherPlayer(int ID){
+		Entity other = EntityFactory.createOtherPlayer(world, "other", ID);
+		other.getTransform().translate(1, 0, 1);
 	}
 
 }
