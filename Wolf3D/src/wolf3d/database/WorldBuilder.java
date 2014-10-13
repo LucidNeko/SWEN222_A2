@@ -50,6 +50,10 @@ public class WorldBuilder {
 	private static final Logger log = LogManager.getLogger();
 	private World world;
 	private Parser parser;
+	private Camera camera;
+	private View view;
+	private Entity player;
+
 	/**
 	 * Creates a world from map and door files.
 	 *
@@ -75,6 +79,8 @@ public class WorldBuilder {
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
 		parser.createDoors(world, player);
+		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
+		view.setCamera(camera);
 
 		//Transform component
 		player.getTransform().set(transform);
@@ -93,32 +99,20 @@ public class WorldBuilder {
 		w.setWeight(weight.getWeight());
 
 		//Inventory component
+		Inventory i = player.getComponent(Inventory.class);
+		List<Integer> items = i.getItems();
+		for (Integer item : items) {
+			i.addItem(item);
+		}
 
 		return player;
 	}
 
-	public Entity createObject() {
-
-		return null;
-	}
-
-
-	public void createEntities() {
-
-		player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
-		player.attachComponent(parser.getWallCollisionComponent());
-		player.attachComponent(new DropItem(world));
-		parser.createDoors(world, player);
-
-
-		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-		//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
-
-		//		camera = player.getComponent(Camera.class);
-		player.getTransform().translate(1, 0, 1);
+	public void createObjects() {
 
 		Entity skybox = EntityFactory.createSkybox(world, player);
 
+		//motorbike
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
 		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
 
@@ -134,7 +128,6 @@ public class WorldBuilder {
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj").getScaledInstance(0.5f);
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 
-
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
@@ -144,10 +137,6 @@ public class WorldBuilder {
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
-		//testing pickup
-		//		teddy.attachComponent(new PickUp(world));
-		//		teddy.attachComponent(Weight.class);
-		//testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
 	}

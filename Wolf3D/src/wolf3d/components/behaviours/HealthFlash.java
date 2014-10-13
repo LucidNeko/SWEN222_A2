@@ -36,8 +36,10 @@ public class HealthFlash extends Behaviour {
 			speed = 7.5f;
 		}
 		if (health < 20) {
-			mesh.getMaterial().setColor(
-					colors[1]);
+//			speed = 10;
+//			mesh.getMaterial().setColor(
+//					colors[1]);
+			mesh.getMaterial().setColor(new Color(0.1f, 1, 0.8f, 0.7f));
 		}
 
 	}

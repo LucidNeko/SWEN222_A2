@@ -44,13 +44,13 @@ public class Parser {
 	private int bottomY = -1;
 	private int topY = 1;
 
-	public Parser(String wallFilePath, String doorFilePath) {
+	public Parser(String wallFilePath, String doorFilePath, String floorFilePath, String ceilingFilePath) {
 		this.wallFilePath = wallFilePath;
 		this.doorFilePath = doorFilePath;
 		this.textureFilePath = "wallTextures/";
-		this.floorFilePath = "floors.txt";
+		this.floorFilePath = floorFilePath;
 		this.floorTexturePath = "floorTextures/";
-		this.ceilingFilePath = "ceilings.txt";
+		this.ceilingFilePath = ceilingFilePath;
 		this.ceilingTexturePath = "ceilingTextures/";
 	}
 

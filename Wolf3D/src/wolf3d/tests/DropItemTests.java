@@ -42,6 +42,6 @@ public class DropItemTests {
 
 	@Test
 	public void test_Valid_DropItem(){
-		assertTrue(player.getComponent(DropItem.class).drop(item1));
+		assertTrue(player.getComponent(DropItem.class).drop(item1.getID()));
 	}
 }
