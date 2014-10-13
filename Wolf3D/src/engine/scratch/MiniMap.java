@@ -18,6 +18,7 @@ import javax.media.opengl.glu.GLU;
 import javax.swing.SwingUtilities;
 
 import engine.common.Mathf;
+import engine.common.Vec3;
 import engine.components.Camera;
 import engine.components.GL2Renderer;
 import engine.components.MeshFilter;
@@ -33,20 +34,22 @@ import engine.display.View;
  *
  */
 public class MiniMap extends GameCanvas implements View {
-	
+
 	//gluPerspective params
 	private static final float FIELD_OF_VIEW = 60;
 	private static final float ZNEAR = 0.1f;
 	private static final float ZFAR = 200;
-	
+
 	private World world;
 	private Entity camera;
+
+	private final Vec3 camPos = new Vec3();
 
 	public MiniMap(int width, int height, World world) {
 		super(width, height);
 		this.world = world;
-		
-		camera = world.createEntity("TopDownCamera");
+
+		camera = world.createEntity("Camera");
 		camera.attachComponent(Camera.class);
 		camera.getTransform().pitch(Mathf.degToRad(-90));
 	}
@@ -63,7 +66,7 @@ public class MiniMap extends GameCanvas implements View {
 
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		//Start a thread calling display on this every 16ms. Not so critical.
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -96,7 +99,7 @@ public class MiniMap extends GameCanvas implements View {
 		try {
 			t = world.getEntity("Player").get(0).getTransform();
 		} catch(Exception e) { }
-		
+
 		if(t != null) {
 			//center map over player.
 			camera.getTransform().setPosition(t.getPosition());
@@ -121,7 +124,7 @@ public class MiniMap extends GameCanvas implements View {
 				gl.glPopMatrix();
 			}
 		gl.glPopMatrix();
-		
+
 		checkError(gl); //prints out error code if we get an error.
 	}
 
