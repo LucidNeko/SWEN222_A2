@@ -108,6 +108,8 @@ public class GameDemo extends GameLoop {
 		parser.passfloorFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
+		parser.passCeilingFileToArray();
+		parser.createCeiling(world);
 
 
 		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
