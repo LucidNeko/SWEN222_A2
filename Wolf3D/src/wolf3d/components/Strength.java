@@ -9,14 +9,18 @@ import engine.components.Component;
  */
 public class Strength extends Component{
 	private int strength = 100;
-	
+
 	public int getStrength() {
 		return strength;
 	}
 
+	public void setStrength(int newStrength) {
+		strength = newStrength;
+	}
+
 	/**
 	 * Reduces the carryWeight by the given amount
-	 * 
+	 *
 	 * @param weight the amount to reduce by
 	 * @return true if it can be reduced, false if not
 	 */
