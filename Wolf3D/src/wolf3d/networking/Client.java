@@ -63,7 +63,7 @@ public class Client extends Thread{
 					switch(marker){
 					/*
 					 * This be the JSON way, Is slow.
-					 
+
 					case "transform":
 						int id = in.readInt();
 						System.out.println("On id: "+id);
@@ -80,7 +80,7 @@ public class Client extends Thread{
 							ent.getTransform().set(t, false);
 						}
 						break;
-						*/
+					 */
 					case "transform":
 						int id = in.readInt();
 						if(id==gl.getPlayer().getID()){
@@ -93,9 +93,20 @@ public class Client extends Thread{
 							//this is bordering on a for loop...
 						}
 						else{
-							Transform t = world.getEntity(id).getTransform();
-							t.setPositionNoFlag(in.readFloat(),in.readFloat(), in.readFloat());
-							t.lookAtDirectionNoFlag(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
+							Entity e = world.getEntity(id);
+							if(e!=null){
+								Transform t = e.getTransform();
+								t.setPositionNoFlag(in.readFloat(),in.readFloat(), in.readFloat());
+								t.lookAtDirectionNoFlag(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
+							}
+							else{
+								in.readFloat();
+								in.readFloat();
+								in.readFloat();
+								in.readFloat();
+								in.readFloat();
+								in.readFloat();
+							}
 						}
 						break;
 					case "ids":
@@ -162,8 +173,8 @@ public class Client extends Thread{
 		Gson g = new Gson();
 		out.writeUTF(g.toJson(t));
 	}
-	*/
-	
+	 */
+
 	/**
 	 * Sends via floats, much more efficient.
 	 * @param t
