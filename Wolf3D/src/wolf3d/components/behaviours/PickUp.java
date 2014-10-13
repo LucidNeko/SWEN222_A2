@@ -59,7 +59,7 @@ public class PickUp extends Behaviour {
 	@Override
 	public void update(float delta) {
 		requires(ProximitySensor.class);
-		requires(Weight.class, Strength.class);
+		requires(Weight.class);
 		// Checks if the proximity sensor attached to the owner of this
 		// component
 		// is triggered, ie. if the player is close enough to the item to be
