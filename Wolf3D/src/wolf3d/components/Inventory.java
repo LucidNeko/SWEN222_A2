@@ -10,7 +10,7 @@ import engine.core.Entity;
  * This class is responsible for holding all of the items that a player has
  * picked up and maintaining a strength so that a player is only strong enough
  * to hold a certain amount of weight
- * 
+ *
  * @author Sameer Magan
  *
  */
@@ -48,7 +48,7 @@ public class Inventory extends Component {
 
 	/**
 	 * Reduces the carryWeight by the given amount
-	 * 
+	 *
 	 * @param weight the amount to reduce by
 	 * @return true if it can be reduced, false if not
 	 */

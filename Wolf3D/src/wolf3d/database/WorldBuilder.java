@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.EntityFactory;
 import wolf3d.components.Health;
 import wolf3d.components.Inventory;
+import wolf3d.components.Strength;
 import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddAnimation;
@@ -68,38 +69,31 @@ public class WorldBuilder {
 	}
 
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
-			List<? extends Component> components) {
+			Health health, Strength strength, Weight weight, Inventory inventory) {
 
-		Entity player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
+		Entity player = EntityFactory.createPlayer(world, name, uniqueID);
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
 		parser.createDoors(world, player);
 
-		Entity player = world.createEntity(uniqueID, name);		//createEntity() will attach a transform component
+		//Transform component
 		player.getTransform().set(transform);
 
-		for (Component c : components) {
-			//Health component
-			if (c instanceof Health) {
-				player.attachComponent(c);
-				components.remove(c);
-			}
-			//Strength component
-			if (c instanceof Strength) {
-				player.attachComponent(c);
-				components.remove(c);
-			}
-			//Weight component
-			if (c instanceof Weight) {
-				player.attachComponent(c);
-				components.remove(c);
-			}
-			//Inventory component
-			if (c instanceof Inventory) {
-				player.attachComponent(c);
-				components.remove(c);
-			}
-		}
+		//Health component
+		Health h = player.getComponent(Health.class);
+		h.setDamageAmt(health.getDamageAmt());
+		h.setHealth(health.getHealth());
+
+		//Strength component
+		Strength s = player.getComponent(Strength.class);
+		s.setStrength(strength.getStrength());
+
+		//Weight component
+		Weight w = player.getComponent(Weight.class);
+		w.setWeight(weight.getWeight());
+
+		//Inventory component
+
 		return player;
 	}
 
@@ -118,9 +112,9 @@ public class WorldBuilder {
 
 
 		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+		//		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
 
-//		camera = player.getComponent(Camera.class);
+		//		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
 		Entity skybox = EntityFactory.createSkybox(world, player);
@@ -151,8 +145,8 @@ public class WorldBuilder {
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
 		//testing pickup
-//		teddy.attachComponent(new PickUp(world));
-//		teddy.attachComponent(Weight.class);
+		//		teddy.attachComponent(new PickUp(world));
+		//		teddy.attachComponent(Weight.class);
 		//testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
