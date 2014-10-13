@@ -92,10 +92,6 @@ public class GameDemo extends GameLoop {
 		this.view = view;
 	}
 
-	public void updateCamView(){
-		view.setCamera(camera);
-	}
-
 	/*
 	 * public because network needs to call this...
 	 */
@@ -120,7 +116,7 @@ public class GameDemo extends GameLoop {
 
 //		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
 		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
-		updateCamView();
+		view.setCamera(camera);
 
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
