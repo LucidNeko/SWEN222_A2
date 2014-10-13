@@ -62,9 +62,9 @@ public class DatabaseTests {
 	public void testLoadWorld() {
 		World world = null;
 		World dummy = createDummyWorldWithPlayer();
-		DataManagement.saveWorld("test_testLoadWorld.txt", dummy);
+		DataManagement.saveWorld("testLoadWorld.txt", dummy);
 		try {
-			world = DataManagement.loadWorld("test_testLoadWorld.txt");
+			world = DataManagement.loadWorld("testLoadWorld.txt");
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
