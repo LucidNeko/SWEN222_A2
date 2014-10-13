@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.components.Health;
+import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
 import wolf3d.components.Weight;
 
@@ -50,8 +51,6 @@ public class DataManagement {
 	 * @param fname
 	 */
 	public static World loadWorld(String fname) throws IOException {
-		WorldBuilder builder = new WorldBuilder();
-
 		String fpath = getSaveFpath()+fname;
 		// check save file exists
 		if (!new File (fpath).isFile()) {
@@ -59,80 +58,39 @@ public class DataManagement {
 			throw new IOException("Game file unable to load: file does not exist.");
 		}
 		log.trace("Reading from: {}", fpath);
+		WorldBuilder builder;
 		Gson gson = new Gson();
-		String json = "";
-		World world = new World();
+		String json;
+		String line;
 		Scanner scan = new Scanner(new File(fpath));
-		String line = "";
+
 		while(scan.hasNext()) {
-			log.trace("Scanner read: {}", line);
+
+			// load map
+			skip(scan, 2);
+			line = scan.next();
+			line = line.substring(1,line.length()-2);
+			log.trace("Reading: {}", line);
+			builder = new WorldBuilder(line);
+
 			// recreate each entity from the file
-			// construct JSON string
 			while (scan.hasNext()) {
-				Collection<Component> components = new ArrayList<Component>();	// collection of components to add to the new entity
-				line = scan.nextLine();
-				log.trace("Scanner read: {}", line);
-				//=====================================================
-				// Read, create, then add components to collection
-				if (line.contains("components")) {
-					log.trace("Scanner reading component...");
-					line = scan.nextLine();
-					log.trace("Scanner read: {}", line);
-					while (!line.contains("],")) {			// '],' signifies end of component JSON string
-						log.trace("Scanner read: {}", line);
-						json += line;
-						line = scan.nextLine();
-					}
-					log.trace("JSON string read: {}", json);
-					Transform t = gson.fromJson(json, Transform.class);
-					components.add(t);
-					// get entity ID
-					while (!line.contains("uniqueID")) {
-						line = scan.nextLine();
-						log.trace("Scanner read: {}", line);
-					}
-					int id = Integer.parseInt(line.substring(line.indexOf(':')+2, line.indexOf(',')));
-					line = scan.nextLine();
-					log.trace("Scanner read: {}", line);
-					// get entity name
-					while (!line.contains("name")) {
-						line = scan.nextLine();
-						log.trace("Scanner read: {}", line);
-					}
-					String name = line.substring(line.indexOf(':')+3);
-					name = name.substring(0, name.indexOf('"'));
-					log.trace("New entity id: '{}', name: '{}'", id, name);
-					line = scan.nextLine();
-					log.trace("Scanner read: {}", line);
-					TempEntityDef ted = new TempEntityDef();
-//					ted.setId(id);		//method not yet created in TempEntityDef
-					ted.setName(name);
-					ted.addComponents(components);
-					log.trace("Adding entity '{}' '{}' to world.", id, name);
-					world.addEntityDef(ted);
-				}
+
+
 			}
 		}
 		scan.close();
 
-		createObjects()
+		builder.createObjects();
 
-		return world;
+		return builder.getWorld();
 
-		//=================================================
-		//FOR INTEGRATION ONLY: DELETE ME
-		// return a dummy world
-//				World dummyWorld = new World();
-//				dummyWorld.createEntity("entA");
-//				dummyWorld.createEntity("entB");
-//				return dummyWorld;
-		//=================================================
 	}
 
 	/**
-	 * Saves the current Wolf3D world's entities and their Transform
-	 * component using JSON, entity IDs and names are not stored in
-	 * JSON formatting.
+	 * Saves the current Wolf3D world map, and entities with their Transform component.
+	 * For entities (such as players) that have Health, Strength, Weight, and Inventory
+	 * components, it saves these too.
 	 * Gets passed the world to be saved and the filename.
 	 * @param fname
 	 * @param world
@@ -148,50 +106,69 @@ public class DataManagement {
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(saveFile)));
-			
-			//Write map and door filenames
-			String mapFname = ""
-			String doorsFname = 
+
+			//Write map directory
+			String mapDir = "map00/";
+			line = "\"mapDir\" : \""+mapDir+"\",";
+			log.trace("Writing: {}", line);
+			writer.write(line+"\n");
+
 			//Write entities
+			line = "\"entities\"";
+			log.trace("Writing: {}", line);
+			writer.write(line+"{\n");		//open { entities
+
 			for (Entity entity : entities) {
-				
+
 				//name
-				line = entity.getName()
-				log.trace("Writing name: {}", line);
-				writer.write(line);
+				line = "\"name\" : \""+entity.getName()+"\",";
+				log.trace("Writing: {}", line);
+				writer.write(line+"\n");
 
 				//uniqueID
-				line = Integer.toString(entity.getID());
-				log.trace("Writing uniqueID: {}", line);
-				writer.write(line);
-				
+				line = "\"uniqueID\" : \""+Integer.toString(entity.getID())+"\",";
+				log.trace("Writing: {}", line);
+				writer.write(line+"\n");
+
 				//Transform component, all entities have transform
-				line = gson.toJson(entity.getTransform());
-				log.trace("Writing Transform: {}", line);
+				line = "\"Transform\"" + gson.toJson(entity.getTransform());
+				log.trace("Writing: {}", line);
 				writer.write(line);
-				
+
 				//Health component
 				if (entity.hasComponent(Health.class)) {
-					line = gson.toJson(entity.getComponent(Health.class));
+					line = "\"Health\"" + gson.toJson(entity.getComponent(Health.class));
 					log.trace("Writing Health: {}", line);
 					writer.write(line);
 				}
 				//Strength component
 				if (entity.hasComponent(Strength.class)) {
-					line = gson.toJson(entity.getComponent(Strength.class));
+					line = "\"Strength\"" + gson.toJson(entity.getComponent(Strength.class));
 					log.trace("Writing Strength: {}", line);
 					writer.write(line);
 				}
 				//Weight component
 				if (entity.hasComponent(Weight.class)) {
-					line = gson.toJson(entity.getComponent(Weight.class));
+					line = "\"Weight\"" + gson.toJson(entity.getComponent(Weight.class));
 					log.trace("Writing Weight: {}", line);
 					writer.write(line);
 				}
-				writer.write(gson.toJson(entity));
-				writer.write("\n*\n\n");		// Asterisk indicates end of entity record
+				//Inventory component
+				if (entity.hasComponent(Inventory.class)) {
+					Inventory inventory = entity.getComponent(Inventory.class);
+					line = "\"Inventory\"{\n"
+							+ "\"Items\" : \n[\n";
+					for (int item : inventory.getItems()) {
+						line += "\""+item+"\",\n";
+					}
+					line = line.substring(0, line.length()-2);	// remove last comma
+					line += "\n]\n}\n";
+					log.trace("Writing Weight: {}", line);
+					writer.write(line);
+				}
+				writer.write("\n");
 			}
-
+			writer.write(line+"}\n");		//close }  entities
 		} catch (IOException ex) {
 			// report
 			log.error("Writing world to file failed: {}", ex.getMessage());
@@ -209,9 +186,14 @@ public class DataManagement {
 		File currentDirFile = new File(".");
 		path = currentDirFile.getAbsolutePath();
 		path = path.substring(0, path.length()-1);
-		path = path+"Wolf3D\\src\\wolf3d\\assets\\saves\\";
+		path = path+"Wolf3D/src/wolf3d/assets/saves/";
 		return path;
 	}
 
-
+	private static void skip(Scanner scan, int count) {
+		for (int i=0; i<count; i++) {
+			String line = scan.next();
+			log.trace("Reading, skipping: {}", line);
+		}
+	}
 }

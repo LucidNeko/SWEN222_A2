@@ -1,4 +1,5 @@
-import java.awt.event.KeyEvent;
+package wolf3d.database;
+
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,31 +11,20 @@ import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
 import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
-import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.PickUp;
-import wolf3d.components.behaviours.Translate;
-import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
-import wolf3d.components.renderers.LightlessMeshRenderer;
-import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.world.Parser;
 import engine.common.Mathf;
-import engine.common.Vec3;
-import engine.components.Behaviour;
 import engine.components.Camera;
-import engine.components.Component;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
-import engine.core.GameLoop;
 import engine.core.World;
 import engine.display.View;
-import engine.input.Keyboard;
-import engine.input.Mouse;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
 import engine.texturing.Texture;
@@ -61,15 +51,10 @@ public class WorldBuilder {
 	 * @param doorsFname the filename of the door file referenced.
 	 * @return the world with the walls and doors added, but nothing else.
 	 */
-	public void WorldBuilder(String mapFname, String doorsFname) {
+	public WorldBuilder(String mapDirName) {
 		this.world = new World();
-		parser = new Parser(mapFname, doorsFname);
-		parser.parseWallFileToArray();
-		parser.parseDoorFileToArray();
-		parser.passTextures();
-		parser.parsefloorFileToArray();
-		parser.createWalls(world);
-		parser.createFloor(world);
+		parser = new Parser(mapDirName);
+		parser.createEntities(world, player);
 	}
 
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
@@ -79,8 +64,8 @@ public class WorldBuilder {
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
 		parser.createDoors(world, player);
-		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-		view.setCamera(camera);
+//		camera = setCamera();
+//		view.setCamera(camera);
 
 		//Transform component
 		player.getTransform().set(transform);
@@ -139,5 +124,18 @@ public class WorldBuilder {
 
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
+	}
+
+	public World getWorld(){
+		return this.world;
+	}
+
+	/**
+	 * Set camera once all players are loaded in
+	 */
+	public void setCamera(){
+		Entity player = world.getEntity("Player").get(0);
+		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
+		view.setCamera(camera);
 	}
 }
