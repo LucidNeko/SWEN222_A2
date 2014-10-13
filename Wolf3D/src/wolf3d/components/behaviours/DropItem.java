@@ -34,10 +34,11 @@ public class DropItem extends Behaviour {
 	 * @param item The Entity to be dropped
 	 * @return true if the player is dropped into the world false if not
 	 */
-	public boolean drop(Entity item) {
+	public boolean drop(int itemId) {
 		Entity player = getOwner();
 		Inventory inventory = player.getComponent(Inventory.class);
-		if (inventory.contains(item)) {
+		if (inventory.contains(itemId)) {
+			Entity item = world.getEntity(itemId);
 			Vec3 pos = player.getTransform().getPosition();
 			// setting item position to the players current position and look vector
 			item.getTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
@@ -47,11 +48,11 @@ public class DropItem extends Behaviour {
 			Strength strength = player.getComponent(Strength.class);
 			strength.releaseWeight(itemWeight);
 			// creates an EntityDef to use to add back to the world
-			TempEntityDef entDef = new TempEntityDef(item);
-
-			inventory.removeEntity(item);
+//			TempEntityDef entDef = new TempEntityDef(item);
 			setChanged();
-			return world.addEntityDef(entDef);
+			return inventory.removeEntity(item.getID());
+
+//			return world.addEntityDef(entDef);
 
 		}
 		return false;
