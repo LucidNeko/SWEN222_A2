@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.Scanner;
 
 import org.junit.Test;
 
@@ -62,7 +61,7 @@ public class WolfTests {
 		}
 	}
 
-	// Vec3 class - Vector creation, getters & setters, addition
+	// Vec3 class addition
 	@Test
 	public void engineTest2(){
 		Vec3 a = new Vec3(0f, 0f, 0f);
@@ -81,11 +80,24 @@ public class WolfTests {
 		}
 	}
 
+	//Local addition vec3
 	@Test
 	public void engineTest3(){
+		Vec3 a = new Vec3(0f, 0f, 0f);
+		Vec3 b = new Vec3(1f,1f,1f);
+		a = a.addLocal(b);
+		if(!a.equals(b)){
+			fail("Local Addition doesn't work");
+		}
+
+	}
+
+	// Vec3 subtraction
+	@Test
+	public void engineTest4(){
 		Vec3 a = new Vec3(1f, 1f, 1f);
 		Vec3 b = new Vec3(a);
-		a.setZero();
+		a.setZero(); // left this in for coverage but really pointless
 		a.set(2f,2f,2f);
 		Vec3 aSubb = a.sub(b);
 		Vec3 ans = new Vec3(1f, 1f, 1f);
@@ -94,8 +106,21 @@ public class WolfTests {
 		}
 	}
 
+	//Local subtraction
 	@Test
-	public void engineTest4(){
+	public void engineTest4b(){
+		Vec3 a = new Vec3(1f, 1f, 1f);
+		Vec3 b = new Vec3(a);
+		a = a.subLocal(b);
+		Vec3 ans = new Vec3(0f, 0f, 0f);
+		if(!ans.equals(a)){
+			fail("Local subtraction doesn't work");
+		}
+	}
+
+	//Absolute Value
+	@Test
+	public void engineTest5(){
 		Vec3 a = new Vec3(-1f, -1f, -1f);
 		a.abs();
 		Vec3 ans = new Vec3(-1f, -1f, -1f);
@@ -105,8 +130,9 @@ public class WolfTests {
 		}
 	}
 
+	//Cross Product
 	@Test
-	public void engineTest5(){
+	public void engineTest6(){
 		Vec3 a = new Vec3(0f, 0f, 1f);
 		Vec3 b = new Vec3(0f, 1f, 0f);
 		Vec3 ans = new Vec3(-1f, 0f,0f);
@@ -115,18 +141,21 @@ public class WolfTests {
 		}
 	}
 
+	//Unmodifiable Vec3 exception
 	@Test (expected=UnsupportedOperationException.class)
-	public void engineTest6(){
+	public void engineTest7(){
 		Vec3.UP.addLocal(1f, 0f, 0f);
 	}
 
+	// Unmodifiable Vec3 exception
 	@Test (expected=UnsupportedOperationException.class)
-	public void engineTest7(){
-		Vec3.UP.divLocal(1f);
+	public void engineTest8(){
+		Vec3.DOWN.divLocal(1f);
 	}
 
+	// Vec3 Local Vector Division
 	@Test
-	public void engineTest8(){
+	public void engineTest9(){
 		Vec3 a = new Vec3(2f, 2f, 2f);
 		a.divLocal(2f);
 		Vec3 ans = new Vec3(1f, 1f, 1f);
@@ -135,8 +164,9 @@ public class WolfTests {
 		}
 	}
 
+	// Vec3 division
 	@Test
-	public void engineTest9(){
+	public void engineTest10(){
 		Vec3 a = new Vec3(1f,1f, 1f);
 		Vec3 b = a.div(2f);
 		Vec3 ans = new Vec3(0.5f, 0.5f, 0.5f);
@@ -145,8 +175,9 @@ public class WolfTests {
 		}
 	}
 
+	// Vec3 hashcode method
 	@Test
-	public void engineTest10(){
+	public void engineTest11(){
 		Vec3 a = new Vec3(1f,1f, 1f);
 		Vec3 b = new Vec3(1.01f, 1f, 1f);
 		Vec3 c = new Vec3(1f,1f, 1f);
@@ -158,15 +189,28 @@ public class WolfTests {
 		}
 	}
 
+	// Vec3 Dot product method
 	@Test
-	public void engineTest11(){
-		Vec3 a = new Vec3(1f,1f, 1f);
-		Vec3 b = new Vec3(1.01f, 1f, 1f);
-
-		float dot(a, b)
-			return a.x*b.x + a.y*b.y + a.z*b.z;
-
+	public void engineTest12(){
+		Vec3 a = new Vec3(1f,1f,1f);
+		Vec3 b = new Vec3(2f,2f,2f);
+		float c = Vec3.dot(a, b);
+		float ans = 6f;
+		if(c!=ans){
+			fail();
+		}
 	}
+
+	//Vec3 toString method
+	@Test
+	public void engineTest13(){
+		Vec3 x = new Vec3(1f, 2f, 3f);
+		String ans = "(1.00,  2.00, 3.00)";
+		if(!ans.equals(x.toString())){
+			fail("toString method fails");
+		}
+	}
+
 
 	//////////////////////////////////
 	/*
@@ -211,7 +255,7 @@ public class WolfTests {
 		fail("Not yet implemented");
 	}
 
-	//Teddy Bear
+	//Teddy Bear files
 	@Test
 	public void packageTest6() {
 		fail("Not yet implemented");
