@@ -64,10 +64,10 @@ public class WorldBuilder {
 	public void WorldBuilder(String mapFname, String doorsFname) {
 		this.world = new World();
 		parser = new Parser(mapFname, doorsFname);
-		parser.passWallFileToArray();
-		parser.passDoorFileToArray();
+		parser.parseWallFileToArray();
+		parser.parseDoorFileToArray();
 		parser.passTextures();
-		parser.passfloorFileToArray();
+		parser.parsefloorFileToArray();
 		parser.createWalls(world);
 		parser.createFloor(world);
 	}

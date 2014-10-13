@@ -148,7 +148,7 @@ public class EntityFactory {
 
 				cam.setPosition(at.getPosition());
 //				cam.lookInDirection(at.getLook());
-				cam.walk(0.25f);
+//				cam.walk(0.25f);
 
 				float dx = Mouse.getDX(); //calls to getDX/getDY wipe out the value.. TODO logical fix?
 				float dy = Mouse.getDY();
@@ -175,7 +175,7 @@ public class EntityFactory {
 
 		});
 		camera.attachComponent(Camera.class);
-		camera.attachComponent(PyramidRenderer.class);
+//		camera.attachComponent(PyramidRenderer.class);
 		camera.attachComponent(new GL2Renderer() {
 
 			@Override
