@@ -31,7 +31,7 @@ public class WolfTests {
 
 	//If there is no wall map, the test fails.
 	@Test
-	public void apackageTest1(){
+	public void packageTest1(){
 		path = FileSystems.getDefault().getPath("src/wolf3d/assets", "Map.txt");
 		try (Scanner scan = new Scanner(path)) {
 			while(scan.hasNext()){
@@ -48,7 +48,7 @@ public class WolfTests {
 
 	//If there is no door map, the test fails.
 	@Test
-	public void apackageTest2() {
+	public void packageTest2() {
 		path = FileSystems.getDefault().getPath("src/wolf3d/assets", "Doors.txt");
 		try (Scanner scan = new Scanner(path)) {
 			while(scan.hasNext()){
@@ -65,18 +65,29 @@ public class WolfTests {
 
 	// If there is no texture map, the test fails
 	@Test
-	public void apackageTest3() {
-		fail("Not yet implemented");
+	public void packageTest3() {
+		path = FileSystems.getDefault().getPath("src/wolf3d/assets/textureFiles", "0.txt");
+		try (Scanner scan = new Scanner(path)) {
+			while(scan.hasNext()){
+				if(scan.hasNext()){
+					break;
+				}
+			}
+			scan.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			fail("Textures.txt does not exist");
+		}
 	}
 
 	// Model files present in the folder
 	@Test
-	public void apackageTest4() {
+	public void packageTest4() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void apackageTest5() {
+	public void packageTest5() {
 		fail("Not yet implemented");
 	}
 
@@ -145,27 +156,27 @@ public class WolfTests {
 	 * */
 
 	@Test
-	public void enetworkTest1() {
+	public void networkTest1() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void enetworkTest2() {
+	public void networkTest2() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void enetworkTest3() {
+	public void networkTest3() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void enetworkTest4() {
+	public void networkTest4() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void enetworkTest5() {
+	public void networkTest5() {
 		fail("Not yet implemented");
 	}
 
@@ -174,52 +185,52 @@ public class WolfTests {
 	 * */
 
 	@Test
-	public void flogicTest1() {
+	public void logicTest1() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest2() {
+	public void logicTest2() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest3() {
+	public void logicTest3() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest4() {
+	public void logicTest4() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest5() {
+	public void logicTest5() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest6() {
+	public void logicTest6() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest7() {
+	public void logicTest7() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest8() {
+	public void logicTest8() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest9() {
+	public void logicTest9() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void flogicTest10() {
+	public void logicTest10() {
 		fail("Not yet implemented");
 	}
 }
