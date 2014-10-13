@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import wolf3d.components.behaviours.DoorBehaviour;
+import wolf3d.components.behaviours.SpecialDoorBehaviour;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Color;
@@ -41,6 +42,7 @@ public class Parser {
 
 	private int width, height;
 
+	private int noTextures = 3;
 	private int row, col;
 	private int bottomY = -1;
 	private int topY = 1;
@@ -99,13 +101,15 @@ public class Parser {
 	public void createEntities(World world, Entity player){
 		parseWallFileToArray();
 		parseDoorFileToArray();
-		passTextures();
 		parsefloorFileToArray();
+		parseCeilingFileToArray();
+		parseSpecialDoorsFileToArray();
+		parseTextures();
 		createWalls(world);
 		createFloor(world);
-		parseCeilingFileToArray();
 		createCeiling(world);
 		createDoors(world, player);
+		createSpecialDoors(world, player);
 	}
 
 	/**
@@ -145,7 +149,7 @@ public class Parser {
 	}
 
 	/**
-	 * Creates all doors in the world
+	 * Creates all normal doors in the world
 	 *
 	 * @param world
 	 *            the world in which the doors are added to
@@ -156,10 +160,21 @@ public class Parser {
 	}
 
 	/**
+	 * Creates all normal doors in the world
+	 *
+	 * @param world
+	 *            the world in which the doors are added to
+	 */
+	public void createSpecialDoors(World world, Entity player) {
+		this.player = player;
+		create3DObjects(world, specialDoors, "SpecialDoors");
+	}
+
+	/**
 	 * Passes the textures into the map of textures
 	 */
-	public void passTextures() {
-		for (int i = 0; i < 3; i++) {
+	public void parseTextures() {
+		for (int i = 0; i <= 3; i++) {
 			String filepath = textureFilesPath + Integer.toString(i) + ".txt";
 			textures.put(i, parseFileToArray(filepath));
 		}
@@ -288,6 +303,8 @@ public class Parser {
 			return addWall(world, dir);
 		case "Doors":
 			return addDoor(world, dir);
+		case "SpecialDoors":
+			return addSpecialDoor(world, dir);
 		case "Floor":
 			return addFloor(world);
 		case "Ceilings":
@@ -367,9 +384,29 @@ public class Parser {
 	 *            the world for the door to be added to
 	 * @return the newly created door
 	 */
+	private Entity addSpecialDoor(World world, String dir) {
+		// the texture for the Door
+		Texture doorTex = getTexture(dir);
+		Mesh mesh = Resources.getMesh("wall.obj");
+		Material material = new Material(doorTex, Color.WHITE);
+
+		Entity door = world.createEntity("door");
+		door.attachComponent(MeshFilter.class).setMesh(mesh);
+		door.attachComponent(MeshRenderer.class).setMaterial(material);
+		door.attachComponent(ProximitySensor.class).setTarget(player);
+		door.attachComponent(SpecialDoorBehaviour.class);
+		return door;
+	}
+
+	/**
+	 * Adds a Door to the given world with a Texture, Mesh, and Material
+	 *
+	 * @param world
+	 *            the world for the door to be added to
+	 * @return the newly created door
+	 */
 	private Entity addDoor(World world, String dir) {
-		// the texture for the wall
-		// Texture doorTex = Resources.getTexture("1.png", true);
+		// the texture for the Wall
 		Texture doorTex = getTexture(dir);
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(doorTex, Color.WHITE);
