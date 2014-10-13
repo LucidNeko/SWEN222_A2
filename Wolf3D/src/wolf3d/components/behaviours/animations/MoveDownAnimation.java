@@ -40,7 +40,6 @@ public class MoveDownAnimation extends Behaviour {
 		}
 
 		if(!getOwner().contains(translate)){
-			log.trace("finished");
 			Entity player = getOwner().getComponent(ProximitySensor.class).getTarget();
 			player.getComponent(WASDCollisions.class).setDoor(row, col, door);
 			getOwner().attachComponent(DoorBehaviour.class);

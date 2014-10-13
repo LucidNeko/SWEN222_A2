@@ -97,21 +97,11 @@ public class GameDemo extends GameLoop {
 	 */
 	public void createEntities() {
 		Parser parser = new Parser("map00/");
-//		Parser parser = new Parser("Map.txt", "Doors.txt");
-		parser.passWallFileToArray();
-		parser.passDoorFileToArray();
-		parser.passTextures();
-		parser.passfloorFileToArray();
-		parser.createWalls(world);
-		parser.createFloor(world);
-		parser.passCeilingFileToArray();
-		parser.createCeiling(world);
-
+		parser.createEntities(world, player);
 
 		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(new DropItem(world));
-		parser.createDoors(world, player);
 
 
 		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);

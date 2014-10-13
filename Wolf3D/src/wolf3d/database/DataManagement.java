@@ -1,5 +1,7 @@
 package wolf3d.database;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,28 +62,66 @@ public class DataManagement {
 		log.trace("Reading from: {}", fpath);
 		WorldBuilder builder;
 		Gson gson = new Gson();
-		String json;
 		String line;
 		Scanner scan = new Scanner(new File(fpath));
 
-		while(scan.hasNext()) {
+		// load map
+		skip(scan, 2);
+		line = scan.next();
+		line = line.substring(1,line.length()-2);
+		log.trace("Reading: {}", line);
+		builder = new WorldBuilder(line);
 
-			// load map
+		// create default objects
+		builder.createDefaultObjects();
+
+		// load player entities
+		while(scan.hasNext()) {
+			// read name and uniqueID
+			while (!line.contains("name")) { line = scan.next(); }
+			skip(scan, 1);
+			String name = scan.next();
+			name = name.substring(1,name.length()-2);
+			log.trace("Reading name: {}", name);
 			skip(scan, 2);
 			line = scan.next();
 			line = line.substring(1,line.length()-2);
-			log.trace("Reading: {}", line);
-			builder = new WorldBuilder(line);
+			int uniqueID = Integer.parseInt(line);
+			log.trace("Reading uniqueID: {}", uniqueID);
 
-			// recreate each entity from the file
-			while (scan.hasNext()) {
-
-
-			}
+			/* Read components, they will be saved in the order of:
+			 * Transform,Health,Strength,Weight,Inventory
+			 */
+			//Transform
+			while (!line.contains("Transform")) { line = scan.next(); }
+			line = scan.next();
+			log.trace("Reading Transfrom: {}", line);
+			Transform transform = gson.fromJson(line, Transform.class);
+			// Health
+			while (!line.contains("Health")) { line = scan.next(); }
+			line = scan.next();
+			log.trace("Reading Health: {}", line);
+			Health health = gson.fromJson(line, Health.class);
+			// Strength
+			while (!line.contains("Strength")) { line = scan.next(); }
+			line = scan.next();
+			log.trace("Reading Strength: {}", line);
+			Strength strength = gson.fromJson(line, Strength.class);
+			// Weight
+			while (!line.contains("Weight")) { line = scan.next(); }
+			line = scan.next();
+			log.trace("Reading Weight: {}", line);
+			Weight weight = gson.fromJson(line, Weight.class);
+			// Inventory
+			while (!line.contains("Inventory")) { line = scan.next(); }
+			line = scan.next();
+			log.trace("Reading Inventory: {}", line);
+			Inventory inventory = gson.fromJson(line, Inventory.class);
+			builder.createPlayer(uniqueID, name, transform, health, strength, weight, inventory);
 		}
 		scan.close();
 
-		builder.createObjects();
+
 
 		return builder.getWorld();
 
@@ -96,7 +136,8 @@ public class DataManagement {
 	 * @param world
 	 */
 	public static void saveWorld(String fname, World world) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		//Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson = new Gson();
 		Collection<Entity> entities = world.getEntities();
 
 		File saveFile = new File(getSaveFpath()+fname);
@@ -131,44 +172,37 @@ public class DataManagement {
 				writer.write(line+"\n");
 
 				//Transform component, all entities have transform
-				line = "\"Transform\"" + gson.toJson(entity.getTransform());
+				line = "\"Transform\"\n" + gson.toJson(entity.getTransform());
 				log.trace("Writing: {}", line);
 				writer.write(line);
 
 				//Health component
 				if (entity.hasComponent(Health.class)) {
-					line = "\"Health\"" + gson.toJson(entity.getComponent(Health.class));
+					line = "\n\"Health\"\n" + gson.toJson(entity.getComponent(Health.class));
 					log.trace("Writing Health: {}", line);
 					writer.write(line);
 				}
 				//Strength component
 				if (entity.hasComponent(Strength.class)) {
-					line = "\"Strength\"" + gson.toJson(entity.getComponent(Strength.class));
+					line = "\n\"Strength\"\n" + gson.toJson(entity.getComponent(Strength.class));
 					log.trace("Writing Strength: {}", line);
 					writer.write(line);
 				}
 				//Weight component
 				if (entity.hasComponent(Weight.class)) {
-					line = "\"Weight\"" + gson.toJson(entity.getComponent(Weight.class));
+					line = "\n\"Weight\"\n" + gson.toJson(entity.getComponent(Weight.class));
 					log.trace("Writing Weight: {}", line);
 					writer.write(line);
 				}
 				//Inventory component
 				if (entity.hasComponent(Inventory.class)) {
-					Inventory inventory = entity.getComponent(Inventory.class);
-					line = "\"Inventory\"{\n"
-							+ "\"Items\" : \n[\n";
-					for (int item : inventory.getItems()) {
-						line += "\""+item+"\",\n";
-					}
-					line = line.substring(0, line.length()-2);	// remove last comma
-					line += "\n]\n}\n";
-					log.trace("Writing Weight: {}", line);
+					line = "\n\"Inventory\"\n" + gson.toJson(entity.getComponent(Inventory.class));
+					log.trace("Writing Inventory: {}", line);
 					writer.write(line);
 				}
 				writer.write("\n");
 			}
-			writer.write(line+"}\n");		//close }  entities
+			writer.write("}\n");		//close }  entities
 		} catch (IOException ex) {
 			// report
 			log.error("Writing world to file failed: {}", ex.getMessage());
@@ -193,7 +227,7 @@ public class DataManagement {
 	private static void skip(Scanner scan, int count) {
 		for (int i=0; i<count; i++) {
 			String line = scan.next();
-			log.trace("Reading, skipping: {}", line);
+			//log.trace("Reading, skipping: {}", line);
 		}
 	}
 }
