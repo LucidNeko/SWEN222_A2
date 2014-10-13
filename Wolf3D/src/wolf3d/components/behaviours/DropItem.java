@@ -1,6 +1,7 @@
 package wolf3d.components.behaviours;
 
 import wolf3d.components.Inventory;
+import wolf3d.components.Strength;
 import wolf3d.components.Weight;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -15,7 +16,7 @@ import engine.input.Keyboard;
 /**
  * This class is responsible for dropping items in the attached players
  * Inventory into the world and removing that item from the inventory
- * 
+ *
  * @author Sameer Magan
  *
  */
@@ -29,7 +30,7 @@ public class DropItem extends Behaviour {
 	/**
 	 * Drops the given entity in the world on the player current position and
 	 * removes the given from the attached players inventory
-	 * 
+	 *
 	 * @param item The Entity to be dropped
 	 * @return true if the player is dropped into the world false if not
 	 */
@@ -43,7 +44,8 @@ public class DropItem extends Behaviour {
 			item.getTransform().lookInDirection(player.getTransform().getLook());
 			// gets weight and adds it back to the players carryWeight
 			int itemWeight = item.getComponent(Weight.class).getWeight();
-			inventory.releaseWeight(itemWeight);
+			Strength strength = player.getComponent(Strength.class);
+			strength.releaseWeight(itemWeight);
 			// creates an EntityDef to use to add back to the world
 			TempEntityDef entDef = new TempEntityDef(item);
 
