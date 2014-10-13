@@ -98,7 +98,7 @@ public class WorldBuilder {
 		return player;
 	}
 
-	public void createObjects() {
+	public void createDefaultObjects() {
 
 		Entity skybox = EntityFactory.createSkybox(world, player);
 
