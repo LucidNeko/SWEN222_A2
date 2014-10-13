@@ -120,20 +120,12 @@ public class DataManagement {
 
 		return world;
 
-		//=================================================
-		//FOR INTEGRATION ONLY: DELETE ME
-		// return a dummy world
-//				World dummyWorld = new World();
-//				dummyWorld.createEntity("entA");
-//				dummyWorld.createEntity("entB");
-//				return dummyWorld;
-		//=================================================
 	}
 
 	/**
-	 * Saves the current Wolf3D world's entities and their Transform
-	 * component using JSON, entity IDs and names are not stored in
-	 * JSON formatting.
+	 * Saves the current Wolf3D world map, and entities with their Transform component.
+	 * For entities (such as players) that have Health, Strength, Weight, and Inventory
+	 * components, it saves these too.
 	 * Gets passed the world to be saved and the filename.
 	 * @param fname
 	 * @param world
@@ -232,6 +224,4 @@ public class DataManagement {
 		path = path+"Wolf3D/src/wolf3d/assets/saves/";
 		return path;
 	}
-
-
 }
