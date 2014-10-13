@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.components.Health;
+import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
 import wolf3d.components.Weight;
 
@@ -115,7 +116,7 @@ public class DataManagement {
 		}
 		scan.close();
 
-		createObjects()
+		builder.createObjects();
 
 		return world;
 
@@ -148,56 +149,69 @@ public class DataManagement {
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(saveFile)));
-			
-			//Write map directory and filenames
-			String mapDirName = "map00/";
-			String wallFname = "walls.txt";
-			String doorFname = "door.txt";
-			String floorFname = "floor.txt";
-			String ceilingFname = "ceiling.txt";
-			
-			
-			
+
+			//Write map directory
+			String mapDir = "map00/";
+			line = "\"mapDir\" : \""+mapDir+"\",";
+			log.trace("Writing: {}", line);
+			writer.write(line+"\n");
+
 			//Write entities
+			line = "\"entities\"";
+			log.trace("Writing: {}", line);
+			writer.write(line+"{\n");		//open { entities
+
 			for (Entity entity : entities) {
-				
+
 				//name
-				line = entity.getName()
-				log.trace("Writing name: {}", line);
-				writer.write(line);
+				line = "\"name\" : \""+entity.getName()+"\",";
+				log.trace("Writing: {}", line);
+				writer.write(line+"\n");
 
 				//uniqueID
-				line = Integer.toString(entity.getID());
-				log.trace("Writing uniqueID: {}", line);
-				writer.write(line);
-				
+				line = "\"uniqueID\" : \""+Integer.toString(entity.getID())+"\",";
+				log.trace("Writing: {}", line);
+				writer.write(line+"\n");
+
 				//Transform component, all entities have transform
-				line = gson.toJson(entity.getTransform());
-				log.trace("Writing Transform: {}", line);
+				line = "\"Transform\"" + gson.toJson(entity.getTransform());
+				log.trace("Writing: {}", line);
 				writer.write(line);
-				
+
 				//Health component
 				if (entity.hasComponent(Health.class)) {
-					line = gson.toJson(entity.getComponent(Health.class));
+					line = "\"Health\"" + gson.toJson(entity.getComponent(Health.class));
 					log.trace("Writing Health: {}", line);
 					writer.write(line);
 				}
 				//Strength component
 				if (entity.hasComponent(Strength.class)) {
-					line = gson.toJson(entity.getComponent(Strength.class));
+					line = "\"Strength\"" + gson.toJson(entity.getComponent(Strength.class));
 					log.trace("Writing Strength: {}", line);
 					writer.write(line);
 				}
 				//Weight component
 				if (entity.hasComponent(Weight.class)) {
-					line = gson.toJson(entity.getComponent(Weight.class));
+					line = "\"Weight\"" + gson.toJson(entity.getComponent(Weight.class));
 					log.trace("Writing Weight: {}", line);
 					writer.write(line);
 				}
-				writer.write(gson.toJson(entity));
-				writer.write("\n*\n\n");		// Asterisk indicates end of entity record
+				//Inventory component
+				if (entity.hasComponent(Inventory.class)) {
+					Inventory inventory = entity.getComponent(Inventory.class);
+					line = "\"Inventory\"{\n"
+							+ "\"Items\" : \n[\n";
+							for (int item : inventory.getItems()) {
+								line += "\""+item+"\",\n";
+							}
+					line = line.substring(0, line.length()-2);	// remove last comma
+					line += "\n]\n}\n";
+					log.trace("Writing Weight: {}", line);
+					writer.write(line);
+				}
+				writer.write("\n");
 			}
-
+			writer.write(line+"}\n");		//close }  entities
 		} catch (IOException ex) {
 			// report
 			log.error("Writing world to file failed: {}", ex.getMessage());
@@ -215,7 +229,7 @@ public class DataManagement {
 		File currentDirFile = new File(".");
 		path = currentDirFile.getAbsolutePath();
 		path = path.substring(0, path.length()-1);
-		path = path+"Wolf3D\\src\\wolf3d\\assets\\saves\\";
+		path = path+"Wolf3D/src/wolf3d/assets/saves/";
 		return path;
 	}
 
