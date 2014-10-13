@@ -84,22 +84,24 @@ public class WolfTests {
 	public void engineTest3(){
 		Vec3 a = new Vec3(1f, 1f, 1f);
 		Vec3 b = new Vec3(a);
-		Vec3 aAndb = a.sub(b);
-		Vec3 ans = new Vec3(2f, 2f, 2f);
-		if(ans.x()!=aAndb.getX()){
-			fail("X's aren't equal");
-		}
-		if(ans.y()!=aAndb.getY()){
-			fail("Y's aren't equal");
-		}
-		if(ans.z()!=aAndb.getZ()){
-			fail("Z's aren't equal");
+		a.setZero();
+		a.set(2f,2f,2f);
+		Vec3 aSubb = a.sub(b);
+		Vec3 ans = new Vec3(1f, 1f, 1f);
+		if(!ans.equals(aSubb)){
+			fail("Subtraction doesn't work");
 		}
 	}
 
 	@Test
 	public void engineTest4(){
-		fail("Not yet implemented");
+		Vec3 a = new Vec3(-1f, -1f, -1f);
+		a.abs();
+		Vec3 ans = new Vec3(-1f, -1f, -1f);
+		ans.absLocal();
+		if(!ans.equals(ans)){
+			fail("Absolute value doesn't work");
+		}
 	}
 
 	@Test
@@ -143,34 +145,41 @@ public class WolfTests {
 	//If there is no wall map, the test fails.
 	@Test
 	public void packageTest1(){
-		f = new File("src/wolf3d/assets/map.txt");
+		f = new File("src/wolf3d/assets/map00/walls.txt");
 		assertTrue(f.exists());
 	}
 
 	//If there is no door map, the test fails.
 	@Test
 	public void packageTest2() {
-		f = new File("src/wolf3d/assets/doors.txt");
+		f = new File("src/wolf3d/assets/map00/doors.txt");
 		assertTrue(f.exists());
 	}
 
 	// If there is no texture map, the test fails
 	@Test
 	public void packageTest3() {
-		f = new File("src/wolf3d/assets/textureFiles/walls.txt");
+		f = new File("src/wolf3d/assets/map00/walls.txt");
+		assertTrue(f.exists());
+	}
+
+	// No ceiling map
+	@Test
+	public void packageTest4() {
+		f = new File("src/wolf3d/assets/map00/ceilings.txt");
 		assertTrue(f.exists());
 	}
 
 	// Model files present in the folder
 	//Link
 	@Test
-	public void packageTest4() {
+	public void packageTest5() {
 		fail("Not yet implemented");
 	}
 
 	//Teddy Bear
 	@Test
-	public void packageTest5() {
+	public void packageTest6() {
 		fail("Not yet implemented");
 	}
 
