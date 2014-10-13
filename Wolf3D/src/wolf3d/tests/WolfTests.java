@@ -65,7 +65,8 @@ public class WolfTests {
 	// Vec3 class - Vector creation, getters & setters, addition
 	@Test
 	public void engineTest2(){
-		Vec3 a = new Vec3(1f, 1f, 1f);
+		Vec3 a = new Vec3(0f, 0f, 0f);
+		a=a.add(1f,1f,1f);
 		Vec3 b = new Vec3(a);
 		Vec3 aAndb = a.add(b);
 		Vec3 ans = new Vec3(2f, 2f, 2f);
@@ -106,32 +107,65 @@ public class WolfTests {
 
 	@Test
 	public void engineTest5(){
-		fail("Not yet implemented");
+		Vec3 a = new Vec3(0f, 0f, 1f);
+		Vec3 b = new Vec3(0f, 1f, 0f);
+		Vec3 ans = new Vec3(-1f, 0f,0f);
+		if(!Vec3.cross(a, b).equals(ans)){
+			fail("Cross product works");
+		}
 	}
 
-	@Test
+	@Test (expected=UnsupportedOperationException.class)
 	public void engineTest6(){
-		fail("Not yet implemented");
+		Vec3.UP.addLocal(1f, 0f, 0f);
 	}
 
-	@Test
+	@Test (expected=UnsupportedOperationException.class)
 	public void engineTest7(){
-		fail("Not yet implemented");
+		Vec3.UP.divLocal(1f);
 	}
 
 	@Test
 	public void engineTest8(){
-		fail("Not yet implemented");
+		Vec3 a = new Vec3(2f, 2f, 2f);
+		a.divLocal(2f);
+		Vec3 ans = new Vec3(1f, 1f, 1f);
+		if(!ans.equals(a)){
+			fail("Local Vector division doesn't work");
+		}
 	}
 
 	@Test
 	public void engineTest9(){
-		fail("Not yet implemented");
+		Vec3 a = new Vec3(1f,1f, 1f);
+		Vec3 b = a.div(2f);
+		Vec3 ans = new Vec3(0.5f, 0.5f, 0.5f);
+		if(!ans.equals(b)){
+			fail("Vector Division works");
+		}
 	}
 
 	@Test
 	public void engineTest10(){
-		fail("Not yet implemented");
+		Vec3 a = new Vec3(1f,1f, 1f);
+		Vec3 b = new Vec3(1.01f, 1f, 1f);
+		Vec3 c = new Vec3(1f,1f, 1f);
+		if(c.hashCode()!=a.hashCode()){
+			fail("Hashcode is different");
+		}
+		if(a.hashCode()==b.hashCode()){
+			fail("Hashcode is the same");
+		}
+	}
+
+	@Test
+	public void engineTest11(){
+		Vec3 a = new Vec3(1f,1f, 1f);
+		Vec3 b = new Vec3(1.01f, 1f, 1f);
+
+		float dot(a, b)
+			return a.x*b.x + a.y*b.y + a.z*b.z;
+
 	}
 
 	//////////////////////////////////
