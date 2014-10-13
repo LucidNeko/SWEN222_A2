@@ -51,7 +51,7 @@ public class WorldBuilder {
 	 * @param doorsFname the filename of the door file referenced.
 	 * @return the world with the walls and doors added, but nothing else.
 	 */
-	public void WorldBuilder(String mapDirName) {
+	public WorldBuilder(String mapDirName) {
 		this.world = new World();
 		parser = new Parser(mapDirName);
 		parser.passWallFileToArray();
@@ -129,6 +129,10 @@ public class WorldBuilder {
 
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(new Attackable(world));
+	}
+
+	public World getWorld(){
+		return this.world;
 	}
 
 	/**
