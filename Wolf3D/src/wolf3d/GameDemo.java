@@ -105,24 +105,20 @@ public class GameDemo extends GameLoop {
 
 
 		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+		final Camera c2 = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
 
-
-		view.setCamera(camera);
+		view.setCamera(c1);
 
 		player.attachComponent(new Behaviour() {
-
-			Camera c = c1;
-
 			@Override
 			public void update(float delta) {
 				if(Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
-					if(c == c1) {
-						c = camera;
+					if(camera == c1) {
+						camera = c2;
 					} else {
-						c = c1;
+						camera = c1;
 					}
-					view.setCamera(c);
+					view.setCamera(camera);
 				}
 			}
 
