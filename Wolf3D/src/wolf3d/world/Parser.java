@@ -30,7 +30,7 @@ import engine.util.Resources;
 public class Parser {
 
 	private String wallFilePath, doorFilePath, textureFilePath, floorFilePath,
-			floorTexturePath, ceilingTexturePath, ceilingFilePath;
+			floorTexturePath, ceilingTexturePath, ceilingFilePath, mapFilePath;
 
 	private Cell[][] walls, doors, floor, ceiling;
 
@@ -44,14 +44,18 @@ public class Parser {
 	private int bottomY = -1;
 	private int topY = 1;
 
-	public Parser(String wallFilePath, String doorFilePath, String floorFilePath, String ceilingFilePath) {
-		this.wallFilePath = wallFilePath;
-		this.doorFilePath = doorFilePath;
-		this.textureFilePath = "wallTextures/";
-		this.floorFilePath = floorFilePath;
-		this.floorTexturePath = "floorTextures/";
-		this.ceilingFilePath = ceilingFilePath;
-		this.ceilingTexturePath = "ceilingTextures/";
+	public Parser(String map) {
+		this.mapFilePath = map;
+		if(!map.substring(map.length()-1).equals("/")){
+			map += "/";
+		}
+		this.wallFilePath = map + "walls.txt";
+		this.doorFilePath = map + "doors.txt";
+		this.ceilingFilePath = map + "ceilings.txt";
+		this.floorFilePath = map + "floors.txt";
+		this.textureFilePath = map + "wallTextures/";
+		this.floorTexturePath = map + "floorTextures/";
+		this.ceilingTexturePath = map + "ceilingTextures/";
 	}
 
 	/**
