@@ -42,7 +42,7 @@ public class Wolf3DNet2 extends JFrame {
 	private static final String DEFAULT_TITLE = "Wolf3D";
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 600;
-	
+
 	public static String ip;
 	public static int port;
 
@@ -54,12 +54,12 @@ public class Wolf3DNet2 extends JFrame {
 				confirmExit();
 			}
 		});
-		
+
 
 		//Create the World
 		final World world = new World();
 		world.equals("hi");
-		
+
 		//create views
 		final WorldView worldView = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT, world);
 		final MiniMap minimap = new MiniMap(200, 200, world);
@@ -67,7 +67,7 @@ public class Wolf3DNet2 extends JFrame {
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(worldView);
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
-		
+
 		//Build OpenGL panel.
 		/*
 		JPanel sidePanel = new JPanel();

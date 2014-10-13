@@ -111,7 +111,7 @@ public class GameDemoNet2 extends GameLoop {
 
 
 	public void createEntities() {
-		Parser parser = new Parser("Map.txt", "Doors.txt");
+		Parser parser = new Parser("Map3.txt", "Doors2.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
 		parser.passTextures();
