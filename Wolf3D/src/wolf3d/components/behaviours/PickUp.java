@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import wolf3d.components.Inventory;
+import wolf3d.components.Strength;
 import wolf3d.components.Weight;
 import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Vec3;
@@ -18,7 +19,7 @@ import engine.input.Keyboard;
 /**
  * This Class is a Component to allow players to pickup and drop items in the
  * world
- * 
+ *
  * @author Sameer Magan
  *
  */
@@ -32,7 +33,7 @@ public class PickUp extends Behaviour {
 	/**
 	 * Picks up the entity attached to this component and adds it to the
 	 * targeted players Inventory
-	 * 
+	 *
 	 * @return true if entity is picked up false if not
 	 */
 	public boolean pickUpItem() {
@@ -45,7 +46,8 @@ public class PickUp extends Behaviour {
 		}
 		//gets weight and checks if weight does not exceed the players carry amt.
 		int itemWeight = item.getComponent(Weight.class).getWeight();
-		if (inventory.reduceStrength(itemWeight)) {
+		Strength strength = player.getComponent(Strength.class);
+		if (strength.reduceStrength(itemWeight)) {
 			inventory.addItem(item);
 			setChanged();
 			return world.destroyEntity(item.getID());
@@ -57,7 +59,7 @@ public class PickUp extends Behaviour {
 	@Override
 	public void update(float delta) {
 		requires(ProximitySensor.class);
-		requires(Weight.class);
+		requires(Weight.class, Strength.class);
 		// Checks if the proximity sensor attached to the owner of this
 		// component
 		// is triggered, ie. if the player is close enough to the item to be

@@ -172,10 +172,6 @@ public class GameDemo extends GameLoop {
 			System.exit(0);
 		}
 
-		if(Keyboard.isKeyDownOnce(KeyEvent.VK_X)) {
-			log.trace("Pressed X");
-		}
-
 		//if control is pressed (toggles) frees the mouse.
 		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(!Mouse.isGrabbed());
