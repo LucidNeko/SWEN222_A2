@@ -96,7 +96,7 @@ public class GameDemo extends GameLoop {
 	 * public because network needs to call this...
 	 */
 	public void createEntities() {
-		Parser parser = new Parser("Map3.txt", "Doors2.txt", "floors.txt", "ceilings.txt");
+		Parser parser = new Parser("map00/");
 //		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
@@ -114,9 +114,29 @@ public class GameDemo extends GameLoop {
 		parser.createDoors(world, player);
 
 
-//		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
+		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
 		camera = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+
+
 		view.setCamera(camera);
+
+		player.attachComponent(new Behaviour() {
+
+			Camera c = c1;
+
+			@Override
+			public void update(float delta) {
+				if(Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
+					if(c == c1) {
+						c = camera;
+					} else {
+						c = c1;
+					}
+					view.setCamera(c);
+				}
+			}
+
+		});
 
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
