@@ -96,7 +96,7 @@ public class GameDemo extends GameLoop {
 	 * public because network needs to call this...
 	 */
 	public void createEntities() {
-		Parser parser = new Parser("Map3.txt", "Doors2.txt");
+		Parser parser = new Parser("Map3.txt", "Doors2.txt", "floors.txt", "ceilings.txt");
 //		Parser parser = new Parser("Map.txt", "Doors.txt");
 		parser.passWallFileToArray();
 		parser.passDoorFileToArray();
