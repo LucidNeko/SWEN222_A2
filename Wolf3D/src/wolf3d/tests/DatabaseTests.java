@@ -12,6 +12,7 @@ import wolf3d.components.Weight;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.database.DataManagement;
+import wolf3d.world.Parser;
 
 import com.google.gson.Gson;
 
@@ -99,7 +100,11 @@ public class DatabaseTests {
 		Entity item1, item2, item3, player;
 		//create world with player holding three items
 		World world = new World();
+		Parser parser = new Parser("map00/");
+
 		player = EntityFactory.createPlayer(world, "Player",-1);
+		parser.createEntities(world, player);
+		
 		item1 = world.createEntity("motorbike");
 		item1.attachComponent(ProximitySensor.class).setTarget(player);;
 		item1.attachComponent(new PickUp(world));

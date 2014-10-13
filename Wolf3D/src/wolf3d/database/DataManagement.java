@@ -138,7 +138,7 @@ public class DataManagement {
 	public static void saveWorld(String fname, World world) {
 		//Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Gson gson = new Gson();
-		Collection<Entity> entities = world.getEntities();
+		Collection<Entity> entities = world.getEntity("Player");
 
 		File saveFile = new File(getSaveFpath()+fname);
 		String line;
