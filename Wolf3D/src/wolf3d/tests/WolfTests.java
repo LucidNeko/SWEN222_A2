@@ -26,6 +26,13 @@ public class WolfTests {
 	 * Helper methods
 	 */
 	//////////////////////////////////
+
+	/**
+	 * scanShort is a method with two String arguments, returns false if there is an exception, otherwise true.
+	 * @param p
+	 * @param f
+	 * @return Method with two String arguments, returns false if there is an exception, otherwise true.
+	 */
 	public boolean scanShort(String p, String f){ // f for file, p for path
 		Path path = FileSystems.getDefault().getPath(p, f);
 		try (Scanner scan = new Scanner(path)) {
