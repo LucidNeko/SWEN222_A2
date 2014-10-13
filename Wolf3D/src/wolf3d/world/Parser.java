@@ -29,9 +29,9 @@ import engine.util.Resources;
  */
 public class Parser {
 
-	private String wallFilePath, doorFilePath, textureFilePath, floorFilePath,
+	private String wallFilePath, doorFilePath, wallTexturePath, floorFilePath,
 			floorTexturePath, ceilingTexturePath, ceilingFilePath, mapFilePath,
-			specialDoorFilePath;
+			specialDoorFilePath, textureFilesPath;
 
 	private Cell[][] walls, doors, floor, ceiling, specialDoors;
 
@@ -55,9 +55,10 @@ public class Parser {
 		this.ceilingFilePath = map + "ceilings.txt";
 		this.floorFilePath = map + "floors.txt";
 		this.specialDoorFilePath = map + "specialDoors.txt";
-		this.textureFilePath = map + "wallTextures/";
+		this.wallTexturePath = map + "wallTextures/";
 		this.floorTexturePath = map + "floorTextures/";
 		this.ceilingTexturePath = map + "ceilingTextures/";
+		this.textureFilesPath = map+ "textureFiles/";
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class Parser {
 	 */
 	public void passTextures() {
 		for (int i = 0; i < 3; i++) {
-			String filepath = "textureFiles/" + Integer.toString(i) + ".txt";
+			String filepath = textureFilesPath + Integer.toString(i) + ".txt";
 			textures.put(i, parseFileToArray(filepath));
 		}
 	}
@@ -418,28 +419,28 @@ public class Parser {
 		for (Integer i : textures.keySet()) {
 			if (dir.equals("North")) {
 				if (textures.get(i)[row][col].hasNorth()) {
-					String fname = textureFilePath + Integer.toString(i)
+					String fname = wallTexturePath + Integer.toString(i)
 							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
 			}
 			if (dir.equals("East")) {
 				if (textures.get(i)[row][col].hasEast()) {
-					String fname = textureFilePath + Integer.toString(i)
+					String fname = wallTexturePath + Integer.toString(i)
 							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
 			}
 			if (dir.equals("South")) {
 				if (textures.get(i)[row][col].hasSouth()) {
-					String fname = textureFilePath + Integer.toString(i)
+					String fname = wallTexturePath + Integer.toString(i)
 							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
 			}
 			if (dir.equals("West")) {
 				if (textures.get(i)[row][col].hasWest()) {
-					String fname = textureFilePath + Integer.toString(i)
+					String fname = wallTexturePath + Integer.toString(i)
 							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
