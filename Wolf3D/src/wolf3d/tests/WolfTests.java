@@ -40,21 +40,21 @@ public class WolfTests {
 	//If there is no wall map, the test fails.
 	@Test
 	public void packageTest1(){
-		f = new File("src/wolf3d/assets/Mapk.txt");
+		f = new File("src/wolf3d/assets/map.txt");
 		assertTrue(f.exists());
 	}
 
 	//If there is no door map, the test fails.
 	@Test
 	public void packageTest2() {
-		f = new File("src/wolf3d/assets/Doors.txt");
+		f = new File("src/wolf3d/assets/doors.txt");
 		assertTrue(f.exists());
 	}
 
 	// If there is no texture map, the test fails
 	@Test
 	public void packageTest3() {
-		f = new File("src/wolf3d/assets/textureFiles/0.txt");
+		f = new File("src/wolf3d/assets/textureFiles/walls.txt");
 		assertTrue(f.exists());
 	}
 
