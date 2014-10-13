@@ -2,13 +2,14 @@ package wolf3d.components.behaviours.animations.die;
 
 import wolf3d.components.Health;
 import wolf3d.components.behaviours.AILookAtController;
+import engine.common.Mathf;
 import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.World;
 
 public class FallDieAnimation extends Behaviour {
 	private float speed = 0.01f; // 1.0 units per second.
-	private float rotationAmount = 90; // 2 units.
+	private float rotationAmount = Mathf.degToRad(90);
 
 	private Transform startPos = null;
 
@@ -31,7 +32,7 @@ public class FallDieAnimation extends Behaviour {
 			getOwner().detachComponent(lookAt);
 		}
 		Transform t = getOwner().getTransform();
-		t.rotateY(time * speed);
+		t.pitch(rotationAmount/delta);
 		if(time >= 4){
 			t.fly((time -4)*speed);
 		}
