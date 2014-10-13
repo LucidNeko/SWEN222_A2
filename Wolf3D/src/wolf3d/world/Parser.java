@@ -29,9 +29,10 @@ import engine.util.Resources;
  */
 public class Parser {
 
-	private String wallFilePath, doorFilePath, textureFilePath, floorFilePath, floorTexturePath;
+	private String wallFilePath, doorFilePath, textureFilePath, floorFilePath,
+			floorTexturePath, ceilingTexturePath, ceilingFilePath;
 
-	private Cell[][] walls, doors, floor;
+	private Cell[][] walls, doors, floor, ceiling;
 
 	private Map<Integer, Cell[][]> textures = new HashMap<Integer, Cell[][]>();
 
@@ -48,6 +49,7 @@ public class Parser {
 		this.textureFilePath = "wallTextures/";
 		this.floorFilePath = "floors.txt";
 		this.floorTexturePath = "floorTextures/";
+		this.ceilingTexturePath = "ceilingTextures/";
 	}
 
 	/**
@@ -69,6 +71,13 @@ public class Parser {
 	 */
 	public void passfloorFileToArray() {
 		floor = passFileToArray(floorFilePath);
+	}
+
+	/**
+	 * Parses floors file into a 2d array of Cells
+	 */
+	public void passCeilingFileToArray() {
+		ceiling = passFileToArray(ceilingFilePath);
 	}
 
 	/**
@@ -140,14 +149,14 @@ public class Parser {
 	 * @param world
 	 *            the world that the floor will be added to
 	 */
-	public void createFloor(World world){
+	public void createFloor(World world) {
 		String type = "Floor";
 		float width = 2;
 		float height = 2;
-		float halfWidth = width/2;
-		float halfHeight = width/2;
-		for(row = 0; row < floor.length; row++){
-			for(col = 0; col < floor[row].length; col++){
+		float halfWidth = width / 2;
+		float halfHeight = width / 2;
+		for (row = 0; row < floor.length; row++) {
+			for (col = 0; col < floor[row].length; col++) {
 				float x = col * width + halfWidth;
 				float z = row * height + halfHeight;
 				Entity floor = addObject(world, type, "");
@@ -238,7 +247,7 @@ public class Parser {
 	 *            the world for the floor to be added to
 	 * @return the newly created floor panel
 	 */
-	private Entity addFloor(World world){
+	private Entity addFloor(World world) {
 		Texture floorTex = getFloorTexture();
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Entity floor = world.createEntity("floor");
@@ -259,17 +268,14 @@ public class Parser {
 	private Entity addWall(World world, String dir) {
 		// the texture for the wall
 		Texture wallTex = getTexture(dir);
-		//setting default if there is no texture specified in map
-		if(wallTex == null){
+		// setting default if there is no texture specified in map
+		if (wallTex == null) {
 			wallTex = Resources.getTexture("debug_wall.png", true);
 		}
 
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(wallTex, Color.WHITE);
 
-		
-		
-		
 		Entity wall = world.createEntity("wall");
 		wall.attachComponent(MeshFilter.class).setMesh(mesh);
 		wall.attachComponent(MeshRenderer.class).setMaterial(material);
@@ -285,7 +291,7 @@ public class Parser {
 	 */
 	private Entity addDoor(World world, String dir) {
 		// the texture for the wall
-//		Texture doorTex = Resources.getTexture("1.png", true);
+		// Texture doorTex = Resources.getTexture("1.png", true);
 		Texture doorTex = getTexture(dir);
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(doorTex, Color.WHITE);
@@ -300,41 +306,50 @@ public class Parser {
 
 	/**
 	 * Gets the corresponding floor texture for the current position
+	 *
 	 * @return the corresponding floor texture
 	 */
-	private Texture getFloorTexture(){
-		String fname = floorTexturePath +Integer.toString(floor[row][col].getWalls()) + ".png";
+	private Texture getFloorTexture() {
+		String fname = floorTexturePath
+				+ Integer.toString(floor[row][col].getWalls()) + ".png";
 		return Resources.getTexture(fname, true);
 	}
 
 	/**
 	 * Gets the texture of the current row and col from the textures map
-	 * @param dir the direction in which wall/door we are looking for
-	 * @return the texture associated with the wall/door or null if it can not find it
+	 *
+	 * @param dir
+	 *            the direction in which wall/door we are looking for
+	 * @return the texture associated with the wall/door or null if it can not
+	 *         find it
 	 */
 	private Texture getTexture(String dir) {
 		for (Integer i : textures.keySet()) {
 			if (dir.equals("North")) {
 				if (textures.get(i)[row][col].hasNorth()) {
-					String fname = textureFilePath +Integer.toString(i) + ".png";
+					String fname = textureFilePath + Integer.toString(i)
+							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
 			}
 			if (dir.equals("East")) {
 				if (textures.get(i)[row][col].hasEast()) {
-					String fname = textureFilePath+Integer.toString(i) + ".png";
+					String fname = textureFilePath + Integer.toString(i)
+							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
 			}
 			if (dir.equals("South")) {
 				if (textures.get(i)[row][col].hasSouth()) {
-					String fname = textureFilePath+Integer.toString(i) + ".png";
+					String fname = textureFilePath + Integer.toString(i)
+							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
 			}
 			if (dir.equals("West")) {
 				if (textures.get(i)[row][col].hasWest()) {
-					String fname = textureFilePath+Integer.toString(i) + ".png";
+					String fname = textureFilePath + Integer.toString(i)
+							+ ".png";
 					return Resources.getTexture(fname, true);
 				}
 			}
