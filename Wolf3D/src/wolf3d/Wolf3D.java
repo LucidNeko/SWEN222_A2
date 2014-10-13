@@ -100,8 +100,8 @@ public class Wolf3D extends JFrame {
 		}
 		else{
 			Wolf3D.ip = "localhost";
-			Wolf3D.port = 50000 + (int)(Math.random()*10000); //58961; //ugh. //random port
-			Server s = new Server(port,1);
+			Server s = new Server(0,1); //0 as port will listen on any free port.
+			Wolf3D.port = s.getSocketPort();
 			s.start();
 		}
 		SwingUtilities.invokeLater(new Runnable() {

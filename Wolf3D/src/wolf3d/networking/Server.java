@@ -36,6 +36,10 @@ public class Server extends Thread{
 		}
 	}
 
+	public int getSocketPort(){
+		return ss.getLocalPort();
+	}
+
 
 	/**
 	 * Server run thread, starts up the server and listens for new connections.
@@ -116,7 +120,7 @@ public class Server extends Thread{
 	/**
 	 * This method will send some IDs over the network for the clients to construct
 	 * themselves and other players. THe message looks as follows:
-	 * 
+	 *
 	 * "ids"
 	 * [int - player id]
 	 * [int - # other clients]
@@ -125,7 +129,7 @@ public class Server extends Thread{
 	 * ....
 	 * ....
 	 * ....
-	 * 
+	 *
 	 */
 	private void assignIDs() {
 		// TODO Auto-generated method stub
@@ -188,7 +192,7 @@ public class Server extends Thread{
 			}
 		}
 	}
-	
+
 	public void pushToAllClients(float f) {
 		// TODO Auto-generated method stub
 		for(ServerConnection sc : connections){
