@@ -15,6 +15,10 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import wolf3d.components.Health;
+import wolf3d.components.Strength;
+import wolf3d.components.Weight;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -46,6 +50,8 @@ public class DataManagement {
 	 * @param fname
 	 */
 	public static World loadWorld(String fname) throws IOException {
+		WorldBuilder builder = new WorldBuilder();
+
 		String fpath = getSaveFpath()+fname;
 		// check save file exists
 		if (!new File (fpath).isFile()) {
@@ -57,7 +63,7 @@ public class DataManagement {
 		String json = "";
 		World world = new World();
 		Scanner scan = new Scanner(new File(fpath));
-		String line = "";		
+		String line = "";
 		while(scan.hasNext()) {
 			log.trace("Scanner read: {}", line);
 			// recreate each entity from the file
@@ -72,7 +78,7 @@ public class DataManagement {
 					log.trace("Scanner reading component...");
 					line = scan.nextLine();
 					log.trace("Scanner read: {}", line);
-					while (!line.contains("],")) {			// '],' signifies end of component JSON string						
+					while (!line.contains("],")) {			// '],' signifies end of component JSON string
 						log.trace("Scanner read: {}", line);
 						json += line;
 						line = scan.nextLine();
@@ -108,6 +114,9 @@ public class DataManagement {
 			}
 		}
 		scan.close();
+
+		createObjects()
+
 		return world;
 
 		//=================================================
@@ -132,16 +141,57 @@ public class DataManagement {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Collection<Entity> entities = world.getEntities();
 
-		File saveFile = new File(getSaveFpath()+fname);		
+		File saveFile = new File(getSaveFpath()+fname);
+		String line;
 
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(saveFile)));
+			
+			//Write map and door filenames
+			String mapFname = ""
+			String doorsFname = 
+			//Write entities
 			for (Entity entity : entities) {
+				
+				//name
+				line = entity.getName()
+				log.trace("Writing name: {}", line);
+				writer.write(line);
+
+				//uniqueID
+				line = Integer.toString(entity.getID());
+				log.trace("Writing uniqueID: {}", line);
+				writer.write(line);
+				
+				//Transform component, all entities have transform
+				line = gson.toJson(entity.getTransform());
+				log.trace("Writing Transform: {}", line);
+				writer.write(line);
+				
+				//Health component
+				if (entity.hasComponent(Health.class)) {
+					line = gson.toJson(entity.getComponent(Health.class));
+					log.trace("Writing Health: {}", line);
+					writer.write(line);
+				}
+				//Strength component
+				if (entity.hasComponent(Strength.class)) {
+					line = gson.toJson(entity.getComponent(Strength.class));
+					log.trace("Writing Strength: {}", line);
+					writer.write(line);
+				}
+				//Weight component
+				if (entity.hasComponent(Weight.class)) {
+					line = gson.toJson(entity.getComponent(Weight.class));
+					log.trace("Writing Weight: {}", line);
+					writer.write(line);
+				}
 				writer.write(gson.toJson(entity));
 				writer.write("\n*\n\n");		// Asterisk indicates end of entity record
 			}
+
 		} catch (IOException ex) {
 			// report
 			log.error("Writing world to file failed: {}", ex.getMessage());
@@ -158,7 +208,7 @@ public class DataManagement {
 		String path = "";
 		File currentDirFile = new File(".");
 		path = currentDirFile.getAbsolutePath();
-		path = path.substring(0, path.length()-1);	
+		path = path.substring(0, path.length()-1);
 		path = path+"Wolf3D\\src\\wolf3d\\assets\\saves\\";
 		return path;
 	}
