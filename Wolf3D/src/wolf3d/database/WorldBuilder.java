@@ -54,12 +54,7 @@ public class WorldBuilder {
 	public WorldBuilder(String mapDirName) {
 		this.world = new World();
 		parser = new Parser(mapDirName);
-		parser.passWallFileToArray();
-		parser.passDoorFileToArray();
-		parser.passTextures();
-		parser.passfloorFileToArray();
-		parser.createWalls(world);
-		parser.createFloor(world);
+		parser.createEntities(world, player);
 	}
 
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
