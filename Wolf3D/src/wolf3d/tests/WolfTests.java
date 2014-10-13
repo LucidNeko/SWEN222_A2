@@ -20,7 +20,28 @@ import engine.core.World;
 public class WolfTests {
 
 	private World world = new World();
-	private static Path path;
+
+	//////////////////////////////////
+	/*
+	 * Helper methods
+	 */
+	//////////////////////////////////
+	public boolean scanShort(String p, String f){ // f for file, p for path
+		Path path = FileSystems.getDefault().getPath(p, f);
+		try (Scanner scan = new Scanner(path)) {
+			while(scan.hasNext()){
+				if(scan.hasNext()){
+					break;
+				}
+			}
+			scan.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		    return false;
+		}
+		return true;
+	}
+
 	//////////////////////////////////
 	/*
 	 * Ensure that the package has all the items and textures that it needs
@@ -32,24 +53,13 @@ public class WolfTests {
 	//If there is no wall map, the test fails.
 	@Test
 	public void packageTest1(){
-		path = FileSystems.getDefault().getPath("src/wolf3d/assets", "Map.txt");
-		try (Scanner scan = new Scanner(path)) {
-			while(scan.hasNext()){
-				if(scan.hasNext()){
-					break;
-				}
-			}
-			scan.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		    fail("Map.txt does not exist");
-		}
+		assert(scanShort("src/wolf3d/assets", "Map.txt"));
 	}
 
 	//If there is no door map, the test fails.
 	@Test
 	public void packageTest2() {
-		path = FileSystems.getDefault().getPath("src/wolf3d/assets", "Doors.txt");
+		Path path = FileSystems.getDefault().getPath("src/wolf3d/assets", "Doors.txt");
 		try (Scanner scan = new Scanner(path)) {
 			while(scan.hasNext()){
 				if(scan.hasNext()){
@@ -66,7 +76,7 @@ public class WolfTests {
 	// If there is no texture map, the test fails
 	@Test
 	public void packageTest3() {
-		path = FileSystems.getDefault().getPath("src/wolf3d/assets/textureFiles", "0.txt");
+		Path path = FileSystems.getDefault().getPath("src/wolf3d/assets/textureFiles", "0.txt");
 		try (Scanner scan = new Scanner(path)) {
 			while(scan.hasNext()){
 				if(scan.hasNext()){
