@@ -49,6 +49,7 @@ public class Parser {
 		this.textureFilePath = "wallTextures/";
 		this.floorFilePath = "floors.txt";
 		this.floorTexturePath = "floorTextures/";
+		this.ceilingFilePath = "ceilings.txt";
 		this.ceilingTexturePath = "ceilingTextures/";
 	}
 
@@ -74,10 +75,36 @@ public class Parser {
 	}
 
 	/**
-	 * Parses floors file into a 2d array of Cells
+	 * Parses ceilings file into a 2d array of Cells
 	 */
 	public void passCeilingFileToArray() {
 		ceiling = passFileToArray(ceilingFilePath);
+	}
+
+	/**
+	 * creates all walls in the world
+	 *
+	 * @param world
+	 *            the world in which the walls are added to
+	 */
+	public void createCeiling(World world) {
+		String type = "Ceilings";
+		float width = 2;
+		float height = 2;
+		float halfWidth = width / 2;
+		float halfHeight = width / 2;
+		for (row = 0; row < floor.length; row++) {
+			for (col = 0; col < floor[row].length; col++) {
+				float x = col * width + halfWidth;
+				float z = row * height + halfHeight;
+				Entity ceiling = addObject(world, type, "");
+				if(ceiling == null){
+					break;
+				}
+				ceiling.getTransform().translate(x, bottomY, z);
+				ceiling.getTransform().pitch(Mathf.degToRad(90));
+			}
+		}
 	}
 
 	/**
@@ -236,8 +263,32 @@ public class Parser {
 			return addDoor(world, dir);
 		case "Floor":
 			return addFloor(world);
+		case "Ceilings":
+			return addCeiling(world);
 		}
 		return null;
+	}
+
+	/**
+	 * Adds a floor panel to the given world with a Texture, Mesh, and Material
+	 *
+	 * @param world
+	 *            the world for the floor to be added to
+	 * @return the newly created floor panel
+	 */
+	private Entity addCeiling(World world) {
+		Texture floorTex;
+		floorTex = getCeilingTexture();
+		if(floorTex == null){
+			return null;
+		}
+		Mesh mesh = Resources.getMesh("wall.obj");
+		Entity floor = world.createEntity("floor");
+
+		Material material = new Material(floorTex, Color.WHITE);
+		floor.attachComponent(MeshFilter.class).setMesh(mesh);
+		floor.attachComponent(MeshRenderer.class).setMaterial(material);
+		return floor;
 	}
 
 	/**
@@ -302,6 +353,20 @@ public class Parser {
 		door.attachComponent(ProximitySensor.class).setTarget(player);
 		door.attachComponent(DoorBehaviour.class);
 		return door;
+	}
+
+	/**
+	 * Gets the corresponding ceiling texture for the current position
+	 *
+	 * @return the corresponding ceiling texture or null if 0
+	 */
+	private Texture getCeilingTexture() {
+		if(ceiling[row][col].getWalls() == 0){
+			return null;
+		}
+		String fname = ceilingTexturePath
+				+ Integer.toString(ceiling[row][col].getWalls()) + ".png";
+		return Resources.getTexture(fname, true);
 	}
 
 	/**

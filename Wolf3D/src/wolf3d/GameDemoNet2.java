@@ -314,7 +314,7 @@ public class GameDemoNet2 extends GameLoop {
 	}
 
 	public void createPlayer(int ID){
-		player = EntityFactory.createPlayerWithID(world, "Player", ID);
+		player = EntityFactory.createPlayer(world, "Player", ID);
 	}
 
 	public void createOtherPlayer(int ID){
