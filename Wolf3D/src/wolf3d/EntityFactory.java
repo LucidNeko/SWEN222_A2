@@ -43,37 +43,6 @@ import engine.util.Resources;
 public class EntityFactory {
 	private static final Logger log = LogManager.getLogger();
 
-	public static final int PLAYER = 1;
-
-	public static Entity create(int type, World world, String name) {
-		if(type == PLAYER) {
-			return createPlayer(world, name);
-		} else {
-			log.error("UnKnowen entity type {}", type);
-			log.error("Returning blank Entity");
-			return world.createEntity(name);
-		}
-	}
-
-//	public static Entity createPlayer(World world, String name) {
-//		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
-//		Texture linkTex = Resources.getTexture("link/young_link.png", true);
-//
-//		//Create player
-//		Entity player = world.createEntity("Player");
-//		player.attachComponent(Camera.class);
-////		player.attachComponent(PyramidRenderer.class);
-//		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
-//		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
-////		player.attachComponent(parser.getWallCollisionComponent());
-////		player.attachComponent(WASDWalking.class);
-//		player.attachComponent(CameraScrollBackController.class);
-//		player.attachComponent(Health.class);
-//		player.attachComponent(Inventory.class);
-//		player.attachComponent(new DropItem(world));
-//		return player;
-//	}
-
 	/**
 	 * This creates a player with supplied ID.
 	 * needed for networking.
