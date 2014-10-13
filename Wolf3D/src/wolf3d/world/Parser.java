@@ -42,6 +42,7 @@ public class Parser {
 
 	private int row, col;
 	private int bottomY = -1;
+	private int topY = 1;
 
 	public Parser(String wallFilePath, String doorFilePath) {
 		this.wallFilePath = wallFilePath;
@@ -98,11 +99,11 @@ public class Parser {
 				float x = col * width + halfWidth;
 				float z = row * height + halfHeight;
 				Entity ceiling = addObject(world, type, "");
-				if(ceiling == null){
-					break;
+				if(ceiling != null){
+					ceiling.getTransform().translate(x, topY, z);
+					ceiling.getTransform().pitch(Mathf.degToRad(-90));
 				}
-				ceiling.getTransform().translate(x, bottomY, z);
-				ceiling.getTransform().pitch(Mathf.degToRad(90));
+
 			}
 		}
 	}

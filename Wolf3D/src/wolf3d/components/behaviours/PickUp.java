@@ -25,6 +25,7 @@ import engine.input.Keyboard;
  */
 public class PickUp extends Behaviour {
 	World world;
+	Vec3 outBounds = new Vec3(-100, 0, -100);
 
 	public PickUp(World world) {
 		this.world = world;
@@ -48,9 +49,12 @@ public class PickUp extends Behaviour {
 		int itemWeight = item.getComponent(Weight.class).getWeight();
 		Strength strength = player.getComponent(Strength.class);
 		if (strength.reduceStrength(itemWeight)) {
-			inventory.addItem(item);
+			inventory.addItem(item.getID());
 			setChanged();
-			return world.destroyEntity(item.getID());
+			//move item to a position that cannot be seen so network and database people are happy
+			item.getTransform().setPosition(outBounds);
+			return true;
+//			return world.destroyEntity(item.getID());
 		}
 		System.out.printf("Not stong enough to pick up %s item, try dropping an item first\n", item.getName());
 		return false;

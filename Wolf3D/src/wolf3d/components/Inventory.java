@@ -15,57 +15,30 @@ import engine.core.Entity;
  *
  */
 public class Inventory extends Component {
-	private List<Entity> items = new ArrayList<Entity>();
+	private List<Integer> items = new ArrayList<Integer>();
 
-//	private int strength = 100;
-
-	public List<Entity> getItems() {
+	public List<Integer> getItems() {
 		return items;
 	}
 
-	public boolean addItem(Entity item) {
+	public boolean addItem(int item) {
 		return items.add(item);
 	}
 
-	public Entity get(int index) {
+	public Integer get(int index) {
 		if (index >= items.size()) {
 			return null;
 		}
 		return items.get(index);
 	}
 
-	public boolean removeEntity(Entity item) {
+	public boolean removeEntity(Integer item) {
 		return items.remove(item);
 	}
 
-	public boolean contains(Entity item) {
+	public boolean contains(Integer item) {
 		return items.contains(item);
 	}
 
-//	public int getStrength() {
-//		return strength;
-//	}
-//
-//	/**
-//	 * Reduces the carryWeight by the given amount
-//	 *
-//	 * @param weight the amount to reduce by
-//	 * @return true if it can be reduced, false if not
-//	 */
-//	public boolean reduceStrength(int weight) {
-//		if ((strength - weight) >= 0) {
-//			strength -= weight;
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	/**
-//	 * Releases the given amount of weight to Strength
-//	 * @param weight the amount to be released
-//	 */
-//	public void releaseWeight(int weight) {
-//		strength += weight;
-//	}
 
 }
