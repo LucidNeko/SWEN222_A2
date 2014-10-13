@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import engine.components.Component;
 import engine.components.Transform;
 import engine.scratch.WireframeMeshRenderer;
@@ -134,6 +137,5 @@ public class World {
 		while(getEntity((id = nextID++)) != null);
 		return id;
 	}
-
 
 }

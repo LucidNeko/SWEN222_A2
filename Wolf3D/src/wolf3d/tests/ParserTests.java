@@ -29,7 +29,7 @@ public class ParserTests {
 
 	@Test
 	public void test_passTextures(){
-		parser.passTextures();
+		parser.parseTextures();
 		parser.parseWallFileToArray();
 		parser.createWalls(world);
 	}
