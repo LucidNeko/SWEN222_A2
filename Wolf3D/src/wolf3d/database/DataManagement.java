@@ -89,18 +89,39 @@ public class DataManagement {
 			 * Transform,Health,Strength,Weight,Inventory
 			 */
 			//Transform
-			line = scan.next();
-			log.trace("Reading: {}", line);
+			while (!line.contains("Transform")) { line = scan.next(); }
 			if (line.contains("Transform")) {
 				line = scan.next();
-				log.trace("Reading: {}", line);
+				log.trace("*Reading Transfrom: {}", line);
 				Transform transform = gson.fromJson(line, Transform.class);
-
+			}
 			// Health
+			while (!line.contains("Health")) { line = scan.next(); }
+			if (line.contains("Health")) {
+				line = scan.next();
+				log.trace("*Reading Health: {}", line);
+				Health health = gson.fromJson(line, Health.class);
+			}
 			// Strength
+			while (!line.contains("Strength")) { line = scan.next(); }
+			if (line.contains("Strength")) {
+				line = scan.next();
+				log.trace("*Reading Strength: {}", line);
+				Strength strength = gson.fromJson(line, Strength.class);
+			}
 			// Weight
+			while (!line.contains("Weight")) { line = scan.next(); }
+			if (line.contains("Weight")) {
+				line = scan.next();
+				log.trace("*Reading Weight: {}", line);
+				Weight weight = gson.fromJson(line, Weight.class);
+			}
 			// Inventory
+			while (!line.contains("Inventory")) { line = scan.next(); }
+			if (line.contains("Inventory")) {
+				line = scan.next();
 
+				log.trace("*Reading Inventory: {}", line);
 			}
 
 		}
@@ -182,13 +203,12 @@ public class DataManagement {
 				//Inventory component
 				if (entity.hasComponent(Inventory.class)) {
 					Inventory inventory = entity.getComponent(Inventory.class);
-					line = "\n\"Inventory\"\n{\n"
-							+ "\"Items\" : \n[\n";
+					line = "\n\"Inventory\"\n{[";
 					for (int item : inventory.getItems()) {
-						line += "\""+item+"\",\n";
+						line += "\""+item+"\",";
 					}
 					line = line.substring(0, line.length()-2);	// remove last comma
-					line += "\n]\n}\n";
+					line += "]}\n";
 					log.trace("Writing Weight: {}", line);
 					writer.write(line);
 				}
