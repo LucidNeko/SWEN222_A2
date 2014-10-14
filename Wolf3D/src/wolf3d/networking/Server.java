@@ -127,23 +127,32 @@ public class Server extends Thread{
 						}
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
-
-					//dis[i].close();
-					try {
-						dis[i].close();
-						connections[i].closeSocket();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					alive[i] = false;
-					pushToAllClients("disconnect");
-					pushToAllClients(-(i+1));
+					e.printStackTrace(); //just spammy for now...
+					//don't close the connection here, because itll throw it while reading
+					//from index i, but possibly wirting to index j,
+					//and j is the one whos closed his client!!
 				}
 			}
 		}
 
+	}
+
+	private void closeConnection(int index){
+		//dis[index].readFully(new byte[dis[index].available()]);
+		try {
+			dis[index].close();
+
+			dis[index] = null;
+			connections[index].closeSocket();
+			connections[index] = null;
+			alive[index] = false;
+			pushToAllClients("disconnect");
+			pushToAllClients(-(index+1));
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -165,21 +174,25 @@ public class Server extends Thread{
 
 		//first give every client their id
 		for(int i = 0; i<capacity; i++){
-			System.out.println("SendTo"+i+": \"ids\"");
-			connections[i].pushToClient("ids");
-			System.out.println("SendTo"+i+": [int]"+-(i+1));
-			connections[i].pushToClient((-(i+1)));
+			try{
+				System.out.println("SendTo"+i+": \"ids\"");
+				connections[i].pushToClient("ids");
+				System.out.println("SendTo"+i+": [int]"+-(i+1));
+				connections[i].pushToClient((-(i+1)));
 
-			//let player know how many other players there are
-			System.out.println("SendTo"+i+": [int]"+(capacity-1));
-			connections[i].pushToClient(capacity-1);
+				//let player know how many other players there are
+				System.out.println("SendTo"+i+": [int]"+(capacity-1));
+				connections[i].pushToClient(capacity-1);
 
-			//then give the other clients ids of other players, we dont care about order.
-			for(int j = 0; j<capacity; j++){
-				if(j!=i){
-					System.out.println("SendTo"+i+": [int]"+(-(j+1)));
-					connections[i].pushToClient(-(j+1));
+				//then give the other clients ids of other players, we dont care about order.
+				for(int j = 0; j<capacity; j++){
+					if(j!=i){
+						System.out.println("SendTo"+i+": [int]"+(-(j+1)));
+						connections[i].pushToClient(-(j+1));
+					}
 				}
+			}catch (IOException e){
+				e.printStackTrace();
 			}
 		}
 	}
@@ -192,7 +205,11 @@ public class Server extends Thread{
 		for(int i = 0; i<capacity; i++){
 			if(alive[i]){
 				if(connections[i] != null){
-					connections[i].pushToClient(string);
+					try {
+						connections[i].pushToClient(string);
+					} catch (IOException e) {
+						closeConnection(i);
+					}
 				}
 			}
 		}
@@ -206,7 +223,11 @@ public class Server extends Thread{
 		for(int j = 0; j<capacity; j++){
 			if(alive[j]){
 				if(connections[j] != null){
-					connections[j].pushToClient(i);
+					try {
+						connections[j].pushToClient(i);
+					} catch (IOException e) {
+						closeConnection(j);
+					}
 				}
 			}
 		}
@@ -219,8 +240,13 @@ public class Server extends Thread{
 	public void pushToAllClients(float f) {
 		for(int i = 0; i<capacity; i++){
 			if(alive[i]){
+				System.out.println(i);
 				if(connections[i] != null){
-					connections[i].pushToClient(f);
+					try {
+						connections[i].pushToClient(f);
+					} catch (IOException e) {
+						closeConnection(i);
+					}
 				}
 			}
 		}

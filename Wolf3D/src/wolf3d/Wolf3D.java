@@ -47,6 +47,8 @@ public class Wolf3D extends JFrame {
 
 	public static String ip;
 	public static int port;
+	
+	private GameDemo game;
 
 	public Wolf3D(){
 		super(DEFAULT_TITLE);
@@ -115,7 +117,7 @@ public class Wolf3D extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				//the game. This is a thread. You need to start it.
-				GameDemo game = new GameDemo(Wolf3D.ip, Wolf3D.port);
+				game = new GameDemo(Wolf3D.ip, Wolf3D.port);
 				game.setView(worldView); // give it the view so it can call it's display method appropriately.
 			}
 		});
@@ -128,6 +130,7 @@ public class Wolf3D extends JFrame {
 				"Are you sure you want to Exit?",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			System.exit(0);
+			game.shutdownClient();
 		}
 	}
 

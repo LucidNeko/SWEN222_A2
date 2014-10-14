@@ -238,4 +238,9 @@ public class GameDemo extends GameLoop {
 		other.getTransform().translate(1, 0, 1);
 	}
 
+
+	public void shutdownClient() {
+		client.shutdownClient();
+	}
+
 }

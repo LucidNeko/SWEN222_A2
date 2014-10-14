@@ -60,36 +60,24 @@ public class ServerConnection extends Thread{
 	 * Send a string to the client.
 	 * @param string UTF string.
 	 */
-	public void pushToClient(String string) {
-		try {
-			out.writeUTF(string);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public void pushToClient(String string) throws IOException{
+		out.writeUTF(string);
 	}
 
 	/**
 	 * Send an int to the client.
 	 * @param i
 	 */
-	public void pushToClient(int i) {
-		try {
-			out.writeInt(i);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public void pushToClient(int i) throws IOException{
+		out.writeInt(i);
 	}
 
 	/**
 	 * Send a float to the client.
 	 * @param f
 	 */
-	public void pushToClient(float f) {
-		try {
-			out.writeFloat(f);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public void pushToClient(float f) throws IOException{
+		out.writeFloat(f);
 	}
 
 	/**
@@ -101,7 +89,7 @@ public class ServerConnection extends Thread{
 	}
 
 	public void closeSocket() throws IOException {
-			soc.close();
+		soc.close();
 	}
 
 }

@@ -125,6 +125,16 @@ public class Client extends Thread{
 			}
 		}
 	}
+	
+	public void shutdownClient(){
+		try {
+			sock.close();
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Sends a Transform to the server via floats, much more efficient than using JSON.
