@@ -10,7 +10,7 @@ import engine.input.Keyboard;
 
 /**
  * This class is responsible for detecting wall collision for when
- * the WASD keys are used, and then stops the player from moving if 
+ * the WASD keys are used, and then stops the player from moving if
  * a collision is detected
  * @author Sameer Magan 300223776
  *
@@ -61,6 +61,13 @@ public class WASDCollisions extends Behaviour {
 		clearChanged();
 	}
 
+	/**
+	 *
+	 * @param dy
+	 * @param dx
+	 * @param delta
+	 * @return dy is the sideways movement, dx is the forward movement, delta is the distance
+	 */
 	private void movePlayer(float dy, float dx, float delta) {
 		Transform t = getOwner().getComponent(Transform.class);
 
