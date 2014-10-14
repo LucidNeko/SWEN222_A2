@@ -12,7 +12,7 @@ public class ParserTests {
 
 	@Before
 	public void init(){
-		parser = new Parser("Map.txt", "Doors.txt");
+		parser = new Parser("map00/");
 		world = new World();
 	}
 
