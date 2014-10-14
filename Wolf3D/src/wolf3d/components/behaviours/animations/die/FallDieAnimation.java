@@ -6,8 +6,8 @@ import wolf3d.components.behaviours.WalkForward;
 import engine.common.Mathf;
 import engine.components.Behaviour;
 import engine.components.Transform;
-import engine.core.ServiceLocator;
 import engine.core.World;
+import engine.util.ServiceLocator;
 
 /**
  * This animates its owner by rotating down and then falling through the ground

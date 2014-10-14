@@ -13,9 +13,9 @@ import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Component;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Keyboard;
+import engine.util.ServiceLocator;
 
 /**
  * This Class is a Component to allow players to pickup and drop items in the

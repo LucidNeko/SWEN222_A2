@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import engine.components.Component;
 import engine.components.Transform;
+import engine.util.Service;
 
 /**
  * The world is a factory for Entities and contains all of the Entities.

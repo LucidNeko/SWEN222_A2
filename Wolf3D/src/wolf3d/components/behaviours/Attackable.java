@@ -9,9 +9,9 @@ import com.jogamp.newt.event.KeyEvent;
 
 import engine.components.Behaviour;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Keyboard;
+import engine.util.ServiceLocator;
 
 /**
  * This class is responsible for allowing the owner of this Component to be
