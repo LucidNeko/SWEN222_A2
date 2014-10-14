@@ -51,7 +51,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 		double topExit = ((5.0/8.0)*height);
 		double bottomExit = ((2.0/3.0)*height);
 
-		double topBound = ((1.0/5.0)*height);
+		double topBound = ((1.0/4.0)*height);
 		double botBound = ((3.0/4.0)*height);
 
 		double leftBound = ((2.0/5.0)*width);
