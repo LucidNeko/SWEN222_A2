@@ -12,6 +12,8 @@ import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.database.DataManagement;
 import wolf3d.world.Parser;
 
+import engine.components.Transform;
+
 import com.google.gson.Gson;
 
 import engine.components.Component;
@@ -39,6 +41,8 @@ public class DataManagementTests {
 		player = EntityFactory.createPlayer("Player",-1);
 		parser.createEntities(player);
 
+		player.getComponent(Transform.class).setPosition(10, 0, 20);;
+
 		item1 = world.createEntity("motorbike");
 		item1.attachComponent(ProximitySensor.class).setTarget(player);;
 		item1.attachComponent(new PickUp());
@@ -59,7 +63,6 @@ public class DataManagementTests {
 
 		this.world = world;
 	}
-
 
 	@Test
 	// Test component converts to Json without crashing
@@ -85,9 +88,15 @@ public class DataManagementTests {
 	}
 
 	@Test
-	// Test a world loads without crashing
-	public void testLoadWorld() {
-		DataManagement.loadWorld("testLoadWorldCrash.txt");
+	// Test a world loads player with correct position
+	public void testLoadWorldPlayerPos() {
+		DataManagement.saveWorld("testLoadWorldCrash.txt", world);
+		World world = DataManagement.loadWorld("testLoadWorldCrash.txt");
+		Entity player = world.getEntity("Player").get(0);
+
+		assertTrue(player.getComponent(Transform.class).getPosition().getX() == 10
+				&& player.getComponent(Transform.class).getPosition().getY() == 0
+				&& player.getComponent(Transform.class).getPosition().getZ() == 30);
 	}
 
 }

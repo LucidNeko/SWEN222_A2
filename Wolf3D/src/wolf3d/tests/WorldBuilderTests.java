@@ -1,5 +1,7 @@
 package wolf3d.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import wolf3d.components.Health;
@@ -20,10 +22,10 @@ public class WorldBuilderTests {
 
 	@Test
 	//Test player creates without crashing.
-	public void testCreatePlayer() {
+	public void testCreatePlayerCrash() {
 		builder = new WorldBuilder("map00/");
 		//Create required parameters to call createPlayer
-		int uniqueID = (-2);
+		int uniqueId = (-2);
 		String name = "Player";
 		Transform transform = new Transform();
 		Health health = new Health();
@@ -31,15 +33,15 @@ public class WorldBuilderTests {
 		Weight weight = new Weight();
 		Inventory inventory = new Inventory();
 		//Create player
-		builder.createPlayer(uniqueID, name, transform, health, strength, weight, inventory);
+		builder.createPlayer(uniqueId, name, transform, health, strength, weight, inventory);
 	}
 
 	@Test
 	//Test camera creates without crashing, needs a player to be created first.
-	public void testCreateCamera() {
+	public void testCreateCameraCrash() {
 		builder = new WorldBuilder("map00/");
 		//Create required parameters to call createPlayer
-		int uniqueID = (-3);
+		int uniqueId = (-3);
 		String name = "Player";
 		Transform transform = new Transform();
 		Health health = new Health();
@@ -47,16 +49,16 @@ public class WorldBuilderTests {
 		Weight weight = new Weight();
 		Inventory inventory = new Inventory();
 		//Create player then camera
-		builder.createPlayer(uniqueID, name, transform, health, strength, weight, inventory);
+		builder.createPlayer(uniqueId, name, transform, health, strength, weight, inventory);
 		builder.createCamera();
 	}
 
 	@Test
 	//Test default objects are created without crashing, needs a player to be created first.
-	public void testCreateDefaultObjects() {
+	public void testCreateDefaultObjectsCrash() {
 		builder = new WorldBuilder("map00/");
 		//Create required parameters to call createPlayer
-		int uniqueID = (-4);
+		int uniqueId = (-4);
 		String name = "Player";
 		Transform transform = new Transform();
 		Health health = new Health();
@@ -64,7 +66,25 @@ public class WorldBuilderTests {
 		Weight weight = new Weight();
 		Inventory inventory = new Inventory();
 		//Create player then default objects
-		builder.createPlayer(uniqueID, name, transform, health, strength, weight, inventory);
+		builder.createPlayer(uniqueId, name, transform, health, strength, weight, inventory);
 		builder.createDefaultObjects();
+	}
+
+	@Test
+	//Test player is actually created.
+	public void testCreatePlayerExists() {
+		builder = new WorldBuilder("map00/");
+		//Create required parameters to call createPlayer
+		int uniqueId = (-5);
+		String name = "Player";
+		Transform transform = new Transform();
+		Health health = new Health();
+		Strength strength = new Strength();
+		Weight weight = new Weight();
+		Inventory inventory = new Inventory();
+		//Create player
+		builder.createPlayer(uniqueId, name, transform, health, strength, weight, inventory);
+		//Does player exist by that ID?
+		assertTrue(builder.getWorld().getEntity(uniqueId)!=null);
 	}
 }
