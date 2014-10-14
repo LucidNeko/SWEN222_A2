@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 
 import wolf3d.GameDemo;
 import engine.common.Vec3;
+import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
@@ -74,6 +75,7 @@ public class Client extends Thread{
 							}
 						}
 						break;
+						
 					case "ids":
 						int playerID = in.readInt();
 						gl.createPlayer(playerID);
@@ -84,6 +86,20 @@ public class Client extends Thread{
 						}
 						break;
 
+						/*
+						 * In the case of a disconnect,
+						 * make the disconnected player invisible
+						 * but we keep him "alive" so when a save is made
+						 * that player will be saved, and could rejoin a new
+						 * loaded game.
+						 */
+					case "disconnect":
+						System.out.println("player disce");
+						int who = in.readInt();
+						Entity e = world.getEntity(who);
+						e.detachComponent(e.getComponent(MeshRenderer.class));
+						break;
+						
 					case "begin":
 						gl.createEntities();
 						gl.start();

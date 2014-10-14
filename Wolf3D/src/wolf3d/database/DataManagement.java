@@ -34,10 +34,11 @@ import engine.core.TempEntityDef;
 import engine.core.World;
 
 /**
- * Saves the Wolf3D world to file, can also
- * load the world from a file.
- * Uses the Gson library for parsing between object
- * and Json.
+ * Used for saving the Wolf3D world to file using a JSON data structure.
+ * Saves the map name (directory), and players with their components that have
+ * unique characteristics. It also sets cameras and the default objects that exist
+ * in a Wolf3D world.
+ * Uses the Gson library for parsing between object and Json.
  * Gson:  http://code.google.com/p/google-gson/
  *
  * @author Joshua van Vliet
@@ -141,14 +142,12 @@ public class DataManagement {
 	 * @param world
 	 */
 	public static void saveWorld(String fname, World world) {
-		//Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Gson gson = new Gson();
 		Collection<Entity> entities = world.getEntity("Player");
-
 		File saveFile = new File(getSaveFpath()+fname);
 		String line;
-
 		BufferedWriter writer = null;
+
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(saveFile)));
@@ -162,7 +161,7 @@ public class DataManagement {
 			//Write entities
 			line = "\"entities\"";
 			log.trace("Writing: {}", line);
-			writer.write(line+"{\n");		//open { entities
+			writer.write(line+"{\n");		//open entity records
 
 			for (Entity entity : entities) {
 
@@ -207,7 +206,8 @@ public class DataManagement {
 				}
 				writer.write("\n");
 			}
-			writer.write("}\n");		//close }  entities
+			writer.write("}\n");		//close entity records
+
 		} catch (IOException ex) {
 			// report
 			log.error("Writing world to file failed: {}", ex.getMessage());
@@ -217,9 +217,10 @@ public class DataManagement {
 
 	}
 
-
-	// Returns the file path within the game directory to save the world file to.
-	// If unable to get directory, and no exception thrown, returns game root path.
+	/*
+	 * Returns the file path within the game directory to save the world file to.
+	 * If unable to get directory, and no exception thrown, returns game root path.
+	 */
 	private static String getSaveFpath() {
 		String path = "";
 		File currentDirFile = new File(".");
@@ -229,10 +230,12 @@ public class DataManagement {
 		return path;
 	}
 
+	/*
+	 * Skips the specified number of tokens for a given scanner.
+	 */
 	private static void skip(Scanner scan, int count) {
 		for (int i=0; i<count && scan.hasNext(); i++) {
 			scan.next();
-			//log.trace("Reading, skipping: {}", line);
 		}
 	}
 }

@@ -3,10 +3,7 @@ package wolf3d.tests;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.Collection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import wolf3d.EntityFactory;
@@ -18,7 +15,6 @@ import wolf3d.world.Parser;
 
 import com.google.gson.Gson;
 
-import engine.components.Transform;
 import engine.components.Component;
 import engine.core.Entity;
 import engine.core.World;
@@ -31,10 +27,6 @@ import engine.util.ServiceLocator;
  *
  */
 public class DatabaseTests {
-	private static final Logger log = LogManager.getLogger();
-
-	private Entity a;
-	private Entity b;
 	private Component component;
 
 
@@ -43,7 +35,7 @@ public class DatabaseTests {
 	public void testCompToJson() {
 		component = new Component();
 		Gson gson = new Gson();
-		String json = gson.toJson(component);
+		gson.toJson(component);
 	}
 
 	@Test
@@ -58,32 +50,21 @@ public class DatabaseTests {
 	@Test
 	// Test a world saves without crashing.
 	public void testSaveWorldCrash() {
-		World world = createDummyWorldWithPlayer();
+		World world = createDummyWorld();
 		DataManagement.saveWorld("testSaveWorldCrash.txt", world);
 	}
 
 	@Test
 	// Test a world loads correctly, only checks entities and their Transform component
 	public void testLoadWorld() {
-		try {
-			World world = DataManagement.loadWorld("testLoadWorld.txt");
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+		DataManagement.loadWorld("testLoadWorld.txt");
 	}
 
 	//============================================================================
 	//========== Helper methods ==================================================
 	//============================================================================
 
-	private World createDummyWorld() {
-		World world = new World();
-		a = world.createEntity("Player");
-		//b = world.createEntity("Other");
-		return world;
-	}
-
-	private World createDummyWorldWithPlayer(){
+	private World createDummyWorld(){
 		Entity item1, item2, item3, player;
 		//create world with player holding three items
 		World world = ServiceLocator.getService(World.class);

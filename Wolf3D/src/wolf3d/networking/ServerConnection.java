@@ -48,6 +48,7 @@ public class ServerConnection extends Thread{
 		finally{
 			try {
 				soc.close();
+				return;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -97,6 +98,10 @@ public class ServerConnection extends Thread{
 	 */
 	public DataInputStream getInputStream() {
 		return in;
+	}
+
+	public void closeSocket() throws IOException {
+			soc.close();
 	}
 
 }
