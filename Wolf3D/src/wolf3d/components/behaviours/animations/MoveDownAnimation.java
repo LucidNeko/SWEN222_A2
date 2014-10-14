@@ -24,7 +24,7 @@ public class MoveDownAnimation extends Behaviour {
 
 	private Class<? extends Behaviour> resetBehaviour;
 
-	private int row, col, door;
+	private int row, col, newRow, newCol, door, oppositeDoor;
 
 	private Translate translate;
 
@@ -44,15 +44,25 @@ public class MoveDownAnimation extends Behaviour {
 		if(!getOwner().contains(translate)){
 			Entity player = getOwner().getComponent(ProximitySensor.class).getTarget();
 			player.getComponent(WASDCollisions.class).setDoor(row, col, door);
+			player.getComponent(WASDCollisions.class).setDoor(newRow, newCol, oppositeDoor);
 			getOwner().attachComponent(DoorBehaviour.class);
 			getOwner().detachComponent(this);
 		}
 	}
 
-	public void setFields(int row, int col, int door, Class<? extends Behaviour> resetBehaviour){
+	public void setDoor(int row, int col, int door){
 		this.row = row;
 		this.col = col;
 		this.door = door;
+	}
+
+	public void setOppDoor(int newRow, int newCol, int newDoor){
+		this.newRow = newRow;
+		this.newCol = newCol;
+		this.oppositeDoor = newDoor;
+	}
+
+	public void setResetBehaviour(Class<? extends Behaviour> resetBehaviour){
 		this.resetBehaviour = resetBehaviour;
 	}
 

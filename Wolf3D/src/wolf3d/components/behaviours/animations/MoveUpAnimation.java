@@ -26,9 +26,12 @@ public class MoveUpAnimation extends Behaviour {
 
 	private Translate translate;
 
-	private int row, col, door;
+	private int row, newRow, col, newCol, door;
 
-	//default behaviour if nothing gets set
+	// sets the default to be true
+	private boolean moveDown = true;
+
+	// default behaviour if nothing gets set
 	private Class<? extends Behaviour> resetBehaviour = DoorBehaviour.class;
 
 	@Override
@@ -40,11 +43,11 @@ public class MoveUpAnimation extends Behaviour {
 			startPos = t.getPosition();
 			endPos = startPos.add(0, distance, 0);
 			translate = new Translate(startPos, endPos, speed);
-			//starts translation/animation
+			// starts translation/animation
 			getOwner().attachComponent(translate);
 		}
 
-		//when translation is finished
+		// when translation is finished
 		if (!getOwner().contains(translate)) {
 			// remove collision for this door
 			Entity player = getOwner().getComponent(ProximitySensor.class)
@@ -52,22 +55,56 @@ public class MoveUpAnimation extends Behaviour {
 			Vec3 pos = player.getTransform().getPosition();
 			int wallSize = player.getComponent(WASDCollisions.class)
 					.getWallsize();
-			int col = (int) ((pos.getX() / wallSize));
-			int row = (int) ((pos.getZ() / wallSize));
-			int door = player.getComponent(WASDCollisions.class).getDoor(row,
-					col);
+			//get collisions
+			WASDCollisions collisions = player.getComponent(WASDCollisions.class);
+
+			col = (int) ((pos.getX() / wallSize));
+			row = (int) ((pos.getZ() / wallSize));
+			newCol = col;
+			newRow = row;
+			door = collisions.getDoor(row, col);
 			// zero out door at you position
-			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
-			getOwner().attachComponent(MoveDownAnimation.class).setFields(row, col, door, resetBehaviour);
+			collisions.zeroDoor(row, col);
+			//increment to opposite cell
+			oppCell();
+			int oppositeDoor = collisions.getDoor(newRow, newCol);
+			collisions.zeroDoor(newRow, newCol);
+			if (moveDown) {
+				MoveDownAnimation mov = new MoveDownAnimation();
+				mov.setDoor(row, col, door);
+				mov.setOppDoor(newRow, newCol, oppositeDoor);
+				mov.setResetBehaviour(resetBehaviour);
+				getOwner().attachComponent(mov);
+			}
 			getOwner().detachComponent(this);
 			return;
 		}
 
-
 	}
 
-	public void setResetBehaviour(Class<? extends Behaviour> resetBehaviour){
+	private void oppCell(){
+		Vec3 look = getOwner().getTransform().getLook();
+
+		if(look.x() == 1){
+			newCol = col - 1;
+		}
+		if(look.x() == -1){
+			newCol = col + 1;
+		}
+		if(look.z() == 1){
+			newRow = row + 1;
+		}
+		if(look.z() == -1){
+			newRow = row - 1;
+		}
+	}
+
+	public void setResetBehaviour(Class<? extends Behaviour> resetBehaviour) {
 		this.resetBehaviour = resetBehaviour;
+	}
+
+	public void setMoveDown(boolean moveDown) {
+		this.moveDown = moveDown;
 	}
 
 	public void setCollision(int row, int col, int door) {
