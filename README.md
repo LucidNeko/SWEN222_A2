@@ -1,5 +1,8 @@
 Wolf3D
 ==========
+This is the CRC Cards:
+https://drive.google.com/file/d/0B2CawmmmcfjScTc3aTQ2LWo0c1k/view?usp=sharing
+
 This is a start for the class diagram:
 https://drive.google.com/file/d/0B2CawmmmcfjSSF8tNzVQQWVieWM/view?usp=sharing
 
