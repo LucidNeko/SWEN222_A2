@@ -69,6 +69,7 @@ public class WorldBuilder {
 			Health health, Strength strength, Weight weight, Inventory inventory) {
 
 		Entity player = EntityFactory.createPlayer(name, uniqueID);
+//		Entity player = world.getEntity("Player").get(0);
 
 		parser.createEntities(player);
 
@@ -139,11 +140,11 @@ public class WorldBuilder {
 		return this.world;
 	}
 
-	/**
-	 * Set camera once all players are loaded in
-	 */
-	public void setCamera(){
-		Entity player = world.getEntity("Player").get(0);
-		camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
-	}
+//	/**
+//	 * Set camera once all players are loaded in
+//	 */
+//	public void setCamera(){
+//		Entity player = world.getEntity("Player").get(0);
+//		camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
+//	}
 }

@@ -36,11 +36,6 @@ import engine.texturing.Texture;
 import engine.util.Resources;
 import engine.util.ServiceLocator;
 
-/**
- *
- * @author Hamish
- *
- */
 public class EntityFactory {
 	private static final Logger log = LogManager.getLogger();
 
@@ -61,13 +56,13 @@ public class EntityFactory {
 		//Create player
 //		Entity player = world.createEntity("Player", id);
 		Entity player = world.createEntity(id, name);
-		player.attachComponent(Camera.class);
+//		player.attachComponent(Camera.class);
 //		player.attachComponent(PyramidRenderer.class);
 		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
 		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
 //		player.attachComponent(parser.getWallCollisionComponent());
 //		player.attachComponent(WASDWalking.class);
-		player.attachComponent(CameraScrollBackController.class);
+//		player.attachComponent(CameraScrollBackController.class);
 		player.attachComponent(Health.class);
 		player.attachComponent(Strength.class);
 		player.attachComponent(Weight.class);

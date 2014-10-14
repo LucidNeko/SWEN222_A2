@@ -1,9 +1,6 @@
 package wolf3d.components.behaviours;
 
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
@@ -11,10 +8,10 @@ import wolf3d.components.Weight;
 import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Vec3;
 import engine.components.Behaviour;
-import engine.components.Component;
 import engine.core.Entity;
 import engine.core.World;
 import engine.input.Keyboard;
+import engine.util.Messenger;
 import engine.util.ServiceLocator;
 
 /**
@@ -35,11 +32,12 @@ public class PickUp extends Behaviour {
 	 * @return true if entity is picked up false if not
 	 */
 	public boolean pickUpItem() {
+		Messenger messenger = ServiceLocator.getService(Messenger.class);
 		Entity item = getOwner();
 		Entity player = item.getComponent(ProximitySensor.class).getTarget();
 		Inventory inventory = player.getComponent(Inventory.class);
 		if(item.getComponent(Weight.class) == null){
-			System.out.println("Item " + item.getName() +" needs a Weight component to be picked up!");
+			log.error("Item {} needs a Weight component to be picked up!", item.getName());
 			return false;
 		}
 		//gets weight and checks if weight does not exceed the players carry amt.
@@ -53,7 +51,8 @@ public class PickUp extends Behaviour {
 			return true;
 //			return world.destroyEntity(item.getID());
 		}
-		System.out.printf("Not stong enough to pick up %s item, try dropping an item first\n", item.getName());
+
+		messenger.sendMessage("Not stong enough to pick up {} item, try dropping an item first\n", item.getName());
 		return false;
 	}
 
