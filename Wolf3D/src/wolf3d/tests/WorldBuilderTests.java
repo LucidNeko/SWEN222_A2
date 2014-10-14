@@ -1,23 +1,13 @@
 package wolf3d.tests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import wolf3d.EntityFactory;
 import wolf3d.components.Health;
 import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
 import wolf3d.components.Weight;
-import wolf3d.components.behaviours.PickUp;
-import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.database.WorldBuilder;
-import wolf3d.world.Parser;
 import engine.components.Transform;
-import engine.core.Entity;
-import engine.core.World;
-import engine.util.ServiceLocator;
 
 /**
  * Test suite for the wolf3d.database WorldBuilder class.
