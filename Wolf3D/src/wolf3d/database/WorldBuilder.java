@@ -2,9 +2,6 @@ package wolf3d.database;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import wolf3d.EntityFactory;
 import wolf3d.WorldView;
 import wolf3d.components.Health;
@@ -34,14 +31,13 @@ import engine.util.ServiceLocator;
 /**
  * WorldBuilder is used as a factory to create the world and the world's entities.
  * Including players, the map (walls, floor, etc), and objects (such as those a player can pick up).
+ *
  * @author Joshua van Vliet
  *
  */
 public class WorldBuilder {
-	private static final Logger log = LogManager.getLogger();
 	private World world;
 	private Parser parser;
-	private Camera camera;
 	private Entity player;
 
 	/**
@@ -54,25 +50,31 @@ public class WorldBuilder {
 	public WorldBuilder(String mapDirName) {
 		parser = new Parser(mapDirName);
 		this.world = ServiceLocator.getService(World.class);
-		this.camera = new Camera();
 	}
 
 	public void createCamera() {
 		if(player == null) { throw new Error("Player is null"); }
 		Camera camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
-		this.camera = camera;
 		ServiceLocator.getService(WorldView.class).setCamera(camera);;
 
 	}
 
+	/**
+	 * Creates a player with the given paramaters (uniqueID, name, and unique components)
+	 * @param uniqueID
+	 * @param name
+	 * @param transform
+	 * @param health
+	 * @param strength
+	 * @param weight
+	 * @param inventory
+	 * @return
+	 */
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
 			Health health, Strength strength, Weight weight, Inventory inventory) {
 
 		Entity player = EntityFactory.createPlayer(name, uniqueID);
-//		Entity player = world.getEntity("Player").get(0);
-
 		parser.createEntities(player);
-
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(DropItem.class);
 		parser.createDoors(player);
@@ -103,11 +105,14 @@ public class WorldBuilder {
 		return player;
 	}
 
-
+	/**
+	 * Creates the default objects in the Wolf3D world:
+	 * The skybox, as well as a motorbike and a teddy.
+	 */
 	public void createDefaultObjects() {
 		if(player == null) { throw new Error("Player is null"); }
 
-		Entity skybox = EntityFactory.createSkybox(player);
+		EntityFactory.createSkybox(player);		// Creates a skybox on the world
 
 		//motorbike
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
@@ -135,16 +140,7 @@ public class WorldBuilder {
 		teddy.attachComponent(Attackable.class);
 	}
 
-
 	public World getWorld(){
 		return this.world;
 	}
-
-//	/**
-//	 * Set camera once all players are loaded in
-//	 */
-//	public void setCamera(){
-//		Entity player = world.getEntity("Player").get(0);
-//		camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
-//	}
 }
