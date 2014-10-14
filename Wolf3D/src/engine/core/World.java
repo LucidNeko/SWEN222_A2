@@ -20,7 +20,7 @@ import engine.scratch.WireframeMeshRenderer;
  * @author Hamish
  *
  */
-public class World {
+public class World implements Service{
 
 	/** All the Entities in the world */
 	private Map<Integer, Entity> entities = Collections.synchronizedMap(new HashMap<Integer, Entity>());
@@ -136,6 +136,17 @@ public class World {
 //		while(getEntity((id = ((int)(Math.random()*Integer.MAX_VALUE)))) != null);
 		while(getEntity((id = nextID++)) != null);
 		return id;
+	}
+
+	@Override
+	public String getName() {
+		return "World";
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
