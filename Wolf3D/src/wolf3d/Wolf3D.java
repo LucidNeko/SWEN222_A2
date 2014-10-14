@@ -62,10 +62,10 @@ public class Wolf3D extends JFrame {
 
 		//Build OpenGL panel.
 
-		final MiniMap minimap = new MiniMap(200, 200);
-		JPanel sidePanel = new JPanel();
-		sidePanel.add(minimap);
-		this.getContentPane().add(sidePanel, BorderLayout.EAST);
+//		final MiniMap minimap = new MiniMap(200, 200);
+//		JPanel sidePanel = new JPanel();
+//		sidePanel.add(minimap);
+//		this.getContentPane().add(sidePanel, BorderLayout.EAST);
 
 		//Register input devices. If GLCanvas have to register to canvas.
 		worldView.setFocusable(true);
