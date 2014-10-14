@@ -7,6 +7,12 @@ import engine.components.Behaviour;
 import engine.core.World;
 import engine.input.Keyboard;
 
+/**
+ * This class is responsible for specifying the behaviours that must
+ * be met before the special door will open 
+ * @author Sameer Magan 300223776
+ *
+ */
 public class SpecialDoorBehaviour extends Behaviour {
 	//this is if world is not static
 	private World world;

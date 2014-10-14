@@ -38,17 +38,11 @@ public class MoveUpAnimation extends Behaviour {
 			startPos = t.getPosition();
 			endPos = startPos.add(0, distance, 0);
 			translate = new Translate(startPos, endPos, speed);
+			//starts translation/animation
 			getOwner().attachComponent(translate);
 		}
-		
-//		if(halfwaydown){
-//			if (!getOwner().contains(translate)) {
-//				getOwner().attachComponent(new MoveDownAnimation(row, col, door));
-//				getOwner().detachComponent(this);
-//				return;
-//			}
-//		}
 
+		//when translation is finished
 		if (!getOwner().contains(translate)) {
 			// remove collision for this door
 			Entity player = getOwner().getComponent(ProximitySensor.class)
@@ -62,15 +56,9 @@ public class MoveUpAnimation extends Behaviour {
 					col);
 			// zero out door at you position
 			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
-//			startPos = endPos;
-//			endPos = startPos.add(0, distance/2, 0);
-//			translate = new Translate(startPos, endPos, speed);
-//			getOwner().attachComponent(translate);
 			getOwner().attachComponent(new MoveDownAnimation(row, col, door));
 			getOwner().detachComponent(this);
 			return;
-//			halfwaydown = true;
-
 		}
 		
 

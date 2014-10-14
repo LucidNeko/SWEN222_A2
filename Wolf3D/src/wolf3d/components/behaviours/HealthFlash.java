@@ -4,7 +4,12 @@ import wolf3d.components.Health;
 import engine.common.Color;
 import engine.components.Behaviour;
 import engine.components.MeshRenderer;
-
+/**
+ * This class is responsible for flashing a color at different speeds depending
+ * on the owner of this components health
+ * @author Sameer Magan 300223776
+ *
+ */
 public class HealthFlash extends Behaviour {
 	float speed = 1;// 0.01f;
 	float time;

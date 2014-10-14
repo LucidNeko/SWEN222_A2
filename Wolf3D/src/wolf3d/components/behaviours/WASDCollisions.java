@@ -8,6 +8,13 @@ import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.input.Keyboard;
 
+/**
+ * This class is responsible for detecting wall collision for when
+ * the WASD keys are used, and then stops the player from moving if 
+ * a collision is detected
+ * @author Sameer Magan 300223776
+ *
+ */
 public class WASDCollisions extends Behaviour {
 
 	/** Units per Second that this controller defaults to */
@@ -138,6 +145,11 @@ public class WASDCollisions extends Behaviour {
 		return doors[row][col].getWalls();
 	}
 
+	/**
+	 * Sets the door at the given row and column to 0
+	 * @param row the row that is referenced
+	 * @param col the column that is referenced
+	 */
 	public void zeroDoor(int row, int col) {
 		doors[row][col].setWalls(0);
 	}

@@ -20,7 +20,7 @@ import engine.input.Keyboard;
  * This Class is a Component to allow players to pickup and drop items in the
  * world
  *
- * @author Sameer Magan
+ * @author Sameer Magan 300223776
  *
  */
 public class PickUp extends Behaviour {

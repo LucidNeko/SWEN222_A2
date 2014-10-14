@@ -8,6 +8,11 @@ import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.World;
 
+/**
+ * This animates its owner by rotating down and then falling through the ground
+ * @author Sameer Magan 300223776
+ *
+ */
 public class FallDieAnimation extends Behaviour {
 	private float speed = 0.0001f; // 1.0 units per second.
 	private float rotationAmount = 90;

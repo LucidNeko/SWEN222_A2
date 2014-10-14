@@ -6,6 +6,11 @@ import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.World;
 
+/**
+ * This animates the owner by spinning and then flying up after a set amount of time
+ * @author Sameer Magan 300223776
+ *
+ */
 public class RotateFlyDieAnimation extends Behaviour {
 	private float speed = 0.1f; // 1.0 units per second.
 
@@ -21,9 +26,9 @@ public class RotateFlyDieAnimation extends Behaviour {
 		requires(Transform.class);
 
 		time += delta;
-		int health = getOwner().getComponent(Health.class).getHealth();
-		AILookAtController lookAt;
 
+		AILookAtController lookAt;
+		
 		if((lookAt = getOwner().getComponent(AILookAtController.class)) != null){
 			getOwner().detachComponent(lookAt);
 		}

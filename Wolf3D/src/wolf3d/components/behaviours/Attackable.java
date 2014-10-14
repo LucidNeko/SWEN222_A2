@@ -15,7 +15,7 @@ import engine.input.Keyboard;
 /**
  * This class is responsible for allowing the owner of this Component to be
  * attacked when they are in a certain proximity of a target
- * @author Sameer Magan
+ * @author Sameer Magan 300223776
  *
  */
 public class Attackable extends Behaviour{

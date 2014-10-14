@@ -9,6 +9,12 @@ import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.Entity;
 
+/**
+ * This class is responsible for animating the owner of this component to
+ * translate down by 2 units
+ * @author Sameer Magan 300223776
+ *
+ */
 public class MoveDownAnimation extends Behaviour {
 	private float speed = 1f; //0.1 units per second.
 	private float distance = 2; //2 units.
