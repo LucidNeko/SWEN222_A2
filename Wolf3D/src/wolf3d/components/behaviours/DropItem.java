@@ -9,10 +9,10 @@ import com.jogamp.newt.event.KeyEvent;
 import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.TempEntityDef;
 import engine.core.World;
 import engine.input.Keyboard;
+import engine.util.ServiceLocator;
 
 /**
  * This class is responsible for dropping items in the attached players

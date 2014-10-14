@@ -28,13 +28,13 @@ import engine.components.MeshRenderer;
 import engine.components.GL2Renderer;
 import engine.components.Transform;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Mouse;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
 import engine.texturing.Texture;
 import engine.util.Resources;
+import engine.util.ServiceLocator;
 
 /**
  *

@@ -4,8 +4,8 @@ import wolf3d.components.Health;
 import wolf3d.components.behaviours.AILookAtController;
 import engine.components.Behaviour;
 import engine.components.Transform;
-import engine.core.ServiceLocator;
 import engine.core.World;
+import engine.util.ServiceLocator;
 
 /**
  * This animates the owner by spinning and then flying up after a set amount of time

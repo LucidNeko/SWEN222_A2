@@ -16,12 +16,12 @@ import engine.components.GL2Renderer;
 import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.display.GameCanvas;
 import engine.display.View;
 import engine.texturing.Material;
 import engine.texturing.Texture;
+import engine.util.ServiceLocator;
 
 /**
  * The WorldView is a View of a World. Renders all the Renderer components on every Entity in the world.

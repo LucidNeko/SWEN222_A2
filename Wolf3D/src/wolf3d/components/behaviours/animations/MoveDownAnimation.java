@@ -22,15 +22,11 @@ public class MoveDownAnimation extends Behaviour {
 	private Vec3 startPos = null;
 	private Vec3 endPos = null;
 
+	private Class<? extends Behaviour> resetBehaviour;
+
 	private int row, col, door;
 
 	private Translate translate;
-
-	public MoveDownAnimation(int row, int col, int door){
-		this.row = row;
-		this.col = col;
-		this.door = door;
-	}
 
 	@Override
 	public void update(float delta) {
@@ -51,8 +47,13 @@ public class MoveDownAnimation extends Behaviour {
 			getOwner().attachComponent(DoorBehaviour.class);
 			getOwner().detachComponent(this);
 		}
+	}
 
-
+	public void setFields(int row, int col, int door, Class<? extends Behaviour> resetBehaviour){
+		this.row = row;
+		this.col = col;
+		this.door = door;
+		this.resetBehaviour = resetBehaviour;
 	}
 
 

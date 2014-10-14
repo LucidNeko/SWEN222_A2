@@ -14,12 +14,12 @@ import engine.common.Mathf;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
 import engine.texturing.Texture;
 import engine.util.Resources;
+import engine.util.ServiceLocator;
 
 /**
  * This class takes in the root directory for all files to be created
@@ -475,6 +475,15 @@ public class Parser {
 	 * @return Returns a WASDCollion object with the walls array initialised
 	 */
 	public WASDCollisions getWallCollisionComponent() {
+		//puts all of specialDoors doors into doors array
+		for(int row=0; row < doors.length; row++){
+			for(int col=0; col < doors[row].length; col++){
+				if(specialDoors[row][col].getWalls() != 0){
+					doors[row][col].setWalls(specialDoors[row][col].getWalls());
+				}
+
+			}
+		}
 		return new WASDCollisions(walls, doors);
 	}
 }

@@ -10,8 +10,8 @@ import wolf3d.GameDemo;
 import engine.common.Vec3;
 import engine.components.Transform;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
+import engine.util.ServiceLocator;
 
 /**
  * @author Michael Nelson (300276118)

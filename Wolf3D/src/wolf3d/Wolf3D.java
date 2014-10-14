@@ -13,11 +13,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.networking.Server;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
 import engine.scratch.MiniMap;
+import engine.util.ServiceLocator;
 
 /**
  * The entry point into the system.
