@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -32,7 +33,6 @@ import engine.core.EntityDef;
 import engine.core.TempEntityDef;
 import engine.core.World;
 
-
 /**
  * Saves the Wolf3D world to file, can also
  * load the world from a file.
@@ -52,80 +52,84 @@ public class DataManagement {
 	 * @throws IOException
 	 * @param fname
 	 */
-	public static World loadWorld(String fname) throws IOException {
+	public static World loadWorld(String fname) {
 		String fpath = getSaveFpath()+fname;
 		// check save file exists
 		if (!new File (fpath).isFile()) {
 			log.error("Game file unable to load: file does not exist.");
-			throw new IOException("Game file unable to load: file does not exist.");
 		}
 		log.trace("Reading from: {}", fpath);
 		WorldBuilder builder;
 		Gson gson = new Gson();
 		String line;
-		Scanner scan = new Scanner(new File(fpath));
-
-		// load map
-		skip(scan, 2);
-		line = scan.next();
-		line = line.substring(1,line.length()-2);
-		log.trace("Reading: {}", line);
-		builder = new WorldBuilder(line);
-
-		// create default objects
-		builder.createDefaultObjects();
-
-		// load player entities
-		while(scan.hasNext()) {
-			// read name and uniqueID
-			while (!line.contains("name") && scan.hasNext()) { line = scan.next(); }
-			skip(scan, 1);
-			if (!scan.hasNext()) { break; }
-			String name = scan.next();
-			name = name.substring(1,name.length()-2);
-			log.trace("Reading name: {}", name);
+		Scanner scan;
+		try {
+			scan = new Scanner(new File(fpath));
+			// load map
 			skip(scan, 2);
 			line = scan.next();
 			line = line.substring(1,line.length()-2);
-			int uniqueID = Integer.parseInt(line);
-			log.trace("Reading uniqueID: {}", uniqueID);
+			log.trace("Reading: {}", line);
+			builder = new WorldBuilder(line);
 
-			/* Read components, they will be saved in the order of:
-			 * Transform,Health,Strength,Weight,Inventory
-			 */
-			//Transform
-			while (!line.contains("Transform") && scan.hasNext()) { line = scan.next(); }
-			line = scan.next();
-			log.trace("Reading Transfrom: {}", line);
-			Transform transform = gson.fromJson(line, Transform.class);
-			// Health
-			while (!line.contains("Health") && scan.hasNext()) { line = scan.next(); }
-			line = scan.next();
-			log.trace("Reading Health: {}", line);
-			Health health = gson.fromJson(line, Health.class);
-			// Strength
-			while (!line.contains("Strength") && scan.hasNext()) { line = scan.next(); }
-			line = scan.next();
-			log.trace("Reading Strength: {}", line);
-			Strength strength = gson.fromJson(line, Strength.class);
-			// Weight
-			while (!line.contains("Weight") && scan.hasNext()) { line = scan.next(); }
-			line = scan.next();
-			log.trace("Reading Weight: {}", line);
-			Weight weight = gson.fromJson(line, Weight.class);
-			// Inventory
-			while (!line.contains("Inventory") && scan.hasNext()) { line = scan.next(); }
-			line = scan.next();
-			log.trace("Reading Inventory: {}", line);
-			Inventory inventory = gson.fromJson(line, Inventory.class);
-			builder.createPlayer(uniqueID, name, transform, health, strength, weight, inventory);
+			// load player entities
+			while(scan.hasNext()) {
+				// read name and uniqueID
+				while (!line.contains("name") && scan.hasNext()) { line = scan.next(); }
+				skip(scan, 1);
+				if (!scan.hasNext()) { break; }
+				String name = scan.next();
+				name = name.substring(1,name.length()-2);
+				log.trace("Reading name: {}", name);
+				skip(scan, 2);
+				line = scan.next();
+				line = line.substring(1,line.length()-2);
+				int uniqueID = Integer.parseInt(line);
+				log.trace("Reading uniqueID: {}", uniqueID);
+
+				/* Read components, they will be saved in the order of:
+				 * Transform,Health,Strength,Weight,Inventory
+				 */
+				//Transform
+				while (!line.contains("Transform") && scan.hasNext()) { line = scan.next(); }
+				line = scan.next();
+				log.trace("Reading Transfrom: {}", line);
+				Transform transform = gson.fromJson(line, Transform.class);
+				// Health
+				while (!line.contains("Health") && scan.hasNext()) { line = scan.next(); }
+				line = scan.next();
+				log.trace("Reading Health: {}", line);
+				Health health = gson.fromJson(line, Health.class);
+				// Strength
+				while (!line.contains("Strength") && scan.hasNext()) { line = scan.next(); }
+				line = scan.next();
+				log.trace("Reading Strength: {}", line);
+				Strength strength = gson.fromJson(line, Strength.class);
+				// Weight
+				while (!line.contains("Weight") && scan.hasNext()) { line = scan.next(); }
+				line = scan.next();
+				log.trace("Reading Weight: {}", line);
+				Weight weight = gson.fromJson(line, Weight.class);
+				// Inventory
+				while (!line.contains("Inventory") && scan.hasNext()) { line = scan.next(); }
+				line = scan.next();
+				log.trace("Reading Inventory: {}", line);
+				Inventory inventory = gson.fromJson(line, Inventory.class);
+				log.trace("loadWorld creating player: {} []", uniqueID, name);
+				builder.createPlayer(uniqueID, name, transform, health, strength, weight, inventory);
+			}
+			scan.close();
+
+			// create default objects and camera
+			builder.createDefaultObjects();
+			builder.createCamera();
+
+			return builder.getWorld();
+
+		} catch (FileNotFoundException e) {
+			log.error("Game file unable to load: file does not exist.");
 		}
-		scan.close();
-
-
-
-		return builder.getWorld();
-
+		return null;
 	}
 
 	/**

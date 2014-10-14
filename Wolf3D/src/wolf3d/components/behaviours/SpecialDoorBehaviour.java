@@ -22,7 +22,7 @@ public class SpecialDoorBehaviour extends Behaviour {
 	//this is if world is not static
 	private World world = ServiceLocator.getService(World.class);
 
-	private int minAccessAmt = 3;
+	private int minAccessAmt = 0;
 
 	@Override
 	public void update(float delta) {
@@ -41,7 +41,7 @@ public class SpecialDoorBehaviour extends Behaviour {
 				}
 
 				if(count >= minAccessAmt){
-					getOwner().attachComponent(MoveUpAnimation.class).setResetBehaviour(SpecialDoorBehaviour.class);
+					getOwner().attachComponent(MoveUpAnimation.class).setMoveDown(false);
 					getOwner().detachComponent(this);
 				}
 			}
