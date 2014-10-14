@@ -71,5 +71,4 @@ public class PickUpTests {
 		item3.detachComponent(item3.getComponent(Weight.class));
 		assertFalse(item3.getComponent(PickUp.class).pickUpItem());
 	}
-
 }

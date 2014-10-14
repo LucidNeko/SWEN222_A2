@@ -15,16 +15,19 @@ import java.nio.file.Path;
 
 import org.junit.Test;
 
+import wolf3d.EntityFactory;
+import wolf3d.components.Weight;
+import wolf3d.components.behaviours.PickUp;
+import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Color;
 import engine.common.Mathf;
 import engine.common.Vec3;
+import engine.core.Entity;
 import engine.core.World;
 
-public class WolfTests {
+public class EngineTests {
 
 	private static World world = new World();
-	private static File f;
-
 	//////////////////////////////////
 	/*
 	 * Helper methods
@@ -223,28 +226,28 @@ public class WolfTests {
 	//If there is no wall map, the test fails.
 	@Test
 	public void packageTest1(){
-		f = new File("src/wolf3d/assets/map00/walls.txt");
+		File f = new File("src/wolf3d/assets/map00/walls.txt");
 		assertTrue(f.exists());
 	}
 
 	//If there is no door map, the test fails.
 	@Test
 	public void packageTest2() {
-		f = new File("src/wolf3d/assets/map00/doors.txt");
+		File f = new File("src/wolf3d/assets/map00/doors.txt");
 		assertTrue(f.exists());
 	}
 
 	// If there is no texture map, the test fails
 	@Test
 	public void packageTest3() {
-		f = new File("src/wolf3d/assets/map00/walls.txt");
+		File f = new File("src/wolf3d/assets/map00/walls.txt");
 		assertTrue(f.exists());
 	}
 
 	// No ceiling map
 	@Test
 	public void packageTest4() {
-		f = new File("src/wolf3d/assets/map00/ceilings.txt");
+		File f = new File("src/wolf3d/assets/map00/ceilings.txt");
 		assertTrue(f.exists());
 	}
 
@@ -289,118 +292,6 @@ public class WolfTests {
 
 	@Test
 	public void creationTest5() {
-		fail("Not yet implemented");
-	}
-
-	/*
-	 * Database Tests
-	 * */
-
-	@Test
-	public void databaseTest1() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void databaseTest2() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void databaseTest3() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void databaseTest4() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void databaseTest5() {
-		fail("Not yet implemented");
-	}
-
-	/*
-	 * Network Tests
-	 * */
-
-	@Test
-	public void networkTest1() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void networkTest2() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void networkTest3() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void networkTest4() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void networkTest5() {
-		fail("Not yet implemented");
-	}
-
-	/*
-	 * Game logic tests
-	 * */
-
-	@Test
-	public void logicTest1() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest2() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest3() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest4() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest5() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest6() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest7() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest8() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest9() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void logicTest10() {
 		fail("Not yet implemented");
 	}
 }
