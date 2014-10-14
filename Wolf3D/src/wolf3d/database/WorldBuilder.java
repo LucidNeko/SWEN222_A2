@@ -54,19 +54,26 @@ public class WorldBuilder {
 	 */
 	public WorldBuilder(String mapDirName) {
 		parser = new Parser(mapDirName);
-		parser.createEntities(player);
 		this.world = ServiceLocator.getService(World.class);
+		this.camera = new Camera();
+	}
+
+	public void createCamera() {
+		if(player == null) { throw new Error("Player is null"); }
+		Camera camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
+		this.camera = camera;
 	}
 
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
 			Health health, Strength strength, Weight weight, Inventory inventory) {
 
 		Entity player = EntityFactory.createPlayer(name, uniqueID);
+
+		parser.createEntities(player);
+
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(DropItem.class);
 		parser.createDoors(player);
-//		camera = setCamera();
-//		view.setCamera(camera);
 
 		//Transform component
 		player.getTransform().set(transform);
@@ -90,20 +97,20 @@ public class WorldBuilder {
 		for (Integer item : items) {
 			i.addItem(item);
 		}
-
+		this.player = player;
 		return player;
 	}
 
+
 	public void createDefaultObjects() {
+		if(player == null) { throw new Error("Player is null"); }
 
 		Entity skybox = EntityFactory.createSkybox(player);
 
 		//motorbike
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
 		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
-
-		//teddy
-		Entity test = world.createEntity("Test");
+		Entity test = world.createEntity("Motorbike");
 		test.attachComponent(MeshFilter.class).setMesh(testMesh);
 		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
 		test.attachComponent(ProximitySensor.class).setTarget(player);
@@ -111,9 +118,9 @@ public class WorldBuilder {
 		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
+		//teddy
 		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj").getScaledInstance(0.5f);
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
-
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
@@ -122,10 +129,10 @@ public class WorldBuilder {
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
 		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
-
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(Attackable.class);
 	}
+
 
 	public World getWorld(){
 		return this.world;
@@ -137,6 +144,5 @@ public class WorldBuilder {
 	public void setCamera(){
 		Entity player = world.getEntity("Player").get(0);
 		camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
-		view.setCamera(camera);
 	}
 }
