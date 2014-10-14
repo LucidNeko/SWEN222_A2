@@ -5,6 +5,11 @@ import javax.swing.JLabel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ *
+ * @author Hamish
+ *
+ */
 public class Messenger implements Service {
 	private static final Logger log = LogManager.getLogger();
 
