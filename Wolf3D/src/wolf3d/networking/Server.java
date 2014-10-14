@@ -127,7 +127,7 @@ public class Server extends Thread{
 						}
 					}
 				} catch (IOException e) {
-					e.printStackTrace(); //just spammy for now...
+					e.printStackTrace(); 
 					//don't close the connection here, because itll throw it while reading
 					//from index i, but possibly wirting to index j,
 					//and j is the one whos closed his client!!
@@ -240,7 +240,6 @@ public class Server extends Thread{
 	public void pushToAllClients(float f) {
 		for(int i = 0; i<capacity; i++){
 			if(alive[i]){
-				System.out.println(i);
 				if(connections[i] != null){
 					try {
 						connections[i].pushToClient(f);
