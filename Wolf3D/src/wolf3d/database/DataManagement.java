@@ -30,10 +30,8 @@ import engine.components.Component;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.EntityDef;
-import engine.core.ServiceLocator;
 import engine.core.TempEntityDef;
 import engine.core.World;
-
 
 /**
  * Saves the Wolf3D world to file, can also

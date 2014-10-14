@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.EntityFactory;
+import wolf3d.WorldView;
 import wolf3d.components.Health;
 import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
@@ -23,13 +24,12 @@ import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
-import engine.display.View;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
 import engine.texturing.Texture;
 import engine.util.Resources;
+import engine.util.ServiceLocator;
 
 /**
  * WorldBuilder is used as a factory to create the world and the world's entities.
@@ -42,7 +42,6 @@ public class WorldBuilder {
 	private World world;
 	private Parser parser;
 	private Camera camera;
-	private View view;
 	private Entity player;
 
 	/**
@@ -62,6 +61,8 @@ public class WorldBuilder {
 		if(player == null) { throw new Error("Player is null"); }
 		Camera camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
 		this.camera = camera;
+		ServiceLocator.getService(WorldView.class).setCamera(camera);;
+
 	}
 
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
