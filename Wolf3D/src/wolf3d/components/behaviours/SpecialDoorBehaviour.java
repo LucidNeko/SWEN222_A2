@@ -8,6 +8,7 @@ import engine.core.World;
 import engine.input.Keyboard;
 
 public class SpecialDoorBehaviour extends Behaviour {
+	//this is if world is not static
 	private World world;
 
 	@Override
