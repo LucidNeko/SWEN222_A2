@@ -23,6 +23,7 @@ import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.display.View;
 import engine.texturing.Material;
@@ -52,9 +53,9 @@ public class WorldBuilder {
 	 * @return the world with the walls and doors added, but nothing else.
 	 */
 	public WorldBuilder(String mapDirName) {
-		this.world = new World();
 		parser = new Parser(mapDirName);
 		parser.createEntities(player);
+		this.world = ServiceLocator.getService(World.class);
 	}
 
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
