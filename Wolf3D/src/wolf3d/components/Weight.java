@@ -4,7 +4,7 @@ import engine.components.Component;
 
 /**
  * This class is responsible for giving an item a weight
- * @author Sameer Magan
+ * @author Sameer Magan 300223776
  *
  */
 public class Weight extends Component {
