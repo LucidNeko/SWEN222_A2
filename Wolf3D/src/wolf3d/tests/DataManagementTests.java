@@ -37,6 +37,7 @@ public class DataManagementTests {
 		//create world with player holding three items
 		World world = ServiceLocator.getService(World.class);
 		Parser parser = new Parser("map00/");
+		world.destroyEntity(-1);
 
 		player = EntityFactory.createPlayer("Player",-1);
 		parser.createEntities(player);
@@ -91,12 +92,13 @@ public class DataManagementTests {
 	// Test a world loads player with correct position
 	public void testLoadWorldPlayerPos() {
 		DataManagement.saveWorld("testLoadWorldCrash.txt", world);
+		world.destroyEntity(-1);
 		World world = DataManagement.loadWorld("testLoadWorldCrash.txt");
 		Entity player = world.getEntity("Player").get(0);
 
 		assertTrue(player.getComponent(Transform.class).getPosition().getX() == 10
 				&& player.getComponent(Transform.class).getPosition().getY() == 0
-				&& player.getComponent(Transform.class).getPosition().getZ() == 30);
+				&& player.getComponent(Transform.class).getPosition().getZ() == 20);
 	}
 
 }
