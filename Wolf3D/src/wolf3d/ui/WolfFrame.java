@@ -2,7 +2,6 @@ package wolf3d.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -14,6 +13,10 @@ import wolf3d.Wolf3D;
  */
 public class WolfFrame extends JFrame implements MouseListener{
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 2267807810965738503L;
 	//Done to match the 3D screen rather than any decent reason.
 	private static final int height = 600;
 	private static final int width = 800;
@@ -67,7 +70,8 @@ public class WolfFrame extends JFrame implements MouseListener{
 			//New Game method
 			System.out.println("New Game Selected");
 			f.dispose();
-			new Wolf3D();
+			new IGFrame();
+			//new Wolf3D();
 		}
 		else if(y>topLoad && y<bottomLoad){ //Load Game area
 			//Loads previous game or opens file selector to pick the game

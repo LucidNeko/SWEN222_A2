@@ -22,11 +22,11 @@ import org.apache.logging.log4j.Logger;
  * Base class for all OpenGl renderable (awt)components
  * @author Hamish
  */
-public abstract class GameCanvas extends GLCanvas implements GLEventListener { //TODO: GLJPanel vs GLCanvas....... needs to be GLJPanel if want to overlay anything.
+public abstract class GameCanvas extends GLJPanel implements GLEventListener { //TODO: GLJPanel vs GLCanvas....... needs to be GLJPanel if want to overlay anything.
 	private static final long serialVersionUID = -1372862841511384090L;
 
 	protected static final Logger log = LogManager.getLogger();
-	
+
 	/**
 	 * Creates a new GameCanvas. Uses a default GLCompatabilities.
 	 * @param width

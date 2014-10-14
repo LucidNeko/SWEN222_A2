@@ -3,6 +3,7 @@
  */
 package wolf3d.ui;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,9 +21,12 @@ public class IGCanvas extends JPanel{
 	private static int width;
 	private static BufferedImage options;
 
-	public IGCanvas(int x, int y){
-		this.height=x;
-		this.width=y;
+	public IGCanvas(int width, int height){
+		super();
+		this.setPreferredSize(new Dimension(width, height));
+
+		this.height=height;
+		this.width=width;
 		try {
 			options = Resources.getImage("InGameMenu.png");
 

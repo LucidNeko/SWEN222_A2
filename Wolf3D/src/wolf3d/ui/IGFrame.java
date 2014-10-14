@@ -9,8 +9,6 @@ import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import wolf3d.Wolf3D;
-
 /**
  * @author brannisimo
  *
@@ -39,10 +37,9 @@ public class IGFrame extends JPanel implements MouseListener{
 	 * @author brannisimo
 	 * Takes the x and y and checks if they are near a selection.
 	 */
-//	private void hitBox(int x, int y){
-//		// TODO
-//		/* Make the numbers not hard coded and tweak the pic till I can
-//		 * have a basic hit box algorithm*/
+	private void hitBox(int x, int y){
+		/* Make the numbers not hard coded and tweak the pic till I can
+		 * have a basic hit box algorithm*/
 //		if(x>470 || x<320 || y<185 || y>400){ // Gotta move the mouse
 //			System.out.println("Way outside the hit box");
 //		}
@@ -64,14 +61,14 @@ public class IGFrame extends JPanel implements MouseListener{
 //			System.exit(0);
 //		}
 //		else{ System.out.println("Almost a selection");}
-//	}
+	}
 
 	@Override
 	public void mouseReleased(MouseEvent e){
 		if(count==10){System.exit(0);}
 		System.out.println("x: "+e.getX()+ " y: "+ e.getY());
 		count++;
-		//hitBox(e.getX(), e.getY());
+		hitBox(e.getX(), e.getY());
 	}
 	/*Will tidy these up if I get the chance but given that they're
 	 * unnecessary I probably won't touch them*/

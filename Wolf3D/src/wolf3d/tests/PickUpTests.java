@@ -20,7 +20,7 @@ public class PickUpTests {
 	public void init(){
 		//create world with player and three items inside
 		World world = new World();
-		player = EntityFactory.createPlayer(world, "Player", -1);
+		player = EntityFactory.createPlayer("Player", -1);
 		item1 = world.createEntity("motorbike");
 		item1.attachComponent(ProximitySensor.class).setTarget(player);
 		item1.attachComponent(new PickUp());

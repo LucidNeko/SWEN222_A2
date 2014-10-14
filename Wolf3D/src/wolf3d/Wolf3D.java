@@ -1,9 +1,15 @@
 package wolf3d;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 
 import wolf3d.database.DataManagement;
 import wolf3d.networking.Server;
+import wolf3d.ui.IGCanvas;
+import wolf3d.ui.WolfCanvas;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
@@ -35,6 +43,7 @@ public class Wolf3D extends JFrame {
 
 	public static final int DEFAULT_GL_WIDTH = 800;
 	public static final int DEFAULT_GL_HEIGHT = 600;
+	private BufferedImage inGameMenu;
 
 	public static String ip;
 	public static int port;
@@ -49,8 +58,8 @@ public class Wolf3D extends JFrame {
 		});
 
 		//Create the World
-//		final World world = ServiceLocator.getService(World.class);
-//		final World world = DataManagement.loadWorld("defaultWorld.txt");
+		//		final World world = ServiceLocator.getService(World.class);
+		//		final World world = DataManagement.loadWorld("defaultWorld.txt");
 
 
 		//create views
@@ -58,7 +67,31 @@ public class Wolf3D extends JFrame {
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(worldView);
-		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
+
+		log.trace(this.getGlassPane());
+
+		//Adds glass pane
+//		JComponent c = new JComponent() {
+//			{
+//				this.setPreferredSize(new Dimension(800, 600));
+//			}
+//			protected void paintComponent(Graphics g) {
+//				super.paintComponent(g);
+//				g.drawima
+//			}
+//		};
+//
+//		c.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseReleased(MouseEvent e) {
+//				log.trace("Moused");
+//			}
+//		});
+//		c.setFocusable(false);
+
+		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300));
+		this.getGlassPane().setVisible(true);
+		this.getContentPane().add(mainPanel);
 
 		//Build OpenGL panel.
 

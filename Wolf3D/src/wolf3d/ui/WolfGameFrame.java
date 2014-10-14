@@ -20,11 +20,11 @@ import engine.scratch.MiniMap;
 import engine.util.ServiceLocator;
 import wolf3d.GameDemo;
 import wolf3d.WorldView;
+import wolf3d.networking.Server;
 
 /**
  * The entry point into the system.
- * @author Hamish Rae-Hodgson modified by Simon
- * More or less straight up copied from the game demo class
+ * @author Hamish Rae-Hodgson modified by Simon Brannigan
  *
  */
 public class WolfGameFrame extends JFrame {
@@ -35,6 +35,9 @@ public class WolfGameFrame extends JFrame {
 	private static final String DEFAULT_TITLE = "Wolf3D";
 	private static final int DEFAULT_GL_WIDTH = 800;
 	private static final int DEFAULT_GL_HEIGHT = 800;
+
+	public static String ip;
+	public static int port;
 
 	public WolfGameFrame() {
 		super(DEFAULT_TITLE);
@@ -48,7 +51,7 @@ public class WolfGameFrame extends JFrame {
 		//Create the World
 		final World world = new World();
 
-		//create views
+		//Create views
 		final WorldView worldView = ServiceLocator.getService(WorldView.class);
 		final MiniMap minimap = new MiniMap(200, 200);
 
@@ -61,31 +64,20 @@ public class WolfGameFrame extends JFrame {
 		eastPanel.add(minimap, BorderLayout.NORTH);
 		this.getContentPane().add(eastPanel, BorderLayout.EAST);
 
-		/*Add chat box*/
-//		JPanel westPanel = new JPanel();
-//
-//		westPanel.add(chat);
-//		this.getContentPane().add(westPanel, BorderLayout.WEST);
-
-  		/*Add Inventory slots*/
-		/*Player was added to test the inventory*/
-		//Entity inventoryTest = world.createEntity("InventoryTest");
-		//inventoryTest.attachComponent(new Inventory());
-
 		JPanel botPanel = new JPanel();
 		botPanel.setPreferredSize(new Dimension(800, 200));
+
 		//Inventory
 		botPanel.add(new InventoryCanvas());
-		//List l = new ArrayList<Entity>();
 
 		// i<getSize will have to be changed later on. Currently used for testing
 		this.getContentPane().add(botPanel, BorderLayout.SOUTH);
 
 		//Register input devices. If GLCanvas have to register to canvas.
 		worldView.setFocusable(true);
-  		Keyboard.register(worldView);
-  		Mouse.register(worldView);
-  		Mouse.setCursor(Mouse.CURSOR_INVISIBLE);
+		Keyboard.register(worldView);
+		Mouse.register(worldView);
+		Mouse.setCursor(Mouse.CURSOR_INVISIBLE);
 
 		//Pack and display window.
 		this.pack();
@@ -107,12 +99,22 @@ public class WolfGameFrame extends JFrame {
 				"Are you sure you want to Exit?",
 				"Are you sure you want to Exit?",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					System.exit(0);
-				}
+			System.exit(0);
+		}
 	}
 
 	/** Create a new instance of App */
 	public static void main(String[] args) {
+		if(args.length==2){
+			WolfGameFrame.ip = args[0];
+			WolfGameFrame.port = Integer.parseInt(args[1]);
+		}
+		else{
+			WolfGameFrame.ip = "localhost";
+			Server s = new Server(0,1); //0 as port will listen on any free port.
+			WolfGameFrame.port = s.getSocketPort();
+			s.start();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				/*Starts the GUI frame*/
@@ -120,5 +122,4 @@ public class WolfGameFrame extends JFrame {
 			}
 		});
 	}
-
 }
