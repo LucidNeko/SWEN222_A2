@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import wolf3d.components.Weight;
 import wolf3d.components.behaviours.DoorBehaviour;
+import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.SpecialDoorBehaviour;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
@@ -22,20 +24,12 @@ import engine.util.Resources;
 import engine.util.ServiceLocator;
 
 /**
- * This class takes in the root directory for all files to be created
- * in the world, this follows a strict format to be run correctly
+ * This class takes in the root directory for all files to be created in the
+ * world, this follows a strict format to be run correctly
  *
- * The format is :
- * root>
- * 		ceilingTextures>
- * 		floorTexture>
- * 		textureFiles>
- * 		wallTextures>
- * 		ceilings.txt
- * 		doors.txt
- * 		floors.txt
- * 		specialDoors.txt
- * 		walls.txt
+ * The format is : root> ceilingTextures> floorTexture> textureFiles>
+ * wallTextures> ceilings.txt doors.txt floors.txt specialDoors.txt walls.txt
+ *
  * @author Sameer Magan
  *
  */
@@ -43,9 +37,9 @@ public class Parser {
 
 	private String wallFilePath, doorFilePath, wallTexturePath, floorFilePath,
 			floorTexturePath, ceilingTexturePath, ceilingFilePath, mapFilePath,
-			specialDoorFilePath, textureFilesPath;
+			specialDoorFilePath, textureFilesPath, teddyFilePath;
 
-	private Cell[][] walls, doors, floor, ceiling, specialDoors;
+	private Cell[][] walls, doors, floor, ceiling, specialDoors, teddys;
 
 	private Map<Integer, Cell[][]> textures = new HashMap<Integer, Cell[][]>();
 
@@ -72,7 +66,8 @@ public class Parser {
 		this.wallTexturePath = map + "wallTextures/";
 		this.floorTexturePath = map + "floorTextures/";
 		this.ceilingTexturePath = map + "ceilingTextures/";
-		this.textureFilesPath = map+ "textureFiles/";
+		this.textureFilesPath = map + "textureFiles/";
+		this.teddyFilePath = map + "teddys.txt";
 		this.world = ServiceLocator.getService(World.class);
 	}
 
@@ -111,22 +106,54 @@ public class Parser {
 		specialDoors = parseFileToArray(specialDoorFilePath);
 	}
 
-	public void createEntities(Entity player){
+	/**
+	 * Parses teddys file into a 2d array of Cells
+	 */
+	public void parseTeddysFileToArray() {
+		teddys = parseFileToArray(teddyFilePath);
+	}
+
+	public void createEntities(Entity player) {
+		this.player = player;
+
 		parseWallFileToArray();
 		parseDoorFileToArray();
 		parsefloorFileToArray();
 		parseCeilingFileToArray();
 		parseSpecialDoorsFileToArray();
+		parseTeddysFileToArray();
 		parseTextures();
 		createWalls();
 		createFloor();
 		createCeiling();
-		createDoors(player);
-		createSpecialDoors(player);
+		createDoors();
+		createSpecialDoors();
+		createTeddys();
 	}
 
 	/**
-	 * creates all walls in the world
+	 * creates all the Teddys in the world
+	 */
+	public void createTeddys() {
+		String type = "Teddys";
+		float width = 2;
+		float height = 2;
+		float halfWidth = width / 2;
+		float halfHeight = width / 2;
+		for (row = 0; row < teddys.length; row++) {
+			for (col = 0; col < teddys[row].length; col++) {
+				if (teddys[row][col].getWalls() != 0) {
+					float x = col * width + halfWidth;
+					float z = row * height + halfHeight;
+					Entity ceiling = addObject(type, "");
+					ceiling.getTransform().translate(x, 0, z);
+				}
+			}
+		}
+	}
+
+	/**
+	 * creates all ceiling in the world
 	 */
 	public void createCeiling() {
 		String type = "Ceilings";
@@ -158,15 +185,14 @@ public class Parser {
 	/**
 	 * Creates all normal doors in the world
 	 */
-	public void createDoors(Entity player) {
-		this.player = player;
+	public void createDoors() {
 		create3DObjects(doors, "Doors");
 	}
 
 	/**
 	 * Creates all normal doors in the world
 	 */
-	public void createSpecialDoors(Entity player) {
+	public void createSpecialDoors() {
 		this.player = player;
 		create3DObjects(specialDoors, "SpecialDoors");
 	}
@@ -284,6 +310,7 @@ public class Parser {
 
 	/**
 	 * Adds an entity of the given type to the world
+	 *
 	 * @param type
 	 *            the type of entity that what gets created
 	 *
@@ -302,8 +329,32 @@ public class Parser {
 			return addFloor();
 		case "Ceilings":
 			return addCeiling();
+		case "Teddys":
+			return addTeddys();
 		}
 		return null;
+	}
+
+	/**
+	 * Adds a floor panel to the given world with a Texture, Mesh, and Material
+	 *
+	 * @return the newly created floor panel
+	 */
+	private Entity addTeddys() {
+		Texture teddyTexture = Resources.getTexture("teddy/teddy.png", true);
+		// setting default if there is no texture specified in map
+
+		Mesh mesh = Resources.getMesh("teddy/teddy.obj")
+				.getScaledInstance(0.3f);
+		Material material = new Material(teddyTexture, Color.WHITE);
+
+		Entity teddy = world.createEntity("TeddyItem");
+		teddy.attachComponent(MeshFilter.class).setMesh(mesh);
+		teddy.attachComponent(MeshRenderer.class).setMaterial(material);
+		teddy.attachComponent(ProximitySensor.class).setTarget(player);
+		teddy.attachComponent(PickUp.class);
+		teddy.attachComponent(Weight.class);
+		return teddy;
 	}
 
 	/**
@@ -318,12 +369,12 @@ public class Parser {
 			return null;
 		}
 		Mesh mesh = Resources.getMesh("wall.obj");
-		Entity floor = world.createEntity("floor");
+		Entity ceiling = world.createEntity("floor");
 
 		Material material = new Material(floorTex, Color.WHITE);
-		floor.attachComponent(MeshFilter.class).setMesh(mesh);
-		floor.attachComponent(MeshRenderer.class).setMaterial(material);
-		return floor;
+		ceiling.attachComponent(MeshFilter.class).setMesh(mesh);
+		ceiling.attachComponent(MeshRenderer.class).setMaterial(material);
+		return ceiling;
 	}
 
 	/**
@@ -475,10 +526,10 @@ public class Parser {
 	 * @return Returns a WASDCollion object with the walls array initialised
 	 */
 	public WASDCollisions getWallCollisionComponent() {
-		//puts all of specialDoors doors into doors array
-		for(int row=0; row < doors.length; row++){
-			for(int col=0; col < doors[row].length; col++){
-				if(specialDoors[row][col].getWalls() != 0){
+		// puts all of specialDoors doors into doors array
+		for (int row = 0; row < doors.length; row++) {
+			for (int col = 0; col < doors[row].length; col++) {
+				if (specialDoors[row][col].getWalls() != 0) {
 					doors[row][col].setWalls(specialDoors[row][col].getWalls());
 				}
 
