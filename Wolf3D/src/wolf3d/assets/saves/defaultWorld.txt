@@ -3,7 +3,7 @@
 "name" : "Player",
 "uniqueID" : "-1",
 "Transform"
-{"position":{"x":9.0,"y":0.0,"z":9.0},"up":{"x":0.0,"y":1.0,"z":0.0},"along":{"x":1.0,"y":0.0,"z":0.0},"look":{"x":0.0,"y":0.0,"z":1.0},"changed":false,"obs":[]}
+{"position":{"x":1.0,"y":0.0,"z":1.0},"up":{"x":0.0,"y":1.0,"z":0.0},"along":{"x":1.0,"y":0.0,"z":0.0},"look":{"x":0.0,"y":0.0,"z":1.0},"changed":false,"obs":[]}
 "Health"
 {"health":100,"alive":true,"damageAmt":20,"changed":false,"obs":[]}
 "Strength"

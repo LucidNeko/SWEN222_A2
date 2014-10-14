@@ -126,7 +126,7 @@ public class GameDemo extends GameLoop {
 
 		});
 
-//		camera = player.getComponent(Camera.class);
+		//		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
 		Entity skybox = EntityFactory.createSkybox(player);
@@ -153,13 +153,13 @@ public class GameDemo extends GameLoop {
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
-//		teddy.getTransform().translate(15, 0, 3);
+		//		teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().translate(2, 0, 2);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
 		//testing pickup
-//		teddy.attachComponent(new PickUp(world));
-//		teddy.attachComponent(Weight.class);
+		//		teddy.attachComponent(new PickUp(world));
+		//		teddy.attachComponent(Weight.class);
 		//testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(Attackable.class);
@@ -190,26 +190,26 @@ public class GameDemo extends GameLoop {
 		for(Entity entity : world.getEntities()) {
 			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
 				behaviour.update(delta);
-				}
-
-		}
-			for(Entity entity : world.getEntities()) {
-				Transform transform = entity.getTransform();
-				if(transform.hasChanged()) {
-					try {
-						String name = transform.getOwner().getName();
-						if(!(name.equals("skybox") || name.equals("Camera"))){
-							client.sendTransform(transform);
-							transform.clearChanged();
-						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
 			}
 
 		}
+		for(Entity entity : world.getEntities()) {
+			Transform transform = entity.getTransform();
+			if(transform.hasChanged()) {
+				try {
+					String name = transform.getOwner().getName();
+					if(!(name.equals("skybox") || name.equals("Camera"))){
+						client.sendTransform(transform);
+						transform.clearChanged();
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+
+	}
 
 
 	@Override
@@ -230,12 +230,12 @@ public class GameDemo extends GameLoop {
 
 
 	public void createPlayer(int ID){
-		//player = EntityFactory.createPlayer("Player", ID); //TODO !!!!!!!!!!!!!
+		player = EntityFactory.createPlayer("Player", ID);
 	}
 
 	public void createOtherPlayer(int ID){
-		//Entity other = EntityFactory.createOtherPlayer("other", ID);
-		//other.getTransform().translate(1, 0, 1);
+		Entity other = EntityFactory.createOtherPlayer("other", ID);
+		other.getTransform().translate(1, 0, 1);
 	}
 
 }
