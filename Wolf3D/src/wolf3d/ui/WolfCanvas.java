@@ -1,5 +1,6 @@
 package wolf3d.ui;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -31,6 +32,11 @@ public class WolfCanvas extends JPanel{
 			e.printStackTrace();
 		}
 		this.repaint();
+	}
+
+	@Override
+	public Dimension getPreferredSize(){
+		return new Dimension(width, height);
 	}
 
 	protected void paintComponent(Graphics g) {
