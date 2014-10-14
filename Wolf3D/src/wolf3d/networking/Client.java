@@ -13,10 +13,7 @@ import engine.core.Entity;
 import engine.core.World;
 
 /**
- * This class is a wrapper for the Client connection that performs logic necessary for the game to run.
- *
  * @author Michael Nelson (300276118)
- *
  */
 public class Client extends Thread{
 	private Socket sock;
@@ -30,8 +27,10 @@ public class Client extends Thread{
 
 	/**
 	 * Construct a new client object connecting to the given ipAddress on the port supplied.
-	 * @param ipAddress
-	 * @param port
+	 * @param ipAddress Ip address to connect to
+	 * @param port the port to connect too.
+	 * @param world The world object that this client will make modifications to.
+	 * @param gameDemo the GameLoop that this client makes modifications to.
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
@@ -43,8 +42,7 @@ public class Client extends Thread{
 	}
 
 	/**
-	 * Polls the client to see if we have messages to connect. Then if we do it does something.
-	 * (NOTE, MAY BE WORTHWILE TO MAKE THIS CLASS OBSERVABLE?)
+	 * Listens for new messages from the server, then makes modifications to the world.
 	 */
 	public void run(){
 		try{
@@ -55,36 +53,12 @@ public class Client extends Thread{
 				while(true){
 					String marker = in.readUTF();
 					switch(marker){
-					/*
-					 * This be the JSON way, Is slow.
-
-					case "transform":
-						int id = in.readInt();
-						System.out.println("On id: "+id);
-						if(id==gl.getPlayer().getID()){
-							System.out.println("Hey, that's our own player ID. Let's not apply this transform...");
-							in.readUTF();
-						}
-						else{
-							Entity ent = world.getEntity(id);
-							Transform t;
-							Gson g = new Gson();
-							t = g.fromJson(in.readUTF(), Transform.class);
-							System.out.println("The created transform: " + t.toString());
-							ent.getTransform().set(t, false);
-						}
-						break;
-					 */
 					case "transform":
 						int id = in.readInt();
 						if(id==gl.getPlayer().getID()){
-							in.readFloat();
-							in.readFloat();
-							in.readFloat();
-							in.readFloat();
-							in.readFloat();
-							in.readFloat();
-							//this is bordering on a for loop...
+							for(int i = 0; i<6; i++){
+								in.readFloat(); //chuck the message away
+							}
 						}
 						else{
 							Entity e = world.getEntity(id);
@@ -94,27 +68,19 @@ public class Client extends Thread{
 								t.lookAtDirectionNoFlag(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
 							}
 							else{
-								in.readFloat();
-								in.readFloat();
-								in.readFloat();
-								in.readFloat();
-								in.readFloat();
-								in.readFloat();
+								for(int i = 0; i<6; i++){
+									in.readFloat();
+								}
 							}
 						}
 						break;
 					case "ids":
 						int playerID = in.readInt();
-						//REPLACE THIS WITH THE METHOD IN GAME LOOP
-						//TODO
 						gl.createPlayer(playerID);
-						//	Entity player = EntityFactory.createPlayerWithID(world, "Bob For Now", playerID);
-						//	gl.setPlayer(player);
 						int noOthers = in.readInt();
 						for(int i = 0; i< noOthers; i++){
 							int otherID = in.readInt();
 							gl.createOtherPlayer(otherID);
-							//	EntityFactory.createOtherPlayer(world, "Joe ForNow", otherID);
 						}
 						break;
 
@@ -132,7 +98,6 @@ public class Client extends Thread{
 
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -140,37 +105,13 @@ public class Client extends Thread{
 			try {
 				sock.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
-
 	/**
-	 * Test method.
-	 * @param args
-	 * @throws NumberFormatException
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException{
-		new Client("Bob McBob", args[0],Integer.parseInt(args[1]), null, null);
-		//pc.start();
-	}
-
-	/*
-	 * THIS IS THE JSON WAY, ITS SLOW.
-	public void sendTransform(Transform t) throws IOException{
-		out.writeUTF("transform");
-		out.writeInt(t.getOwner().getID());
-		Gson g = new Gson();
-		out.writeUTF(g.toJson(t));
-	}
-	 */
-
-	/**
-	 * Sends via floats, much more efficient.
+	 * Sends a Transform to the server via floats, much more efficient than using JSON.
 	 * @param t
 	 * @throws IOException
 	 */
@@ -187,14 +128,28 @@ public class Client extends Thread{
 		out.writeFloat(look.z());
 	}
 
+	/**
+	 * Send a string to the server
+	 * @param string UTF string
+	 * @throws IOException
+	 */
 	public void sendToServer(String string) throws IOException {
 		out.writeUTF(string);
 	}
 
+	/**
+	 * Send an int to the server.
+	 * @param i
+	 * @throws IOException
+	 */
 	public void sendToServer(int i) throws IOException{
 		out.writeInt(i);
 	}
 
+	/**
+	 * Get the inputStream this client is listening on.
+	 * @return
+	 */
 	public DataInputStream getInputStream() {
 		return in;
 	}

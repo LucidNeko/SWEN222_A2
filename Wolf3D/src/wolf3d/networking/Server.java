@@ -6,22 +6,32 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * This is a dumb server, i.e. it does no logic.
- * It has multiple connections and methods for sending and receiving messages.
  * @author Michael Nelson (300276118)
- *
  */
 public class Server extends Thread{
 	ServerSocket ss;
+
 	ServerConnection[] connections;
 	DataInputStream[] dis;
+
 	private boolean listening = true;
+
 	private int index = 0;
 	private int capacity;
 
 	/**
 	 * Construct a new server listening on a port and with a capacity.
-	 * @param port
+	 * The game will not begin until all the players have connected
+	 * at what point the server will broadcast IDS to all the players
+	 * followed by the string "begin"
+	 * <br />
+	 *
+	 * This server acts as a repeated essentially, clients send messages to the
+	 * server which then forwards it to all the other clients.
+	 *
+	 *This has the advantage of being simple and efficient, but it's obviously
+	 *very hackable.
+	 * @param port Port we are listning on. (Note 0 will assign a free port).
 	 * @param capacity maximum players (game will start only when all players have connected
 	 */
 	public Server(int port, int capacity) {
@@ -31,11 +41,14 @@ public class Server extends Thread{
 			dis = new DataInputStream[capacity];
 			this.capacity = capacity;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Return the port the server is listening on.
+	 * @return
+	 */
 	public int getSocketPort(){
 		return ss.getLocalPort();
 	}
@@ -55,14 +68,13 @@ public class Server extends Thread{
 			try {
 				sock = ss.accept();
 				System.out.println("Accepted a connection from " + sock.getInetAddress() + "...");
-				connections[index] = new ServerConnection(sock,this);
+				connections[index] = new ServerConnection(sock);
 				dis[index] = connections[index].getInputStream();
 
 				if(index==(capacity-1)){
 					listening = false;
 
-
-					//begin listening
+					//we need to start the thread solely so the socket closes on close.
 					for(ServerConnection c : connections){
 						c.start();
 					}
@@ -70,16 +82,15 @@ public class Server extends Thread{
 					//let the clients know the game can now begin.
 					assignIDs();
 					pushToAllClients("begin");
-					//	return;
 				}
 				index++;
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		//no longer listening for connections...
+		//listen for messages instead then.
 		while(!listening){
 			for(DataInputStream in: dis){
 				try {
@@ -103,7 +114,6 @@ public class Server extends Thread{
 						}
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -111,7 +121,6 @@ public class Server extends Thread{
 		try {
 			ss.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -142,10 +151,8 @@ public class Server extends Thread{
 			connections[i].pushToClient((-(i+1)));
 
 			//let player know how many other players there are
-
 			System.out.println("SendTo"+i+": [int]"+(capacity-1));
 			connections[i].pushToClient(capacity-1);
-
 
 			//then give the other clients ids of other players, we dont care about order.
 			for(int j = 0; j<capacity; j++){
@@ -155,7 +162,6 @@ public class Server extends Thread{
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -174,16 +180,10 @@ public class Server extends Thread{
 	}
 
 	/**
-	 * Testing code.
-	 * @param args
+	 * Sends an int to every client.
+	 * @param i
 	 */
-	public static void main(String[] args){
-		Server serber = new Server(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-		serber.start();
-	}
-
 	public void pushToAllClients(int i) {
-		// TODO Auto-generated method stub
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				if(sc.areWeAlive()){
@@ -193,8 +193,11 @@ public class Server extends Thread{
 		}
 	}
 
+	/**
+	 * Sends a float to every client.
+	 * @param f
+	 */
 	public void pushToAllClients(float f) {
-		// TODO Auto-generated method stub
 		for(ServerConnection sc : connections){
 			if(sc != null){
 				if(sc.areWeAlive()){
@@ -203,4 +206,15 @@ public class Server extends Thread{
 			}
 		}
 	}
+
+
+	/**
+	 * Code to start the server.
+	 * @param args
+	 */
+	public static void main(String[] args){
+		Server serber = new Server(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+		serber.start();
+	}
+
 }
