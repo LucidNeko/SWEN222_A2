@@ -15,11 +15,11 @@ import org.apache.logging.log4j.Logger;
 
 import wolf3d.database.DataManagement;
 import wolf3d.networking.Server;
-import engine.components.Camera;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
 import engine.scratch.MiniMap;
+import engine.util.ServiceLocator;
 
 /**
  * The entry point into the system.
@@ -32,8 +32,9 @@ public class Wolf3D extends JFrame {
 	private static final Logger log = LogManager.getLogger();
 
 	private static final String DEFAULT_TITLE = "Wolf3D";
-	private static final int DEFAULT_GL_WIDTH = 800;
-	private static final int DEFAULT_GL_HEIGHT = 600;
+
+	public static final int DEFAULT_GL_WIDTH = 800;
+	public static final int DEFAULT_GL_HEIGHT = 600;
 
 	public static String ip;
 	public static int port;
@@ -53,8 +54,7 @@ public class Wolf3D extends JFrame {
 
 
 		//create views
-		final WorldView worldView = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
-		worldView.setCamera(world.getEntity("Camera").get(0).getComponent(Camera.class));
+		final WorldView worldView = ServiceLocator.getService(WorldView.class);
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(worldView);

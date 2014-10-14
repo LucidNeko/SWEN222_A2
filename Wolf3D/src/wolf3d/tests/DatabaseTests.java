@@ -21,8 +21,8 @@ import com.google.gson.Gson;
 import engine.components.Transform;
 import engine.components.Component;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
+import engine.util.ServiceLocator;
 
 /**
  * Test suite for the Wolf3D database.

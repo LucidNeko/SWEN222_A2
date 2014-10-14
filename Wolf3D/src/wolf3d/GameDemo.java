@@ -33,7 +33,6 @@ import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.GameLoop;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.display.View;
 import engine.input.Keyboard;
@@ -42,6 +41,7 @@ import engine.texturing.Material;
 import engine.texturing.Mesh;
 import engine.texturing.Texture;
 import engine.util.Resources;
+import engine.util.ServiceLocator;
 
 /**
  * GameDemo is a demo game that shows off the GameLoop class and the Entity/Component system.

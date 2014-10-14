@@ -1,5 +1,6 @@
 package wolf3d.components.behaviours.animations;
 
+import wolf3d.components.behaviours.DoorBehaviour;
 import wolf3d.components.behaviours.Translate;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.sensors.ProximitySensor;
@@ -11,7 +12,7 @@ import engine.core.Entity;
 /**
  * This class is responsible for moving animating the attached component up by
  * the set amount of distance and then attaching a MoveDown animation
- * 
+ *
  * @author Sameer Magan 300223776
  *
  */
@@ -26,8 +27,9 @@ public class MoveUpAnimation extends Behaviour {
 	private Translate translate;
 
 	private int row, col, door;
-	
-	private boolean halfwaydown;
+
+	//default behaviour if nothing gets set
+	private Class<? extends Behaviour> resetBehaviour = DoorBehaviour.class;
 
 	@Override
 	public void update(float delta) {
@@ -56,12 +58,16 @@ public class MoveUpAnimation extends Behaviour {
 					col);
 			// zero out door at you position
 			player.getComponent(WASDCollisions.class).zeroDoor(row, col);
-			getOwner().attachComponent(new MoveDownAnimation(row, col, door));
+			getOwner().attachComponent(MoveDownAnimation.class).setFields(row, col, door, resetBehaviour);
 			getOwner().detachComponent(this);
 			return;
 		}
-		
 
+
+	}
+
+	public void setResetBehaviour(Class<? extends Behaviour> resetBehaviour){
+		this.resetBehaviour = resetBehaviour;
 	}
 
 	public void setCollision(int row, int col, int door) {

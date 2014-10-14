@@ -24,10 +24,10 @@ import engine.components.GL2Renderer;
 import engine.components.MeshFilter;
 import engine.components.Transform;
 import engine.core.Entity;
-import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.display.GameCanvas;
 import engine.display.View;
+import engine.util.ServiceLocator;
 
 /**
  * A minimap view of the game world.
