@@ -77,7 +77,7 @@ public class WorldBuilder {
 		parser.createEntities(player);
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(DropItem.class);
-		parser.createDoors(player);
+		parser.createDoors();
 
 		//Transform component
 		player.getTransform().set(transform);
