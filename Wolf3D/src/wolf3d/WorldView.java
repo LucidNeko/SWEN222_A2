@@ -21,6 +21,7 @@ import engine.display.GameCanvas;
 import engine.display.View;
 import engine.texturing.Material;
 import engine.texturing.Texture;
+import engine.util.Service;
 import engine.util.ServiceLocator;
 
 /**
@@ -28,7 +29,7 @@ import engine.util.ServiceLocator;
  * @author Hamish
  *
  */
-public class WorldView extends GameCanvas implements View{
+public class WorldView extends GameCanvas implements View, Service {
 	private static final long serialVersionUID = 8996675374479682200L;
 
 	//gluPerspective params
@@ -40,8 +41,8 @@ public class WorldView extends GameCanvas implements View{
 	private Camera camera;
 
 	/** Create a new WorldView over the given World. */
-	public WorldView(int width, int height) {
-		super(width, height);
+	public WorldView() {
+		super(Wolf3D.DEFAULT_GL_WIDTH, Wolf3D.DEFAULT_GL_HEIGHT);
 		this.world = ServiceLocator.getService(World.class);
 	}
 

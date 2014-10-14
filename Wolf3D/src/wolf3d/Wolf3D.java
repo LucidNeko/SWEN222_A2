@@ -2,6 +2,7 @@ package wolf3d;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -12,6 +13,7 @@ import javax.swing.WindowConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import wolf3d.database.DataManagement;
 import wolf3d.networking.Server;
 import engine.core.World;
 import engine.input.Keyboard;
@@ -30,13 +32,14 @@ public class Wolf3D extends JFrame {
 	private static final Logger log = LogManager.getLogger();
 
 	private static final String DEFAULT_TITLE = "Wolf3D";
-	private static final int DEFAULT_GL_WIDTH = 800;
-	private static final int DEFAULT_GL_HEIGHT = 600;
+
+	public static final int DEFAULT_GL_WIDTH = 800;
+	public static final int DEFAULT_GL_HEIGHT = 600;
 
 	public static String ip;
 	public static int port;
 
-	public Wolf3D() {
+	public Wolf3D(){
 		super(DEFAULT_TITLE);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
@@ -46,10 +49,12 @@ public class Wolf3D extends JFrame {
 		});
 
 		//Create the World
-		final World world = ServiceLocator.getService(World.class);
+//		final World world = ServiceLocator.getService(World.class);
+		final World world = DataManagement.loadWorld("defaultWorld.txt");
+
 
 		//create views
-		final WorldView worldView = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
+		final WorldView worldView = ServiceLocator.getService(WorldView.class);
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(worldView);

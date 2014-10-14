@@ -21,6 +21,7 @@ import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
 import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
+import wolf3d.database.DataManagement;
 import wolf3d.networking.Client;
 import wolf3d.world.Parser;
 import engine.common.Mathf;
@@ -70,10 +71,8 @@ public class GameDemo extends GameLoop {
 		try {
 			client = new Client("Joe",ip,port,this);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -99,10 +98,13 @@ public class GameDemo extends GameLoop {
 		Parser parser = new Parser("map00/");
 		parser.createEntities(player);
 
+		if(player == null) {
+			player = ServiceLocator.getService(World.class).getEntity("Player").get(0);
+		}
+
 		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(DropItem.class);
-
 
 		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
 		final Camera c2 = EntityFactory.createFirstPersonCamera(player).getComponent(Camera.class);//
@@ -228,12 +230,12 @@ public class GameDemo extends GameLoop {
 
 
 	public void createPlayer(int ID){
-		player = EntityFactory.createPlayer("Player", ID);
+		//player = EntityFactory.createPlayer("Player", ID); //TODO !!!!!!!!!!!!!
 	}
 
 	public void createOtherPlayer(int ID){
-		Entity other = EntityFactory.createOtherPlayer("other", ID);
-		other.getTransform().translate(1, 0, 1);
+		//Entity other = EntityFactory.createOtherPlayer("other", ID);
+		//other.getTransform().translate(1, 0, 1);
 	}
 
 }
