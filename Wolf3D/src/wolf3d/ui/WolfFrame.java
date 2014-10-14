@@ -9,10 +9,6 @@ import javax.swing.JFrame;
 import wolf3d.Wolf3D;
 
 /**
- *
- */
-
-/**
  * @author brannisimo
  *
  */
@@ -46,7 +42,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 	 */
 	private void hitBox(int x, int y){
 
-		double topNewGame = ((9.0/25.0)*height);
+		double topNewGame = ((3.0/10.0)*height);
 		double bottomNewGame = ((9.0/25.0)*height);
 		double topLoad = ((49.0/120.0)*height);
 		double bottomLoad = ((9.0/20.0)*height);
@@ -55,8 +51,8 @@ public class WolfFrame extends JFrame implements MouseListener{
 		double topExit = ((5.0/8.0)*height);
 		double bottomExit = ((2.0/3.0)*height);
 
-		double topBound = ((37.0/120.0)*height);
-		double botBound = ((1.0/2.0)*height);
+		double topBound = ((1.0/5.0)*height);
+		double botBound = ((3.0/4.0)*height);
 
 		double leftBound = ((2.0/5.0)*width);
 		double rightBound = ((47.0/80.0)*width);
@@ -64,7 +60,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 		// TODO
 		/* Make the numbers not hard coded and tweak the pic till I can
 		 * have a basic hit box without hardcoded*/
-		if(x<leftBound || x>rightBound || y<topBound || y>400){ // Gotta move the mouse
+		if(x<leftBound || x>rightBound || y<topBound || y>botBound){ // Gotta move the mouse
 			System.out.println("Way outside the hit box");
 		}
 		else if(y>topNewGame && y< bottomNewGame){ //New game area
