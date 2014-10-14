@@ -30,8 +30,9 @@ public class Wolf3D extends JFrame {
 	private static final Logger log = LogManager.getLogger();
 
 	private static final String DEFAULT_TITLE = "Wolf3D";
-	private static final int DEFAULT_GL_WIDTH = 800;
-	private static final int DEFAULT_GL_HEIGHT = 600;
+
+	public static final int DEFAULT_GL_WIDTH = 800;
+	public static final int DEFAULT_GL_HEIGHT = 600;
 
 	public static String ip;
 	public static int port;
@@ -49,7 +50,7 @@ public class Wolf3D extends JFrame {
 		final World world = ServiceLocator.getService(World.class);
 
 		//create views
-		final WorldView worldView = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
+		final WorldView worldView = ServiceLocator.getService(WorldView.class);
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(worldView);
