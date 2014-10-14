@@ -78,8 +78,9 @@ public class DataManagement {
 		// load player entities
 		while(scan.hasNext()) {
 			// read name and uniqueID
-			while (!line.contains("name")) { line = scan.next(); }
+			while (!line.contains("name") && scan.hasNext()) { line = scan.next(); }
 			skip(scan, 1);
+			if (!scan.hasNext()) { break; }
 			String name = scan.next();
 			name = name.substring(1,name.length()-2);
 			log.trace("Reading name: {}", name);
@@ -93,27 +94,27 @@ public class DataManagement {
 			 * Transform,Health,Strength,Weight,Inventory
 			 */
 			//Transform
-			while (!line.contains("Transform")) { line = scan.next(); }
+			while (!line.contains("Transform") && scan.hasNext()) { line = scan.next(); }
 			line = scan.next();
 			log.trace("Reading Transfrom: {}", line);
 			Transform transform = gson.fromJson(line, Transform.class);
 			// Health
-			while (!line.contains("Health")) { line = scan.next(); }
+			while (!line.contains("Health") && scan.hasNext()) { line = scan.next(); }
 			line = scan.next();
 			log.trace("Reading Health: {}", line);
 			Health health = gson.fromJson(line, Health.class);
 			// Strength
-			while (!line.contains("Strength")) { line = scan.next(); }
+			while (!line.contains("Strength") && scan.hasNext()) { line = scan.next(); }
 			line = scan.next();
 			log.trace("Reading Strength: {}", line);
 			Strength strength = gson.fromJson(line, Strength.class);
 			// Weight
-			while (!line.contains("Weight")) { line = scan.next(); }
+			while (!line.contains("Weight") && scan.hasNext()) { line = scan.next(); }
 			line = scan.next();
 			log.trace("Reading Weight: {}", line);
 			Weight weight = gson.fromJson(line, Weight.class);
 			// Inventory
-			while (!line.contains("Inventory")) { line = scan.next(); }
+			while (!line.contains("Inventory") && scan.hasNext()) { line = scan.next(); }
 			line = scan.next();
 			log.trace("Reading Inventory: {}", line);
 			Inventory inventory = gson.fromJson(line, Inventory.class);
@@ -225,8 +226,8 @@ public class DataManagement {
 	}
 
 	private static void skip(Scanner scan, int count) {
-		for (int i=0; i<count; i++) {
-			String line = scan.next();
+		for (int i=0; i<count && scan.hasNext(); i++) {
+			scan.next();
 			//log.trace("Reading, skipping: {}", line);
 		}
 	}

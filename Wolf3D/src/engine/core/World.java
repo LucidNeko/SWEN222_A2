@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import engine.components.Component;
 import engine.components.Transform;
 
@@ -17,6 +20,8 @@ import engine.components.Transform;
  *
  */
 public class World implements Service{
+
+	private static final Logger log = LogManager.getLogger();
 
 	/** All the Entities in the world */
 	private Map<Integer, Entity> entities = Collections.synchronizedMap(new HashMap<Integer, Entity>());
@@ -44,6 +49,7 @@ public class World implements Service{
 	 * @return The entity.
 	 */
 	public Entity createEntity(int id, String name) {
+		log.trace("Creating entity: {} {}",id,name);
 		if(getEntity(id) != null)
 			throw new IllegalStateException("You can't create an Entity with id=" + id + " because one already exists.");
 
