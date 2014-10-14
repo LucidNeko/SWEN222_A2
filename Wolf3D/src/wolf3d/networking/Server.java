@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * @author Michael Nelson (300276118)
@@ -13,11 +14,15 @@ public class Server extends Thread{
 
 	ServerConnection[] connections;
 	DataInputStream[] dis;
+	boolean[] alive; //client on this index is alive or not.
+
 
 	private boolean listening = true;
 
 	private int index = 0;
 	private int capacity;
+
+	private int noConnected = 0; //once game has started, if this number reaches 0 close the server. (all clients have disconnected.)
 
 	/**
 	 * Construct a new server listening on a port and with a capacity.
@@ -39,6 +44,7 @@ public class Server extends Thread{
 			ss = new ServerSocket(port);
 			connections = new ServerConnection[capacity];
 			dis = new DataInputStream[capacity];
+			alive = new boolean[capacity];
 			this.capacity = capacity;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -70,6 +76,8 @@ public class Server extends Thread{
 				System.out.println("Accepted a connection from " + sock.getInetAddress() + "...");
 				connections[index] = new ServerConnection(sock);
 				dis[index] = connections[index].getInputStream();
+				alive[index] = true;
+				noConnected++;
 
 				if(index==(capacity-1)){
 					listening = false;
@@ -89,39 +97,51 @@ public class Server extends Thread{
 				e.printStackTrace();
 			}
 		}
-		//no longer listening for connections...
-		//listen for messages instead then.
-		while(!listening){
-			for(DataInputStream in: dis){
-				try {
-					if(in.available()>0){
-						String marker = in.readUTF();
-
-						if(marker.equals("transform")){
-							pushToAllClients("transform"); //marker
-							pushToAllClients(in.readInt()); //ID of entity transformed.
-							pushToAllClients(in.readFloat());
-							pushToAllClients(in.readFloat());
-							pushToAllClients(in.readFloat());
-							pushToAllClients(in.readFloat());
-							pushToAllClients(in.readFloat());
-							pushToAllClients(in.readFloat());
-						}
-						if(marker.equals("message")){
-							pushToAllClients("message");
-							pushToAllClients(in.readInt()); //ID of sender.
-							pushToAllClients(in.readUTF()); // message itself.
-						}
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 		try {
 			ss.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		//no longer listening for connections...
+		//listen for messages instead then.
+		while(!listening){
+			for(int i = 0; i<capacity; i++){
+				try {
+					if(alive[i] && dis[i].available()>0){
+						String marker = dis[i].readUTF();
+
+						if(marker.equals("transform")){
+							pushToAllClients("transform"); //marker
+							pushToAllClients(dis[i].readInt()); //ID of entity transformed.
+							pushToAllClients(dis[i].readFloat());
+							pushToAllClients(dis[i].readFloat());
+							pushToAllClients(dis[i].readFloat());
+							pushToAllClients(dis[i].readFloat());
+							pushToAllClients(dis[i].readFloat());
+							pushToAllClients(dis[i].readFloat());
+						}
+						if(marker.equals("message")){
+							pushToAllClients("message");
+							pushToAllClients(dis[i].readInt()); //ID of sender.
+							pushToAllClients(dis[i].readUTF()); // message itself.
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+
+					//dis[i].close();
+					try {
+						dis[i].close();
+						connections[i].closeSocket();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					alive[i] = false;
+					pushToAllClients("disconnect");
+					pushToAllClients(-(i+1));
+				}
+			}
 		}
 
 	}
@@ -169,11 +189,10 @@ public class Server extends Thread{
 	 * @param string
 	 */
 	public void pushToAllClients(String string) {
-		// TODO Auto-generated method stub
-		for(ServerConnection sc : connections){
-			if(sc != null){
-				if(sc.areWeAlive()){
-					sc.pushToClient(string);
+		for(int i = 0; i<capacity; i++){
+			if(alive[i]){
+				if(connections[i] != null){
+					connections[i].pushToClient(string);
 				}
 			}
 		}
@@ -184,10 +203,10 @@ public class Server extends Thread{
 	 * @param i
 	 */
 	public void pushToAllClients(int i) {
-		for(ServerConnection sc : connections){
-			if(sc != null){
-				if(sc.areWeAlive()){
-					sc.pushToClient(i);
+		for(int j = 0; j<capacity; j++){
+			if(alive[j]){
+				if(connections[j] != null){
+					connections[j].pushToClient(i);
 				}
 			}
 		}
@@ -198,10 +217,10 @@ public class Server extends Thread{
 	 * @param f
 	 */
 	public void pushToAllClients(float f) {
-		for(ServerConnection sc : connections){
-			if(sc != null){
-				if(sc.areWeAlive()){
-					sc.pushToClient(f);
+		for(int i = 0; i<capacity; i++){
+			if(alive[i]){
+				if(connections[i] != null){
+					connections[i].pushToClient(f);
 				}
 			}
 		}
