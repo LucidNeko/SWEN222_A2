@@ -9,6 +9,7 @@ import com.jogamp.newt.event.KeyEvent;
 
 import engine.components.Behaviour;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Keyboard;
 
@@ -19,11 +20,7 @@ import engine.input.Keyboard;
  *
  */
 public class Attackable extends Behaviour{
-	private World world;
-
-	public Attackable(World world){
-		this.world = world;
-	}
+	private World world = ServiceLocator.getService(World.class);
 
 	/**
 	 * Attacks the Owner of this component by the damage amount of the player
@@ -35,7 +32,7 @@ public class Attackable extends Behaviour{
 		Health enemyHealth = getOwner().getComponent(Health.class);
 		//checks if player is dead or alive
 		if(!enemyHealth.decreaseHealth(playerHealth.getDamageAmt())){
-			getOwner().attachComponent(new RotateFlyDieAnimation(world));
+			getOwner().attachComponent(new RotateFlyDieAnimation());
 //			getOwner().attachComponent(new FallDieAnimation(world));
 		}
 	}

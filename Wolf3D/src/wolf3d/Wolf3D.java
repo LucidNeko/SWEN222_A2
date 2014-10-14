@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import wolf3d.networking.Server;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
@@ -45,10 +46,10 @@ public class Wolf3D extends JFrame {
 		});
 
 		//Create the World
-		final World world = new World();
+		final World world = ServiceLocator.getService(World.class);
 
 		//create views
-		final WorldView worldView = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT, world);
+		final WorldView worldView = new WorldView(DEFAULT_GL_WIDTH, DEFAULT_GL_HEIGHT);
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(worldView);
@@ -56,7 +57,7 @@ public class Wolf3D extends JFrame {
 
 		//Build OpenGL panel.
 
-		final MiniMap minimap = new MiniMap(200, 200, world);
+		final MiniMap minimap = new MiniMap(200, 200);
 		JPanel sidePanel = new JPanel();
 		sidePanel.add(minimap);
 		this.getContentPane().add(sidePanel, BorderLayout.EAST);
@@ -76,7 +77,7 @@ public class Wolf3D extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				//the game. This is a thread. You need to start it.
-				GameDemo game = new GameDemo(world, Wolf3D.ip, Wolf3D.port);
+				GameDemo game = new GameDemo(Wolf3D.ip, Wolf3D.port);
 				game.setView(worldView); // give it the view so it can call it's display method appropriately.
 			}
 		});

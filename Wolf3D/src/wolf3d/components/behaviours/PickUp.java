@@ -13,6 +13,7 @@ import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Component;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Keyboard;
 
@@ -24,12 +25,8 @@ import engine.input.Keyboard;
  *
  */
 public class PickUp extends Behaviour {
-	World world;
+	World world = ServiceLocator.getService(World.class);
 	Vec3 outBounds = new Vec3(-100, 0, -100);
-
-	public PickUp(World world) {
-		this.world = world;
-	}
 
 	/**
 	 * Picks up the entity attached to this component and adds it to the

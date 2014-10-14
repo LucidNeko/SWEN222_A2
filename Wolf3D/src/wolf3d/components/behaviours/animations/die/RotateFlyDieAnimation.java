@@ -4,6 +4,7 @@ import wolf3d.components.Health;
 import wolf3d.components.behaviours.AILookAtController;
 import engine.components.Behaviour;
 import engine.components.Transform;
+import engine.core.ServiceLocator;
 import engine.core.World;
 
 /**
@@ -15,11 +16,7 @@ public class RotateFlyDieAnimation extends Behaviour {
 	private float speed = 0.1f; // 1.0 units per second.
 
 	private float time;
-	private World world;
-
-	public RotateFlyDieAnimation(World world){
-		this.world = world;
-	}
+	private World world = ServiceLocator.getService(World.class);
 
 	@Override
 	public void update(float delta) {
@@ -28,7 +25,7 @@ public class RotateFlyDieAnimation extends Behaviour {
 		time += delta;
 
 		AILookAtController lookAt;
-		
+
 		if((lookAt = getOwner().getComponent(AILookAtController.class)) != null){
 			getOwner().detachComponent(lookAt);
 		}

@@ -28,6 +28,7 @@ import engine.components.MeshRenderer;
 import engine.components.GL2Renderer;
 import engine.components.Transform;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.input.Mouse;
 import engine.texturing.Material;
@@ -52,8 +53,8 @@ public class EntityFactory {
 	 * @param id
 	 * @return
 	 */
-	public static Entity createPlayer(World world, String name, int id){
-
+	public static Entity createPlayer(String name, int id){
+		World world = ServiceLocator.getService(World.class);
 		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
 
@@ -71,7 +72,7 @@ public class EntityFactory {
 		player.attachComponent(Strength.class);
 		player.attachComponent(Weight.class);
 		player.attachComponent(Inventory.class);
-		player.attachComponent(new DropItem(world));
+		player.attachComponent(DropItem.class);
 		return player;
 	}
 
@@ -84,8 +85,8 @@ public class EntityFactory {
 	 * @param id
 	 * @return
 	 */
-	public static Entity createOtherPlayer(World world, String name, int id){
-
+	public static Entity createOtherPlayer(String name, int id){
+		World world = ServiceLocator.getService(World.class);
 
 		Mesh linkMesh = Resources.getMesh("link/young_link_s.obj");
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
@@ -106,7 +107,8 @@ public class EntityFactory {
 		return player;
 	}
 
-	public static Entity createFirstPersonCamera(World world, final Entity target) {
+	public static Entity createFirstPersonCamera(final Entity target) {
+		World world = ServiceLocator.getService(World.class);
 		Entity camera = world.createEntity("Camera");
 		camera.attachComponent(new Behaviour() {
 
@@ -160,7 +162,8 @@ public class EntityFactory {
 		return camera;
 	}
 
-	public static Entity createThirdPersonTrackingCamera(World world, final Entity target) {
+	public static Entity createThirdPersonTrackingCamera(final Entity target) {
+		World world = ServiceLocator.getService(World.class);
 		final Entity camera = world.createEntity("Camera");
 		final float near = 0.8f; //0.8f;
 		final float far = 1f; //1f;
@@ -232,7 +235,8 @@ public class EntityFactory {
 		return camera;
 	}
 
-	public static Entity createSkybox(World world, final Entity target) {
+	public static Entity createSkybox(final Entity target) {
+		World world = ServiceLocator.getService(World.class);
 		Entity skybox = world.createEntity("skybox");
 		skybox.attachComponent(MeshFilter.class).setMesh(Resources.getMesh("skybox.obj"));
 		skybox.attachComponent(LightlessMeshRenderer.class).setMaterial(new Material(Resources.getTexture("skybox3.png", true)));

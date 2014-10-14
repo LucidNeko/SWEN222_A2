@@ -8,12 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import engine.components.Component;
 import engine.components.Transform;
-import engine.scratch.WireframeMeshRenderer;
 
 /**
  * The world is a factory for Entities and contains all of the Entities.
@@ -138,15 +134,5 @@ public class World implements Service{
 		return id;
 	}
 
-	@Override
-	public String getName() {
-		return "World";
-	}
-
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-
-	}
 
 }

@@ -10,6 +10,7 @@ import wolf3d.GameDemo;
 import engine.common.Vec3;
 import engine.components.Transform;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 
 /**
@@ -29,14 +30,13 @@ public class Client extends Thread{
 	 * Construct a new client object connecting to the given ipAddress on the port supplied.
 	 * @param ipAddress Ip address to connect to
 	 * @param port the port to connect too.
-	 * @param world The world object that this client will make modifications to.
 	 * @param gameDemo the GameLoop that this client makes modifications to.
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	public Client(String playerName, String ipAddress, int port, World world, GameDemo gameDemo) throws UnknownHostException, IOException{
+	public Client(String playerName, String ipAddress, int port, GameDemo gameDemo) throws UnknownHostException, IOException{
 		this.sock = new Socket(ipAddress,port);
-		this.world = world;
+		this.world = ServiceLocator.getService(World.class);
 		this.gl = gameDemo;
 		this.start();
 	}

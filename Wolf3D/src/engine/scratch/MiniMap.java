@@ -24,6 +24,7 @@ import engine.components.GL2Renderer;
 import engine.components.MeshFilter;
 import engine.components.Transform;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.display.GameCanvas;
 import engine.display.View;
@@ -45,10 +46,10 @@ public class MiniMap extends GameCanvas implements View {
 
 	private final Vec3 camPos = new Vec3();
 
-	public MiniMap(int width, int height, World world) {
+	public MiniMap(int width, int height) {
 		super(width, height);
-		this.world = world;
 
+		this.world = ServiceLocator.getService(World.class);
 		camera = world.createEntity("Camera");
 		camera.attachComponent(Camera.class);
 		camera.getTransform().pitch(Mathf.degToRad(-90));

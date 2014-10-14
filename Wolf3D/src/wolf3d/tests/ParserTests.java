@@ -19,7 +19,7 @@ public class ParserTests {
 	@Test
 	public void test_passWallFileToArray(){
 		parser.parseWallFileToArray();
-		parser.createWalls(world);
+		parser.createWalls();
 	}
 
 	@Test
@@ -31,12 +31,12 @@ public class ParserTests {
 	public void test_passTextures(){
 		parser.parseTextures();
 		parser.parseWallFileToArray();
-		parser.createWalls(world);
+		parser.createWalls();
 	}
 	
 	@Test
 	public void test_createFloor(){
 		parser.parsefloorFileToArray();
-		parser.createFloor(world);
+		parser.createFloor();
 	}
 }

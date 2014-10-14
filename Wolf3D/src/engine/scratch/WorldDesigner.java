@@ -88,7 +88,7 @@ public class WorldDesigner extends JFrame {
 		views.add(scrollPane, BorderLayout.NORTH);
 		
 		//Build OpenGL panel.
-		final WorldView view = new WorldView(DEFAULT_WIDTH, DEFAULT_HEIGHT, world);
+		final WorldView view = new WorldView(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		views.add(view, BorderLayout.SOUTH);
 		
 		//Register input devices. If GLCanvas have to register to canvas.

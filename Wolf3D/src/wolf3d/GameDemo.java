@@ -32,6 +32,7 @@ import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.GameLoop;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.display.View;
 import engine.input.Keyboard;
@@ -62,13 +63,12 @@ public class GameDemo extends GameLoop {
 
 	/**
 	 * Create a new GameDemo with the given world as it's world.
-	 * @param world The world.
 	 */
-	public GameDemo(World world, String ip, int port) {
+	public GameDemo(String ip, int port) {
 		super(FPS, FUPS);
-		this.world = world;
+		this.world = ServiceLocator.getService(World.class);
 		try {
-			client = new Client("Joe",ip,port,world, this);
+			client = new Client("Joe",ip,port,this);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,15 +97,15 @@ public class GameDemo extends GameLoop {
 	 */
 	public void createEntities() {
 		Parser parser = new Parser("map00/");
-		parser.createEntities(world, player);
+		parser.createEntities(player);
 
 		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
-		player.attachComponent(new DropItem(world));
+		player.attachComponent(DropItem.class);
 
 
-		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
-		final Camera c2 = EntityFactory.createFirstPersonCamera(world, player).getComponent(Camera.class);//
+		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
+		final Camera c2 = EntityFactory.createFirstPersonCamera(player).getComponent(Camera.class);//
 
 		view.setCamera(c1);
 
@@ -127,7 +127,7 @@ public class GameDemo extends GameLoop {
 //		camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
-		Entity skybox = EntityFactory.createSkybox(world, player);
+		Entity skybox = EntityFactory.createSkybox(player);
 
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
 		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
@@ -137,7 +137,7 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(MeshFilter.class).setMesh(testMesh);
 		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
 		test.attachComponent(ProximitySensor.class).setTarget(player);
-		test.attachComponent(new PickUp(world));
+		test.attachComponent(PickUp.class);
 		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
@@ -160,7 +160,7 @@ public class GameDemo extends GameLoop {
 //		teddy.attachComponent(Weight.class);
 		//testing attack
 		teddy.attachComponent(Health.class);
-		teddy.attachComponent(new Attackable(world));
+		teddy.attachComponent(Attackable.class);
 
 		teddy.attachComponent(HealthFlash.class);
 
@@ -228,11 +228,11 @@ public class GameDemo extends GameLoop {
 
 
 	public void createPlayer(int ID){
-		player = EntityFactory.createPlayer(world, "Player", ID);
+		player = EntityFactory.createPlayer("Player", ID);
 	}
 
 	public void createOtherPlayer(int ID){
-		Entity other = EntityFactory.createOtherPlayer(world, "other", ID);
+		Entity other = EntityFactory.createOtherPlayer("other", ID);
 		other.getTransform().translate(1, 0, 1);
 	}
 

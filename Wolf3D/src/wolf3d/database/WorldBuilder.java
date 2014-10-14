@@ -54,16 +54,16 @@ public class WorldBuilder {
 	public WorldBuilder(String mapDirName) {
 		this.world = new World();
 		parser = new Parser(mapDirName);
-		parser.createEntities(world, player);
+		parser.createEntities(player);
 	}
 
 	public Entity createPlayer(int uniqueID, String name, Transform transform,
 			Health health, Strength strength, Weight weight, Inventory inventory) {
 
-		Entity player = EntityFactory.createPlayer(world, name, uniqueID);
+		Entity player = EntityFactory.createPlayer(name, uniqueID);
 		player.attachComponent(parser.getWallCollisionComponent());
-		player.attachComponent(new DropItem(world));
-		parser.createDoors(world, player);
+		player.attachComponent(DropItem.class);
+		parser.createDoors(player);
 //		camera = setCamera();
 //		view.setCamera(camera);
 
@@ -95,7 +95,7 @@ public class WorldBuilder {
 
 	public void createDefaultObjects() {
 
-		Entity skybox = EntityFactory.createSkybox(world, player);
+		Entity skybox = EntityFactory.createSkybox(player);
 
 		//motorbike
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
@@ -106,7 +106,7 @@ public class WorldBuilder {
 		test.attachComponent(MeshFilter.class).setMesh(testMesh);
 		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
 		test.attachComponent(ProximitySensor.class).setTarget(player);
-		test.attachComponent(new PickUp(world));
+		test.attachComponent(new PickUp());
 		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
@@ -123,7 +123,7 @@ public class WorldBuilder {
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
 		teddy.attachComponent(Health.class);
-		teddy.attachComponent(new Attackable(world));
+		teddy.attachComponent(Attackable.class);
 	}
 
 	public World getWorld(){
@@ -135,7 +135,7 @@ public class WorldBuilder {
 	 */
 	public void setCamera(){
 		Entity player = world.getEntity("Player").get(0);
-		camera = EntityFactory.createThirdPersonTrackingCamera(world, player).getComponent(Camera.class);
+		camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
 		view.setCamera(camera);
 	}
 }

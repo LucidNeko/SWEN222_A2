@@ -9,6 +9,7 @@ import com.jogamp.newt.event.KeyEvent;
 import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.TempEntityDef;
 import engine.core.World;
 import engine.input.Keyboard;
@@ -21,11 +22,7 @@ import engine.input.Keyboard;
  *
  */
 public class DropItem extends Behaviour {
-	World world;
-
-	public DropItem(World world) {
-		this.world = world;
-	}
+	World world = ServiceLocator.getService(World.class);
 
 	/**
 	 * Drops the given entity in the world on the player current position and

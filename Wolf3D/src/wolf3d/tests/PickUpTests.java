@@ -23,17 +23,17 @@ public class PickUpTests {
 		player = EntityFactory.createPlayer(world, "Player", -1);
 		item1 = world.createEntity("motorbike");
 		item1.attachComponent(ProximitySensor.class).setTarget(player);
-		item1.attachComponent(new PickUp(world));
+		item1.attachComponent(new PickUp());
 		item1.attachComponent(new Weight(100));
 
 		item2 = world.createEntity("bottle");
 		item2.attachComponent(ProximitySensor.class).setTarget(player);
-		item2.attachComponent(new PickUp(world));
+		item2.attachComponent(new PickUp());
 		item2.attachComponent(Weight.class);
 
 		item3 = world.createEntity("jar");
 		item3.attachComponent(ProximitySensor.class).setTarget(player);
-		item3.attachComponent(new PickUp(world));
+		item3.attachComponent(new PickUp());
 		item3.attachComponent(Weight.class);
 	}
 	/**

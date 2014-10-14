@@ -6,6 +6,7 @@ import wolf3d.components.behaviours.WalkForward;
 import engine.common.Mathf;
 import engine.components.Behaviour;
 import engine.components.Transform;
+import engine.core.ServiceLocator;
 import engine.core.World;
 
 /**
@@ -20,11 +21,7 @@ public class FallDieAnimation extends Behaviour {
 	private Transform startPos = null;
 
 	private float time;
-	private World world;
-
-	public FallDieAnimation(World world) {
-		this.world = world;
-	}
+	private World world = ServiceLocator.getService(World.class);
 
 	@Override
 	public void update(float delta) {

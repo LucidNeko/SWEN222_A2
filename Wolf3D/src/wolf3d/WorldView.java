@@ -16,6 +16,7 @@ import engine.components.GL2Renderer;
 import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.display.GameCanvas;
 import engine.display.View;
@@ -39,9 +40,9 @@ public class WorldView extends GameCanvas implements View{
 	private Camera camera;
 
 	/** Create a new WorldView over the given World. */
-	public WorldView(int width, int height, World world) {
+	public WorldView(int width, int height) {
 		super(width, height);
-		this.world = world;
+		this.world = ServiceLocator.getService(World.class);
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class WorldView extends GameCanvas implements View{
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		gl.glEnable(GL_LIGHTING);
-		
+
 		gl.glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.75f);
 		gl.glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.25f);
 		gl.glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
@@ -110,16 +111,16 @@ public class WorldView extends GameCanvas implements View{
 			renderEntities(gl, world.getEntities());
 		gl.glPopMatrix();
 	}
-	
+
 	private void renderEntities(GL2 gl, Collection<Entity> entities) {
 		List<Entity> transparent = new LinkedList<Entity>();
 		for(Entity entity : entities) {
 			Transform t = entity.getTransform();
-			if(t == null) { 
+			if(t == null) {
 				log.error("Entity {} doesn't have a Transform!", entity);
 				continue; //next entity.
 			}
-			
+
 //			//skip entities with transparency.
 //			MeshRenderer mr = entity.getComponent(MeshRenderer.class);
 //			if(mr != null) {
@@ -134,7 +135,7 @@ public class WorldView extends GameCanvas implements View{
 //					}
 //				}
 //			}
-			
+
 			//if not skipped render.
 			gl.glPushMatrix();
 				t.applyTransform(gl);
@@ -144,11 +145,11 @@ public class WorldView extends GameCanvas implements View{
 //				renderEntities(gl, entity.getChildren()); //recurse through children. Compounding transforms.
 			gl.glPopMatrix();
 		}
-		
+
 //		//now we go back and render the transparent ones last so they overlap properly.
 //		for(Entity e : transparent) {
 //			Transform t = e.getTransform();
-//			
+//
 //			gl.glPushMatrix();
 //				t.applyTransform(gl);
 //				for(GL2Renderer renderer : e.getComponents(GL2Renderer.class)) {

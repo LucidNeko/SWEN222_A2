@@ -14,6 +14,7 @@ import engine.common.Mathf;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
 import engine.core.Entity;
+import engine.core.ServiceLocator;
 import engine.core.World;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
@@ -23,7 +24,7 @@ import engine.util.Resources;
 /**
  * This class takes in the root directory for all files to be created
  * in the world, this follows a strict format to be run correctly
- * 
+ *
  * The format is :
  * root>
  * 		ceilingTextures>
@@ -49,6 +50,7 @@ public class Parser {
 	private Map<Integer, Cell[][]> textures = new HashMap<Integer, Cell[][]>();
 
 	private Entity player;
+	private World world;
 
 	private int width, height;
 
@@ -71,6 +73,7 @@ public class Parser {
 		this.floorTexturePath = map + "floorTextures/";
 		this.ceilingTexturePath = map + "ceilingTextures/";
 		this.textureFilesPath = map+ "textureFiles/";
+		this.world = ServiceLocator.getService(World.class);
 	}
 
 	/**
@@ -108,27 +111,24 @@ public class Parser {
 		specialDoors = parseFileToArray(specialDoorFilePath);
 	}
 
-	public void createEntities(World world, Entity player){
+	public void createEntities(Entity player){
 		parseWallFileToArray();
 		parseDoorFileToArray();
 		parsefloorFileToArray();
 		parseCeilingFileToArray();
 		parseSpecialDoorsFileToArray();
 		parseTextures();
-		createWalls(world);
-		createFloor(world);
-		createCeiling(world);
-		createDoors(world, player);
-		createSpecialDoors(world, player);
+		createWalls();
+		createFloor();
+		createCeiling();
+		createDoors(player);
+		createSpecialDoors(player);
 	}
 
 	/**
 	 * creates all walls in the world
-	 *
-	 * @param world
-	 *            the world in which the walls are added to
 	 */
-	public void createCeiling(World world) {
+	public void createCeiling() {
 		String type = "Ceilings";
 		float width = 2;
 		float height = 2;
@@ -138,7 +138,7 @@ public class Parser {
 			for (col = 0; col < floor[row].length; col++) {
 				float x = col * width + halfWidth;
 				float z = row * height + halfHeight;
-				Entity ceiling = addObject(world, type, "");
+				Entity ceiling = addObject(type, "");
 				if (ceiling != null) {
 					ceiling.getTransform().translate(x, topY, z);
 					ceiling.getTransform().pitch(Mathf.degToRad(-90));
@@ -150,34 +150,25 @@ public class Parser {
 
 	/**
 	 * creates all walls in the world
-	 *
-	 * @param world
-	 *            the world in which the walls are added to
 	 */
-	public void createWalls(World world) {
-		create3DObjects(world, walls, "Walls");
+	public void createWalls() {
+		create3DObjects(walls, "Walls");
 	}
 
 	/**
 	 * Creates all normal doors in the world
-	 *
-	 * @param world
-	 *            the world in which the doors are added to
 	 */
-	public void createDoors(World world, Entity player) {
+	public void createDoors(Entity player) {
 		this.player = player;
-		create3DObjects(world, doors, "Doors");
+		create3DObjects(doors, "Doors");
 	}
 
 	/**
 	 * Creates all normal doors in the world
-	 *
-	 * @param world
-	 *            the world in which the doors are added to
 	 */
-	public void createSpecialDoors(World world, Entity player) {
+	public void createSpecialDoors(Entity player) {
 		this.player = player;
-		create3DObjects(world, specialDoors, "SpecialDoors");
+		create3DObjects(specialDoors, "SpecialDoors");
 	}
 
 	/**
@@ -224,11 +215,8 @@ public class Parser {
 
 	/**
 	 * Creates the floor for the given world
-	 *
-	 * @param world
-	 *            the world that the floor will be added to
 	 */
-	public void createFloor(World world) {
+	public void createFloor() {
 		String type = "Floor";
 		float width = 2;
 		float height = 2;
@@ -238,7 +226,7 @@ public class Parser {
 			for (col = 0; col < floor[row].length; col++) {
 				float x = col * width + halfWidth;
 				float z = row * height + halfHeight;
-				Entity floor = addObject(world, type, "");
+				Entity floor = addObject(type, "");
 				floor.getTransform().translate(x, bottomY, z);
 				floor.getTransform().pitch(Mathf.degToRad(90));
 			}
@@ -247,11 +235,8 @@ public class Parser {
 
 	/**
 	 * Creates all the walls in the given world
-	 *
-	 * @param world
-	 *            the world that the walls will be added to
 	 */
-	private void create3DObjects(World world, Cell[][] processArray, String type) {
+	private void create3DObjects(Cell[][] processArray, String type) {
 		// +x-->
 		// z
 		// |
@@ -268,27 +253,27 @@ public class Parser {
 				z += height / 2;
 				if (processArray[row][col].hasNorth()) {
 					z -= halfHeight;
-					Entity object = addObject(world, type, "North");
+					Entity object = addObject(type, "North");
 					object.getTransform().translate(x, 0, z);
 					z += halfHeight;
 				}
 				if (processArray[row][col].hasEast()) {
 					x += halfWidth;
-					Entity object = addObject(world, type, "East");
+					Entity object = addObject(type, "East");
 					object.getTransform().translate(x, 0, z);
 					object.getTransform().rotateY(Mathf.degToRad(90));
 					x -= halfWidth;
 				}
 				if (processArray[row][col].hasSouth()) {
 					z += halfHeight;
-					Entity object = addObject(world, type, "South");
+					Entity object = addObject(type, "South");
 					object.getTransform().translate(x, 0, z);
 					object.getTransform().rotateY(Mathf.degToRad(180));
 					z -= halfHeight;
 				}
 				if (processArray[row][col].hasWest()) {
 					x -= halfWidth;
-					Entity object = addObject(world, type, "West");
+					Entity object = addObject(type, "West");
 					object.getTransform().translate(x, 0, z);
 					object.getTransform().rotateY(Mathf.degToRad(-90));
 					x += halfWidth;
@@ -299,26 +284,24 @@ public class Parser {
 
 	/**
 	 * Adds an entity of the given type to the world
-	 *
-	 * @param world
-	 *            the world for the entity to be added to
 	 * @param type
 	 *            the type of entity that what gets created
+	 *
 	 * @return the newly created entity or null if the type does not match a
 	 *         valid input
 	 */
-	private Entity addObject(World world, String type, String dir) {
+	private Entity addObject(String type, String dir) {
 		switch (type) {
 		case "Walls":
-			return addWall(world, dir);
+			return addWall(dir);
 		case "Doors":
-			return addDoor(world, dir);
+			return addDoor(dir);
 		case "SpecialDoors":
-			return addSpecialDoor(world, dir);
+			return addSpecialDoor(dir);
 		case "Floor":
-			return addFloor(world);
+			return addFloor();
 		case "Ceilings":
-			return addCeiling(world);
+			return addCeiling();
 		}
 		return null;
 	}
@@ -326,11 +309,9 @@ public class Parser {
 	/**
 	 * Adds a floor panel to the given world with a Texture, Mesh, and Material
 	 *
-	 * @param world
-	 *            the world for the floor to be added to
 	 * @return the newly created floor panel
 	 */
-	private Entity addCeiling(World world) {
+	private Entity addCeiling() {
 		Texture floorTex;
 		floorTex = getCeilingTexture();
 		if (floorTex == null) {
@@ -348,11 +329,9 @@ public class Parser {
 	/**
 	 * Adds a floor panel to the given world with a Texture, Mesh, and Material
 	 *
-	 * @param world
-	 *            the world for the floor to be added to
 	 * @return the newly created floor panel
 	 */
-	private Entity addFloor(World world) {
+	private Entity addFloor() {
 		Texture floorTex = getFloorTexture();
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Entity floor = world.createEntity("floor");
@@ -366,11 +345,9 @@ public class Parser {
 	/**
 	 * Adds a Wall to the given world with a Texture, Mesh, and Material
 	 *
-	 * @param world
-	 *            the world for the wall to be added to
 	 * @return the newly created wall
 	 */
-	private Entity addWall(World world, String dir) {
+	private Entity addWall(String dir) {
 		// the texture for the wall
 		Texture wallTex = getTexture(dir);
 		// setting default if there is no texture specified in map
@@ -390,11 +367,9 @@ public class Parser {
 	/**
 	 * Adds a Door to the given world with a Texture, Mesh, and Material
 	 *
-	 * @param world
-	 *            the world for the door to be added to
 	 * @return the newly created door
 	 */
-	private Entity addSpecialDoor(World world, String dir) {
+	private Entity addSpecialDoor(String dir) {
 		// the texture for the Door
 		Texture doorTex = getTexture(dir);
 		Mesh mesh = Resources.getMesh("wall.obj");
@@ -411,11 +386,9 @@ public class Parser {
 	/**
 	 * Adds a Door to the given world with a Texture, Mesh, and Material
 	 *
-	 * @param world
-	 *            the world for the door to be added to
 	 * @return the newly created door
 	 */
-	private Entity addDoor(World world, String dir) {
+	private Entity addDoor(String dir) {
 		// the texture for the Wall
 		Texture doorTex = getTexture(dir);
 		Mesh mesh = Resources.getMesh("wall.obj");
