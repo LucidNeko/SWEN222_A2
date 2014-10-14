@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import wolf3d.EntityFactory;
 import wolf3d.components.behaviours.WASDCollisions;
 import wolf3d.components.behaviours.WASDWalking;
 import wolf3d.world.Cell;
@@ -42,11 +43,19 @@ public class ComponentTests {
 		testmap[1][1]=new Cell(15);
 	}
 
+	//////////////////////////////
+	//
+	// Actual Tests
+	//
+	//////////////////////////////
+
+	//set MovePlayer to public to test, this test should fail or be an error
 	@Test
 	public void test(){
 		world = new World();
-		e = world.createEntity(0, "Test");
-		e.attachComponent(new WASDWalking());
-		e.attachComponent(new WASDCollisions(testmap, testdoormap));
+		Entity player = EntityFactory.createPlayer("Player", -1);
+		player.attachComponent(new WASDWalking());
+		player.attachComponent(new WASDCollisions(testmap, testdoormap));
+		player.getComponent(type);
 	}
 }
