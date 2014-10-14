@@ -11,5 +11,5 @@
 "Weight"
 {"weight":10,"changed":false,"obs":[]}
 "Inventory"
-{"items":[928,929,930],"changed":false,"obs":[]}
+{"items":[930,931,932],"changed":false,"obs":[]}
 }
