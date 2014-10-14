@@ -21,10 +21,20 @@ import engine.texturing.Texture;
 import engine.util.Resources;
 
 /**
- * This is responsible for turning the text file containing all the walls for
- * the world into objects and creating a 2D array which can be used for
- * collision detection
- *
+ * This class takes in the root directory for all files to be created
+ * in the world, this follows a strict format to be run correctly
+ * 
+ * The format is :
+ * root>
+ * 		ceilingTextures>
+ * 		floorTexture>
+ * 		textureFiles>
+ * 		wallTextures>
+ * 		ceilings.txt
+ * 		doors.txt
+ * 		floors.txt
+ * 		specialDoors.txt
+ * 		walls.txt
  * @author Sameer Magan
  *
  */
