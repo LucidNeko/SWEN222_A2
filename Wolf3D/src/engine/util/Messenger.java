@@ -13,13 +13,10 @@ import org.apache.logging.log4j.Logger;
 public class Messenger implements Service {
 	private static final Logger log = LogManager.getLogger();
 
-	private final JLabel label;
+	private final JLabel label = new JLabel();
 
-	public Messenger(JLabel label) {
-		if(label == null)
-			throw new IllegalArgumentException("label cannot be null");
-
-		this.label = label;
+	public JLabel getLabel() {
+		return label;
 	}
 
 	/**
