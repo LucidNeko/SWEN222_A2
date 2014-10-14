@@ -88,6 +88,10 @@ public class ServerConnection extends Thread{
 		return in;
 	}
 
+	/**
+	 * Public method to close the socket. (i.e. when server shutsdown a connection.)
+	 * @throws IOException
+	 */
 	public void closeSocket() throws IOException {
 		soc.close();
 	}

@@ -137,6 +137,12 @@ public class Server extends Thread{
 
 	}
 
+	/**
+	 * This method will close the connection at index specified.
+	 * The alive array will have false at the index which is removed
+	 * and the dis array and connections array will be closed and set to null.
+	 * @param index Index of connection to close.
+	 */
 	private void closeConnection(int index){
 		//dis[index].readFully(new byte[dis[index].available()]);
 		try {
