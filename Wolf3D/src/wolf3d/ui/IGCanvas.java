@@ -96,8 +96,8 @@ public class IGCanvas extends JPanel{
 					if(e.getY() < loadBot && e.getY() > loadTop){
 						//Load Game
 
-						Client c = new Client();
-						DataManagement.loadWorld("defaultWorld.txt", playerId);
+						//Client c = new Client(playerName, ipAddress, port, gameDemo, fname);
+						//DataManagement.loadWorld("defaultWorld.txt");
 						System.out.println("Load");
 					}
 					if(e.getY() < exitBot && e.getY() > exitTop){
