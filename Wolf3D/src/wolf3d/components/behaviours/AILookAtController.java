@@ -41,7 +41,7 @@ public class AILookAtController extends Behaviour {
 		Vec3 closestPos = new Vec3(1, 1, 1).mulLocal(Float.MAX_VALUE);
 		for(Entity p: players){
 			Vec3 playerPos = p.getTransform().getPosition();
-			if(enemyPos.sub(playerPos).length() < closestPos.length()){
+			if(enemyPos.sub(playerPos).length() < enemyPos.sub(closestPos).length()){
 				closestPos = playerPos;
 			}
 		}
