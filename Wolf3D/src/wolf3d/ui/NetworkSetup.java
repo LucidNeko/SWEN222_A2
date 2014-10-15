@@ -15,7 +15,8 @@ import javax.swing.JTextField;
 
 /**
  * @author Simon Brannigan
- *
+ * Creates a frame that takes a string and an int.
+ * These are stored when the execute is selected.
  */
 public class NetworkSetup extends JFrame {
 	private String ip;
@@ -25,6 +26,11 @@ public class NetworkSetup extends JFrame {
 		NetworkSetup ns = new NetworkSetup();
 	}
 
+	/**
+	 * @author Simon Brannigan
+	 * Creates a frame that takes a string and an int.
+	 * These are stored when the execute is selected.
+	 */
 	public NetworkSetup(){
 		/*Basic frame setup*/
 		JFrame frame = new JFrame();
@@ -73,5 +79,19 @@ public class NetworkSetup extends JFrame {
 
         frame.add(panel);
         frame.setVisible(true);
+	}
+
+	/**
+	 * @return the ip
+	 */
+	public String getIp() {
+		return ip;
+	}
+
+	/**
+	 * @return the port
+	 */
+	public int getPort() {
+		return port;
 	}
 }
