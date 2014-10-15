@@ -129,7 +129,7 @@ public class Client extends Thread implements Service{
 						break;
 
 					case "begin":
-						//gl.createEntities();
+						//gl.createEntities(); //test...
 						gl.getWorldsPlayer();
 						gl.start();
 						break;

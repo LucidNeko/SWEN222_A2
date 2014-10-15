@@ -89,9 +89,9 @@ public class GameDemo extends GameLoop {
 		}
 	}
 
-	public void setPlayer(Entity e) {
-		this.player = e;
-	}
+//	public void setPlayer(Entity e) {
+//		this.player = e;
+//	}
 
 	/**
 	 * Set the View that is the renderer of the world. So we can call display()
@@ -107,10 +107,10 @@ public class GameDemo extends GameLoop {
 
 	public void getWorldsPlayer(){
 		System.out.println("LENGTH OF PLAYER LIST: " + ServiceLocator.getService(World.class).getEntity("Player").size());
-		if (player == null) {
+//		if (player == null) {
 			player = ServiceLocator.getService(World.class).getEntity("Player")
 					.get(0);
-		}
+//		}
 	}
 
 	/*
