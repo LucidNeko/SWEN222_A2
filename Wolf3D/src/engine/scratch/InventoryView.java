@@ -39,7 +39,7 @@ public class InventoryView extends JComponent {
 
 	public InventoryView() {
 		super();
-		this.setPreferredSize(new Dimension(200,400));
+		this.setPreferredSize(new Dimension(200,250));
 	}
 
 	protected void paintComponent(Graphics g) {
