@@ -39,14 +39,7 @@ public class RotateFlyDieAnimation extends Behaviour {
 			t.fly((time -4)*speed);
 		}
 		if(time > 10){
-			try {
-				client.sendToServer("destroy");
-				client.sendToServer(getOwner().getID());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//world.destroyEntity(getOwner().getID());
+			world.destroyEntity(getOwner().getID());
 		}
 	}
 }

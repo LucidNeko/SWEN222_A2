@@ -93,8 +93,9 @@ public class Wolf3D extends JFrame {
 //		});
 //		c.setFocusable(false);
 
-//		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300));
+//		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300, game));
 //		this.getGlassPane().setVisible(true);
+
 		this.getContentPane().add(mainPanel);
 
 		//Build OpenGL panel.
@@ -110,17 +111,16 @@ public class Wolf3D extends JFrame {
 		Mouse.register(worldView);
 		Mouse.setCursor(Mouse.CURSOR_INVISIBLE);
 
-
+		//footer panel
 		JPanel footer = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-//				g.setColor(new Color(255, 0, 0, 64));
-//				g.fillRect(0, 0, this.getWidth(), this.getHeight());
+				g.setColor(new Color(0, 0, 255, 64));
+				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			}
 		};
 		footer.setPreferredSize(new Dimension(800, 20));
 		footer.add(ServiceLocator.getService(Messenger.class).getLabel());
-
 		this.getContentPane().add(footer, BorderLayout.SOUTH);
 
 		//Pack and display window.

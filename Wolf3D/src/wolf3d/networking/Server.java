@@ -125,10 +125,6 @@ public class Server extends Thread{
 							pushToAllClients(dis[i].readInt()); //ID of sender.
 							pushToAllClients(dis[i].readUTF()); // message itself.
 						}
-						if(marker.equals("destroy")){
-							pushToAllClients("destroy");
-							pushToAllClients(dis[i].readInt());
-						}
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

@@ -5,23 +5,31 @@ package wolf3d.ui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import wolf3d.GameDemo;
+import wolf3d.Wolf3D;
+import wolf3d.database.DataManagement;
 import engine.util.Resources;
 
 /**
- * @author brannisimo
+ * @author Simon Brannigan
+ * The in game canvas is for displaying the in game options without a menubar
  *
  */
 public class IGCanvas extends JPanel{
+
 	private static int height;
 	private static int width;
 	private static BufferedImage options;
+	private static GameDemo gd;
 
 	private static double rightBound;
 	private static double leftBound;
@@ -40,8 +48,9 @@ public class IGCanvas extends JPanel{
 	private static double exitBot;
 
 
-	public IGCanvas(int width, int height){
+	public IGCanvas(int width, int height, GameDemo gd){
 		super();
+		this.gd=gd;
 		this.height=height;
 		this.width=width;
 
@@ -61,17 +70,7 @@ public class IGCanvas extends JPanel{
 		exitTop = (49.0/60.0)*height;
 		exitBot = (53.0/60.0)*height;
 		this.setPreferredSize(new Dimension(width, height));
-		this.addMouseListener(new MouseListener(){
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-
+		this.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				System.out.println("X: "+ e.getX() + " Y: "+ e.getY());
@@ -95,23 +94,15 @@ public class IGCanvas extends JPanel{
 					}
 					if(e.getY() < loadBot && e.getY() > loadTop){
 						//Load Game
+						DataManagement.loadWorld("save.txt");
 						System.out.println("Load");
 					}
 					if(e.getY() < exitBot && e.getY() > exitTop){
 						//System.exit(0);
 						System.out.println("Exit");
+						confirmExit();
 					}
 				}
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 		try {
@@ -122,6 +113,19 @@ public class IGCanvas extends JPanel{
 			e.printStackTrace();
 		}
 		this.repaint();
+	}
+
+	/**
+	 * Copied from Wolf3D
+	 */
+	private void confirmExit(){
+		if(JOptionPane.showConfirmDialog(IGCanvas.this,
+				"Are you sure you want to Exit?",
+				"Are you sure you want to Exit?",
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			System.exit(0);
+			gd.shutdownClient();
+		}
 	}
 
 	protected void paintComponent(Graphics g) {

@@ -70,8 +70,7 @@ public class Client extends Thread implements Service{
 							if(e!=null){
 								Transform t = e.getTransform();
 								t.setPositionNoFlag(in.readFloat(),in.readFloat(), in.readFloat());
-								Vec3 tPos = t.getPosition();
-								t.lookAt(tPos.add(new Vec3(in.readFloat(), in.readFloat(), in.readFloat())));
+								t.lookAtDirectionNoFlag(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
 							}
 							else{
 								for(int i = 0; i<6; i++){
@@ -103,9 +102,6 @@ public class Client extends Thread implements Service{
 						Entity e = world.getEntity(who);
 						e.detachComponent(e.getComponent(MeshRenderer.class));
 						break;
-
-					case "destroy":
-						world.destroyEntity(in.readInt());
 
 					case "begin":
 						gl.createEntities();
