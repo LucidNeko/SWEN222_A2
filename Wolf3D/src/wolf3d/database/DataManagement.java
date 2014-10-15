@@ -212,7 +212,7 @@ private static String getSaveFpath() {
 //	path = path.substring(0, path.length()-1);
 //	path = path+"Wolf3D/src/wolf3d/assets/saves/";
 //	return path;
-	return Resources.getURL("saves").getPath();
+	return Resources.getURL("saves/").getPath();
 }
 
 /*
