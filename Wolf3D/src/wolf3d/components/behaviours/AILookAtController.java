@@ -35,6 +35,7 @@ public class AILookAtController extends Behaviour {
 
 		if(target == null) return;
 
+		//Sets the target to be the closest player
 		List<Entity> players = world.getEntity("Player");
 		players.addAll(world.getEntity("other"));
 		Vec3 enemyPos = getOwner().getTransform().getPosition();

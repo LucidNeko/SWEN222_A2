@@ -113,6 +113,19 @@ public class Parser {
 		teddys = parseFileToArray(teddyFilePath);
 	}
 
+	public void registerMapData() {
+		// puts all of specialDoors doors into doors array
+		for (int row = 0; row < doors.length; row++) {
+			for (int col = 0; col < doors[row].length; col++) {
+				if (specialDoors[row][col].getWalls() != 0) {
+					doors[row][col].setWalls(specialDoors[row][col].getWalls());
+				}
+
+			}
+		}
+		ServiceLocator.registerService(new MapData(walls, doors));
+	}
+
 	public void createEntities(Entity player) {
 		this.player = player;
 
@@ -129,6 +142,7 @@ public class Parser {
 		createDoors();
 		createSpecialDoors();
 		createTeddys();
+		registerMapData();
 	}
 
 	/**
@@ -369,7 +383,7 @@ public class Parser {
 			return null;
 		}
 		Mesh mesh = Resources.getMesh("wall.obj");
-		Entity ceiling = world.createEntity("floor");
+		Entity ceiling = world.createEntity("Ceiling");
 
 		Material material = new Material(floorTex, Color.WHITE);
 		ceiling.attachComponent(MeshFilter.class).setMesh(mesh);
@@ -385,7 +399,7 @@ public class Parser {
 	private Entity addFloor() {
 		Texture floorTex = getFloorTexture();
 		Mesh mesh = Resources.getMesh("wall.obj");
-		Entity floor = world.createEntity("floor");
+		Entity floor = world.createEntity("Floor");
 
 		Material material = new Material(floorTex, Color.WHITE);
 		floor.attachComponent(MeshFilter.class).setMesh(mesh);
@@ -409,7 +423,7 @@ public class Parser {
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(wallTex, Color.WHITE);
 
-		Entity wall = world.createEntity("wall");
+		Entity wall = world.createEntity("Wall");
 		wall.attachComponent(MeshFilter.class).setMesh(mesh);
 		wall.attachComponent(MeshRenderer.class).setMaterial(material);
 		return wall;
@@ -426,7 +440,7 @@ public class Parser {
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(doorTex, Color.WHITE);
 
-		Entity door = world.createEntity("door");
+		Entity door = world.createEntity("SpecialDoor");
 		door.attachComponent(MeshFilter.class).setMesh(mesh);
 		door.attachComponent(MeshRenderer.class).setMaterial(material);
 		door.attachComponent(ProximitySensor.class).setTarget(player);
@@ -445,7 +459,7 @@ public class Parser {
 		Mesh mesh = Resources.getMesh("wall.obj");
 		Material material = new Material(doorTex, Color.WHITE);
 
-		Entity door = world.createEntity("door");
+		Entity door = world.createEntity("Door");
 		door.attachComponent(MeshFilter.class).setMesh(mesh);
 		door.attachComponent(MeshRenderer.class).setMaterial(material);
 		door.attachComponent(ProximitySensor.class).setTarget(player);
