@@ -72,19 +72,19 @@ public class Server extends Thread{
 			pushToAllClients((capacity-index),-5);
 			System.out.println("Server listening for " + (capacity-index) + " more connections...");
 
-			for(DataInputStream is : dis){
-				if(is!=null){
-					String s;
-					try {
-						s = is.readUTF();
-
-						if(s.equals("loadmode")){
-							loadmode = true;
-						}}catch (IOException e) {
-							e.printStackTrace();
-						}
-				}
-			}
+//			for(DataInputStream is : dis){
+//				if(is!=null){
+//					String s;
+//					try {
+//						s = is.readUTF();
+//
+//						if(s.equals("loadmode")){
+//							loadmode = true;
+//						}}catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//				}
+//			}
 			Socket sock;
 			try {
 				sock = ss.accept();
@@ -258,7 +258,7 @@ public class Server extends Thread{
 	 */
 	public void pushToAllClients(int i, int exclude) {
 		for(int j = 0; j<capacity; j++){
-			if(alive[j]&& i!=exclude){
+			if(alive[j]&& j!=exclude){
 				if(connections[j] != null){
 					try {
 						connections[j].pushToClient(i);
