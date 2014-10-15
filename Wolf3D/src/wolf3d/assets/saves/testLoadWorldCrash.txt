@@ -11,5 +11,5 @@
 "Weight"
 {"weight":10,"changed":false,"obs":[]}
 "Inventory"
-{"items":[1863,1864,1865],"changed":false,"obs":[]}
+{"items":[1961,1962,1963],"changed":false,"obs":[]}
 }

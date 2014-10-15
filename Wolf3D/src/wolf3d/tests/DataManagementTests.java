@@ -93,7 +93,7 @@ public class DataManagementTests {
 	public void testLoadWorldPlayerPos() {
 		DataManagement.saveWorld("testLoadWorldCrash.txt", world);
 		world.destroyEntity(-1);
-		World world = DataManagement.loadWorld("testLoadWorldCrash.txt");
+		World world = DataManagement.loadWorld("testLoadWorldCrash.txt",-1);
 		Entity player = world.getEntity("Player").get(0);
 
 		assertTrue(player.getComponent(Transform.class).getPosition().getX() == 10
