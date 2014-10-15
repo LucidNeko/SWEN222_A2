@@ -106,7 +106,7 @@ public class Server extends Thread{
 					//let the clients know the game can now begin.
 						if(capacity > 1){
 							assignIDs();
-							pushToAllClients("begin",-5);
+							pushToAllClients("beginMultiplayer",-5);
 						}
 						else{
 					pushToAllClients("load",-5);

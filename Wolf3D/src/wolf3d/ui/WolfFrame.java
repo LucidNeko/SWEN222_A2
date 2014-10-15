@@ -12,7 +12,7 @@ import wolf3d.database.DataManagement;
 
 /**
  * @author brannisimo
- * WolfFrame is the startup screen
+ * WolfFrame is the startup screen, click help to 
  */
 public class WolfFrame extends JFrame implements MouseListener{
 	private static final long serialVersionUID = 2267807810965738503L;
@@ -20,7 +20,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 	private static final int height = 600;
 	private static final int width = 800;
 	private static JFrame f;
-	private static Boolean t=false;
+	private static Boolean t=false; //the toggle for whether to display the help or menu
 
 	public WolfFrame(){
 		/*Basic frame setup*/
@@ -58,35 +58,49 @@ public class WolfFrame extends JFrame implements MouseListener{
 		double leftBound = ((2.0/5.0)*width);
 		double rightBound = ((47.0/80.0)*width);
 
-		/*Made the bounds scalable for later use*/
-		if(x<leftBound || x>rightBound || y<topBound || y>botBound){ // Gotta move the mouse
-			System.out.println("Way outside the hit box");
-		}
-		else if(y>topNewGame && y< bottomNewGame){ //New game area
-			//New Game method
-			f.dispose();
-			new Wolf3D();
-		}
-		else if(y>topLoad && y<bottomLoad){ //Load Game area
-			//Loads last game
-			//Wolf3D creates a new client which....
-			System.out.println("Load Game Selected");
-			World w = ServiceLocator.getService(World.class);
+		/* Help box bounds*/
+		double returnLeftBound = ((7.0/12.0)*width);
+		double returnRightBound = ((11.0/15.0)*width);
+		double returnTopBound = ((37.0/40.0)*height);
 
-			DataManagement.loadWorld("defaultWorld.txt", w.getEntity("Player").get(0).getID());
+		/*Made the bounds scalable for later use*/
+		if(t==false){
+			if(x<leftBound || x>rightBound || y<topBound || y>botBound){ // Gotta move the mouse
+				System.out.println("Way outside the hit box");
+				return;
+			}
+			else if(y>topNewGame && y< bottomNewGame){ //New game area
+				//New Game method
+				f.dispose();
+				new Wolf3D();
+				return;
+			}
+			else if(y>topLoad && y<bottomLoad){ //Load Game area
+				//Loads last game
+				//Wolf3D creates a new client which....
+				System.out.println("Load Game Selected");
+				World w = ServiceLocator.getService(World.class);
+
+				DataManagement.loadWorld("defaultWorld.txt", w.getEntity("Player").get(0).getID());
+				return;
+			}
+			else if(y>topHelp && y<bottomHelp){ //Help area
+				//Loads help screen.
+				f.add(new WolfCanvas(true));
+				f.setVisible(true);
+				t=true;
+				return;
+			}
+			else if(y>topExit && y<bottomExit){ //Exit area
+				System.exit(0);
+				return;
+			}
+			return;
 		}
-		else if(y>topHelp && y<bottomHelp){ //Help area
-			//Loads help screen.
-			//Drop the canvas onto the screen
-			//Another frame so can have help on one side and game on the other.
-			//new HelpFrame();
-			f.add(new WolfCanvas(true));
-			f.setVisible(true);
-		}
-		else if(y>topExit && y<bottomExit){ //Exit area
-			System.exit(0);
-		}
-		else{ System.out.println("Almost a selection");}
+		f.add(new WolfCanvas(false));
+		f.setVisible(true);
+		t=false;
+
 	}
 
 	@Override
