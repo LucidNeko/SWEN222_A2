@@ -11,6 +11,7 @@ import wolf3d.components.Health;
 import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddChaseBehaviour;
+import wolf3d.components.behaviours.AttackPlayer;
 import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.HealthFlash;
@@ -89,9 +90,9 @@ public class GameDemo extends GameLoop {
 		}
 	}
 
-	public void setPlayer(Entity e) {
-		this.player = e;
-	}
+//	public void setPlayer(Entity e) {
+//		this.player = e;
+//	}
 
 	/**
 	 * Set the View that is the renderer of the world. So we can call display()
@@ -107,10 +108,10 @@ public class GameDemo extends GameLoop {
 
 	public void getWorldsPlayer(){
 		System.out.println("LENGTH OF PLAYER LIST: " + ServiceLocator.getService(World.class).getEntity("Player").size());
-		if (player == null) {
+//		if (player == null) {
 			player = ServiceLocator.getService(World.class).getEntity("Player")
 					.get(0);
-		}
+//		}
 	}
 
 	/*
@@ -179,8 +180,9 @@ public class GameDemo extends GameLoop {
 				new Material(teddyTex));
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
+		//teddy.attachComponent(AttackPlayer.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);
-		;
+
 		// teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().translate(2, 0, 2);
 		teddy.getTransform().yaw(Mathf.degToRad(180));

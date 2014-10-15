@@ -96,7 +96,6 @@ public class Client extends Thread implements Service{
 							int otherID = in.readInt();
 							gl.createOtherPlayer(otherID);//this line.
 						}
-						//gl.start();
 						break;
 					}
 
@@ -129,8 +128,13 @@ public class Client extends Thread implements Service{
 						break;
 
 					case "begin":
-						//gl.createEntities();
-						gl.getWorldsPlayer();
+						//gl.createEntities(); //test...
+						//gl.getWorldsPlayer();
+						gl.start();
+						break;
+
+					case "beginMultiplayer":
+						gl.createEntities();
 						gl.start();
 						break;
 

@@ -67,6 +67,7 @@ public class PickUp extends Behaviour {
 		// is triggered, ie. if the player is close enough to the item to be
 		// picked up
 		if (getOwner().getComponent(ProximitySensor.class).isTriggered()) {
+			ServiceLocator.getService(Messenger.class).sendMessage("Press E to pick up item");
 			if (Keyboard.isKeyDownOnce(KeyEvent.VK_E)) {
 				pickUpItem();
 			}

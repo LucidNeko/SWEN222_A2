@@ -5,22 +5,22 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 
+import engine.core.World;
+import engine.util.ServiceLocator;
 import wolf3d.Wolf3D;
+import wolf3d.database.DataManagement;
 
 /**
  * @author brannisimo
  * WolfFrame is the startup screen
  */
 public class WolfFrame extends JFrame implements MouseListener{
-
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 2267807810965738503L;
 	//Done to match the 3D screen rather than any decent reason.
 	private static final int height = 600;
 	private static final int width = 800;
 	private static JFrame f;
+	private static Boolean t=false;
 
 	public WolfFrame(){
 		/*Basic frame setup*/
@@ -29,7 +29,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 		f.setTitle("Wolf3D");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false);
-		f.add(new WolfCanvas());
+		f.add(new WolfCanvas(false));
 		f.setVisible(true);
 		f.addMouseListener(this);
 	}
@@ -64,22 +64,26 @@ public class WolfFrame extends JFrame implements MouseListener{
 		}
 		else if(y>topNewGame && y< bottomNewGame){ //New game area
 			//New Game method
-			System.out.println("New Game Selected");
 			f.dispose();
-			//new IGFrame();
 			new Wolf3D();
 		}
 		else if(y>topLoad && y<bottomLoad){ //Load Game area
-			//Loads previous game or opens file selector to pick the game
+			//Loads last game
+			//Wolf3D creates a new client which....
 			System.out.println("Load Game Selected");
+			World w = ServiceLocator.getService(World.class);
+
+			DataManagement.loadWorld("defaultWorld.txt", w.getEntity("Player").get(0).getID());
 		}
 		else if(y>topHelp && y<bottomHelp){ //Help area
 			//Loads help screen.
-			System.out.println("Help Selected");
-
+			//Drop the canvas onto the screen
+			//Another frame so can have help on one side and game on the other.
+			//new HelpFrame();
+			f.add(new WolfCanvas(true));
+			f.setVisible(true);
 		}
 		else if(y>topExit && y<bottomExit){ //Exit area
-			System.out.println("Exit selected");
 			System.exit(0);
 		}
 		else{ System.out.println("Almost a selection");}
