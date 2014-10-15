@@ -17,6 +17,7 @@ import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.CameraScrollBackController;
 import wolf3d.components.behaviours.DropItem;
+import wolf3d.components.behaviours.animations.JumpAnimation;
 import wolf3d.components.renderers.LightlessMeshRenderer;
 import wolf3d.components.renderers.PyramidRenderer;
 import engine.common.Mathf;
@@ -68,6 +69,7 @@ public class EntityFactory {
 		player.attachComponent(Weight.class);
 		player.attachComponent(Inventory.class);
 		player.attachComponent(DropItem.class);
+		player.attachComponent(JumpAnimation.class);
 		return player;
 	}
 
