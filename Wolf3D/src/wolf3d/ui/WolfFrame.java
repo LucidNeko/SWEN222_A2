@@ -12,7 +12,7 @@ import wolf3d.database.DataManagement;
 
 /**
  * @author brannisimo
- * WolfFrame is the startup screen, click help to 
+ * WolfFrame is the startup screen, click help to
  */
 public class WolfFrame extends JFrame implements MouseListener{
 	private static final long serialVersionUID = 2267807810965738503L;
@@ -72,16 +72,20 @@ public class WolfFrame extends JFrame implements MouseListener{
 			else if(y>topNewGame && y< bottomNewGame){ //New game area
 				//New Game method
 				f.dispose();
-				new Wolf3D();
+				Wolf3D.main(new String[]{});
 				return;
 			}
 			else if(y>topLoad && y<bottomLoad){ //Load Game area
 				//Loads last game
 				//Wolf3D creates a new client which....
-				System.out.println("Load Game Selected");
-				World w = ServiceLocator.getService(World.class);
+				f.dispose();
+				Wolf3D.main(new String[]{});
 
-				DataManagement.loadWorld("defaultWorld.txt", w.getEntity("Player").get(0).getID());
+//				System.out.println("Load Game Selected");
+//				NetworkSetup ns = new NetworkSetup();
+//				String getp = ns.getIp();
+//				int port = ns.getPort();
+
 				return;
 			}
 			else if(y>topHelp && y<bottomHelp){ //Help area
