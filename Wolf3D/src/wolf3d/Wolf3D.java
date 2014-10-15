@@ -105,6 +105,20 @@ public class Wolf3D extends JFrame {
 //		sidePanel.add(minimap);
 //		this.getContentPane().add(sidePanel, BorderLayout.EAST);
 
+		JPanel sidePanel = new JPanel();
+		this.getContentPane().add(sidePanel, BorderLayout.EAST);
+
+		final MiniMapG2D minimap = new MiniMapG2D();
+		sidePanel.add(minimap);
+		new Thread(new Runnable() {
+			public void run() {
+				while(true) {
+					minimap.repaint();
+					LockSupport.parkNanos(10000000);
+				}
+			}
+		}).start();
+
 		//Register input devices. If GLCanvas have to register to canvas.
 		worldView.setFocusable(true);
 		Keyboard.register(worldView);
