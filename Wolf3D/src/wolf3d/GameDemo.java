@@ -180,9 +180,9 @@ public class GameDemo extends GameLoop {
 				new Material(teddyTex));
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
-		teddy.attachComponent(AttackPlayer.class);
+		//teddy.attachComponent(AttackPlayer.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);
-		;
+
 		// teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().translate(2, 0, 2);
 		teddy.getTransform().yaw(Mathf.degToRad(180));

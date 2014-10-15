@@ -104,11 +104,11 @@ public class Server extends Thread{
 					}
 
 					//let the clients know the game can now begin.
-					//	if(!loadmode){
-					//		assignIDs();
-					//		pushToAllClients("begin",-5);
-					//	}
-					//	else{
+						if(capacity > 1){
+							assignIDs();
+							pushToAllClients("begin",-5);
+						}
+						else{
 					pushToAllClients("load",-5);
 					for(int i = 0; i<capacity; i++){
 						connections[i].pushToClient((-(i+1)));
@@ -122,7 +122,7 @@ public class Server extends Thread{
 						}
 					}
 					pushToAllClients("begin", -5);
-					//}
+					}
 				}
 				index++;
 
