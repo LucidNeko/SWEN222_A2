@@ -4,8 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This Locates and returns the service and instantiates and saves
- * the service to the cache if there is no service in the cache
+ * This Locates and returns the service and instantiates and saves the service
+ * to the cache if there is no service in the cache
+ *
  * @author Sameer Magan 300223776
  *
  */
@@ -14,17 +15,29 @@ public class ServiceLocator {
 
 	private static Cache cache;
 
-	static{
+	static {
 		cache = new Cache();
 	}
 
 	/**
 	 * This gets the instantiated service provided, if there is not already an
 	 * instantiated service it instantiates it and returns
-	 * @param service the service that you want to get
+	 *
+	 * @param service
+	 *            the service that you want to get
 	 * @return the instantiated service
 	 */
 	public static <E extends Service> E getService(Class<? extends E> service) {
 		return cache.getService(service);
+	}
+
+	/**
+	 * This registers the given service
+	 *
+	 * @param service
+	 *            the service that you want to register
+	 */
+	public static void registerService(Service service) {
+		cache.registerService(service);
 	}
 }

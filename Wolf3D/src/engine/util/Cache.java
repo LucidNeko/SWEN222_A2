@@ -63,4 +63,19 @@ public class Cache {
 	      throw new Error("This broke in adding a new Service");
 	   }
 
+	/**
+	 * Instantiates the given service and adds it to the services array
+	 * @param newService the service to be instantiated
+	 * @return returns the newly Instantiated service
+	 */
+	public void registerService(Service newService){
+		for(Service s: services){
+			if(newService.getClass() == s.getClass()){
+				services.remove(s);
+			}
+		}
+		services.add(newService);
+	}
+
+
 }
