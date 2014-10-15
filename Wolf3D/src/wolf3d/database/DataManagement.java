@@ -47,20 +47,12 @@ public class DataManagement {
 	 * @param uniqueID the id of the player to load
 	 */
 	public static void loadWorld(String fname, int uniqueID) {
-		String fpath = Resources.getURL("saves/").getPath()+fname;
-		log.error("Loading from: {}",fpath);
-		log.error("Loading file: {}",fname);
-		// check save file exists
-		if (!new File (fpath).isFile()) {
-			log.error("Game file unable to load: file is invalid.");
-		}
-		log.trace("Reading from: {}", fpath);
 		WorldBuilder builder;
 		Gson gson = new Gson();
 		String line;
 		Scanner scan;
-		try {
-			scan = new Scanner(new File(fpath));
+
+		scan = new Scanner(Resources.getInputStream("saves/" + fname));
 			// load map
 			skip(scan, 2);
 			line = scan.next();
@@ -113,10 +105,6 @@ public class DataManagement {
 		// create default objects and camera
 		builder.createDefaultObjects();
 		builder.createCamera();
-
-	} catch (FileNotFoundException e) {
-		log.error("Game file unable to load: file does not exist.");
-	}
 }
 
 /**

@@ -1,5 +1,6 @@
 package wolf3d.database;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import wolf3d.EntityFactory;
@@ -16,12 +17,14 @@ import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.sensors.ProximitySensor;
 import wolf3d.world.Parser;
 import engine.common.Mathf;
+import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
 import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
+import engine.input.Keyboard;
 import engine.texturing.Material;
 import engine.texturing.Mesh;
 import engine.texturing.Texture;
@@ -54,8 +57,26 @@ public class WorldBuilder {
 
 	public void createCamera() {
 		if(player == null) { throw new Error("Player is null"); }
-		Camera camera = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
-		ServiceLocator.getService(WorldView.class).setCamera(camera);;
+
+		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
+		final Camera c2 = EntityFactory.createFirstPersonCamera(player).getComponent(Camera.class);//
+
+		ServiceLocator.getService(WorldView.class).setCamera(c1);
+
+		player.attachComponent(new Behaviour() {
+			Camera camera = c1;
+			@Override
+			public void update(float delta) {
+				if (Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
+					if (camera == c1) {
+						camera = c2;
+					} else {
+						camera = c1;
+					}
+					ServiceLocator.getService(WorldView.class).setCamera(camera);
+				}
+			}
+		});
 
 	}
 
@@ -77,7 +98,11 @@ public class WorldBuilder {
 		parser.createEntities(player);
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(DropItem.class);
-		parser.createDoors();
+		//parser.createDoors();
+
+
+
+
 
 		//Transform component
 		player.getTransform().set(transform);
