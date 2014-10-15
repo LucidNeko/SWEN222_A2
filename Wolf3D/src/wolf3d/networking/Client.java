@@ -103,9 +103,6 @@ public class Client extends Thread implements Service{
 						e.detachComponent(e.getComponent(MeshRenderer.class));
 						break;
 
-					case "destroy":
-						world.destroyEntity(in.readInt());
-
 					case "begin":
 						gl.createEntities();
 						gl.start();
