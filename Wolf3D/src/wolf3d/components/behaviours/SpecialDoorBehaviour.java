@@ -10,6 +10,7 @@ import engine.components.Behaviour;
 import engine.core.Entity;
 import engine.core.World;
 import engine.input.Keyboard;
+import engine.util.Messenger;
 import engine.util.ServiceLocator;
 
 /**
@@ -27,6 +28,9 @@ public class SpecialDoorBehaviour extends Behaviour {
 
 	@Override
 	public void update(float delta) {
+		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
+			ServiceLocator.getService(Messenger.class).sendMessage("Drop 3 Teddys Items to open door");
+		}
 		List<Entity> teddys = world.getEntity("TeddyItem");
 		// SpecialDoors position
 		Vec3 pos = getOwner().getTransform().getPosition();

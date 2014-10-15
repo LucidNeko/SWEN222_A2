@@ -11,6 +11,7 @@ import engine.components.Behaviour;
 import engine.core.Entity;
 import engine.core.World;
 import engine.input.Keyboard;
+import engine.util.Messenger;
 import engine.util.ServiceLocator;
 
 /**
@@ -44,9 +45,9 @@ public class Attackable extends Behaviour{
 
 		//Attack entity if it is range and if 'C' has been pressed
 		if(getOwner().getComponent(ProximitySensor.class).isTriggered()){
+			ServiceLocator.getService(Messenger.class).sendMessage("Press C to damage enemy");
 			if(Keyboard.isKeyDownOnce(KeyEvent.VK_C)){
 				attack();
-				setChanged();
 			}
 		}
 
