@@ -1,6 +1,7 @@
 package engine.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -69,13 +70,14 @@ public class Cache {
 	 * @return returns the newly Instantiated service
 	 */
 	public void registerService(Service newService){
-		for(Service s: services){
-			if(newService.getClass() == s.getClass()){
-				services.remove(s);
+		Iterator<Service> iter = services.iterator();
+		while(iter.hasNext()) {
+			Service elem = iter.next();
+			if(newService.getClass() == elem.getClass()) {
+				iter.remove();
 			}
 		}
 		services.add(newService);
+
 	}
-
-
 }

@@ -75,26 +75,8 @@ public class Wolf3D extends JFrame {
 		log.trace(this.getGlassPane());
 
 		//Adds glass pane
-//		JComponent c = new JComponent() {
-//			{
-//				this.setPreferredSize(new Dimension(800, 600));
-//			}
-//			protected void paintComponent(Graphics g) {
-//				super.paintComponent(g);
-//				g.drawima
-//			}
-//		};
-//
-//		c.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//				log.trace("Moused");
-//			}
-//		});
-//		c.setFocusable(false);
-
-//		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300, game));
-//		this.getGlassPane().setVisible(true);
+		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300, game));
+		this.getGlassPane().setVisible(true);
 
 		this.getContentPane().add(mainPanel);
 

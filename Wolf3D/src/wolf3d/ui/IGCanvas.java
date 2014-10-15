@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import wolf3d.GameDemo;
 import wolf3d.Wolf3D;
 import wolf3d.database.DataManagement;
+import wolf3d.networking.Client;
 import engine.util.Resources;
 
 /**
@@ -94,7 +95,9 @@ public class IGCanvas extends JPanel{
 					}
 					if(e.getY() < loadBot && e.getY() > loadTop){
 						//Load Game
-						DataManagement.loadWorld("save.txt");
+
+						Client c = new Client();
+						DataManagement.loadWorld("defaultWorld.txt", playerId);
 						System.out.println("Load");
 					}
 					if(e.getY() < exitBot && e.getY() > exitTop){
@@ -116,7 +119,8 @@ public class IGCanvas extends JPanel{
 	}
 
 	/**
-	 * Copied from Wolf3D
+	 * Asks user if they're sure that they want to quit, closes down
+	 * client connection as well
 	 */
 	private void confirmExit(){
 		if(JOptionPane.showConfirmDialog(IGCanvas.this,
