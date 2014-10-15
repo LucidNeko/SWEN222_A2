@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
+import engine.util.Resources;
 
 /**
  * Used for saving the Wolf3D world to file using a JSON data structure.
@@ -205,12 +206,13 @@ public static void saveWorld(String fname, World world) {
  * If unable to get directory, and no exception thrown, returns game root path.
  */
 private static String getSaveFpath() {
-	String path = "";
-	File currentDirFile = new File(".");
-	path = currentDirFile.getAbsolutePath();
-	path = path.substring(0, path.length()-1);
-	path = path+"Wolf3D/src/wolf3d/assets/saves/";
-	return path;
+//	String path = "";
+//	File currentDirFile = new File(".");
+//	path = currentDirFile.getAbsolutePath();
+//	path = path.substring(0, path.length()-1);
+//	path = path+"Wolf3D/src/wolf3d/assets/saves/";
+//	return path;
+	return Resources.getURL("saves").getPath();
 }
 
 /*
