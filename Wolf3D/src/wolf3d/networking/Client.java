@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import wolf3d.GameDemo;
+import wolf3d.database.DataManagement;
 import engine.common.Vec3;
 import engine.components.MeshRenderer;
 import engine.components.Transform;
@@ -27,6 +28,8 @@ public class Client extends Thread implements Service{
 	private DataInputStream in;
 	private DataOutputStream out;
 
+	private String fname;
+
 
 	/**
 	 * Construct a new client object connecting to the given ipAddress on the port supplied.
@@ -42,6 +45,8 @@ public class Client extends Thread implements Service{
 		this.sock = new Socket(ipAddress,port);
 		this.world = ServiceLocator.getService(World.class);
 		this.gl = gameDemo;
+		this.fname = fname;
+		this.fname = "defaultWorld.txt"; //hard code for now.
 		ServiceLocator.registerService(this);
 		this.start();
 	}
@@ -81,6 +86,24 @@ public class Client extends Thread implements Service{
 							}
 						}
 						break;
+
+
+					case "load":{
+						int playerID = in.readInt();
+						DataManagement.loadWorld(fname, playerID);
+						int noOthers = in.readInt();
+						for(int i = 0; i< noOthers; i++){
+							int otherID = in.readInt();
+							gl.createOtherPlayer(otherID);
+						}
+						gl.start();
+						break;
+					}
+
+					case "save":{
+						DataManagement.saveWorld(fname, world); //Why does this take a world argument????
+						break;
+					}
 
 					case "ids":
 						int playerID = in.readInt();
