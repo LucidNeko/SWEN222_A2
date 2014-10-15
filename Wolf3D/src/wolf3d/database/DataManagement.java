@@ -47,7 +47,7 @@ public class DataManagement {
 	 * @param uniqueID the id of the player to load
 	 */
 	public static void loadWorld(String fname, int uniqueID) {
-		String fpath = getSaveFpath()+fname;
+		String fpath = Resources.getURL("saves/").getPath()+fname;
 		log.error("Loading from: {}",fpath);
 		log.error("Loading file: {}",fname);
 		// check save file exists
