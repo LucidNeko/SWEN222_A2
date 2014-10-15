@@ -17,7 +17,7 @@ public class DoorBehaviour extends Behaviour {
 
 	@Override
 	public void update(float delta) {
-		if (Keyboard.isKeyDown(KeyEvent.VK_SPACE)) {
+		if (Keyboard.isKeyDown(KeyEvent.VK_E)) {
 			if (getOwner().getComponent(ProximitySensor.class).isTriggered()) {
 				getOwner().attachComponent(MoveUpAnimation.class);
 				getOwner().detachComponent(this);

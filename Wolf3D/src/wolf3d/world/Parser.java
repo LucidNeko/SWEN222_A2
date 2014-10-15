@@ -10,6 +10,7 @@ import wolf3d.components.behaviours.DoorBehaviour;
 import wolf3d.components.behaviours.PickUp;
 import wolf3d.components.behaviours.SpecialDoorBehaviour;
 import wolf3d.components.behaviours.WASDCollisions;
+import wolf3d.components.behaviours.animations.Rotate;
 import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Color;
 import engine.common.Mathf;
@@ -366,6 +367,7 @@ public class Parser {
 		teddy.attachComponent(MeshFilter.class).setMesh(mesh);
 		teddy.attachComponent(MeshRenderer.class).setMaterial(material);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);
+		teddy.attachComponent(Rotate.class);
 		teddy.attachComponent(PickUp.class);
 		teddy.attachComponent(Weight.class);
 		return teddy;

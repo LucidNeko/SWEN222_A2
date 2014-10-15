@@ -10,22 +10,15 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.components.Health;
 import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
-import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.HealthFlash;
 import wolf3d.components.behaviours.PickUp;
-import wolf3d.components.behaviours.Translate;
-import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
-import wolf3d.components.renderers.LightlessMeshRenderer;
-import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
-import wolf3d.database.DataManagement;
 import wolf3d.networking.Client;
 import wolf3d.world.Parser;
 import engine.common.Mathf;
-import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
@@ -69,7 +62,7 @@ public class GameDemo extends GameLoop {
 		super(FPS, FUPS);
 		this.world = ServiceLocator.getService(World.class);
 		try {
-			client = new Client("Joe",ip,port,this);
+			client = new Client("Joe",ip,port,this, null);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
