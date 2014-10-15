@@ -14,7 +14,7 @@ import engine.util.Resources;
 
 /**
  * @author Simon Brannigan
- *
+ * Displays the controls and other info
  */
 public class HelpCanvas extends JPanel{
 
@@ -25,9 +25,8 @@ public class HelpCanvas extends JPanel{
 	public HelpCanvas(){
 		try {
 			help = Resources.getImage("help.png");
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("File not found help.");
 			e.printStackTrace();
 		}
 		this.repaint();

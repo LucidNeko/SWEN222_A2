@@ -9,7 +9,7 @@ import wolf3d.Wolf3D;
 
 /**
  * @author brannisimo
- *
+ * WolfFrame is the startup screen
  */
 public class WolfFrame extends JFrame implements MouseListener{
 
@@ -28,14 +28,11 @@ public class WolfFrame extends JFrame implements MouseListener{
 		f.setSize(width, height);
 		f.setTitle("Wolf3D");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setResizable(true); // may replace this to be resizable but the pic may look weird
-
-		// or just have two sizes, full screen and 800 by 600
+		f.setResizable(false);
 		f.add(new WolfCanvas());
 		f.setVisible(true);
 		f.addMouseListener(this);
 	}
-
 
 	/**
 	 * @author brannisimo
@@ -45,6 +42,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 	 */
 	private void hitBox(int x, int y){
 
+		/*Bounds*/
 		double topNewGame = ((3.0/10.0)*height);
 		double bottomNewGame = ((9.0/25.0)*height);
 		double topLoad = ((49.0/120.0)*height);
@@ -60,9 +58,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 		double leftBound = ((2.0/5.0)*width);
 		double rightBound = ((47.0/80.0)*width);
 
-		// TODO
-		/* Make the numbers not hard coded and tweak the pic till I can
-		 * have a basic hit box without hardcoded*/
+		/*Made the bounds scalable for later use*/
 		if(x<leftBound || x>rightBound || y<topBound || y>botBound){ // Gotta move the mouse
 			System.out.println("Way outside the hit box");
 		}
@@ -70,8 +66,8 @@ public class WolfFrame extends JFrame implements MouseListener{
 			//New Game method
 			System.out.println("New Game Selected");
 			f.dispose();
-			new IGFrame();
-			//new Wolf3D();
+			//new IGFrame();
+			new Wolf3D();
 		}
 		else if(y>topLoad && y<bottomLoad){ //Load Game area
 			//Loads previous game or opens file selector to pick the game
@@ -80,6 +76,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 		else if(y>topHelp && y<bottomHelp){ //Help area
 			//Loads help screen.
 			System.out.println("Help Selected");
+
 		}
 		else if(y>topExit && y<bottomExit){ //Exit area
 			System.out.println("Exit selected");

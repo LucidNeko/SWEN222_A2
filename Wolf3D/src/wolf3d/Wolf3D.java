@@ -66,7 +66,7 @@ public class Wolf3D extends JFrame {
 		//		final World world = DataManagement.loadWorld("defaultWorld.txt");
 
 
-		//create views
+		//Create views
 		final WorldView worldView = ServiceLocator.getService(WorldView.class);
 
 		JPanel mainPanel = new JPanel();

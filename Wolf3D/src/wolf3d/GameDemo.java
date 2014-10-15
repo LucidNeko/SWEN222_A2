@@ -69,7 +69,22 @@ public class GameDemo extends GameLoop {
 		super(FPS, FUPS);
 		this.world = ServiceLocator.getService(World.class);
 		try {
-			client = new Client("Joe",ip,port,this);
+			client = new Client("Joe",ip,port,this, null);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Create a new GameDemo with the given world as it's world.
+	 */
+	public GameDemo(String ip, int port, String filename) {
+		super(FPS, FUPS);
+		this.world = ServiceLocator.getService(World.class);
+		try {
+			client = new Client("Joe",ip,port,this, filename);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
