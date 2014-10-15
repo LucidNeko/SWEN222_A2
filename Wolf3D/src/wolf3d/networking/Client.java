@@ -66,7 +66,7 @@ public class Client extends Thread{
 							if(e!=null){
 								Transform t = e.getTransform();
 								t.setPositionNoFlag(in.readFloat(),in.readFloat(), in.readFloat());
-								t.lookAtDirectionNoFlag(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
+								t.lookAt(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
 							}
 							else{
 								for(int i = 0; i<6; i++){
@@ -75,7 +75,7 @@ public class Client extends Thread{
 							}
 						}
 						break;
-						
+
 					case "ids":
 						int playerID = in.readInt();
 						gl.createPlayer(playerID);
@@ -99,7 +99,7 @@ public class Client extends Thread{
 						Entity e = world.getEntity(who);
 						e.detachComponent(e.getComponent(MeshRenderer.class));
 						break;
-						
+
 					case "begin":
 						gl.createEntities();
 						gl.start();
@@ -125,7 +125,7 @@ public class Client extends Thread{
 			}
 		}
 	}
-	
+
 	public void shutdownClient(){
 		try {
 			sock.close();

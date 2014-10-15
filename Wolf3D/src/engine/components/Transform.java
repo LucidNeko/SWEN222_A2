@@ -50,7 +50,7 @@ public class Transform extends Component {
 	public void set(Transform source) {
 		set(source, true);
 	}
-	
+
 	/** Sets this transform to the source transform, but only sets hasChanged if you tell it to. */
 	public void set(Transform source, boolean setChanged) {
 		this.position.set(source.position);
@@ -82,7 +82,7 @@ public class Transform extends Component {
 	public void setPositionNoFlag(float x, float y, float z){
 		this.position.set(x, y, z);
 	}
-	
+
 	/**
 	 * Look at direction without setting changed.
 	 * @param direction
@@ -95,7 +95,7 @@ public class Transform extends Component {
 		up.set(Vec3.UP);
 		along.set(Vec3.cross(up, look));
 	}
-	
+
 	/**
 	 * Sets the position of this Transform
 	 * @param position The (x, y, z) to set this Transforms position to.
@@ -365,7 +365,7 @@ public class Transform extends Component {
 		t.position.set(this.position);
 		return t;
 	}
-	
+
 	//TODO: hack..
 	public void clearChanged() {
 		super.clearChanged();
