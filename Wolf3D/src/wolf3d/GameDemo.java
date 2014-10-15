@@ -170,31 +170,23 @@ public class GameDemo extends GameLoop {
 		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
-		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj")
-				.getScaledInstance(0.5f);
-		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 
+		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj").getScaledInstance(3);
+		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
-		teddy.attachComponent(MeshRenderer.class).setMaterial(
-				new Material(teddyTex));
+		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
-		//teddy.attachComponent(AttackPlayer.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);
-
-		// teddy.getTransform().translate(15, 0, 3);
-		teddy.getTransform().translate(2, 0, 2);
+		teddy.attachComponent(AttackPlayer.class);
+		teddy.getTransform().translate(15, 0, 5);
+//		teddy.getTransform().translate(2, 0, 2);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
-
-		// testing pickup
-		// teddy.attachComponent(new PickUp(world));
-		// teddy.attachComponent(Weight.class);
-		// testing attack
-		teddy.attachComponent(Health.class);
-		teddy.attachComponent(Attackable.class);
-
 		teddy.attachComponent(HealthFlash.class);
+		teddy.attachComponent(AttackPlayer.class);
+		teddy.attachComponent(Health.class).setDamageAmt(2);;
+		teddy.attachComponent(Attackable.class);
 
 		for (Entity e : world.getEntities()) {
 			e.getTransform().clearChanged();

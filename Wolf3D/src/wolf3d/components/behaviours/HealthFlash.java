@@ -24,7 +24,7 @@ public class HealthFlash extends Behaviour {
 
 		time += delta;
 
-		int health = getOwner().getComponent(Health.class).getHealth();
+		float health = getOwner().getComponent(Health.class).getHealth();
 		MeshRenderer mesh = getOwner().getComponent(MeshRenderer.class);
 
 		if (health < 100) {

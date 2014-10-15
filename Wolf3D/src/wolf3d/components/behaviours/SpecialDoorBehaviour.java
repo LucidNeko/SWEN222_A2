@@ -47,6 +47,7 @@ public class SpecialDoorBehaviour extends Behaviour {
 			getOwner().attachComponent(MoveUpAnimation.class)
 					.setMoveDown(false);
 			getOwner().detachComponent(this);
+
 		}
 	}
 

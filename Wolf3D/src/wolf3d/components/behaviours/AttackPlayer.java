@@ -21,7 +21,8 @@ public class AttackPlayer extends Behaviour{
 				Entity player = getOwner().getComponent(ProximitySensor.class).getTarget();
 				int damageAmt = getOwner().getComponent(Health.class).getDamageAmt();
 				Health health = player.getComponent(Health.class);
-				if(!health.decreaseHealth(damageAmt)){
+				if(!health.decreaseHealth(delta*damageAmt)){
+					health.setHealth(100);
 					player.getTransform().setPosition(1, 0, 1);
 				}
 				setChanged();

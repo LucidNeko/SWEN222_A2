@@ -9,24 +9,24 @@ import engine.components.Component;
  */
 public class Health extends Component{
 
-	private int health = 100;
+	private float health = 100;
 	private boolean alive = true;
-	
+
 	private int damageAmt = 20;
 
 	/**
-	 * 
+	 *
 	 * @return returns the health
 	 */
-	public int getHealth() {
+	public float getHealth() {
 		return health;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param health the amount of health to be set
 	 */
-	public void setHealth(int health) {
+	public void setHealth(float health) {
 		this.health = health;
 	}
 
@@ -44,7 +44,7 @@ public class Health extends Component{
 	public void setDamageAmt(int damageAmt) {
 		this.damageAmt = damageAmt;
 	}
-	
+
 	/**
 	 * Increases health by damageAmt
 	 * @return returns true if increased, false if not
@@ -57,12 +57,12 @@ public class Health extends Component{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Decreases health by damageAmt
 	 * @return returns true if still alive, false if not
 	 */
-	public boolean decreaseHealth(int hitAmt){
+	public boolean decreaseHealth(float hitAmt){
 		if (health - hitAmt >0) {
 			health -= hitAmt;
 			return alive;
