@@ -76,7 +76,7 @@ public class Wolf3D extends JFrame {
 
 		//Adds glass pane
 		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300, game));
-		this.getGlassPane().setVisible(true);
+//		this.getGlassPane().setVisible(true);
 
 		this.getContentPane().add(mainPanel);
 
