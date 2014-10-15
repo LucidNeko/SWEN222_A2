@@ -47,7 +47,7 @@ public class Wolf3D extends JFrame {
 
 	public static String ip;
 	public static int port;
-	
+
 	private GameDemo game;
 
 	public Wolf3D(){
@@ -91,9 +91,9 @@ public class Wolf3D extends JFrame {
 //		});
 //		c.setFocusable(false);
 
-		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300));
-		this.getGlassPane().setVisible(true);
-		this.getContentPane().add(mainPanel);
+//		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300));
+//		this.getGlassPane().setVisible(true);
+//		this.getContentPane().add(mainPanel);
 
 		//Build OpenGL panel.
 
