@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
+import engine.util.Resources;
 
 /**
  * Used for saving the Wolf3D world to file using a JSON data structure.
@@ -47,9 +48,11 @@ public class DataManagement {
 	 */
 	public static void loadWorld(String fname, int uniqueID) {
 		String fpath = getSaveFpath()+fname;
+		log.error("Loading from: {}",fpath);
+		log.error("Loading file: {}",fname);
 		// check save file exists
 		if (!new File (fpath).isFile()) {
-			log.error("Game file unable to load: file does not exist.");
+			log.error("Game file unable to load: file is invalid.");
 		}
 		log.trace("Reading from: {}", fpath);
 		WorldBuilder builder;
@@ -110,7 +113,6 @@ public class DataManagement {
 		// create default objects and camera
 		builder.createDefaultObjects();
 		builder.createCamera();
-
 
 	} catch (FileNotFoundException e) {
 		log.error("Game file unable to load: file does not exist.");
@@ -204,12 +206,13 @@ public static void saveWorld(String fname, World world) {
  * If unable to get directory, and no exception thrown, returns game root path.
  */
 private static String getSaveFpath() {
-	String path = "";
-	File currentDirFile = new File(".");
-	path = currentDirFile.getAbsolutePath();
-	path = path.substring(0, path.length()-1);
-	path = path+"Wolf3D/src/wolf3d/assets/saves/";
-	return path;
+//	String path = "";
+//	File currentDirFile = new File(".");
+//	path = currentDirFile.getAbsolutePath();
+//	path = path.substring(0, path.length()-1);
+//	path = path+"Wolf3D/src/wolf3d/assets/saves/";
+//	return path;
+	return Resources.getURL("saves/").getPath();
 }
 
 /*
