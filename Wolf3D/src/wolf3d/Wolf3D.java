@@ -93,9 +93,9 @@ public class Wolf3D extends JFrame {
 //		});
 //		c.setFocusable(false);
 
-//		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300));
+//		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300, game));
 //		this.getGlassPane().setVisible(true);
-		this.getContentPane().add(mainPanel);
+//		this.getContentPane().add(mainPanel);
 
 		//Build OpenGL panel.
 
