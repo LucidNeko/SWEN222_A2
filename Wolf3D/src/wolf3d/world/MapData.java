@@ -18,8 +18,8 @@ public class MapData implements Service {
 	 * @param col the col to be referenced
 	 * @return the int representing wall at the given position
 	 */
-	public int getWall(int row, int col){
-		return walls[row][col].getWalls();
+	public Cell getWall(int row, int col){
+		return walls[row][col];
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class MapData implements Service {
 	 * @param col the col to be referenced
 	 * @return the int representing door at the given position
 	 */
-	public int getDoors(int row, int col){
-		return doors[row][col].getWalls();
+	public Cell getDoors(int row, int col){
+		return doors[row][col];
 	}
 }
