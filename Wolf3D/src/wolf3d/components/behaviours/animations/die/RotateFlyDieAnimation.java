@@ -3,6 +3,7 @@ package wolf3d.components.behaviours.animations.die;
 import java.io.IOException;
 
 import wolf3d.components.behaviours.AILookAtController;
+import wolf3d.components.behaviours.WalkForward;
 import wolf3d.networking.Client;
 import engine.components.Behaviour;
 import engine.components.Transform;
@@ -32,6 +33,7 @@ public class RotateFlyDieAnimation extends Behaviour {
 
 		if((lookAt = getOwner().getComponent(AILookAtController.class)) != null){
 			getOwner().detachComponent(lookAt);
+			getOwner().detachComponent(getOwner().getComponent(WalkForward.class));
 		}
 		Transform t = getOwner().getTransform();
 		t.rotateY(time * speed);
