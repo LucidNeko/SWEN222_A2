@@ -133,6 +133,11 @@ public class Client extends Thread implements Service{
 						gl.start();
 						break;
 
+					case "beginMultiplayer":
+						gl.createEntities();
+						gl.start();
+						break;
+
 					case "wait":
 						int waitNo = in.readInt();
 						System.out.println("Waiting for "+waitNo+" more player/s to join.");
