@@ -121,6 +121,7 @@ public class Server extends Thread{
 								}
 							}
 						}
+						pushToAllClients("begin", -5);
 					//}
 				}
 				index++;
