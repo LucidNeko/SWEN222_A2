@@ -72,19 +72,19 @@ public class Server extends Thread{
 			pushToAllClients((capacity-index),-5);
 			System.out.println("Server listening for " + (capacity-index) + " more connections...");
 
-//			for(DataInputStream is : dis){
-//				if(is!=null){
-//					String s;
-//					try {
-//						s = is.readUTF();
-//
-//						if(s.equals("loadmode")){
-//							loadmode = true;
-//						}}catch (IOException e) {
-//							e.printStackTrace();
-//						}
-//				}
-//			}
+			//			for(DataInputStream is : dis){
+			//				if(is!=null){
+			//					String s;
+			//					try {
+			//						s = is.readUTF();
+			//
+			//						if(s.equals("loadmode")){
+			//							loadmode = true;
+			//						}}catch (IOException e) {
+			//							e.printStackTrace();
+			//						}
+			//				}
+			//			}
 
 			Socket sock;
 			try {
@@ -104,24 +104,24 @@ public class Server extends Thread{
 					}
 
 					//let the clients know the game can now begin.
-				//	if(!loadmode){
-				//		assignIDs();
-				//		pushToAllClients("begin",-5);
-				//	}
-				//	else{
-						pushToAllClients("load",-5);
-						for(int i = 0; i<capacity; i++){
-							connections[i].pushToClient((-(i+1)));
-							connections[i].pushToClient(capacity-1);
+					//	if(!loadmode){
+					//		assignIDs();
+					//		pushToAllClients("begin",-5);
+					//	}
+					//	else{
+					pushToAllClients("load",-5);
+					for(int i = 0; i<capacity; i++){
+						connections[i].pushToClient((-(i+1)));
+						connections[i].pushToClient(capacity-1);
 
-							//then give the other clients ids of other players, we dont care about order.
-							for(int j = 0; j<capacity; j++){
-								if(j!=i){
-									connections[i].pushToClient(-(j+1));
-								}
+						//then give the other clients ids of other players, we dont care about order.
+						for(int j = 0; j<capacity; j++){
+							if(j!=i){
+								connections[i].pushToClient(-(j+1));
 							}
 						}
-						pushToAllClients("begin", -5);
+					}
+					pushToAllClients("begin", -5);
 					//}
 				}
 				index++;

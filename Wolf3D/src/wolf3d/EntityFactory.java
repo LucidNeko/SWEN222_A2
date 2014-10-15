@@ -55,15 +55,9 @@ public class EntityFactory {
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
 
 		//Create player
-//		Entity player = world.createEntity("Player", id);
 		Entity player = world.createEntity(id, name);
-//		player.attachComponent(Camera.class);
-//		player.attachComponent(PyramidRenderer.class);
 		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
 		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
-//		player.attachComponent(parser.getWallCollisionComponent());
-//		player.attachComponent(WASDWalking.class);
-//		player.attachComponent(CameraScrollBackController.class);
 		player.attachComponent(Health.class);
 		player.attachComponent(Strength.class);
 		player.attachComponent(Weight.class);
@@ -89,18 +83,9 @@ public class EntityFactory {
 		Texture linkTex = Resources.getTexture("link/young_link.png", true);
 
 		//Create player
-//		Entity player = world.createEntity("Other Player", id);
 		Entity player = world.createEntity(id, "other");
-//		player.attachComponent(Camera.class);
-//		player.attachComponent(PyramidRenderer.class);
 		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
 		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
-//		player.attachComponent(parser.getWallCollisionComponent());
-//		player.attachComponent(WASDWalking.class);
-	//	player.attachComponent(CameraScrollBackController.class);
-	//	player.attachComponent(Health.class);
-	//	player.attachComponent(Inventory.class);
-	//	player.attachComponent(new DropItem(world));
 		return player;
 	}
 
@@ -115,8 +100,6 @@ public class EntityFactory {
 				Transform cam = getOwner().getTransform();
 
 				cam.setPosition(at.getPosition());
-//				cam.lookInDirection(at.getLook());
-//				cam.walk(0.25f);
 
 				float dx = Mouse.getDX(); //calls to getDX/getDY wipe out the value.. TODO logical fix?
 				float dy = Mouse.getDY();
@@ -124,38 +107,11 @@ public class EntityFactory {
 				cam.rotateY(Mathf.degToRad(dx*10*delta));
 
 				at.lookInDirection(cam.getLook());
-
-//				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
-//				float length = cam.getPosition().sub(at.getPosition()).length();
-//				if(length > 1f) cam.walk(7*(1-(1/length))*delta);
-//				Vec3 atLook = at.getLook();
-//				atLook.setY(0);
-//				atLook.normalize();
-//				Vec3 camLook = cam.getLook();
-//				camLook.setY(0);
-//				camLook.normalize();
-//				float dot = atLook.x()*(-camLook.z()) + atLook.z()*camLook.x();
-//
-//				float sign = dot < 0 ? -1: 1;
-//
-//				if(Vec3.dot(camLook, atLook) < 0.99f) cam.strafe(sign*10*Mathf.abs(dot)*delta);
 			}
 
 		});
 		camera.attachComponent(Camera.class);
 //		camera.attachComponent(PyramidRenderer.class);
-		camera.attachComponent(new GL2Renderer() {
-
-			@Override
-			public void render(GL2 gl) {
-				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
-				Transform t = getOwner().getTransform();
-				Vec3 look = t.getLook();
-//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-//				gl.glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
-			}
-
-		});
 		return camera;
 	}
 
@@ -170,10 +126,6 @@ public class EntityFactory {
 			public void update(float delta) {
 				Transform at = target.getTransform();
 				Transform cam = getOwner().getTransform();
-
-//				float dy = Mouse.getDY();
-//				cam.fly(dy*0.5f*delta);
-//				cam.lookAt(at);
 
 				cam.lookInDirection(at.getPosition().sub(cam.getPosition()));
 
@@ -192,7 +144,6 @@ public class EntityFactory {
 
 				float theta = (float) Math.acos(Vec3.dot(atLook, camLook));
 
-				//if(Vec3.dot(camLook, atLook) < 0.995f) cam.strafe(sign*10*Mathf.abs(dot)*delta);
 				if(Mathf.radToDeg(theta) > 1) {
 					cam.strafe(10*sign*theta*delta);
 				}
@@ -200,30 +151,14 @@ public class EntityFactory {
 
 		});
 		camera.attachComponent(Camera.class);
-		camera.attachComponent(PyramidRenderer.class);
-		camera.attachComponent(new GL2Renderer() {
-
-			@Override
-			public void render(GL2 gl) {
-				//because renderering like a scenegraph (0,0,0) is transformed to the entities position.
-				Transform t = getOwner().getTransform();
-				Vec3 look = t.getLook();
-//				gl.glLightfv(GL_LIGHT0, GL_POSITION, new float[] {0, 0, 0, 1}, 0); //1 signifies positional light
-//				gl.glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, new float[]{ 0,0,1}, 0); //light direction is forwards
-			}
-
-		});
+//		camera.attachComponent(PyramidRenderer.class);
 		camera.getTransform().setPosition(target.getTransform().getPosition().add(target.getTransform().getLook().mul(25))); //start far away so it zooms in
-
-
 
 		target.attachComponent(new Behaviour() {
 
 			@Override
 			public void update(float delta) {
 				float dx = Mouse.getDX(); //calls to getDX/getDY wipe out the value.. TODO logical fix?
-//				float dy = Mouse.getDY();
-//				target.getTransform().pitch(Mathf.degToRad(dy*10*delta));
 				target.getTransform().rotateY(Mathf.degToRad(dx*10*delta));
 			}
 
@@ -242,6 +177,7 @@ public class EntityFactory {
 			@Override
 			public void update(float delta) {
 				Vec3 pos = target.getTransform().getPosition();
+				pos.set(pos.x(), 0, pos.z());
 				this.getOwner().getTransform().setPosition(pos);
 			}
 		});

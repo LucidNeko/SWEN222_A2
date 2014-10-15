@@ -105,6 +105,14 @@ public class GameDemo extends GameLoop {
 		this.view = view;
 	}
 
+	public void getWorldsPlayer(){
+		System.out.println("LENGTH OF PLAYER LIST: " + ServiceLocator.getService(World.class).getEntity("Player").size());
+		if (player == null) {
+			player = ServiceLocator.getService(World.class).getEntity("Player")
+					.get(0);
+		}
+	}
+
 	/*
 	 * public because network needs to call this...
 	 */
