@@ -1,7 +1,6 @@
 package wolf3d.components.behaviours;
 
 import wolf3d.components.Health;
-import wolf3d.components.behaviours.animations.die.FallDieAnimation;
 import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
 import wolf3d.components.sensors.ProximitySensor;
 
