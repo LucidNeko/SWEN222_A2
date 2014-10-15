@@ -139,8 +139,4 @@ public class WorldBuilder {
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(Attackable.class);
 	}
-
-	public World getWorld(){
-		return this.world;
-	}
 }
