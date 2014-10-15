@@ -81,6 +81,6 @@ public class WorldBuilderTests {
 		//Create player
 		builder.createPlayer(uniqueId, name, transform, health, strength, weight, inventory);
 		//Does player exist by that ID?
-		assertTrue(builder.getWorld().getEntity(uniqueId)!=null);
+		assertTrue(ServiceLocator.getService(World.class).getEntity(uniqueId)!=null);
 	}
 }
