@@ -45,7 +45,7 @@ public class DataManagement {
 	 * @param fname
 	 * @param uniqueID the id of the player to load
 	 */
-	public static World loadWorld(String fname, int uniqueID) {
+	public static void loadWorld(String fname, int uniqueID) {
 		String fpath = getSaveFpath()+fname;
 		// check save file exists
 		if (!new File (fpath).isFile()) {
@@ -111,12 +111,10 @@ public class DataManagement {
 		builder.createDefaultObjects();
 		builder.createCamera();
 
-		return builder.getWorld();
 
 	} catch (FileNotFoundException e) {
 		log.error("Game file unable to load: file does not exist.");
 	}
-	return null;
 }
 
 /**

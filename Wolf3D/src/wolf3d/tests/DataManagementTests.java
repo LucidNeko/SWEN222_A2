@@ -86,6 +86,7 @@ public class DataManagementTests {
 	// Test a world saves without crashing.
 	public void testSaveWorldCrash() {
 		DataManagement.saveWorld("testSaveWorldCrash.txt", world);
+		world.destroyEntity(-1);
 	}
 
 	@Test
@@ -93,12 +94,14 @@ public class DataManagementTests {
 	public void testLoadWorldPlayerPos() {
 		DataManagement.saveWorld("testLoadWorldCrash.txt", world);
 		world.destroyEntity(-1);
-		World world = DataManagement.loadWorld("testLoadWorldCrash.txt",-1);
+		DataManagement.loadWorld("testLoadWorldCrash.txt",-1);
+		World world = ServiceLocator.getService(World.class);
 		Entity player = world.getEntity("Player").get(0);
 
 		assertTrue(player.getComponent(Transform.class).getPosition().getX() == 10
 				&& player.getComponent(Transform.class).getPosition().getY() == 0
 				&& player.getComponent(Transform.class).getPosition().getZ() == 20);
+		world.destroyEntity(-1);
 	}
 
 }

@@ -76,6 +76,4 @@ public class Cache {
 		}
 		services.add(newService);
 	}
-
-
 }
