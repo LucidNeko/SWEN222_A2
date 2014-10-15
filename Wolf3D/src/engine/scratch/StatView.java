@@ -14,6 +14,11 @@ import engine.core.Entity;
 import engine.core.World;
 import engine.util.ServiceLocator;
 
+/**
+ *
+ * @author Hamish
+ *
+ */
 public class StatView extends JComponent {
 
 	private static final int WIDTH = 200;

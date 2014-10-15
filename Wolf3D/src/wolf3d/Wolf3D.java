@@ -27,6 +27,7 @@ import wolf3d.ui.WolfCanvas;
 import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
+import engine.scratch.InventoryView;
 import engine.scratch.MiniMap;
 import engine.scratch.StatView;
 import engine.util.Messenger;
@@ -67,6 +68,7 @@ public class Wolf3D extends JFrame {
 		//		final World world = DataManagement.loadWorld("defaultWorld.txt");
 
 
+		//Build OpenGL panel.
 		//Create views
 		final WorldView worldView = ServiceLocator.getService(WorldView.class);
 
@@ -81,22 +83,19 @@ public class Wolf3D extends JFrame {
 
 		this.getContentPane().add(mainPanel);
 
-		//Build OpenGL panel.
-
-//		final MiniMap minimap = new MiniMap(200, 200);
-//		JPanel sidePanel = new JPanel();
-//		sidePanel.add(minimap);
-//		this.getContentPane().add(sidePanel, BorderLayout.EAST);
 
 		final JPanel sidePanel = new JPanel();
 		sidePanel.setLayout(new BorderLayout());
 		this.getContentPane().add(sidePanel, BorderLayout.EAST);
 
-//		final MiniMapG2D minimap = new MiniMapG2D();
 		final MiniMap minimap = new MiniMap(200, 200);
 		sidePanel.add(minimap, BorderLayout.NORTH);
+		final InventoryView inventoryView = new InventoryView();
+		sidePanel.add(inventoryView, BorderLayout.CENTER);
 		final StatView statView = new StatView();
 		sidePanel.add(statView, BorderLayout.SOUTH);
+
+		//refresher thread for the sidepanel.
 		new Thread(new Runnable() {
 			public void run() {
 				while(true) {
@@ -135,16 +134,6 @@ public class Wolf3D extends JFrame {
 				game.setView(worldView); // give it the view so it can call it's display method appropriately.
 			}
 		});
-
-//		new Thread() {
-//			public void run() {
-//				int index = 0;
-//				while(true) {
-//					ServiceLocator.getService(Messenger.class).sendMessage("{}", index++);
-//					LockSupport.parkNanos(1000000);
-//				}
-//			}
-//		}.start();
 	}
 
 	/** Exits after confirming with the user if they really want to exit */
