@@ -90,7 +90,7 @@ public class EntityFactory {
 
 		//Create player
 //		Entity player = world.createEntity("Other Player", id);
-		Entity player = world.createEntity(id, "Other Player");
+		Entity player = world.createEntity(id, "other");
 //		player.attachComponent(Camera.class);
 //		player.attachComponent(PyramidRenderer.class);
 		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
