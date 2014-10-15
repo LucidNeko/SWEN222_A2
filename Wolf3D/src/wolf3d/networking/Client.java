@@ -40,7 +40,7 @@ public class Client extends Thread implements Service{
 		this.sock = new Socket(ipAddress,port);
 		this.world = ServiceLocator.getService(World.class);
 		this.gl = gameDemo;
-		ServiceLocator.register(this);
+		ServiceLocator.registerService(this);
 		this.start();
 	}
 
