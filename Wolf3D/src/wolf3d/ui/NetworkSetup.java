@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 public class NetworkSetup extends JFrame {
 	private String ip;
 	private int port;
+	private JFrame f;
 
 	public static void main(String[] args){
 		NetworkSetup ns = new NetworkSetup();
@@ -33,10 +34,10 @@ public class NetworkSetup extends JFrame {
 	 */
 	public NetworkSetup(){
 		/*Basic frame setup*/
-		JFrame frame = new JFrame();
-		frame.setTitle("Network setup");
-		frame.setSize(300, 500);
-		frame.setResizable(false);
+		f = new JFrame();
+		f.setTitle("Network setup");
+		f.setSize(300, 500);
+		f.setResizable(false);
         JPanel panel = new JPanel();
 
         /*Instruction labels*/
@@ -63,6 +64,7 @@ public class NetworkSetup extends JFrame {
         		NetworkSetup.this.ip=ipInput.getText();
         		try {
 					NetworkSetup.this.port=Integer.parseInt(portInput.getText());
+					NetworkSetup.this.f.dispose();
 				} catch (NumberFormatException e1) {
 					System.out.println("Enter a valid number in the port");
 				}
@@ -77,8 +79,8 @@ public class NetworkSetup extends JFrame {
         panel.add(portInput);
         panel.add(execute);
 
-        frame.add(panel);
-        frame.setVisible(true);
+        f.add(panel);
+        f.setVisible(true);
 	}
 
 	/**
