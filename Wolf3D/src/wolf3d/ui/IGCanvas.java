@@ -18,7 +18,9 @@ import wolf3d.GameDemo;
 import wolf3d.Wolf3D;
 import wolf3d.database.DataManagement;
 import wolf3d.networking.Client;
+import engine.core.World;
 import engine.util.Resources;
+import engine.util.ServiceLocator;
 
 /**
  * @author Simon Brannigan
@@ -92,12 +94,12 @@ public class IGCanvas extends JPanel{
 					if(e.getY() < saveBot && e.getY() > saveTop){
 						//Save Game
 						System.out.println("Save");
+						DataManagement.saveWorld("Save.txt", ServiceLocator.getService(World.class));
 					}
 					if(e.getY() < loadBot && e.getY() > loadTop){
 						//Load Game
-
-						//Client c = new Client(playerName, ipAddress, port, gameDemo, fname);
-						//DataManagement.loadWorld("defaultWorld.txt");
+						World w = ServiceLocator.getService(World.class);
+						DataManagement.loadWorld("defaultWorld.txt", w.getEntity("Player").get(0).getID());
 						System.out.println("Load");
 					}
 					if(e.getY() < exitBot && e.getY() > exitTop){
