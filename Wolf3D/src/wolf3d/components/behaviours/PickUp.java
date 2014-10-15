@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
 import wolf3d.components.Weight;
+import wolf3d.components.behaviours.animations.Rotate;
 import wolf3d.components.sensors.ProximitySensor;
 import engine.common.Vec3;
 import engine.components.Behaviour;
@@ -45,6 +46,7 @@ public class PickUp extends Behaviour {
 		Strength strength = player.getComponent(Strength.class);
 		if (strength.reduceStrength(itemWeight)) {
 			inventory.addItem(item.getID());
+			getOwner().detachComponent(getOwner().getComponent(Rotate.class));
 			setChanged();
 			//move item to a position that cannot be seen so network and database people are happy
 			item.getTransform().setPosition(outBounds);

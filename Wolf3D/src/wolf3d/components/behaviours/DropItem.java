@@ -3,6 +3,7 @@ package wolf3d.components.behaviours;
 import wolf3d.components.Inventory;
 import wolf3d.components.Strength;
 import wolf3d.components.Weight;
+import wolf3d.components.behaviours.animations.Rotate;
 
 import com.jogamp.newt.event.KeyEvent;
 
@@ -46,7 +47,6 @@ public class DropItem extends Behaviour {
 			strength.releaseWeight(itemWeight);
 			// creates an EntityDef to use to add back to the world
 //			TempEntityDef entDef = new TempEntityDef(item);
-			setChanged();
 			return inventory.removeEntity(item.getID());
 
 //			return world.addEntityDef(entDef);

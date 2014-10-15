@@ -29,13 +29,12 @@ public class SpecialDoorBehaviour extends Behaviour {
 	public void update(float delta) {
 		List<Entity> teddys = world.getEntity("TeddyItem");
 		// SpecialDoors position
-		Vec3 pos = getOwner().getComponent(ProximitySensor.class).getTarget()
-				.getTransform().getPosition();
+		Vec3 pos = getOwner().getTransform().getPosition();
 		int count = 0;
 
 		// adding up how many teddys are in front of the door
 		for (Entity t : teddys) {
-			if (pos.sub(t.getTransform().getPosition()).length() < 1) {
+			if (pos.sub(t.getTransform().getPosition()).length() < 1.0f) {
 				count++;
 			}
 		}
