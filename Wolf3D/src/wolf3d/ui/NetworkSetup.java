@@ -23,10 +23,6 @@ public class NetworkSetup extends JFrame {
 	private int port;
 	private JFrame f;
 
-	public static void main(String[] args){
-		NetworkSetup ns = new NetworkSetup();
-	}
-
 	/**
 	 * @author Simon Brannigan
 	 * Creates a frame that takes a string and an int.
