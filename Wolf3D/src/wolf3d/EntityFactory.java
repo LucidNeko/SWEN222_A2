@@ -58,8 +58,8 @@ public class EntityFactory {
 		Entity player = world.createEntity(id, name);
 		player.attachComponent(MeshFilter.class).setMesh(linkMesh);
 		player.attachComponent(MeshRenderer.class).setMaterial(new Material(linkTex));
-		player.attachComponent(Health.class);
-		player.attachComponent(Strength.class).setStrength(10);;
+		player.attachComponent(Health.class).setDamageAmt(10);;
+		player.attachComponent(Strength.class);
 		player.attachComponent(Weight.class);
 		player.attachComponent(Inventory.class);
 		player.attachComponent(DropItem.class);
