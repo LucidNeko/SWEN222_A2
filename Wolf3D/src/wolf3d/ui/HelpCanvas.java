@@ -20,6 +20,8 @@ public class HelpCanvas extends JPanel{
 
 	private static final int height = 600;
 	private static final int width = 800;
+	private static boolean vis = false;
+
 	private static BufferedImage help;
 
 	public HelpCanvas(){
@@ -40,5 +42,19 @@ public class HelpCanvas extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(help, 0, 0, width, height, this);
+	}
+
+	/**
+	 * @return the vis
+	 */
+	public static boolean isVis() {
+		return vis;
+	}
+
+	/**
+	 * @param vis the vis to set
+	 */
+	public static void setVis(boolean vis) {
+		HelpCanvas.vis = vis;
 	}
 }
