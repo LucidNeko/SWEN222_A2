@@ -26,7 +26,7 @@ public class IGFrame extends JPanel implements MouseListener{
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false); // may replace this to be resizable but the pic may look weird
 		// or just have two sizes, full screen and 800 by 600
-		f.add(new IGCanvas(width, height));
+		//f.add(new IGCanvas(width, height));
 		//f.requestFocusInWindow(); //needs to grab the focus away from the gamescreen
 		f.setVisible(true);
 		f.addMouseListener(this);

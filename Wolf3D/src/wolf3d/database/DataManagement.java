@@ -131,7 +131,7 @@ public static void saveWorld(String fname, World world) {
 	Gson gson = new Gson();
 	List<Entity> entities = world.getEntity("Player");
 	Entity entity = entities.get(0);
-	File saveFile = new File(getSaveFpath()+fname);
+	File saveFile = new File(Resources.getURL("saves/").getPath()+fname);
 	String line;
 	BufferedWriter writer = null;
 
@@ -198,21 +198,6 @@ public static void saveWorld(String fname, World world) {
 	} finally {
 		try {writer.close();} catch (Exception ex) {}
 	}
-
-}
-
-/*
- * Returns the file path within the game directory to save the world file to.
- * If unable to get directory, and no exception thrown, returns game root path.
- */
-private static String getSaveFpath() {
-//	String path = "";
-//	File currentDirFile = new File(".");
-//	path = currentDirFile.getAbsolutePath();
-//	path = path.substring(0, path.length()-1);
-//	path = path+"Wolf3D/src/wolf3d/assets/saves/";
-//	return path;
-	return Resources.getURL("saves/").getPath();
 }
 
 /*
