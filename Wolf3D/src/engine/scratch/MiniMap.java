@@ -76,7 +76,7 @@ public class MiniMap extends GameCanvas implements View {
 						while(true) {
 							MiniMap.this.display();
 							try {
-								Thread.sleep(16);
+								Thread.sleep(200);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -112,17 +112,22 @@ public class MiniMap extends GameCanvas implements View {
 
 		gl.glPushMatrix();
 			camera.getComponent(Camera.class).setActive(gl);
+//			for(Entity e : world.getEntities()) {
 			for(Entity e : world.getEntities()) {
 				if(e.getName().equals("skybox")) continue; //dont render skybox.
-				gl.glPushMatrix();
-					if(e.hasComponent(MeshFilter.class)) {
-						e.getTransform().applyTransform(gl);
-						//add wireframe renderer, render, then detach.
-						WireframeMeshRenderer wmr = e.attachComponent(WireframeMeshRenderer.class);
-						wmr.render(gl);
-						e.detachComponent(wmr);
-					}
-				gl.glPopMatrix();
+				if(e.getName().equalsIgnoreCase("wall") ||
+				   e.getName().equalsIgnoreCase("player") ||
+				   e.getName().equalsIgnoreCase("other")) {
+					gl.glPushMatrix();
+						if(e.hasComponent(MeshFilter.class)) {
+							e.getTransform().applyTransform(gl);
+							//add wireframe renderer, render, then detach.
+							WireframeMeshRenderer wmr = e.attachComponent(WireframeMeshRenderer.class);
+							wmr.render(gl);
+							e.detachComponent(wmr);
+						}
+					gl.glPopMatrix();
+				}
 			}
 		gl.glPopMatrix();
 

@@ -75,7 +75,7 @@ public class Wolf3D extends JFrame {
 		log.trace(this.getGlassPane());
 
 		//Adds glass pane
-		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300, game));
+//		((JPanel)(this.getGlassPane())).add(new IGCanvas(200, 300, game));
 //		this.getGlassPane().setVisible(true);
 
 		this.getContentPane().add(mainPanel);
@@ -90,16 +90,17 @@ public class Wolf3D extends JFrame {
 		JPanel sidePanel = new JPanel();
 		this.getContentPane().add(sidePanel, BorderLayout.EAST);
 
-		final MiniMapG2D minimap = new MiniMapG2D();
+//		final MiniMapG2D minimap = new MiniMapG2D();
+		final MiniMap minimap = new MiniMap(200, 200);
 		sidePanel.add(minimap);
-		new Thread(new Runnable() {
-			public void run() {
-				while(true) {
-					minimap.repaint();
-					LockSupport.parkNanos(10000000);
-				}
-			}
-		}).start();
+//		new Thread(new Runnable() {
+//			public void run() {
+//				while(true) {
+//					minimap.repaint();
+//					LockSupport.parkNanos(10000000);
+//				}
+//			}
+//		}).start();
 
 		//Register input devices. If GLCanvas have to register to canvas.
 		worldView.setFocusable(true);
