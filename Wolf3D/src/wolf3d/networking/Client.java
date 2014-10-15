@@ -66,7 +66,8 @@ public class Client extends Thread{
 							if(e!=null){
 								Transform t = e.getTransform();
 								t.setPositionNoFlag(in.readFloat(),in.readFloat(), in.readFloat());
-								t.lookAt(new Vec3(in.readFloat(), in.readFloat(), in.readFloat()));
+								Vec3 tPos = t.getPosition();
+								t.lookAt(tPos.add(new Vec3(in.readFloat(), in.readFloat(), in.readFloat())));
 							}
 							else{
 								for(int i = 0; i<6; i++){

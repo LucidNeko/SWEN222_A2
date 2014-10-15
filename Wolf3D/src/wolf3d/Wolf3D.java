@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.locks.LockSupport;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ import engine.core.World;
 import engine.input.Keyboard;
 import engine.input.Mouse;
 import engine.scratch.MiniMap;
+import engine.util.Messenger;
 import engine.util.ServiceLocator;
 
 /**
@@ -109,6 +111,17 @@ public class Wolf3D extends JFrame {
 		Mouse.setCursor(Mouse.CURSOR_INVISIBLE);
 
 
+		JPanel footer = new JPanel() {
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+//				g.setColor(new Color(255, 0, 0, 64));
+//				g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			}
+		};
+		footer.setPreferredSize(new Dimension(800, 20));
+		footer.add(ServiceLocator.getService(Messenger.class).getLabel());
+
+		this.getContentPane().add(footer, BorderLayout.SOUTH);
 
 		//Pack and display window.
 		this.pack();
@@ -121,6 +134,16 @@ public class Wolf3D extends JFrame {
 				game.setView(worldView); // give it the view so it can call it's display method appropriately.
 			}
 		});
+
+//		new Thread() {
+//			public void run() {
+//				int index = 0;
+//				while(true) {
+//					ServiceLocator.getService(Messenger.class).sendMessage("{}", index++);
+//					LockSupport.parkNanos(1000000);
+//				}
+//			}
+//		}.start();
 	}
 
 	/** Exits after confirming with the user if they really want to exit */
