@@ -258,7 +258,7 @@ public class Server extends Thread{
 	 */
 	public void pushToAllClients(int i, int exclude) {
 		for(int j = 0; j<capacity; j++){
-			if(alive[j]&& i!=exclude){
+			if(alive[j]&& j!=exclude){
 				if(connections[j] != null){
 					try {
 						connections[j].pushToClient(i);
