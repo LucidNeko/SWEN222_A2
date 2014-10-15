@@ -10,22 +10,15 @@ import org.apache.logging.log4j.Logger;
 import wolf3d.components.Health;
 import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
-import wolf3d.components.behaviours.AddAnimation;
 import wolf3d.components.behaviours.AddChaseBehaviour;
 import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.HealthFlash;
 import wolf3d.components.behaviours.PickUp;
-import wolf3d.components.behaviours.Translate;
-import wolf3d.components.behaviours.animations.die.RotateFlyDieAnimation;
-import wolf3d.components.renderers.LightlessMeshRenderer;
-import wolf3d.components.renderers.PyramidRenderer;
 import wolf3d.components.sensors.ProximitySensor;
-import wolf3d.database.DataManagement;
 import wolf3d.networking.Client;
 import wolf3d.world.Parser;
 import engine.common.Mathf;
-import engine.common.Vec3;
 import engine.components.Behaviour;
 import engine.components.Camera;
 import engine.components.MeshFilter;
@@ -44,15 +37,18 @@ import engine.util.Resources;
 import engine.util.ServiceLocator;
 
 /**
- * GameDemo is a demo game that shows off the GameLoop class and the Entity/Component system.
+ * GameDemo is a demo game that shows off the GameLoop class and the
+ * Entity/Component system.
+ *
  * @author Hamish Rae-Hodgson
  *
  */
 public class GameDemo extends GameLoop {
 	private static final Logger log = LogManager.getLogger();
 
-	private static final int FPS = 60; //frames per second/regular updates per second.
-	private static final int FUPS = 30; //fixed updates per second.
+	private static final int FPS = 60; // frames per second/regular updates per
+										// second.
+	private static final int FUPS = 30; // fixed updates per second.
 
 	private World world;
 	private View view;
@@ -69,7 +65,8 @@ public class GameDemo extends GameLoop {
 		super(FPS, FUPS);
 		this.world = ServiceLocator.getService(World.class);
 		try {
-			client = new Client("Joe",ip,port,this, null);
+			client = new Client("Joe", ip, port, this, null);
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -84,7 +81,7 @@ public class GameDemo extends GameLoop {
 		super(FPS, FUPS);
 		this.world = ServiceLocator.getService(World.class);
 		try {
-			client = new Client("Joe",ip,port,this, filename);
+			client = new Client("Joe", ip, port, this, filename);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -92,14 +89,16 @@ public class GameDemo extends GameLoop {
 		}
 	}
 
-
-	public void setPlayer(Entity e){
+	public void setPlayer(Entity e) {
 		this.player = e;
 	}
 
 	/**
-	 * Set the View that is the renderer of the world. So we can call display() as required.
-	 * @param view The View.
+	 * Set the View that is the renderer of the world. So we can call display()
+	 * as required.
+	 *
+	 * @param view
+	 *            The View.
 	 */
 	public void setView(View view) {
 		view.setCamera(camera);
@@ -113,24 +112,27 @@ public class GameDemo extends GameLoop {
 		Parser parser = new Parser("map00/");
 		parser.createEntities(player);
 
-		if(player == null) {
-			player = ServiceLocator.getService(World.class).getEntity("Player").get(0);
+		if (player == null) {
+			player = ServiceLocator.getService(World.class).getEntity("Player")
+					.get(0);
 		}
 
-		//player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
+		// player = EntityFactory.create(EntityFactory.PLAYER, world, "Player");
 		player.attachComponent(parser.getWallCollisionComponent());
 		player.attachComponent(DropItem.class);
 
-		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
-		final Camera c2 = EntityFactory.createFirstPersonCamera(player).getComponent(Camera.class);//
+		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(player)
+				.getComponent(Camera.class);
+		final Camera c2 = EntityFactory.createFirstPersonCamera(player)
+				.getComponent(Camera.class);//
 
 		view.setCamera(c1);
 
 		player.attachComponent(new Behaviour() {
 			@Override
 			public void update(float delta) {
-				if(Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
-					if(camera == c1) {
+				if (Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
+					if (camera == c1) {
 						camera = c2;
 					} else {
 						camera = c1;
@@ -141,7 +143,7 @@ public class GameDemo extends GameLoop {
 
 		});
 
-		//		camera = player.getComponent(Camera.class);
+		// camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);
 
 		Entity skybox = EntityFactory.createSkybox(player);
@@ -149,71 +151,75 @@ public class GameDemo extends GameLoop {
 		Mesh testMesh = Resources.getMesh("motorbike/katana.obj");
 		Texture testTex = Resources.getTexture("motorbike/katana.png", true);
 
-		//teddy
+		// teddy
 		Entity test = world.createEntity("Test");
 		test.attachComponent(MeshFilter.class).setMesh(testMesh);
-		test.attachComponent(MeshRenderer.class).setMaterial(new Material(testTex));
+		test.attachComponent(MeshRenderer.class).setMaterial(
+				new Material(testTex));
 		test.attachComponent(ProximitySensor.class).setTarget(player);
 		test.attachComponent(PickUp.class);
 		test.attachComponent(new Weight(100));
 		test.getTransform().translate(1, 0, 5);
 
-		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj").getScaledInstance(0.5f);
+		Mesh teddyMesh = Resources.getMesh("teddy/teddy.obj")
+				.getScaledInstance(0.5f);
 		Texture teddyTex = Resources.getTexture("teddy/teddy.png", true);
-
 
 		Entity teddy = world.createEntity("Teddy");
 		teddy.attachComponent(MeshFilter.class).setMesh(teddyMesh);
-		teddy.attachComponent(MeshRenderer.class).setMaterial(new Material(teddyTex));
+		teddy.attachComponent(MeshRenderer.class).setMaterial(
+				new Material(teddyTex));
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
-		teddy.attachComponent(ProximitySensor.class).setTarget(player);;
-		//		teddy.getTransform().translate(15, 0, 3);
+		teddy.attachComponent(ProximitySensor.class).setTarget(player);
+		;
+		// teddy.getTransform().translate(15, 0, 3);
 		teddy.getTransform().translate(2, 0, 2);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 
-		//testing pickup
-		//		teddy.attachComponent(new PickUp(world));
-		//		teddy.attachComponent(Weight.class);
-		//testing attack
+		// testing pickup
+		// teddy.attachComponent(new PickUp(world));
+		// teddy.attachComponent(Weight.class);
+		// testing attack
 		teddy.attachComponent(Health.class);
 		teddy.attachComponent(Attackable.class);
 
 		teddy.attachComponent(HealthFlash.class);
 
-		for(Entity e : world.getEntities()) {
+		for (Entity e : world.getEntities()) {
 			e.getTransform().clearChanged();
 		}
 	}
 
 	@Override
 	protected void tick(float delta) {
-		//escape closes the game.
-		if(Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
+		// escape closes the game.
+		if (Keyboard.isKeyDown(KeyEvent.VK_ESCAPE)) {
 			System.exit(0);
 		}
 
-		//if control is pressed (toggles) frees the mouse.
-		if(Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
+		// if control is pressed (toggles) frees the mouse.
+		if (Keyboard.isKeyDownOnce(KeyEvent.VK_CONTROL))
 			Mouse.setGrabbed(!Mouse.isGrabbed());
 
-		//stop the Mouse from freeing itself by going out of the bounds of the component.
-		if(Mouse.isGrabbed())
+		// stop the Mouse from freeing itself by going out of the bounds of the
+		// component.
+		if (Mouse.isGrabbed())
 			Mouse.centerMouseOverComponent();
 
-		//Update all the behaviours attached to the entities.
-		for(Entity entity : world.getEntities()) {
-			for(Behaviour behaviour : entity.getComponents(Behaviour.class)) {
+		// Update all the behaviours attached to the entities.
+		for (Entity entity : world.getEntities()) {
+			for (Behaviour behaviour : entity.getComponents(Behaviour.class)) {
 				behaviour.update(delta);
 			}
 
 		}
-		for(Entity entity : world.getEntities()) {
+		for (Entity entity : world.getEntities()) {
 			Transform transform = entity.getTransform();
-			if(transform.hasChanged()) {
+			if (transform.hasChanged()) {
 				try {
 					String name = transform.getOwner().getName();
-					if(!(name.equals("skybox") || name.equals("Camera"))){
+					if (!(name.equals("skybox") || name.equals("Camera"))) {
 						client.sendTransform(transform);
 						transform.clearChanged();
 					}
@@ -226,7 +232,6 @@ public class GameDemo extends GameLoop {
 
 	}
 
-
 	@Override
 	protected void fixedTick(float delta) {
 		// TODO Auto-generated method stub
@@ -234,25 +239,23 @@ public class GameDemo extends GameLoop {
 
 	@Override
 	protected void render() {
-		if(view != null) view.display();
+		if (view != null)
+			view.display();
 	}
-
 
 	public Entity getPlayer() {
 		// TODO Auto-generated method stub
 		return player;
 	}
 
-
-	public void createPlayer(int ID){
+	public void createPlayer(int ID) {
 		player = EntityFactory.createPlayer("Player", ID);
 	}
 
-	public void createOtherPlayer(int ID){
+	public void createOtherPlayer(int ID) {
 		Entity other = EntityFactory.createOtherPlayer("other", ID);
 		other.getTransform().translate(1, 0, 1);
 	}
-
 
 	public void shutdownClient() {
 		client.shutdownClient();

@@ -68,23 +68,23 @@ public class Server extends Thread{
 	public void run(){
 		while(listening){
 
-			pushToAllClients("wait");
-			pushToAllClients((capacity-index));
+			pushToAllClients("wait",-5);
+			pushToAllClients((capacity-index),-5);
 			System.out.println("Server listening for " + (capacity-index) + " more connections...");
 
-			for(DataInputStream is : dis){
-				if(is!=null){
-					String s;
-					try {
-						s = is.readUTF();
-
-						if(s.equals("loadmode")){
-							loadmode = true;
-						}}catch (IOException e) {
-							e.printStackTrace();
-						}
-				}
-			}
+//			for(DataInputStream is : dis){
+//				if(is!=null){
+//					String s;
+//					try {
+//						s = is.readUTF();
+//
+//						if(s.equals("loadmode")){
+//							loadmode = true;
+//						}}catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//				}
+//			}
 			Socket sock;
 			try {
 				sock = ss.accept();
@@ -105,10 +105,10 @@ public class Server extends Thread{
 					//let the clients know the game can now begin.
 					if(!loadmode){
 						assignIDs();
-						pushToAllClients("begin");
+						pushToAllClients("begin",-5);
 					}
 					else{
-						pushToAllClients("load");
+						pushToAllClients("load",-5);
 						for(int i = 0; i<capacity; i++){
 							connections[i].pushToClient((-(i+1)));
 							connections[i].pushToClient(capacity-1);
@@ -142,19 +142,19 @@ public class Server extends Thread{
 						String marker = dis[i].readUTF();
 
 						if(marker.equals("transform")){
-							pushToAllClients("transform"); //marker
-							pushToAllClients(dis[i].readInt()); //ID of entity transformed.
-							pushToAllClients(dis[i].readFloat());
-							pushToAllClients(dis[i].readFloat());
-							pushToAllClients(dis[i].readFloat());
-							pushToAllClients(dis[i].readFloat());
-							pushToAllClients(dis[i].readFloat());
-							pushToAllClients(dis[i].readFloat());
+							pushToAllClients("transform",i); //marker
+							pushToAllClients(dis[i].readInt(),i); //ID of entity transformed.
+							pushToAllClients(dis[i].readFloat(),i);
+							pushToAllClients(dis[i].readFloat(),i);
+							pushToAllClients(dis[i].readFloat(),i);
+							pushToAllClients(dis[i].readFloat(),i);
+							pushToAllClients(dis[i].readFloat(),i);
+							pushToAllClients(dis[i].readFloat(),i);
 						}
 						if(marker.equals("message")){
-							pushToAllClients("message");
-							pushToAllClients(dis[i].readInt()); //ID of sender.
-							pushToAllClients(dis[i].readUTF()); // message itself.
+							pushToAllClients("message",-5);
+							pushToAllClients(dis[i].readInt(),-5); //ID of sender.
+							pushToAllClients(dis[i].readUTF(),-5); // message itself.
 						}
 					}
 				} catch (IOException e) {
@@ -183,8 +183,8 @@ public class Server extends Thread{
 			connections[index].closeSocket();
 			connections[index] = null;
 			alive[index] = false;
-			pushToAllClients("disconnect");
-			pushToAllClients(-(index+1));
+			pushToAllClients("disconnect",-5);
+			pushToAllClients(-(index+1),-5);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -238,9 +238,9 @@ public class Server extends Thread{
 	 * Sends a string to every client.
 	 * @param string
 	 */
-	public void pushToAllClients(String string) {
+	public void pushToAllClients(String string, int exclude) {
 		for(int i = 0; i<capacity; i++){
-			if(alive[i]){
+			if(alive[i]&& i!=exclude){
 				if(connections[i] != null){
 					try {
 						connections[i].pushToClient(string);
@@ -256,9 +256,9 @@ public class Server extends Thread{
 	 * Sends an int to every client.
 	 * @param i
 	 */
-	public void pushToAllClients(int i) {
+	public void pushToAllClients(int i, int exclude) {
 		for(int j = 0; j<capacity; j++){
-			if(alive[j]){
+			if(alive[j]&& i!=exclude){
 				if(connections[j] != null){
 					try {
 						connections[j].pushToClient(i);
@@ -274,9 +274,9 @@ public class Server extends Thread{
 	 * Sends a float to every client.
 	 * @param f
 	 */
-	public void pushToAllClients(float f) {
+	public void pushToAllClients(float f, int exclude) {
 		for(int i = 0; i<capacity; i++){
-			if(alive[i]){
+			if(alive[i] && i!=exclude){
 				if(connections[i] != null){
 					try {
 						connections[i].pushToClient(f);
