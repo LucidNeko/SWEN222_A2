@@ -11,6 +11,7 @@ import wolf3d.components.Health;
 import wolf3d.components.Weight;
 import wolf3d.components.behaviours.AILookAtController;
 import wolf3d.components.behaviours.AddChaseBehaviour;
+import wolf3d.components.behaviours.AttackPlayer;
 import wolf3d.components.behaviours.Attackable;
 import wolf3d.components.behaviours.DropItem;
 import wolf3d.components.behaviours.HealthFlash;
@@ -179,6 +180,7 @@ public class GameDemo extends GameLoop {
 				new Material(teddyTex));
 		teddy.attachComponent(AILookAtController.class).setTarget(player);
 		teddy.attachComponent(AddChaseBehaviour.class);
+		teddy.attachComponent(AttackPlayer.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);
 		;
 		// teddy.getTransform().translate(15, 0, 3);

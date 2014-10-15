@@ -96,7 +96,7 @@ public class Client extends Thread implements Service{
 							int otherID = in.readInt();
 							gl.createOtherPlayer(otherID);//this line.
 						}
-						//gl.start();
+						gl.start();
 						break;
 					}
 

@@ -20,6 +20,7 @@ public class WolfFrame extends JFrame implements MouseListener{
 	private static final int height = 600;
 	private static final int width = 800;
 	private static JFrame f;
+	private static Boolean t=false;
 
 	public WolfFrame(){
 		/*Basic frame setup*/
