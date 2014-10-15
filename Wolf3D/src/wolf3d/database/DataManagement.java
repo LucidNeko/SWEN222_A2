@@ -72,9 +72,7 @@ public class DataManagement {
 			String name = scan.next();
 			name = name.substring(1,name.length()-2);
 			log.trace("Reading name: {}", name);
-			skip(scan, 2);
 			line = scan.next();
-			line = line.substring(1,line.length()-2);
 
 			/* Read components, they will be saved in the order of:
 			 * Transform,Health,Strength,Weight,Inventory
@@ -158,11 +156,6 @@ public static void saveWorld(String fname, World world) {
 
 		//name
 		line = "\"name\" : \""+entity.getName()+"\",";
-		log.trace("Writing: {}", line);
-		writer.write(line+"\n");
-
-		//uniqueID
-		line = "\"uniqueID\" : \""+Integer.toString(entity.getID())+"\",";
 		log.trace("Writing: {}", line);
 		writer.write(line+"\n");
 
