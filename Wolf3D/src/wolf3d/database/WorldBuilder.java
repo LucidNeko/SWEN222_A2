@@ -161,8 +161,8 @@ public class WorldBuilder {
 		teddy.attachComponent(AddChaseBehaviour.class);
 		teddy.attachComponent(ProximitySensor.class).setTarget(player);
 		teddy.attachComponent(AttackPlayer.class);
-//		teddy.getTransform().translate(15, 0, 5);
-		teddy.getTransform().translate(2, 0, 2);
+		teddy.getTransform().translate(15, 0, 5);
+//		teddy.getTransform().translate(2, 0, 2);
 		teddy.getTransform().yaw(Mathf.degToRad(180));
 		teddy.attachComponent(HealthFlash.class);
 		teddy.attachComponent(AttackPlayer.class);
