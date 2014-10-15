@@ -125,9 +125,13 @@ public class Server extends Thread{
 							pushToAllClients(dis[i].readInt()); //ID of sender.
 							pushToAllClients(dis[i].readUTF()); // message itself.
 						}
+						if(marker.equals("destroy")){
+							pushToAllClients("destroy");
+							pushToAllClients(dis[i].readInt());
+						}
 					}
 				} catch (IOException e) {
-					e.printStackTrace(); 
+					e.printStackTrace();
 					//don't close the connection here, because itll throw it while reading
 					//from index i, but possibly wirting to index j,
 					//and j is the one whos closed his client!!

@@ -18,6 +18,8 @@ public class RotateFlyDieAnimation extends Behaviour {
 	private float time;
 	private World world = ServiceLocator.getService(World.class);
 
+	private Client client = ServiceLocator.getService(Client.class);
+
 	@Override
 	public void update(float delta) {
 		requires(Transform.class);
@@ -35,7 +37,9 @@ public class RotateFlyDieAnimation extends Behaviour {
 			t.fly((time -4)*speed);
 		}
 		if(time > 10){
-			world.destroyEntity(getOwner().getID());
+			client.sendToServer("destroy");
+			client.sendToServer(getOwner().getID());
+			//world.destroyEntity(getOwner().getID());
 		}
 	}
 }
