@@ -68,24 +68,24 @@ public class MiniMap extends GameCanvas implements View {
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		//Start a thread calling display on this every 16ms. Not so critical.
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new Thread(new Runnable() {
-					public void run() {
-						while(true) {
-							MiniMap.this.display();
-							try {
-								Thread.sleep(200);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}
-				}).start();
-			}
-		});
+//		//Start a thread calling display on this every 16ms. Not so critical.
+//		SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+//				new Thread(new Runnable() {
+//					public void run() {
+//						while(true) {
+//							MiniMap.this.display();
+//							try {
+//								Thread.sleep(200);
+//							} catch (InterruptedException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+//						}
+//					}
+//				}).start();
+//			}
+//		});
 	}
 
 	@Override
