@@ -22,13 +22,19 @@ public class WolfCanvas extends JPanel{
 	private static final int height = 600;
 	private static final int width = 800;
 	private static BufferedImage background;
+	private static BufferedImage help;
+	private static Boolean h = false;
 
-	public WolfCanvas(){
+	/**
+	 *
+	 * @param h whether or not the help screen has been selected
+	 */
+	public WolfCanvas(Boolean h){
+		this.h=h;
 		try {
 			background = Resources.getImage("BackgroundText.png");
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			help = Resources.getImage("help.png");
+		} catch (IOException e){
 			e.printStackTrace();
 		}
 		this.repaint();
@@ -42,5 +48,8 @@ public class WolfCanvas extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, width, height, this);
+		if(h==true){
+			g.drawImage(help, 0, 0, width, height, this);
+		}
 	}
 }

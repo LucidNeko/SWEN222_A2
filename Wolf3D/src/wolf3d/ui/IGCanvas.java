@@ -98,6 +98,9 @@ public class IGCanvas extends JPanel{
 					}
 					if(e.getY() < loadBot && e.getY() > loadTop){
 						//Load Game
+
+						new Wolf3D();
+
 						World w = ServiceLocator.getService(World.class);
 						DataManagement.loadWorld("defaultWorld.txt", w.getEntity("Player").get(0).getID());
 						System.out.println("Load");
