@@ -1,7 +1,9 @@
 package wolf3d.components.behaviours.animations.die;
 
-import wolf3d.components.Health;
+import java.io.IOException;
+
 import wolf3d.components.behaviours.AILookAtController;
+import wolf3d.networking.Client;
 import engine.components.Behaviour;
 import engine.components.Transform;
 import engine.core.World;
@@ -17,6 +19,8 @@ public class RotateFlyDieAnimation extends Behaviour {
 
 	private float time;
 	private World world = ServiceLocator.getService(World.class);
+
+	private Client client = ServiceLocator.getService(Client.class);
 
 	@Override
 	public void update(float delta) {
@@ -35,7 +39,14 @@ public class RotateFlyDieAnimation extends Behaviour {
 			t.fly((time -4)*speed);
 		}
 		if(time > 10){
-			world.destroyEntity(getOwner().getID());
+			try {
+				client.sendToServer("destroy");
+				client.sendToServer(getOwner().getID());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//world.destroyEntity(getOwner().getID());
 		}
 	}
 }

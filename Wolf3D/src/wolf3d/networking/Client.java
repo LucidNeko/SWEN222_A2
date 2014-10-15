@@ -12,12 +12,13 @@ import engine.components.MeshRenderer;
 import engine.components.Transform;
 import engine.core.Entity;
 import engine.core.World;
+import engine.util.Service;
 import engine.util.ServiceLocator;
 
 /**
  * @author Michael Nelson (300276118)
  */
-public class Client extends Thread{
+public class Client extends Thread implements Service{
 	private Socket sock;
 
 	private World world;
@@ -39,8 +40,11 @@ public class Client extends Thread{
 		this.sock = new Socket(ipAddress,port);
 		this.world = ServiceLocator.getService(World.class);
 		this.gl = gameDemo;
+		ServiceLocator.registerService(this);
 		this.start();
 	}
+
+
 
 	/**
 	 * Listens for new messages from the server, then makes modifications to the world.
@@ -95,11 +99,13 @@ public class Client extends Thread{
 						 * loaded game.
 						 */
 					case "disconnect":
-						System.out.println("player disce");
 						int who = in.readInt();
 						Entity e = world.getEntity(who);
 						e.detachComponent(e.getComponent(MeshRenderer.class));
 						break;
+
+					case "destroy":
+						world.destroyEntity(in.readInt());
 
 					case "begin":
 						gl.createEntities();
