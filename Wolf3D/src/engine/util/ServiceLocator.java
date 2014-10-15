@@ -40,4 +40,16 @@ public class ServiceLocator {
 	public static void registerService(Service service) {
 		cache.registerService(service);
 	}
+
+	/**
+	 * This gets the instantiated service provided, if there is not already an
+	 * instantiated service it instantiates it and returns
+	 *
+	 * @param service
+	 *            the service that you want to get
+	 * @return the instantiated service
+	 */
+	public static <E extends Service> boolean hasService(Class<? extends E> service) {
+		return cache.hasServiced(service);
+	}
 }

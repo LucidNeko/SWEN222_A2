@@ -80,4 +80,21 @@ public class Cache {
 		services.add(newService);
 
 	}
+
+	/**
+	 *
+	 * @param service the service to be looked up in cache
+	 * @return returns the instance of the service provided
+	 */
+	@SuppressWarnings("unchecked")
+	public <E extends Service> boolean hasServiced(Class<? extends E> service){
+	      for (Service s : services) {
+	    	  if(s.getClass() == service){
+	            return true;
+	         }
+	      }
+	      return false;
+	   }
+
+
 }
