@@ -30,6 +30,8 @@ public class Client extends Thread implements Service{
 
 	private String fname;
 
+	private boolean sentYet = false;
+
 	/**
 	 * Construct a new client object connecting to the given ipAddress on the port supplied.
 	 * @param ipAddress Ip address to connect to
@@ -47,9 +49,6 @@ public class Client extends Thread implements Service{
 		this.fname = fname;
 		ServiceLocator.registerService(this);
 		this.start();
-		if(fname!=null){
-			sendToServer("loadmode"); //load mode
-		}
 	}
 
 
@@ -62,6 +61,12 @@ public class Client extends Thread implements Service{
 			try{
 				out = new DataOutputStream(sock.getOutputStream());
 				in = new DataInputStream(sock.getInputStream());
+
+
+//				if(fname!=null && !sentYet){
+//					sendToServer("loadmode"); //load mode
+//					sentYet = true;
+//				}
 
 				while(true){
 					String marker = in.readUTF();
