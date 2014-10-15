@@ -198,7 +198,6 @@ public static void saveWorld(String fname, World world) {
 	} finally {
 		try {writer.close();} catch (Exception ex) {}
 	}
-
 }
 
 /*
