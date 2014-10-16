@@ -11,6 +11,8 @@ import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
+import java.util.concurrent.locks.LockSupport;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -53,6 +55,15 @@ public class MiniMap extends GameCanvas implements View {
 		camera = world.createEntity("Camera");
 		camera.attachComponent(Camera.class);
 		camera.getTransform().pitch(Mathf.degToRad(-90));
+
+		new Thread(new Runnable() {
+			public void run() {
+				while(true) {
+					MiniMap.this.display();
+					LockSupport.parkNanos(100000000);
+				}
+			}
+		}).start();
 	}
 
 	@Override
