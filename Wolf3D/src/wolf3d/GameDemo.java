@@ -132,25 +132,25 @@ public class GameDemo extends GameLoop {
 
 		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(player)
 				.getComponent(Camera.class);
-		final Camera c2 = EntityFactory.createFirstPersonCamera(player)
-				.getComponent(Camera.class);//
+//		final Camera c2 = EntityFactory.createFirstPersonCamera(player)
+//				.getComponent(Camera.class);
 
 		view.setCamera(c1);
 
-		player.attachComponent(new Behaviour() {
-			@Override
-			public void update(float delta) {
-				if (Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
-					if (camera == c1) {
-						camera = c2;
-					} else {
-						camera = c1;
-					}
-					view.setCamera(camera);
-				}
-			}
-
-		});
+//		player.attachComponent(new Behaviour() {
+//			@Override
+//			public void update(float delta) {
+//				if (Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
+//					if (camera == c1) {
+//						camera = c2;
+//					} else {
+//						camera = c1;
+//					}
+//					view.setCamera(camera);
+//				}
+//			}
+//
+//		});
 
 		// camera = player.getComponent(Camera.class);
 		player.getTransform().translate(1, 0, 1);

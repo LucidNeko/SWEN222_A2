@@ -61,24 +61,24 @@ public class WorldBuilder {
 		if(player == null) { throw new Error("Player is null"); }
 
 		final Camera c1 = EntityFactory.createThirdPersonTrackingCamera(player).getComponent(Camera.class);
-		final Camera c2 = EntityFactory.createFirstPersonCamera(player).getComponent(Camera.class);//
+//		final Camera c2 = EntityFactory.createFirstPersonCamera(player).getComponent(Camera.class);//
 
 		ServiceLocator.getService(WorldView.class).setCamera(c1);
 
-		player.attachComponent(new Behaviour() {
-			Camera camera = c1;
-			@Override
-			public void update(float delta) {
-				if (Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
-					if (camera == c1) {
-						camera = c2;
-					} else {
-						camera = c1;
-					}
-					ServiceLocator.getService(WorldView.class).setCamera(camera);
-				}
-			}
-		});
+//		player.attachComponent(new Behaviour() {
+//			Camera camera = c1;
+//			@Override
+//			public void update(float delta) {
+//				if (Keyboard.isKeyDownOnce(KeyEvent.VK_P)) {
+//					if (camera == c1) {
+//						camera = c2;
+//					} else {
+//						camera = c1;
+//					}
+//					ServiceLocator.getService(WorldView.class).setCamera(camera);
+//				}
+//			}
+//		});
 
 	}
 
